@@ -392,6 +392,9 @@
   .th-cols { display: flex; gap: 16px; align-items: center; flex: 1; min-width: 0; }
   .th-col { font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; }
   .th-col.ip-col { width: 100px; flex: 0 0 auto; }
+  .th-col.sortable { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; user-select: none; transition: color .12s ease; }
+  .th-col.sortable:hover { color: var(--text-default); }
+  .th-col.sortable .sort-arrow { display: inline-flex; color: var(--text-default); }
 
   /* Camera list (Figma 5:100370) — all rows white per user */
   .cam-list-fig { display: flex; flex-direction: column; background: var(--surface); }
@@ -697,7 +700,12 @@
                 </div>
               </div>
               <div class="th-cols">
-                <div class="th-col ip-col">IP Address</div>
+                <div class="th-col ip-col sortable" onclick="toggleIpSort()">
+                  IP Address
+                  <span class="sort-arrow" id="ipSortArrow">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v6M3 6l3-3 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </div>
                 <div class="th-col">Mac</div>
               </div>
             </div>
@@ -1072,6 +1080,23 @@
   const connFilters = new Set();
   const expandedIps = new Set();
   let infoMsgDismissed = false;
+  let ipSort = 'asc';
+
+  function ipToNumber(ip) { return ip.split('.').reduce((acc, p) => acc * 256 + parseInt(p, 10), 0); }
+
+  function toggleIpSort() {
+    ipSort = ipSort === 'asc' ? 'desc' : 'asc';
+    updateSortArrow();
+    renderCamList();
+  }
+
+  function updateSortArrow() {
+    const arrow = document.getElementById('ipSortArrow');
+    if (!arrow) return;
+    arrow.innerHTML = ipSort === 'asc'
+      ? '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v6M3 6l3-3 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 9V3M3 6l3 3 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
 
   function connectionLabel(c) { return c === 'good' ? 'Good' : c === 'reasonable' ? 'Reasonable' : 'Limited'; }
   function statusTitle(s) { return s === 'registered' ? 'Registered camera' : s === 'unknown' ? 'Unknown device' : 'Unregistered camera'; }
@@ -1086,6 +1111,8 @@
     camFilter = 'all';
     brandFilters.clear();
     connFilters.clear();
+    ipSort = 'asc';
+    updateSortArrow();
     const searchInp = document.getElementById('camSearch');
     if (searchInp) searchInp.value = '';
     document.querySelectorAll('#s2Chips .chip').forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
@@ -1157,7 +1184,7 @@
 
   function filterCams() {
     const q = (document.getElementById('camSearch')?.value || '').toLowerCase().trim();
-    return cams.filter(c => {
+    const list = cams.filter(c => {
       if (!c.discovered) return false;
       if (camFilter !== 'all' && c.status !== camFilter) return false;
       if (brandFilters.size && !brandFilters.has(c.brand)) return false;
@@ -1165,6 +1192,11 @@
       if (q && !(c.ip.includes(q) || c.mac.toLowerCase().includes(q) || c.brand.toLowerCase().includes(q))) return false;
       return true;
     });
+    list.sort((a, b) => {
+      const cmp = ipToNumber(a.ip) - ipToNumber(b.ip);
+      return ipSort === 'asc' ? cmp : -cmp;
+    });
+    return list;
   }
 
   function renderCamList() {
