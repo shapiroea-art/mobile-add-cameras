@@ -415,6 +415,8 @@
   .th-col.sortable:hover { color: var(--text-default); }
   .th-col.sortable .sort-arrow { display: inline-flex; color: var(--text-subtlest); }
   .th-col.sortable.active .sort-arrow { color: var(--text-default); }
+  .expand-all-btn { display: inline-flex; gap: 8px; align-items: center; padding: 8px 16px; border-radius: var(--r); color: var(--text-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; background: transparent; border: none; flex: 0 0 auto; cursor: pointer; transition: background .12s ease; }
+  .expand-all-btn:hover { background: var(--surface-gray200); }
 
   /* Camera list (Figma 5:100370) — all rows white per user */
   .cam-list-fig { display: flex; flex-direction: column; background: var(--surface); }
@@ -728,6 +730,10 @@
                 </div>
                 <div class="th-col">Mac</div>
               </div>
+              <button class="expand-all-btn" id="expandAllBtn" onclick="toggleExpandAll()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 6l3-3 3 3M5 10l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="expandAllLbl">Expand all</span>
+              </button>
             </div>
 
             <div style="flex:1; overflow-y:auto; background: var(--surface);">
@@ -1048,6 +1054,23 @@
     renderCamList();
   }
 
+  function toggleExpandAll() {
+    const visible = filterCams();
+    if (!visible.length) return;
+    const allExpanded = visible.every(c => expandedIps.has(c.ip));
+    if (allExpanded) visible.forEach(c => expandedIps.delete(c.ip));
+    else visible.forEach(c => expandedIps.add(c.ip));
+    renderCamList();
+  }
+
+  function updateExpandAllLabel() {
+    const lbl = document.getElementById('expandAllLbl');
+    if (!lbl) return;
+    const visible = filterCams();
+    const allExpanded = visible.length > 0 && visible.every(c => expandedIps.has(c.ip));
+    lbl.textContent = allExpanded ? 'Collapse all' : 'Expand all';
+  }
+
   function updateSortArrow() {
     const arrow = document.getElementById('ipSortArrow');
     const header = document.getElementById('ipSortHeader');
@@ -1170,6 +1193,7 @@
     if (!list) return;
     list.innerHTML = '';
     const visible = filterCams();
+    updateExpandAllLabel();
     visible.forEach(c => {
       const row = document.createElement('div');
       row.className = 'cam-row-fig';
