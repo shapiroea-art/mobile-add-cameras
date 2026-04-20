@@ -436,8 +436,8 @@
   .cam-conn-dot.limited { background: var(--danger); }
 
   /* Chevron-in-circle (subtle grey) */
-  .chev-btn { width: 32px; height: 32px; border: 1px solid var(--border-input); border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--surface); color: var(--text-subtlest); transition: transform .25s ease, border-color .12s ease; flex: 0 0 auto; margin-left: 8px; }
-  .chev-btn:hover { border-color: var(--text-subtlest); }
+  .chev-btn { width: 32px; height: 32px; border: none; background: transparent; display: grid; place-items: center; cursor: pointer; color: var(--text-subtlest); transition: transform .25s ease, color .12s ease; flex: 0 0 auto; margin-left: 8px; padding: 0; }
+  .chev-btn:hover { color: var(--text-default); }
   .cam-row-fig.expanded .chev-btn { transform: rotate(180deg); }
 
   /* Expanded details — subtle grey background */
