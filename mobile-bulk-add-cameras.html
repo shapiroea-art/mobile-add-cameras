@@ -351,6 +351,90 @@
   .home-indicator { height: 34px; background: var(--surface); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding-bottom: 8px; }
   .home-indicator::before { content:''; display: block; width: 134px; height: 5px; background: #0B1021; border-radius: 100px; }
 
+  /* ===== S2 Discover — Figma-aligned ===== */
+
+  /* Info strip */
+  .info-strip { background: var(--surface); padding: 12px 16px 14px; flex: 0 0 auto; border-bottom: 1px solid var(--border); }
+  .info-strip .t { font-size: 14px; font-weight: 500; color: var(--text-bold); line-height: 20px; }
+  .info-strip .d { font-size: 12px; font-weight: 400; color: var(--text-subtle); line-height: 18px; margin-top: 2px; }
+
+  /* Chips row with circular progress on right */
+  .chips-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border); flex: 0 0 auto; }
+  .chips-scroll { flex: 1; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 2px; }
+  .chips-scroll::-webkit-scrollbar { display: none; height: 0; }
+  .chip.with-icon { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Circular progress (48px, % inside) */
+  .circle-progress { width: 48px; height: 48px; position: relative; flex: 0 0 auto; }
+  .circle-progress svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .circle-progress .bg { fill: none; stroke: var(--surface-subtle); stroke-width: 3; }
+  .circle-progress .fg { fill: none; stroke: var(--primary); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 125.66 125.66; stroke-dashoffset: 125.66; }
+  .circle-progress .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 10px; font-weight: 500; color: var(--text-default); line-height: 1; font-family: var(--sans); letter-spacing: -0.01em; }
+
+  /* Search + filter row */
+  .search-row { display: flex; gap: 8px; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border); flex: 0 0 auto; align-items: center; }
+  .search-input { flex: 1; display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 48px; border: 1px solid var(--border-input); border-radius: 8px; background: var(--surface); transition: border-color .12s ease; }
+  .search-input:focus-within { border-color: var(--primary); }
+  .search-input input { flex: 1; border: none; outline: none; background: transparent; font: 400 16px/24px var(--sans); color: var(--text-default); min-width: 0; }
+  .search-input input::placeholder { color: var(--text-subtlest); }
+  .filter-btn { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--border-input); border-radius: 8px; background: var(--surface); cursor: pointer; color: var(--text-default); position: relative; flex: 0 0 auto; transition: border-color .12s ease, color .12s ease; }
+  .filter-btn:hover { border-color: var(--text-subtlest); }
+  .filter-btn.has-filters { border-color: var(--primary); color: var(--primary); }
+  .filter-btn.has-filters::after { content: ''; position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: var(--primary); border: 2px solid var(--surface); border-radius: 50%; }
+
+  /* Table header */
+  .table-header { display: flex; align-items: center; background: var(--surface-subtle); border-bottom: 1px solid var(--border); height: 44px; flex: 0 0 auto; padding-right: 8px; }
+  .th-cb-wrap { padding: 14px; flex: 0 0 auto; }
+  .th-cols { display: flex; gap: 16px; align-items: center; flex: 1; min-width: 0; }
+  .th-col { font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; }
+  .th-col.ip-col { width: 100px; flex: 0 0 auto; }
+
+  /* Camera list (Figma 5:100370) */
+  .cam-list-fig { display: flex; flex-direction: column; background: var(--surface); }
+  .cam-row-fig { background: var(--surface); border-bottom: 1px solid var(--border); transition: background .12s ease; cursor: pointer; }
+  .cam-row-fig:nth-child(even) { background: #fcfcfd; }
+  .cam-row-fig.selected, .cam-row-fig:nth-child(even).selected { background: var(--primary-soft); }
+  .cam-row-inner { display: flex; align-items: center; padding: 0 8px 0 0; min-height: 56px; }
+  .cam-cb-wrap { padding: 14px; flex: 0 0 auto; display: grid; place-items: center; }
+  .cam-body { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 4px 0; gap: 0; }
+  .cam-row-primary { display: flex; gap: 16px; align-items: center; }
+  .cam-row-primary .cam-ip { width: 100px; font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 0 0 auto; }
+  .cam-row-primary .cam-mac { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cam-row-secondary { font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; display: flex; align-items: center; gap: 6px; }
+
+  /* Connection dot */
+  .cam-conn-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; display: inline-block; }
+  .cam-conn-dot.good { background: var(--success); }
+  .cam-conn-dot.reasonable { background: var(--warning); }
+  .cam-conn-dot.limited { background: var(--danger); }
+
+  /* Chevron-in-circle */
+  .chev-btn { width: 32px; height: 32px; border: 1px solid var(--border-input); border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--surface); color: var(--text-default); transition: transform .25s ease, border-color .12s ease, color .12s ease; flex: 0 0 auto; margin-left: 8px; }
+  .chev-btn:hover { border-color: var(--text-subtlest); }
+  .cam-row-fig.expanded .chev-btn { transform: rotate(180deg); border-color: var(--primary); color: var(--primary); }
+
+  /* Expanded details */
+  .cam-details { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+  .cam-row-fig.expanded .cam-details { max-height: 480px; }
+  .cam-details-inner { padding: 12px 16px 16px 56px; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 2px; }
+  .cam-details-title { font-size: 13px; font-weight: 500; color: var(--text-bold); line-height: 20px; margin-bottom: 6px; }
+  .cam-detail-kv { display: grid; grid-template-columns: 110px 1fr; gap: 8px; font-size: 13px; padding: 3px 0; line-height: 20px; }
+  .cam-detail-kv .k { color: var(--text-subtle); font-weight: 500; }
+  .cam-detail-kv .v { color: var(--text-default); font-weight: 500; }
+
+  /* Selection summary strip */
+  .sel-summary { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border); flex: 0 0 auto; font-size: 13px; color: var(--text-subtle); }
+  .sel-summary strong { color: var(--text-bold); font-weight: 600; }
+
+  /* Filter sheet groups */
+  .sheet-title-row { display: flex; align-items: center; padding: 4px; margin-bottom: 8px; }
+  .sheet-title-row .sheet-title { margin: 0; padding: 0; flex: 1; }
+  .sheet-clear { font-size: 13px; font-weight: 500; color: var(--primary); padding: 6px 8px; cursor: pointer; background: none; border: none; }
+  .sheet-clear:disabled { color: var(--text-subtlest); cursor: not-allowed; }
+  .fg-group { padding: 6px 4px 14px; }
+  .fg-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text-subtle); text-transform: uppercase; padding: 0 0 8px; }
+  .fg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
   @media (max-width: 900px) {
     .workspace { flex-direction: column; align-items: center; padding: 24px; gap: 24px; }
     .flowmap { position: static; width: 100%; max-width: 380px; }
@@ -427,6 +511,37 @@
                   <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Bottom sheet: Filter -->
+          <div class="sheet-backdrop" id="filterSheet" onclick="if(event.target.id==='filterSheet') closeFilterSheet()">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-title-row">
+                <div class="sheet-title">Filter</div>
+                <button class="sheet-clear" id="sheetClear" onclick="clearFilters()">Clear all</button>
+              </div>
+              <div class="fg-group">
+                <div class="fg-label">Brand</div>
+                <div class="fg-chips" id="brandChips">
+                  <span class="chip" data-brand="Axis">Axis</span>
+                  <span class="chip" data-brand="Hikvision">Hikvision</span>
+                  <span class="chip" data-brand="Dahua">Dahua</span>
+                  <span class="chip" data-brand="Uniview">Uniview</span>
+                  <span class="chip" data-brand="Hanwha">Hanwha</span>
+                  <span class="chip" data-brand="ONVIF">ONVIF</span>
+                </div>
+              </div>
+              <div class="fg-group">
+                <div class="fg-label">Connection</div>
+                <div class="fg-chips" id="connChips">
+                  <span class="chip with-icon" data-conn="good"><span class="cam-conn-dot good"></span>Good</span>
+                  <span class="chip with-icon" data-conn="reasonable"><span class="cam-conn-dot reasonable"></span>Reasonable</span>
+                  <span class="chip with-icon" data-conn="limited"><span class="cam-conn-dot limited"></span>Limited</span>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-full" onclick="closeFilterSheet()" style="margin-top: 4px;">Done</button>
             </div>
           </div>
 
@@ -522,60 +637,66 @@
             </div>
 
             <div class="stepper">
-              <div class="sp-label"><span class="pulse-dot" id="s2Pulse"></span><span id="s2Label">2 of 4 – Discover</span></div>
+              <div class="sp-label">2 of 4 – Discover</div>
               <div class="sp-bar"><div class="sp-fill" style="width: 50%;"></div></div>
             </div>
 
-            <div class="scanbar"><div class="scan-fill" id="s2Scanfill"></div></div>
+            <div class="info-strip">
+              <div class="t">Scanning network</div>
+              <div class="d">You can leave this screen — scanning continues in background.</div>
+            </div>
 
-            <div class="scan-banner" id="s2Banner">
-              <span class="banner-icon">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM9 5.5v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-              <div>
-                <div class="bt">Scanning network · about 20 seconds</div>
-                <div class="bd">You can leave this screen — scanning continues in the background.</div>
+            <div class="chips-row">
+              <div class="chips-scroll" id="s2Chips">
+                <span class="chip active" data-filter="all">All</span>
+                <span class="chip with-icon" data-filter="unregistered">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                  Unregistered
+                </span>
+                <span class="chip with-icon" data-filter="registered">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                  Registered
+                </span>
+                <span class="chip with-icon" data-filter="unknown">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.8c0-1 .7-1.6 1.5-1.6s1.5.5 1.5 1.3-1.2 1-1.5 1.8M7 9.8v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  Unknown devices
+                </span>
+              </div>
+              <div class="circle-progress" id="scanCircle">
+                <svg viewBox="0 0 48 48">
+                  <circle class="bg" cx="24" cy="24" r="20"/>
+                  <circle class="fg" id="scanArc" cx="24" cy="24" r="20"/>
+                </svg>
+                <span class="pct" id="scanPct">0%</span>
               </div>
             </div>
 
-            <div class="scan-stats">
-              <div class="s"><span class="s-num" id="s2Found">0</span><span class="s-label">Found</span></div>
-              <div class="s"><span class="s-num ok" id="s2Added">0</span><span class="s-label">Already added</span></div>
-              <div class="s"><span class="s-num warn" id="s2Unreach">0</span><span class="s-label">Unreachable</span></div>
+            <div class="search-row">
+              <div class="search-input">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#667085" stroke-width="1.6"/><path d="M14 14l3 3" stroke="#667085" stroke-width="1.6" stroke-linecap="round"/></svg>
+                <input placeholder="Search" id="camSearch" oninput="renderCamList()" />
+              </div>
+              <button class="filter-btn" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
             </div>
 
-            <div class="content">
-              <div class="input-field" style="height: 44px;">
-                <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" stroke="#667085" stroke-width="1.5" fill="none"/><path d="M11 11l3 3" stroke="#667085" stroke-width="1.5" stroke-linecap="round"/></svg>
-                <input placeholder="Search by IP, brand, model" style="font-size:14px;" />
-              </div>
-
-              <div class="chips">
-                <span class="chip active">All <span class="num" id="chipAll">0</span></span>
-                <span class="chip">Unadded <span class="num" id="chipUnadded">0</span></span>
-                <span class="chip">Axis <span class="num">4</span></span>
-                <span class="chip">Hikvision <span class="num">3</span></span>
-                <span class="chip">Dahua <span class="num">2</span></span>
-                <span class="chip">Hanwha <span class="num">1</span></span>
-                <span class="chip">ONVIF <span class="num">2</span></span>
-              </div>
-
-              <div class="sel-header">
+            <div class="table-header">
+              <div class="th-cb-wrap">
                 <div class="cb tri" id="triMaster" onclick="toggleAll()">
                   <svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" rx="1"/></svg>
                 </div>
-                <span class="sel-label"><strong id="selCount">0</strong> of <span id="selTotal">0</span> selected</span>
-                <span class="sel-sort">IP ASC
-                  <svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 7l3-3 3 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
-                </span>
               </div>
-
-              <div class="cam-list" id="camList"></div>
-
-              <div class="manual-footer" onclick="openMethodSheet()" id="manualFooter">
-                <span>Didn't find it?</span>
-                <strong>Add manually</strong>
+              <div class="th-cols">
+                <div class="th-col ip-col">IP Address</div>
+                <div class="th-col">Mac</div>
               </div>
+            </div>
+
+            <div class="sel-summary" id="selSummary"><strong id="selCount">0</strong>&nbsp;of <span id="selTotal">0</span> selected</div>
+
+            <div style="flex:1; overflow-y:auto; background: var(--surface);">
+              <div class="cam-list-fig" id="camList"></div>
             </div>
 
             <div class="action-bar">
@@ -861,6 +982,7 @@
     if (i === current) return;
     if (i >= 1 && !selectedCore) return;
     closeMethodSheet();
+    closeFilterSheet();
     const prev = document.getElementById(screens[current]);
     const next = document.getElementById(screens[i]);
     prev.classList.remove('active');
@@ -877,6 +999,7 @@
     clearScanTimers();
     clearStatusTimers();
     closeMethodSheet();
+    closeFilterSheet();
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active','exit-left'));
     document.getElementById('s1').classList.add('active');
     current = 0;
@@ -903,130 +1026,189 @@
 
   // ===== Scan (S2) =====
   const cams = [
-    { ip: '10.0.12.34', brand: 'Axis M3045-V', badges: ['onvif'], status: 'ok', meta: 'Online · 1080p' },
-    { ip: '10.0.12.35', brand: 'Hikvision DS-2CD2143G2-I', badges: ['onvif'], status: 'ok', meta: 'Online · 4MP' },
-    { ip: '10.0.12.38', brand: 'Dahua IPC-HFW5442T-ASE', badges: ['onvif'], status: 'ok', meta: 'Online · 4MP' },
-    { ip: '10.0.12.41', brand: 'Hanwha XNO-6120R', badges: ['poe'], status: 'ok', meta: 'Online · 2MP' },
-    { ip: '10.0.12.51', brand: 'Axis M3068-P', badges: ['multi','onvif'], status: 'ok', meta: 'Online' },
-    { ip: '10.0.12.58', brand: 'Hikvision DS-2CD2687G2T', badges: ['onvif'], status: 'ok', meta: 'Online' },
-    { ip: '10.0.12.62', brand: 'ONVIF generic', badges: [], status: 'ok', meta: 'Vendor unknown' },
-    { ip: '10.0.12.64', brand: 'Axis M3106-LVE', badges: ['onvif'], status: 'ok', meta: 'Online' },
-    { ip: '10.0.12.67', brand: 'Dahua IPC-HDBW5449', badges: ['onvif'], status: 'ok', meta: 'Online' },
-    { ip: '10.0.12.71', brand: 'Axis P3245-LVE', badges: ['onvif','poe'], status: 'ok', meta: 'Online' },
-    { ip: '10.0.12.75', brand: 'Hikvision DS-2CD2143G2', badges: ['onvif'], status: 'ok', meta: 'Online' },
-    { ip: '10.0.12.78', brand: 'Hikvision DS-2CD2T87', badges: ['onvif'], status: 'ok', meta: 'Online' },
-    { ip: '10.0.12.22', brand: 'Axis P1448-LE', badges: ['added'], status: 'mut', meta: 'Already in core', disabled: true },
-    { ip: '10.0.12.27', brand: 'Axis M3085-V', badges: ['added'], status: 'mut', meta: 'Already in core', disabled: true },
-    { ip: '10.0.12.29', brand: 'Hikvision DS-2CD2387', badges: [], status: 'warn', meta: 'Unreachable · port 80 closed', warn: true }
+    { ip: '192.168.100.152', mac: 'c4:79:05:09:02:54', brand: 'Uniview', connection: 'reasonable', status: 'unregistered', ping: { min: 12, max: 48, avg: 23, std: 5 } },
+    { ip: '192.168.100.153', mac: 'a4:20:11:c2:5f:71', brand: 'Axis',     connection: 'good',       status: 'unregistered', ping: { min: 8,  max: 22, avg: 14, std: 3 } },
+    { ip: '192.168.100.154', mac: 'bc:a5:0b:91:8d:3e', brand: 'Hikvision',connection: 'limited',    status: 'unregistered', ping: { min: 45, max: 180, avg: 95, std: 35 } },
+    { ip: '192.168.100.155', mac: '0e:7a:f3:d8:22:11', brand: 'Dahua',    connection: 'good',       status: 'unregistered', ping: { min: 10, max: 28, avg: 16, std: 4 } },
+    { ip: '192.168.100.156', mac: '44:3a:f7:2e:6f:98', brand: 'Hanwha',   connection: 'reasonable', status: 'unregistered', ping: { min: 15, max: 62, avg: 28, std: 8 } },
+    { ip: '192.168.100.157', mac: 'c4:79:05:1b:44:aa', brand: 'Uniview',  connection: 'good',       status: 'unregistered', ping: { min: 9,  max: 24, avg: 15, std: 3 } },
+    { ip: '192.168.100.158', mac: '78:e9:d8:55:b3:0c', brand: 'ONVIF',    connection: 'reasonable', status: 'unknown',      ping: { min: 18, max: 55, avg: 30, std: 9 } },
+    { ip: '192.168.100.159', mac: '2c:1d:7e:4a:09:33', brand: 'Axis',     connection: 'good',       status: 'unregistered', ping: { min: 11, max: 26, avg: 17, std: 4 } },
+    { ip: '192.168.100.160', mac: '6a:bf:08:91:4c:7d', brand: 'Hikvision',connection: 'good',       status: 'unregistered', ping: { min: 13, max: 31, avg: 19, std: 5 } },
+    { ip: '192.168.100.161', mac: '88:12:4e:b6:f1:2a', brand: 'Dahua',    connection: 'limited',    status: 'unregistered', ping: { min: 55, max: 210, avg: 112, std: 42 } },
+    { ip: '192.168.100.162', mac: 'f0:9f:c2:33:8e:15', brand: 'Axis',     connection: 'good',       status: 'registered',   ping: { min: 7,  max: 21, avg: 12, std: 3 } },
+    { ip: '192.168.100.163', mac: 'ec:2b:17:4d:99:6c', brand: 'Hanwha',   connection: 'reasonable', status: 'unregistered', ping: { min: 20, max: 58, avg: 32, std: 10 } }
   ];
 
-  let camsDiscovered = []; // progressively populated during scan
+  let camFilter = 'all';
+  const brandFilters = new Set();
+  const connFilters = new Set();
+  const expandedIps = new Set();
+
+  function connectionLabel(c) { return c === 'good' ? 'Good' : c === 'reasonable' ? 'Reasonable' : 'Limited'; }
+  function statusTitle(s) { return s === 'registered' ? 'Registered camera' : s === 'unknown' ? 'Unknown device' : 'Unregistered camera'; }
 
   function clearScanTimers() { scanTimers.forEach(clearTimeout); scanTimers = []; }
 
   function startScan() {
     clearScanTimers();
-    camsDiscovered = [];
-    cams.forEach(c => { c.checked = false; });
-    document.getElementById('s2Found').textContent = '0';
-    document.getElementById('s2Added').textContent = '0';
-    document.getElementById('s2Unreach').textContent = '0';
-    document.getElementById('chipAll').textContent = '0';
-    document.getElementById('chipUnadded').textContent = '0';
-    document.getElementById('selTotal').textContent = '0';
-    document.getElementById('selCount').textContent = '0';
-    document.getElementById('s2Pulse').style.display = '';
-    document.getElementById('s2Label').textContent = '2 of 4 – Discover · scanning…';
-    document.getElementById('s2Banner').classList.remove('hidden');
-    const fill = document.getElementById('s2Scanfill');
-    fill.style.transition = 'none';
-    fill.style.width = '0%';
+    // Reset state
+    cams.forEach(c => { c.checked = false; c.discovered = false; });
+    expandedIps.clear();
+    camFilter = 'all';
+    brandFilters.clear();
+    connFilters.clear();
+    const searchInp = document.getElementById('camSearch');
+    if (searchInp) searchInp.value = '';
+    document.querySelectorAll('#s2Chips .chip').forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
+    document.querySelectorAll('#brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
+    updateFilterBtn();
+
+    // Circle animation
+    const arc = document.getElementById('scanArc');
+    const pct = document.getElementById('scanPct');
+    const C = 125.66; // 2 * PI * r(20)
+    const dur = 6000; // demo pace; production spec ≈ 20s
+    arc.style.transition = 'none';
+    arc.setAttribute('stroke-dashoffset', C);
+    pct.textContent = '0%';
     requestAnimationFrame(() => {
-      fill.style.transition = 'width 20s linear';
-      fill.style.width = '100%';
+      arc.style.transition = `stroke-dashoffset ${dur}ms linear`;
+      arc.setAttribute('stroke-dashoffset', 0);
     });
+    const start = performance.now();
+    function tickPct(t) {
+      const p = Math.min(1, (t - start) / dur);
+      pct.textContent = Math.round(p * 100) + '%';
+      if (p < 1) requestAnimationFrame(tickPct);
+    }
+    requestAnimationFrame(tickPct);
 
+    // Discover cameras progressively
     renderCamList();
-
-    // Discover cameras progressively over ~20s (sped up slightly for demo: ~6s)
-    const totalMs = 6000;
     cams.forEach((c, idx) => {
-      const t = 300 + (idx / cams.length) * totalMs + Math.random() * 350;
+      const t = 300 + (idx / cams.length) * (dur - 500) + Math.random() * 300;
       scanTimers.push(setTimeout(() => {
-        camsDiscovered.push(c);
-        if (!c.disabled && !c.warn) c.checked = true;
+        c.discovered = true;
         renderCamList();
-        updateSelCount();
-        updateScanStats();
       }, t));
     });
-
-    // Scan complete
-    scanTimers.push(setTimeout(() => {
-      fill.style.transition = 'width .3s ease';
-      fill.style.width = '100%';
-      document.getElementById('s2Pulse').style.display = 'none';
-      document.getElementById('s2Label').textContent = '2 of 4 – Discover · scan complete';
-      document.getElementById('s2Banner').classList.add('hidden');
-    }, totalMs + 500));
   }
 
-  function updateScanStats() {
-    const found = camsDiscovered.length;
-    const added = camsDiscovered.filter(c => c.disabled).length;
-    const unreach = camsDiscovered.filter(c => c.warn).length;
-    const unadded = camsDiscovered.filter(c => !c.disabled && !c.warn).length;
-    document.getElementById('s2Found').textContent = found;
-    document.getElementById('s2Added').textContent = added;
-    document.getElementById('s2Unreach').textContent = unreach;
-    document.getElementById('chipAll').textContent = found;
-    document.getElementById('chipUnadded').textContent = unadded;
-    document.getElementById('selTotal').textContent = unadded;
+  function filterCams() {
+    const q = (document.getElementById('camSearch')?.value || '').toLowerCase().trim();
+    return cams.filter(c => {
+      if (!c.discovered) return false;
+      if (camFilter !== 'all' && c.status !== camFilter) return false;
+      if (brandFilters.size && !brandFilters.has(c.brand)) return false;
+      if (connFilters.size && !connFilters.has(c.connection)) return false;
+      if (q && !(c.ip.includes(q) || c.mac.toLowerCase().includes(q) || c.brand.toLowerCase().includes(q))) return false;
+      return true;
+    });
   }
 
   function renderCamList() {
     const list = document.getElementById('camList');
+    if (!list) return;
     list.innerHTML = '';
-    camsDiscovered.forEach((c) => {
+    const visible = filterCams();
+    visible.forEach(c => {
       const row = document.createElement('div');
-      row.className = 'cam';
+      row.className = 'cam-row-fig';
       if (c.checked) row.classList.add('selected');
-      if (c.disabled) row.classList.add('disabled');
-      if (c.warn) row.classList.add('warn');
-      const badgeLabel = b => b === 'multi' ? '4-sensor' : (b === 'poe' ? 'PoE+' : b.toUpperCase());
+      const exp = expandedIps.has(c.ip);
+      if (exp) row.classList.add('expanded');
       row.innerHTML = `
-        <div class="cb ${c.checked ? 'ck' : ''}">${c.checked ? '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke-width="1.8" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}</div>
-        <div class="c-main">
-          <div class="c-top"><span class="c-ip">${c.ip}</span><span class="c-sep"></span><span class="c-brand">${c.brand}</span></div>
-          <div class="c-bot"><span class="status-dot ${c.status}"></span><span>${c.meta}</span>${c.badges.map(b => `<span class="badge ${b}">${badgeLabel(b)}</span>`).join('')}</div>
+        <div class="cam-row-inner">
+          <div class="cam-cb-wrap" data-role="cb">
+            <div class="cb ${c.checked ? 'ck' : ''}">
+              ${c.checked ? '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke-width="1.8" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+            </div>
+          </div>
+          <div class="cam-body">
+            <div class="cam-row-primary">
+              <span class="cam-ip">${c.ip}</span>
+              <span class="cam-mac">${c.mac}</span>
+            </div>
+            <div class="cam-row-secondary">
+              <span class="cam-conn-dot ${c.connection}"></span>
+              ${c.brand}
+            </div>
+          </div>
+          <button class="chev-btn" data-role="chev" aria-label="Details">
+            <svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="cam-details">
+          <div class="cam-details-inner">
+            <div class="cam-details-title">${statusTitle(c.status)}</div>
+            <div class="cam-detail-kv"><span class="k">IP</span><span class="v">${c.ip}</span></div>
+            <div class="cam-detail-kv"><span class="k">MAC</span><span class="v">${c.mac}</span></div>
+            <div class="cam-detail-kv"><span class="k">Brand</span><span class="v">${c.brand}</span></div>
+            <div class="cam-detail-kv"><span class="k">Connection</span><span class="v">${connectionLabel(c.connection)}</span></div>
+            <div class="cam-detail-kv"><span class="k">Min (ms)</span><span class="v">${c.ping.min}</span></div>
+            <div class="cam-detail-kv"><span class="k">Max (ms)</span><span class="v">${c.ping.max}</span></div>
+            <div class="cam-detail-kv"><span class="k">Avg (ms)</span><span class="v">${c.ping.avg}</span></div>
+            <div class="cam-detail-kv"><span class="k">Std (ms)</span><span class="v">${c.ping.std}</span></div>
+          </div>
         </div>
       `;
-      row.addEventListener('click', () => {
-        if (c.disabled) return;
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('[data-role="chev"]')) {
+          if (expandedIps.has(c.ip)) expandedIps.delete(c.ip);
+          else expandedIps.add(c.ip);
+          renderCamList();
+          return;
+        }
+        if (e.target.closest('.cam-details')) return;
         c.checked = !c.checked;
         renderCamList();
-        updateSelCount();
       });
       list.appendChild(row);
     });
+    updateSelCount();
   }
 
   function updateSelCount() {
-    const n = camsDiscovered.filter(c => c.checked && !c.disabled).length;
-    document.getElementById('selCount').textContent = n;
+    const selectable = cams.filter(c => c.discovered);
+    const n = selectable.filter(c => c.checked).length;
+    const total = filterCams().length;
+    const selCount = document.getElementById('selCount');
+    const selTotal = document.getElementById('selTotal');
+    if (selCount) selCount.textContent = n;
+    if (selTotal) selTotal.textContent = total;
     const master = document.getElementById('triMaster');
-    const selectable = camsDiscovered.filter(c => !c.disabled && !c.warn);
-    if (n === 0) { master.className = 'cb'; master.innerHTML = ''; }
-    else if (n === selectable.length && selectable.length > 0) { master.className = 'cb ck'; master.innerHTML = '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke-width="1.8" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+    if (!master) return;
+    const visible = filterCams();
+    const allOn = visible.length > 0 && visible.every(c => c.checked);
+    const someOn = visible.some(c => c.checked);
+    if (!someOn) { master.className = 'cb'; master.innerHTML = ''; }
+    else if (allOn) { master.className = 'cb ck'; master.innerHTML = '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke-width="1.8" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
     else { master.className = 'cb tri'; master.innerHTML = '<svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" rx="1"/></svg>'; }
   }
 
   function toggleAll() {
-    const selectable = camsDiscovered.filter(c => !c.disabled && !c.warn);
-    const allOn = selectable.every(c => c.checked);
-    selectable.forEach(c => c.checked = !allOn);
+    const visible = filterCams();
+    if (visible.length === 0) return;
+    const allOn = visible.every(c => c.checked);
+    visible.forEach(c => c.checked = !allOn);
     renderCamList();
-    updateSelCount();
+  }
+
+  // ===== Filter sheet & chips =====
+  function openFilterSheet() { document.getElementById('filterSheet').classList.add('open'); }
+  function closeFilterSheet() { document.getElementById('filterSheet').classList.remove('open'); }
+  function clearFilters() {
+    brandFilters.clear();
+    connFilters.clear();
+    document.querySelectorAll('#brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
+    updateFilterBtn();
+    renderCamList();
+  }
+  function updateFilterBtn() {
+    const btn = document.getElementById('filterBtn');
+    if (!btn) return;
+    btn.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0);
   }
 
   // ===== Auth (S3) helpers =====
@@ -1221,6 +1403,40 @@
       }, delay));
     });
   }
+
+  // Status filter chips (S2)
+  document.getElementById('s2Chips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    document.querySelectorAll('#s2Chips .chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    camFilter = chip.dataset.filter;
+    renderCamList();
+  });
+
+  // Brand filter chips (in Filter sheet)
+  document.getElementById('brandChips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    const b = chip.dataset.brand;
+    if (brandFilters.has(b)) brandFilters.delete(b);
+    else brandFilters.add(b);
+    chip.classList.toggle('active');
+    updateFilterBtn();
+    renderCamList();
+  });
+
+  // Connection filter chips (in Filter sheet)
+  document.getElementById('connChips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    const cn = chip.dataset.conn;
+    if (connFilters.has(cn)) connFilters.delete(cn);
+    else connFilters.add(cn);
+    chip.classList.toggle('active');
+    updateFilterBtn();
+    renderCamList();
+  });
 
   // Keyboard nav
   document.addEventListener('keydown', (e) => {
