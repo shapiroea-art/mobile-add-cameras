@@ -33,6 +33,9 @@
     --danger:         #F04438;
     --danger-soft:    #FEE4E2;
 
+    --info-bg:        #EFF6FF;
+    --info-border:    #3B82F6;
+
     --sans: 'Satoshi', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --r: 4px;
   }
@@ -363,13 +366,14 @@
   .chips-scroll { flex: 1; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 2px; }
   .chips-scroll::-webkit-scrollbar { display: none; height: 0; }
   .chip.with-icon { display: inline-flex; align-items: center; gap: 6px; }
+  .chip.with-icon .num { margin-left: 0; }
 
-  /* Circular progress (48px, % inside) */
+  /* Circular progress (48px, % inside — prominent) */
   .circle-progress { width: 48px; height: 48px; position: relative; flex: 0 0 auto; }
   .circle-progress svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-  .circle-progress .bg { fill: none; stroke: var(--surface-subtle); stroke-width: 3; }
-  .circle-progress .fg { fill: none; stroke: var(--primary); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 125.66 125.66; stroke-dashoffset: 125.66; }
-  .circle-progress .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 10px; font-weight: 500; color: var(--text-default); line-height: 1; font-family: var(--sans); letter-spacing: -0.01em; }
+  .circle-progress .bg { fill: none; stroke: var(--surface-subtle); stroke-width: 4; }
+  .circle-progress .fg { fill: none; stroke: var(--primary); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 125.66 125.66; stroke-dashoffset: 125.66; }
+  .circle-progress .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: var(--text-bold); line-height: 1; font-family: var(--sans); letter-spacing: -0.01em; }
 
   /* Search + filter row */
   .search-row { display: flex; gap: 8px; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border); flex: 0 0 auto; align-items: center; }
@@ -389,11 +393,9 @@
   .th-col { font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; }
   .th-col.ip-col { width: 100px; flex: 0 0 auto; }
 
-  /* Camera list (Figma 5:100370) */
+  /* Camera list (Figma 5:100370) — all rows white per user */
   .cam-list-fig { display: flex; flex-direction: column; background: var(--surface); }
   .cam-row-fig { background: var(--surface); border-bottom: 1px solid var(--border); transition: background .12s ease; cursor: pointer; }
-  .cam-row-fig:nth-child(even) { background: #fcfcfd; }
-  .cam-row-fig.selected, .cam-row-fig:nth-child(even).selected { background: var(--primary-soft); }
   .cam-row-inner { display: flex; align-items: center; padding: 0 8px 0 0; min-height: 56px; }
   .cam-cb-wrap { padding: 14px; flex: 0 0 auto; display: grid; place-items: center; }
   .cam-body { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 4px 0; gap: 0; }
@@ -408,23 +410,35 @@
   .cam-conn-dot.reasonable { background: var(--warning); }
   .cam-conn-dot.limited { background: var(--danger); }
 
-  /* Chevron-in-circle */
-  .chev-btn { width: 32px; height: 32px; border: 1px solid var(--border-input); border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--surface); color: var(--text-default); transition: transform .25s ease, border-color .12s ease, color .12s ease; flex: 0 0 auto; margin-left: 8px; }
+  /* Chevron-in-circle (subtle grey) */
+  .chev-btn { width: 32px; height: 32px; border: 1px solid var(--border-input); border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--surface); color: var(--text-subtlest); transition: transform .25s ease, border-color .12s ease; flex: 0 0 auto; margin-left: 8px; }
   .chev-btn:hover { border-color: var(--text-subtlest); }
-  .cam-row-fig.expanded .chev-btn { transform: rotate(180deg); border-color: var(--primary); color: var(--primary); }
+  .cam-row-fig.expanded .chev-btn { transform: rotate(180deg); }
 
-  /* Expanded details */
+  /* Expanded details — subtle grey background */
   .cam-details { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
   .cam-row-fig.expanded .cam-details { max-height: 480px; }
-  .cam-details-inner { padding: 12px 16px 16px 56px; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 2px; }
+  .cam-details-inner { padding: 12px 16px 16px 56px; border-top: 1px solid var(--border); background: var(--surface-subtle); display: flex; flex-direction: column; gap: 2px; }
   .cam-details-title { font-size: 13px; font-weight: 500; color: var(--text-bold); line-height: 20px; margin-bottom: 6px; }
   .cam-detail-kv { display: grid; grid-template-columns: 110px 1fr; gap: 8px; font-size: 13px; padding: 3px 0; line-height: 20px; }
   .cam-detail-kv .k { color: var(--text-subtle); font-weight: 500; }
   .cam-detail-kv .v { color: var(--text-default); font-weight: 500; }
 
-  /* Selection summary strip */
-  .sel-summary { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border); flex: 0 0 auto; font-size: 13px; color: var(--text-subtle); }
-  .sel-summary strong { color: var(--text-bold); font-weight: 600; }
+  /* Info message (blue, dismissable, bottom of screen while scanning) */
+  .info-msg { position: relative; background: var(--info-bg); border: 1px solid var(--info-border); border-radius: 4px; margin: 12px 16px 0; padding: 16px 52px 16px 16px; display: flex; gap: 8px; align-items: flex-start; box-shadow: inset 3px 0 0 var(--info-border); flex: 0 0 auto; }
+  .info-msg.hidden { display: none; }
+  .info-msg .im-icon { display: grid; place-items: center; padding: 4px; color: var(--info-border); flex: 0 0 auto; }
+  .info-msg .im-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .info-msg .im-title { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
+  .info-msg .im-desc { font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 22px; }
+  .info-msg .im-close { position: absolute; top: 5px; right: 3px; display: grid; place-items: center; padding: 14px; cursor: pointer; background: none; border: none; color: var(--text-default); border-radius: 4px; }
+  .info-msg .im-close:hover { background: rgba(255,255,255,.6); }
+
+  /* Selected-cameras block (Figma 5:100473) — above action bar */
+  .sel-block { background: var(--info-bg); padding: 12px 16px; display: none; gap: 8px; align-items: center; flex: 0 0 auto; }
+  .sel-block.show { display: flex; }
+  .sel-block .sb-icon { color: var(--primary); flex: 0 0 auto; display: grid; place-items: center; }
+  .sel-block .sb-text { font-size: 16px; font-weight: 500; color: var(--primary); line-height: 24px; }
 
   /* Filter sheet groups */
   .sheet-title-row { display: flex; align-items: center; padding: 4px; margin-bottom: 8px; }
@@ -641,33 +655,28 @@
               <div class="sp-bar"><div class="sp-fill" style="width: 50%;"></div></div>
             </div>
 
-            <div class="info-strip">
-              <div class="t">Scanning network</div>
-              <div class="d">You can leave this screen — scanning continues in background.</div>
-            </div>
-
             <div class="chips-row">
-              <div class="chips-scroll" id="s2Chips">
-                <span class="chip active" data-filter="all">All</span>
-                <span class="chip with-icon" data-filter="unregistered">
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
-                  Unregistered
-                </span>
-                <span class="chip with-icon" data-filter="registered">
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
-                  Registered
-                </span>
-                <span class="chip with-icon" data-filter="unknown">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.8c0-1 .7-1.6 1.5-1.6s1.5.5 1.5 1.3-1.2 1-1.5 1.8M7 9.8v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                  Unknown devices
-                </span>
-              </div>
               <div class="circle-progress" id="scanCircle">
                 <svg viewBox="0 0 48 48">
                   <circle class="bg" cx="24" cy="24" r="20"/>
                   <circle class="fg" id="scanArc" cx="24" cy="24" r="20"/>
                 </svg>
                 <span class="pct" id="scanPct">0%</span>
+              </div>
+              <div class="chips-scroll" id="s2Chips">
+                <span class="chip active" data-filter="all">All<span class="num">0</span></span>
+                <span class="chip with-icon" data-filter="unregistered">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                  Unregistered<span class="num">0</span>
+                </span>
+                <span class="chip with-icon" data-filter="registered">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                  Registered<span class="num">0</span>
+                </span>
+                <span class="chip with-icon" data-filter="unknown">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.8c0-1 .7-1.6 1.5-1.6s1.5.5 1.5 1.3-1.2 1-1.5 1.8M7 9.8v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  Unknown devices<span class="num">0</span>
+                </span>
               </div>
             </div>
 
@@ -693,10 +702,28 @@
               </div>
             </div>
 
-            <div class="sel-summary" id="selSummary"><strong id="selCount">0</strong>&nbsp;of <span id="selTotal">0</span> selected</div>
-
             <div style="flex:1; overflow-y:auto; background: var(--surface);">
               <div class="cam-list-fig" id="camList"></div>
+            </div>
+
+            <div class="info-msg" id="s2InfoMsg">
+              <span class="im-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <div class="im-body">
+                <div class="im-title">Scanning network</div>
+                <div class="im-desc">You can leave this screen — scanning continues in background.</div>
+              </div>
+              <button class="im-close" onclick="dismissInfoMsg()" aria-label="Dismiss">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+
+            <div class="sel-block" id="selBlock">
+              <span class="sb-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+              </span>
+              <span class="sb-text"><strong id="selCount">0</strong> cameras selected</span>
             </div>
 
             <div class="action-bar">
@@ -1044,6 +1071,7 @@
   const brandFilters = new Set();
   const connFilters = new Set();
   const expandedIps = new Set();
+  let infoMsgDismissed = false;
 
   function connectionLabel(c) { return c === 'good' ? 'Good' : c === 'reasonable' ? 'Reasonable' : 'Limited'; }
   function statusTitle(s) { return s === 'registered' ? 'Registered camera' : s === 'unknown' ? 'Unknown device' : 'Unregistered camera'; }
@@ -1063,6 +1091,11 @@
     document.querySelectorAll('#s2Chips .chip').forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
     document.querySelectorAll('#brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
     updateFilterBtn();
+
+    // Show info message at bottom
+    infoMsgDismissed = false;
+    const infoMsg = document.getElementById('s2InfoMsg');
+    if (infoMsg) infoMsg.classList.remove('hidden');
 
     // Circle animation
     const arc = document.getElementById('scanArc');
@@ -1086,13 +1119,40 @@
 
     // Discover cameras progressively
     renderCamList();
+    updateChipCounts();
     cams.forEach((c, idx) => {
       const t = 300 + (idx / cams.length) * (dur - 500) + Math.random() * 300;
       scanTimers.push(setTimeout(() => {
         c.discovered = true;
         renderCamList();
+        updateChipCounts();
       }, t));
     });
+    // Hide info message when scan completes
+    scanTimers.push(setTimeout(() => {
+      if (!infoMsgDismissed && infoMsg) infoMsg.classList.add('hidden');
+    }, dur + 200));
+  }
+
+  function updateChipCounts() {
+    const counts = {
+      all: cams.filter(c => c.discovered).length,
+      unregistered: cams.filter(c => c.discovered && c.status === 'unregistered').length,
+      registered: cams.filter(c => c.discovered && c.status === 'registered').length,
+      unknown: cams.filter(c => c.discovered && c.status === 'unknown').length
+    };
+    Object.entries(counts).forEach(([filter, n]) => {
+      const chip = document.querySelector(`#s2Chips .chip[data-filter="${filter}"]`);
+      if (!chip) return;
+      const num = chip.querySelector('.num');
+      if (num) num.textContent = n;
+    });
+  }
+
+  function dismissInfoMsg() {
+    infoMsgDismissed = true;
+    const msg = document.getElementById('s2InfoMsg');
+    if (msg) msg.classList.add('hidden');
   }
 
   function filterCams() {
@@ -1142,9 +1202,6 @@
         <div class="cam-details">
           <div class="cam-details-inner">
             <div class="cam-details-title">${statusTitle(c.status)}</div>
-            <div class="cam-detail-kv"><span class="k">IP</span><span class="v">${c.ip}</span></div>
-            <div class="cam-detail-kv"><span class="k">MAC</span><span class="v">${c.mac}</span></div>
-            <div class="cam-detail-kv"><span class="k">Brand</span><span class="v">${c.brand}</span></div>
             <div class="cam-detail-kv"><span class="k">Connection</span><span class="v">${connectionLabel(c.connection)}</span></div>
             <div class="cam-detail-kv"><span class="k">Min (ms)</span><span class="v">${c.ping.min}</span></div>
             <div class="cam-detail-kv"><span class="k">Max (ms)</span><span class="v">${c.ping.max}</span></div>
@@ -1170,13 +1227,11 @@
   }
 
   function updateSelCount() {
-    const selectable = cams.filter(c => c.discovered);
-    const n = selectable.filter(c => c.checked).length;
-    const total = filterCams().length;
+    const n = cams.filter(c => c.discovered && c.checked).length;
     const selCount = document.getElementById('selCount');
-    const selTotal = document.getElementById('selTotal');
     if (selCount) selCount.textContent = n;
-    if (selTotal) selTotal.textContent = total;
+    const block = document.getElementById('selBlock');
+    if (block) block.classList.toggle('show', n > 0);
     const master = document.getElementById('triMaster');
     if (!master) return;
     const visible = filterCams();
