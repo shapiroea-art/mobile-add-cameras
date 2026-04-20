@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumana · Mobile Bulk Add Cameras</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-bold:      #101828;
+    --text-default:   #344054;
+    --text-subtle:    #667085;
+    --text-subtlest:  #98A2B3;
+    --text-inverse:   #FFFFFF;
+
+    --surface:        #FFFFFF;
+    --surface-subtle: #F9FAFB;
+    --surface-gray200:#F2F4F7;
+
+    --border:         #EAECF0;
+    --border-input:   #D0D5DD;
+
+    --primary:        #4367F6;
+    --primary-border: #3456E0;
+    --primary-hover:  #5577FA;
+    --primary-soft:   #EEF2FE;
+
+    --success:        #12B76A;
+    --success-soft:   #D1FADF;
+    --warning:        #F79009;
+    --warning-soft:   #FEF0C7;
+    --danger:         #F04438;
+    --danger-soft:    #FEE4E2;
+
+    --sans: 'Satoshi', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --r: 4px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--surface-gray200);
+    color: var(--text-default);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-height: 100vh;
+    background-image: linear-gradient(180deg, #F5F7FA 0%, #EEF1F5 100%);
+    background-attachment: fixed;
+  }
+  svg { display: block; }
+  button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+
+  .workspace { display: flex; justify-content: center; align-items: flex-start; gap: 48px; padding: 48px 48px 64px; min-height: 100vh; }
+
+  /* Flow map */
+  .flowmap { position: sticky; top: 48px; width: 240px; flex: 0 0 auto; }
+  .flowmap .fm-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; color: var(--text-subtle); text-transform: uppercase; margin-bottom: 14px; }
+  .fm-steps { display: flex; flex-direction: column; gap: 2px; }
+  .fm-step { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 10px 12px; border-radius: var(--r); cursor: pointer; align-items: center; transition: background .12s ease; border: 1px solid transparent; }
+  .fm-step:hover { background: var(--surface); }
+  .fm-step.active { background: var(--surface); border-color: var(--border); box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+  .fm-step .n { font-size: 12px; font-weight: 500; color: var(--text-subtlest); padding: 4px 0; text-align: center; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface-subtle); }
+  .fm-step.active .n { color: var(--primary); border-color: var(--primary); background: var(--primary-soft); }
+  .fm-step.done .n { color: var(--text-inverse); background: var(--primary); border-color: var(--primary); }
+  .fm-step .lbl { font-size: 13px; color: var(--text-subtle); font-weight: 400; }
+  .fm-step.active .lbl { color: var(--text-bold); font-weight: 500; }
+  .fm-step .sub { font-size: 11px; color: var(--text-subtlest); margin-top: 2px; }
+
+  .flowmap .reset { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-subtle); padding: 10px 12px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); margin-top: 14px; cursor: pointer; width: 100%; justify-content: center; font-weight: 500; }
+  .flowmap .reset:hover { border-color: var(--text-subtlest); color: var(--text-default); }
+
+  /* Phone */
+  .stage { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
+  .device {
+    position: relative; width: 380px; height: 800px;
+    border-radius: 48px; background: #0B1021; padding: 9px;
+    box-shadow: 0 0 0 2px #161B2B, 0 2px 4px rgba(20,30,60,.04), 0 40px 60px -30px rgba(20,40,70,.22), 0 100px 120px -60px rgba(20,40,70,.14);
+  }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 40px; background: var(--surface); overflow: hidden; display: flex; flex-direction: column; }
+
+  /* Status bar */
+  .status-bar { flex: 0 0 auto; height: 47px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 14px; font-weight: 600; color: var(--text-bold); position: relative; }
+  .status-bar::before { content:''; position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #0B1021; border-radius: 16px; }
+  .status-bar .indicators { display: flex; gap: 6px; align-items: center; }
+  .status-bar .sig-bar { display: inline-flex; align-items: flex-end; gap: 2px; }
+  .status-bar .sig-bar i { width: 3px; background: currentColor; border-radius: 1px; }
+  .status-bar .sig-bar i:nth-child(1) { height: 4px; }
+  .status-bar .sig-bar i:nth-child(2) { height: 6px; }
+  .status-bar .sig-bar i:nth-child(3) { height: 8px; }
+  .status-bar .sig-bar i:nth-child(4) { height: 10px; }
+  .status-bar .battery { width: 26px; height: 12px; border: 1px solid currentColor; border-radius: 3px; position: relative; padding: 1px; }
+  .status-bar .battery::after { content:''; position: absolute; right: -3px; top: 3px; width: 2px; height: 4px; background: currentColor; border-radius: 0 1px 1px 0; }
+  .status-bar .battery i { display:block; height: 100%; width: 78%; background: currentColor; border-radius: 1px; }
+
+  /* Screens */
+  .screens { flex: 1; position: relative; overflow: hidden; background: var(--surface-gray200); }
+  .screens > .panel { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; transform: translateX(12px); pointer-events: none; transition: opacity .22s ease, transform .26s cubic-bezier(.22,.8,.28,1); background: var(--surface); }
+  .screens > .panel.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .screens > .panel.exit-left { transform: translateX(-12px); }
+
+  /* Topbar */
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
+  .topbar .tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+  .topbar .btn-icon { display: grid; place-items: center; padding: 16px; border-radius: var(--r); cursor: pointer; color: var(--text-bold); }
+  .topbar .btn-icon:hover { background: var(--surface-subtle); }
+  .topbar .tb-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--text-bold); letter-spacing: -0.005em; padding-right: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar .tb-right { display: flex; align-items: center; justify-content: center; padding: 4px 8px 4px 0; }
+
+  /* Stepper */
+  .stepper { background: var(--surface); padding: 8px 16px 16px; flex: 0 0 auto; border-bottom: 1px solid var(--border); }
+  .stepper .sp-label { font-size: 14px; font-weight: 500; color: var(--text-subtle); line-height: 24px; margin-bottom: 6px; display: flex; align-items: center; }
+  .stepper .sp-bar { background: var(--surface-subtle); height: 6px; border-radius: 32px; overflow: hidden; position: relative; }
+  .stepper .sp-fill { background: var(--primary); height: 100%; border-radius: 32px; transition: width .3s cubic-bezier(.22,.8,.28,1); }
+
+  /* Subtitle row */
+  .subtitle-row { background: var(--surface); padding: 16px; font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; flex: 0 0 auto; }
+  .subtitle-row .sub { font-size: 13px; font-weight: 400; color: var(--text-subtle); margin-top: 4px; line-height: 18px; }
+
+  /* Content */
+  .content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; background: var(--surface-gray200); }
+  .content::-webkit-scrollbar { width: 0; }
+
+  /* Action bar */
+  .action-bar { background: var(--surface); border-top: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 8px; flex: 0 0 auto; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: var(--r); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; padding: 12px 20px; cursor: pointer; transition: background .12s ease, border-color .12s ease, transform .08s ease; }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--primary); color: var(--text-inverse); border-color: var(--primary-border); }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-primary.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
+  .btn-secondary { background: var(--surface); color: var(--text-default); border-color: var(--border-input); }
+  .btn-secondary:hover { background: var(--surface-subtle); }
+  .btn-full { flex: 1; }
+  .btn-ghost { background: transparent; color: var(--primary); font-weight: 500; padding: 8px 10px; font-size: 14px; border: none; }
+
+  /* Input */
+  .input-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .input-field { display: flex; align-items: center; gap: 16px; height: 48px; padding: 0 16px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); transition: border-color .12s ease; }
+  .input-field:focus-within { border-color: var(--primary); }
+  .input-field input { flex: 1; background: transparent; border: none; outline: none; color: var(--text-default); font-family: var(--sans); font-size: 16px; line-height: 24px; min-width: 0; }
+  .input-field input::placeholder { color: var(--text-subtlest); }
+  .input-field .suffix { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--primary); cursor: pointer; }
+
+  /* Selector */
+  .selector { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 16px; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); cursor: pointer; }
+  .selector:hover { border-color: var(--border-input); }
+  .selector .sv { flex: 1; font-size: 16px; color: var(--text-default); line-height: 24px; }
+  .selector .sv .dim { color: var(--text-subtle); font-size: 14px; }
+
+  /* List row */
+  .list-row { display: flex; align-items: center; height: 48px; padding-right: 16px; border-radius: var(--r); background: var(--surface); cursor: pointer; }
+  .list-row .lr-inner { flex: 1; display: flex; align-items: center; gap: 8px; padding: 0 12px; min-width: 0; }
+  .list-row .lr-name { font-size: 16px; color: var(--text-default); line-height: 24px; font-weight: 400; }
+
+  /* Radio */
+  .radio-row { display: flex; align-items: center; background: var(--surface); border-radius: var(--r); cursor: pointer; transition: opacity .12s ease; }
+  .radio-row.disabled { opacity: .34; cursor: not-allowed; }
+  .radio-row.selected .radio { border-color: var(--primary); }
+  .radio-row.selected .radio::after { content:''; position: absolute; inset: 4px; border-radius: 50%; background: var(--primary); }
+  .radio-wrap { padding: 14px; display: flex; align-items: flex-start; }
+  .radio { width: 20px; height: 20px; border: 1px solid var(--border-input); border-radius: 50%; background: var(--surface); position: relative; flex: 0 0 auto; }
+  .radio-body { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .radio-body .top { display: flex; align-items: center; gap: 16px; }
+  .radio-body .top .check-icon { color: var(--success); }
+  .radio-body .top .name { font-size: 16px; color: var(--text-default); line-height: 24px; }
+  .radio-body .top .sep { font-size: 14px; color: var(--text-subtlest); font-weight: 500; }
+  .radio-body .top .pct { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-subtle); font-weight: 500; }
+
+  .core-list { display: flex; flex-direction: column; gap: 8px; }
+
+  /* Network context chip */
+  .netchip { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); }
+  .netchip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 3px var(--success-soft); flex: 0 0 auto; }
+  .netchip .label { font-size: 11px; color: var(--text-subtle); letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
+  .netchip .value { font-size: 14px; color: var(--text-default); }
+  .netchip .value .net { color: var(--text-subtle); }
+  .netchip .chev { color: var(--text-subtlest); margin-left: auto; }
+
+  /* Scan progress */
+  .scanbar { position: relative; height: 6px; background: var(--surface-subtle); overflow: hidden; flex: 0 0 auto; border-bottom: 1px solid var(--border); }
+  .scanbar .scan-fill { background: var(--primary); height: 100%; width: 0%; transition: width .4s linear; }
+  .scanbar .scan-fill.indet { position: absolute; inset: 0; width: 35%; background: linear-gradient(90deg, transparent, var(--primary), transparent); animation: shimmer 1.8s infinite linear; }
+  @keyframes shimmer { 0% { transform: translateX(-60%);} 100% { transform: translateX(260%);} }
+
+  /* Scan banner (helper copy during scan) */
+  .scan-banner { background: var(--primary-soft); border-bottom: 1px solid var(--border); padding: 12px 16px; flex: 0 0 auto; display: flex; gap: 10px; align-items: flex-start; }
+  .scan-banner .banner-icon { color: var(--primary); padding-top: 2px; flex: 0 0 auto; }
+  .scan-banner .bt { font-size: 14px; font-weight: 500; color: var(--text-bold); line-height: 20px; }
+  .scan-banner .bd { font-size: 13px; color: var(--text-default); margin-top: 2px; line-height: 18px; }
+  .scan-banner.hidden { display: none; }
+
+  /* Scan stats */
+  .scan-stats { display: grid; grid-template-columns: repeat(3, 1fr); padding: 12px 16px; gap: 2px; background: var(--surface); border-bottom: 1px solid var(--border); flex: 0 0 auto; }
+  .scan-stats .s { display: flex; flex-direction: column; gap: 2px; }
+  .scan-stats .s:not(:first-child) { border-left: 1px solid var(--border); padding-left: 12px; }
+  .scan-stats .s-num { font-size: 20px; font-weight: 500; color: var(--text-bold); line-height: 24px; transition: color .2s ease; }
+  .scan-stats .s-num.ok { color: var(--success); }
+  .scan-stats .s-num.warn { color: var(--warning); }
+  .scan-stats .s-num.fail { color: var(--danger); }
+  .scan-stats .s-label { font-size: 11px; color: var(--text-subtle); letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
+
+  /* Pulse dot */
+  .pulse-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--primary); margin-right: 8px; vertical-align: middle; animation: pulse 1.2s infinite ease-in-out; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(.85); } }
+
+  /* Filter chips */
+  .chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 0 16px 4px; margin: -4px -16px 0; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; font-size: 13px; padding: 6px 12px; border: 1px solid var(--border-input); border-radius: 20px; color: var(--text-default); background: var(--surface); cursor: pointer; white-space: nowrap; font-weight: 500; transition: all .12s ease; }
+  .chip:hover { border-color: var(--text-subtlest); }
+  .chip.active { background: var(--primary); color: var(--text-inverse); border-color: var(--primary); }
+  .chip .num { color: var(--text-subtlest); margin-left: 6px; font-weight: 400; }
+  .chip.active .num { color: rgba(255,255,255,.75); }
+
+  /* Selection header */
+  .sel-header { display: flex; align-items: center; gap: 12px; padding: 2px 0; }
+  .sel-header .sel-label { font-size: 14px; color: var(--text-subtle); }
+  .sel-header .sel-label strong { color: var(--text-bold); font-weight: 600; }
+  .sel-header .sel-sort { font-size: 13px; color: var(--text-subtle); display: flex; align-items: center; gap: 4px; cursor: pointer; margin-left: auto; font-weight: 500; }
+
+  /* Checkbox */
+  .cb { width: 20px; height: 20px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); display: grid; place-items: center; cursor: pointer; flex: 0 0 auto; transition: background .12s ease, border-color .12s ease; }
+  .cb.ck { background: var(--primary); border-color: var(--primary); }
+  .cb.tri { background: var(--primary); border-color: var(--primary); }
+  .cb.ck svg path { stroke: var(--text-inverse); }
+  .cb.tri svg rect { fill: var(--text-inverse); }
+
+  /* Camera rows */
+  .cam-list { display: flex; flex-direction: column; gap: 4px; }
+  .cam { display: grid; grid-template-columns: 20px 1fr auto; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); align-items: center; position: relative; transition: border-color .1s ease, box-shadow .1s ease; cursor: pointer; }
+  .cam:hover { border-color: var(--border-input); }
+  .cam.selected { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+  .cam.disabled { opacity: .4; background: var(--surface-subtle); border-style: dashed; cursor: not-allowed; }
+  .cam.warn { border-color: var(--warning); background: #FFFBF2; }
+
+  .cam .c-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .cam .c-top { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .cam .c-ip { font-size: 14px; font-weight: 500; color: var(--text-bold); }
+  .cam .c-sep { width: 3px; height: 3px; background: var(--text-subtlest); border-radius: 50%; flex: 0 0 auto; }
+  .cam .c-brand { font-size: 14px; color: var(--text-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cam .c-bot { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-subtle); flex-wrap: wrap; }
+
+  .badge { font-size: 10px; font-weight: 600; letter-spacing: .04em; padding: 3px 6px; border-radius: var(--r); text-transform: uppercase; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .badge.onvif { color: var(--primary); border-color: var(--primary); background: var(--primary-soft); }
+  .badge.poe { color: #1D6FD1; border-color: #1D6FD1; background: #E4EEFB; }
+  .badge.multi { color: var(--warning); border-color: var(--warning); background: var(--warning-soft); }
+  .badge.added { color: var(--text-subtle); border-color: var(--border-input); background: var(--surface-subtle); }
+  .badge.ok { color: var(--success); border-color: var(--success); background: var(--success-soft); }
+  .badge.authfail { color: var(--warning); border-color: var(--warning); background: var(--warning-soft); }
+  .badge.failed { color: var(--danger); border-color: var(--danger); background: var(--danger-soft); }
+  .badge.connecting { color: var(--text-subtle); border-color: var(--border-input); background: var(--surface-subtle); }
+  .badge.connected { color: var(--primary); border-color: var(--primary); background: var(--primary-soft); }
+
+  .mini-spinner { width: 10px; height: 10px; border: 1.5px solid var(--text-subtlest); border-top-color: var(--text-default); border-radius: 50%; animation: spin .9s linear infinite; display: inline-block; flex: 0 0 auto; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+  .status-dot.ok { background: var(--success); box-shadow: 0 0 0 3px var(--success-soft); }
+  .status-dot.warn { background: var(--warning); box-shadow: 0 0 0 3px var(--warning-soft); }
+  .status-dot.err { background: var(--danger); box-shadow: 0 0 0 3px var(--danger-soft); }
+  .status-dot.info { background: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+  .status-dot.mut { background: var(--text-subtlest); }
+
+  /* Section label */
+  .section-label { font-size: 12px; font-weight: 500; color: var(--text-subtle); display: flex; align-items: center; gap: 8px; padding: 4px 2px 0; }
+  .section-label .count { color: var(--text-subtlest); }
+  .section-label .action { margin-left: auto; color: var(--primary); cursor: pointer; font-weight: 500; }
+  .section-label.warn { color: var(--warning); }
+  .section-label.warn .count { color: var(--warning); }
+
+  /* Manual-add footer */
+  .manual-footer { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 14px 12px; border: 1px dashed var(--border-input); border-radius: var(--r); background: var(--surface); cursor: pointer; font-size: 14px; color: var(--text-subtle); text-align: center; transition: all .12s ease; }
+  .manual-footer:hover { border-color: var(--primary); color: var(--text-default); background: var(--surface); }
+  .manual-footer strong { color: var(--primary); font-weight: 500; }
+
+  /* Batch card */
+  .batch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .batch .b-title { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-default); }
+  .batch .b-title .tag { font-size: 10px; font-weight: 600; letter-spacing: .06em; color: var(--primary); text-transform: uppercase; padding: 3px 6px; border: 1px solid var(--primary); border-radius: var(--r); background: var(--primary-soft); }
+  .batch .b-title strong { font-weight: 500; color: var(--text-bold); }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 11px; font-weight: 500; letter-spacing: .04em; color: var(--text-subtle); text-transform: uppercase; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .template-preview { font-size: 12px; color: var(--text-subtle); padding: 2px 0 0; }
+  .template-preview code { color: var(--primary); background: var(--primary-soft); padding: 1px 5px; border-radius: var(--r); font-family: var(--sans); font-weight: 500; }
+
+  /* Config rows */
+  .cfg { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  .cfg-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px; align-items: center; cursor: pointer; transition: background .12s ease; }
+  .cfg-row:hover { background: var(--surface-subtle); }
+  .cfg-row + .cfg-row, .expanded-body + .cfg-row { border-top: 1px solid var(--border); }
+  .cfg-row.expanded { background: var(--primary-soft); }
+  .cfg-row .cname { font-size: 15px; font-weight: 500; color: var(--text-bold); line-height: 20px; }
+  .cfg-row .cmeta { font-size: 12px; color: var(--text-subtle); margin-top: 2px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  .expanded-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--primary); background: var(--primary-soft); }
+  .expanded-body .row { display: grid; grid-template-columns: auto 1fr; gap: 10px; font-size: 13px; align-items: start; }
+  .expanded-body .row .k { color: var(--text-subtle); font-size: 12px; padding-top: 2px; font-weight: 500; }
+  .expanded-body .row .v { color: var(--text-default); line-height: 1.5; }
+  .expanded-body .row .v code { font-size: 12px; color: var(--warning); background: var(--warning-soft); padding: 1px 5px; border-radius: var(--r); font-family: var(--sans); font-weight: 500; }
+
+  .retry-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--warning); padding: 6px 10px; border: 1px solid var(--warning); border-radius: var(--r); background: var(--surface); cursor: pointer; font-weight: 500; white-space: nowrap; }
+  .retry-btn:hover { background: var(--warning-soft); }
+  .retry-btn.err { color: var(--danger); border-color: var(--danger); }
+  .retry-btn.err:hover { background: var(--danger-soft); }
+
+  /* Summary card (review) */
+  .summary { background: var(--primary-soft); border: 1px solid var(--primary); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .summary .s-head { display: flex; align-items: center; gap: 14px; }
+  .summary .s-num { font-size: 36px; font-weight: 700; color: var(--primary); line-height: 1; letter-spacing: -0.02em; }
+  .summary .s-desc .t { font-size: 16px; font-weight: 500; color: var(--text-bold); }
+  .summary .s-desc .d { font-size: 12px; color: var(--text-subtle); margin-top: 2px; }
+  .summary .s-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: var(--r); overflow: hidden; }
+  .summary .s-detail > div { background: var(--surface); padding: 10px 12px; }
+  .summary .k { font-size: 10px; font-weight: 500; letter-spacing: .06em; color: var(--text-subtle); text-transform: uppercase; }
+  .summary .v { font-size: 14px; color: var(--text-bold); margin-top: 3px; font-weight: 500; }
+
+  /* Condensed row */
+  .row-cd { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); align-items: center; transition: border-color .3s ease, background .3s ease; }
+  .row-cd .n { font-size: 14px; color: var(--text-bold); font-weight: 500; }
+  .row-cd .m { font-size: 12px; color: var(--text-subtle); margin-top: 2px; }
+
+  /* Banner */
+  .banner { padding: 12px 14px; border: 1px solid var(--warning); border-left: 3px solid var(--warning); border-radius: var(--r); background: var(--warning-soft); display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+  .banner .t { font-size: 13px; color: var(--text-bold); font-weight: 500; }
+  .banner .d { font-size: 12px; color: var(--text-default); margin-top: 2px; }
+  .banner .ico { color: var(--warning); }
+
+  /* Bottom sheet (Add manually) */
+  .sheet-backdrop { position: absolute; inset: 0; background: rgba(16,24,40,.5); opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 20; display: flex; align-items: flex-end; }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .sheet { width: 100%; background: var(--surface); border-radius: 16px 16px 0 0; padding: 12px 16px 28px; transform: translateY(100%); transition: transform .28s cubic-bezier(.22,.8,.28,1); }
+  .sheet-backdrop.open .sheet { transform: translateY(0); }
+  .sheet-handle { width: 40px; height: 4px; background: var(--border-input); border-radius: 2px; margin: 0 auto 14px; }
+  .sheet-title { font-size: 16px; font-weight: 500; color: var(--text-bold); margin-bottom: 6px; padding: 4px; }
+  .sheet-list { display: flex; flex-direction: column; gap: 2px; }
+  .sheet-row { display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; padding: 14px 4px; cursor: pointer; align-items: center; border-radius: var(--r); }
+  .sheet-row:hover { background: var(--surface-subtle); }
+  .sheet-row .sr-icon { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: var(--r); color: var(--primary); background: var(--surface); }
+  .sheet-row .sr-name { font-size: 15px; font-weight: 500; color: var(--text-bold); line-height: 20px; }
+  .sheet-row .sr-sub { font-size: 12px; color: var(--text-subtle); margin-top: 2px; }
+
+  /* Home indicator */
+  .home-indicator { height: 34px; background: var(--surface); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding-bottom: 8px; }
+  .home-indicator::before { content:''; display: block; width: 134px; height: 5px; background: #0B1021; border-radius: 100px; }
+
+  @media (max-width: 900px) {
+    .workspace { flex-direction: column; align-items: center; padding: 24px; gap: 24px; }
+    .flowmap { position: static; width: 100%; max-width: 380px; }
+    .fm-steps { flex-direction: row; overflow-x: auto; gap: 6px; }
+    .fm-step { flex: 0 0 auto; min-width: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<main class="workspace">
+
+  <aside class="flowmap">
+    <div class="fm-title">Flow map</div>
+    <div class="fm-steps" id="fmSteps">
+      <div class="fm-step active" data-step="0"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">select destination</div></div></div>
+      <div class="fm-step" data-step="1"><span class="n">02</span><div><div class="lbl">Discover</div><div class="sub">scan · multi-select</div></div></div>
+      <div class="fm-step" data-step="2"><span class="n">03</span><div><div class="lbl">Authenticate</div><div class="sub">credentials · config</div></div></div>
+      <div class="fm-step" data-step="3"><span class="n">04</span><div><div class="lbl">Review</div><div class="sub">confirm &amp; commit</div></div></div>
+      <div class="fm-step" data-step="4"><span class="n">✓</span><div><div class="lbl">Added</div><div class="sub">live status · retry</div></div></div>
+    </div>
+    <button class="reset" onclick="resetFlow()">
+      <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6a4 4 0 104-4M2 2v3h3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Reset flow
+    </button>
+  </aside>
+
+  <div class="stage">
+    <div class="device">
+      <div class="screen">
+        <div class="status-bar">
+          9:41
+          <div class="indicators">
+            <span class="sig-bar"><i></i><i></i><i></i><i></i></span>
+            <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 10.5a1 1 0 100-2 1 1 0 000 2zM3.8 7.3a5.2 5.2 0 017.4 0l-1.1 1.1a3.6 3.6 0 00-5.2 0L3.8 7.3zM.7 4.2a9.6 9.6 0 0113.6 0l-1.1 1.1a8 8 0 00-11.4 0L.7 4.2z" fill="currentColor"/></svg>
+            <div class="battery"><i></i></div>
+          </div>
+        </div>
+
+        <div class="screens">
+
+          <!-- Bottom sheet: Add manually -->
+          <div class="sheet-backdrop" id="methodSheet" onclick="if(event.target.id==='methodSheet') closeMethodSheet()">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-title">Add manually</div>
+              <div class="sheet-list">
+                <div class="sheet-row" onclick="closeMethodSheet()">
+                  <div class="sr-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 6h14M3 10h14M3 14h14M6 3v14M10 3v14M14 3v14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+                  <div><div class="sr-name">Add by IP</div><div class="sr-sub">Single camera address</div></div>
+                  <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+                </div>
+                <div class="sheet-row" onclick="closeMethodSheet()">
+                  <div class="sr-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10h14M3 6h14M3 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><rect x="2" y="4" width="2" height="12" fill="currentColor"/><rect x="16" y="4" width="2" height="12" fill="currentColor"/></svg></div>
+                  <div><div class="sr-name">Scan IP range</div><div class="sr-sub">Custom subnet range</div></div>
+                  <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+                </div>
+                <div class="sheet-row" onclick="closeMethodSheet()">
+                  <div class="sr-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="11" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="13" y="13" width="2" height="2" fill="currentColor"/><rect x="16" y="13" width="1" height="2" fill="currentColor"/><rect x="13" y="16" width="2" height="1" fill="currentColor"/></svg></div>
+                  <div><div class="sr-name">Scan QR code</div><div class="sr-sub">Lumana · Axis · Hik · Dahua</div></div>
+                  <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+                </div>
+                <div class="sheet-row" onclick="closeMethodSheet()">
+                  <div class="sr-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4-5v3h8v4H8v3l-4-5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+                  <div><div class="sr-name">Add by RTSP</div><div class="sr-sub">Direct stream URL</div></div>
+                  <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========== S1: Core ========== -->
+          <div class="panel active" id="s1">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" aria-label="Close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <div class="tb-title">Add cameras</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="stepper">
+              <div class="sp-label">1 of 4 – Core</div>
+              <div class="sp-bar"><div class="sp-fill" style="width: 25%;"></div></div>
+            </div>
+
+            <div class="subtitle-row">Select core to add camera</div>
+
+            <div class="content">
+              <div class="input-wrap">
+                <div class="input-field">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#667085" stroke-width="1.6"/><path d="M14 14l3 3" stroke="#667085" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  <input placeholder="Search for core" />
+                </div>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="list-row">
+                  <div class="lr-inner">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17c-4-4.5-6-7.2-6-10a6 6 0 1112 0c0 2.8-2 5.5-6 10z" stroke="#344054" stroke-width="1.5" fill="none"/><circle cx="10" cy="7.5" r="2" stroke="#344054" stroke-width="1.5" fill="none"/></svg>
+                    <span class="lr-name">Sublocation name 1</span>
+                  </div>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+
+                <div class="core-list">
+                  <div class="radio-row" id="core1" onclick="selectCore('core1')">
+                    <div class="radio-wrap"><div class="radio"></div></div>
+                    <div class="radio-body">
+                      <div class="top">
+                        <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                        <span class="name">Core 3</span>
+                        <span class="sep">•</span>
+                        <span class="pct">15%
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="radio-row disabled" id="core2">
+                    <div class="radio-wrap"><div class="radio"></div></div>
+                    <div class="radio-body">
+                      <div class="top">
+                        <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                        <span class="name">Core 4</span>
+                        <span class="sep">•</span>
+                        <span class="pct">100%
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="resetFlow()">Back</button>
+              <button class="btn btn-primary btn-full disabled" id="s1Next" onclick="go(1)">Next</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== S2: Discover ========== -->
+          <div class="panel" id="s2">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="go(0)" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Add cameras</div>
+              </div>
+              <div class="tb-right">
+                <button class="btn-icon" onclick="openMethodSheet()" aria-label="More">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="stepper">
+              <div class="sp-label"><span class="pulse-dot" id="s2Pulse"></span><span id="s2Label">2 of 4 – Discover</span></div>
+              <div class="sp-bar"><div class="sp-fill" style="width: 50%;"></div></div>
+            </div>
+
+            <div class="scanbar"><div class="scan-fill" id="s2Scanfill"></div></div>
+
+            <div class="scan-banner" id="s2Banner">
+              <span class="banner-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM9 5.5v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div>
+                <div class="bt">Scanning network · about 20 seconds</div>
+                <div class="bd">You can leave this screen — scanning continues in the background.</div>
+              </div>
+            </div>
+
+            <div class="scan-stats">
+              <div class="s"><span class="s-num" id="s2Found">0</span><span class="s-label">Found</span></div>
+              <div class="s"><span class="s-num ok" id="s2Added">0</span><span class="s-label">Already added</span></div>
+              <div class="s"><span class="s-num warn" id="s2Unreach">0</span><span class="s-label">Unreachable</span></div>
+            </div>
+
+            <div class="content">
+              <div class="input-field" style="height: 44px;">
+                <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" stroke="#667085" stroke-width="1.5" fill="none"/><path d="M11 11l3 3" stroke="#667085" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <input placeholder="Search by IP, brand, model" style="font-size:14px;" />
+              </div>
+
+              <div class="chips">
+                <span class="chip active">All <span class="num" id="chipAll">0</span></span>
+                <span class="chip">Unadded <span class="num" id="chipUnadded">0</span></span>
+                <span class="chip">Axis <span class="num">4</span></span>
+                <span class="chip">Hikvision <span class="num">3</span></span>
+                <span class="chip">Dahua <span class="num">2</span></span>
+                <span class="chip">Hanwha <span class="num">1</span></span>
+                <span class="chip">ONVIF <span class="num">2</span></span>
+              </div>
+
+              <div class="sel-header">
+                <div class="cb tri" id="triMaster" onclick="toggleAll()">
+                  <svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" rx="1"/></svg>
+                </div>
+                <span class="sel-label"><strong id="selCount">0</strong> of <span id="selTotal">0</span> selected</span>
+                <span class="sel-sort">IP ASC
+                  <svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 7l3-3 3 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+                </span>
+              </div>
+
+              <div class="cam-list" id="camList"></div>
+
+              <div class="manual-footer" onclick="openMethodSheet()" id="manualFooter">
+                <span>Didn't find it?</span>
+                <strong>Add manually</strong>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="go(0)">Back</button>
+              <button class="btn btn-primary btn-full" onclick="go(2)">Next</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== S3: Authenticate ========== -->
+          <div class="panel" id="s3">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="go(1)" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Add cameras</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="stepper">
+              <div class="sp-label">3 of 4 – Authenticate</div>
+              <div class="sp-bar"><div class="sp-fill" style="width: 75%;"></div></div>
+            </div>
+
+            <div class="subtitle-row">Apply credentials to 12 cameras</div>
+
+            <div class="content">
+              <div class="batch">
+                <div class="b-title"><span class="tag">Credentials</span> Apply to <strong>12 cameras</strong></div>
+                <div class="field">
+                  <span class="field-label">Profile</span>
+                  <div class="selector">
+                    <svg width="16" height="16" viewBox="0 0 16 16"><rect x="3" y="6" width="10" height="8" rx="1.5" stroke="#344054" stroke-width="1.4" fill="none"/><path d="M5 6V4.5a3 3 0 016 0V6" stroke="#344054" stroke-width="1.4" fill="none"/></svg>
+                    <span class="sv">Axis default <span class="dim">· root / ••••</span></span>
+                    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="#98A2B3" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                  </div>
+                </div>
+                <div class="row-2">
+                  <div class="field">
+                    <span class="field-label">Username</span>
+                    <div class="input-field"><input value="root" style="font-size:14px;"></div>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">Password</span>
+                    <div class="input-field"><input type="password" value="••••••••" id="pwInput" style="font-size:14px;"><span class="suffix" onclick="togglePw()">SHOW</span></div>
+                  </div>
+                </div>
+                <button class="btn btn-secondary btn-full" onclick="applyCreds(this)">
+                  <svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Apply to all 12 cameras
+                </button>
+              </div>
+
+              <div class="batch">
+                <div class="b-title"><span class="tag">Naming</span></div>
+                <div class="field">
+                  <span class="field-label">Template</span>
+                  <div class="input-field"><input value="{core}-{sub}-{##}" style="font-size:14px;"></div>
+                  <span class="template-preview">Preview · <code>Core3-Lobby-01</code> · <code>Core3-Lobby-02</code> …</span>
+                </div>
+                <div class="row-2">
+                  <div class="field">
+                    <span class="field-label">Sublocation</span>
+                    <div class="selector"><span class="sv">Lobby</span>
+                      <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="#98A2B3" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">Group</span>
+                    <div class="selector"><span class="sv">Lobby cameras</span>
+                      <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="#98A2B3" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-label">Cameras <span class="count">(12)</span> <span class="action" id="retryAllLink" onclick="retryDahua()">Retry failed (1)</span></div>
+
+              <div class="cfg" id="cfgList">
+                <div class="cfg-row">
+                  <span class="status-dot ok"></span>
+                  <div>
+                    <div class="cname">Core3-Lobby-01</div>
+                    <div class="cmeta">10.0.12.34 · Axis M3045-V</div>
+                  </div>
+                  <span class="badge ok">Auth OK</span>
+                </div>
+                <div class="cfg-row">
+                  <span class="status-dot ok"></span>
+                  <div>
+                    <div class="cname">Core3-Lobby-02</div>
+                    <div class="cmeta">10.0.12.35 · Hikvision DS-2CD2143G2-I</div>
+                  </div>
+                  <span class="badge ok">Auth OK</span>
+                </div>
+                <div class="cfg-row expanded" id="dahuaRow">
+                  <span class="status-dot err" id="dahuaDot"></span>
+                  <div>
+                    <div class="cname">Core3-Lobby-03</div>
+                    <div class="cmeta">10.0.12.38 · Dahua IPC-HFW5442T-ASE</div>
+                  </div>
+                  <span class="badge authfail" id="dahuaBadge">Auth failed</span>
+                </div>
+                <div class="expanded-body" id="dahuaBody">
+                  <div class="row"><span class="k">Why</span><span class="v">"Axis default" profile rejected. Dahua factory creds are <code>admin / admin</code>.</span></div>
+                  <div class="field">
+                    <span class="field-label">Override credentials</span>
+                    <div class="row-2">
+                      <div class="input-field"><input value="admin" style="font-size:14px;"></div>
+                      <div class="input-field"><input type="password" value="•••••" style="font-size:14px;"></div>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">Substream RTSP path</span>
+                    <div class="input-field"><input value="/cam/realmonitor?channel=1&subtype=1" style="font-size:14px;"><span class="suffix">TEST</span></div>
+                  </div>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <button class="retry-btn" onclick="retryDahua()">
+                      <svg width="12" height="12" viewBox="0 0 12 12"><path d="M10 6a4 4 0 10-1 2.8M10 2v3H7" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+                      Retry this camera
+                    </button>
+                    <button class="btn-ghost" onclick="retryDahua()">Apply to all Dahua</button>
+                  </div>
+                </div>
+                <div class="cfg-row">
+                  <span class="status-dot ok"></span>
+                  <div>
+                    <div class="cname">Core3-Lobby-04</div>
+                    <div class="cmeta">10.0.12.41 · Hanwha XNO-6120R</div>
+                  </div>
+                  <span class="badge ok">Auth OK</span>
+                </div>
+                <div class="cfg-row">
+                  <span class="status-dot ok"></span>
+                  <div>
+                    <div class="cname">Core3-Lobby-05 <span style="color:var(--warning); font-size:12px; margin-left:6px;">+3 sensors</span></div>
+                    <div class="cmeta">10.0.12.51 · Axis M3068-P</div>
+                  </div>
+                  <span class="badge ok">Auth OK</span>
+                </div>
+                <div style="text-align:center; padding: 10px; font-size: 12px; color: var(--text-subtle); border-top: 1px solid var(--border);">+ 6 more cameras</div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="go(1)">Back</button>
+              <button class="btn btn-primary btn-full" onclick="go(3)">Next</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== S4: Review ========== -->
+          <div class="panel" id="s4">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="go(2)" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Add cameras</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="stepper">
+              <div class="sp-label">4 of 4 – Review</div>
+              <div class="sp-bar"><div class="sp-fill" style="width: 100%;"></div></div>
+            </div>
+
+            <div class="subtitle-row">Confirm before adding to core</div>
+
+            <div class="content">
+              <div class="summary">
+                <div class="s-head">
+                  <div class="s-num">12</div>
+                  <div class="s-desc">
+                    <div class="t">cameras to be added</div>
+                    <div class="d">mixed brand · 1 multi-sensor</div>
+                  </div>
+                </div>
+                <div class="s-detail">
+                  <div><div class="k">Core</div><div class="v">Core 3</div></div>
+                  <div><div class="k">Sublocation</div><div class="v">Lobby</div></div>
+                  <div><div class="k">Group</div><div class="v">Lobby cameras</div></div>
+                  <div><div class="k">Template</div><div class="v" style="font-size:12px;">Core3-Lobby-##</div></div>
+                </div>
+              </div>
+
+              <div class="section-label">Cameras <span class="count">(12)</span></div>
+
+              <div class="cam-list">
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-01</span><div class="m">10.0.12.34 · Axis M3045-V</div></div><span class="badge ok">Ready</span></div>
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-02</span><div class="m">10.0.12.35 · Hikvision DS-2CD2143G2-I</div></div><span class="badge ok">Ready</span></div>
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-03</span><div class="m">10.0.12.38 · Dahua IPC-HFW5442T-ASE</div></div><span class="badge ok">Ready</span></div>
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-04</span><div class="m">10.0.12.41 · Hanwha XNO-6120R</div></div><span class="badge ok">Ready</span></div>
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-05 <span style="font-size:11px; color:var(--warning); margin-left:6px;">·4 sensors</span></span><div class="m">10.0.12.51 · Axis M3068-P</div></div><span class="badge ok">Ready</span></div>
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-06</span><div class="m">10.0.12.58 · Hikvision DS-2CD2687G2T</div></div><span class="badge ok">Ready</span></div>
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-07</span><div class="m">10.0.12.62 · ONVIF (generic)</div></div><span class="badge ok">Ready</span></div>
+                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-08</span><div class="m">10.0.12.64 · Axis M3106-LVE</div></div><span class="badge ok">Ready</span></div>
+                <div style="text-align:center; padding: 2px; font-size: 12px; color: var(--text-subtle);">+ 4 more</div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="go(2)">Back</button>
+              <button class="btn btn-primary btn-full" onclick="go(4)">
+                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8l3 3 6-7" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Add 12 cameras
+              </button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== S5: Live status ========== -->
+          <div class="panel" id="s5">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="resetFlow()" aria-label="Close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <div class="tb-title" id="postTitle">Adding cameras…</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="subtitle-row">Core 3 · Lobby · Lobby cameras<div class="sub" id="postSub">12 cameras · starting connections</div></div>
+
+            <div class="scan-stats">
+              <div class="s"><span class="s-num ok" id="sOnline">0</span><span class="s-label">Online</span></div>
+              <div class="s"><span class="s-num" id="sConn">12</span><span class="s-label">Connecting</span></div>
+              <div class="s"><span class="s-num fail" id="sFailed">0</span><span class="s-label">Failed</span></div>
+            </div>
+
+            <div class="content">
+              <div class="banner" id="s5Banner" style="display:none;">
+                <span class="ico"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 2l8 16H2L10 2z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                <div>
+                  <div class="t" id="s5BannerT">2 cameras need attention</div>
+                  <div class="d">Auth rejected · connection timeout</div>
+                </div>
+                <button class="retry-btn" onclick="retryPostFailed()">Retry all</button>
+              </div>
+
+              <div class="section-label">Cameras <span class="count">(12)</span></div>
+
+              <div class="cam-list" id="statusList"></div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" id="retryAllBtn" onclick="retryPostFailed()" style="display:none;">Retry failed</button>
+              <button class="btn btn-primary btn-full" onclick="resetFlow()">Done</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const screens = ['s1','s2','s3','s4','s5'];
+  let current = 0;
+  let selectedCore = null;
+  let scanTimers = [];
+  let statusTimers = [];
+
+  function updateChrome() {
+    document.querySelectorAll('#fmSteps .fm-step').forEach((el, idx) => {
+      el.classList.toggle('active', idx === current);
+      el.classList.toggle('done', idx < current);
+    });
+  }
+
+  function go(i) {
+    if (i === current) return;
+    if (i >= 1 && !selectedCore) return;
+    closeMethodSheet();
+    const prev = document.getElementById(screens[current]);
+    const next = document.getElementById(screens[i]);
+    prev.classList.remove('active');
+    if (i < current) prev.classList.add('exit-left');
+    setTimeout(() => prev.classList.remove('exit-left'), 300);
+    next.classList.add('active');
+    current = i;
+    updateChrome();
+    if (i === 1) startScan();
+    if (i === 4) startStatusList();
+  }
+
+  function resetFlow() {
+    clearScanTimers();
+    clearStatusTimers();
+    closeMethodSheet();
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active','exit-left'));
+    document.getElementById('s1').classList.add('active');
+    current = 0;
+    selectedCore = null;
+    document.querySelectorAll('.radio-row').forEach(r => r.classList.remove('selected'));
+    document.getElementById('s1Next').classList.add('disabled');
+    restoreDahua();
+    updateChrome();
+  }
+
+  // ===== Core selection =====
+  function selectCore(id) {
+    const el = document.getElementById(id);
+    if (el.classList.contains('disabled')) return;
+    document.querySelectorAll('.radio-row').forEach(r => r.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedCore = id;
+    document.getElementById('s1Next').classList.remove('disabled');
+  }
+
+  // ===== Bottom sheet =====
+  function openMethodSheet() { document.getElementById('methodSheet').classList.add('open'); }
+  function closeMethodSheet() { document.getElementById('methodSheet').classList.remove('open'); }
+
+  // ===== Scan (S2) =====
+  const cams = [
+    { ip: '10.0.12.34', brand: 'Axis M3045-V', badges: ['onvif'], status: 'ok', meta: 'Online · 1080p' },
+    { ip: '10.0.12.35', brand: 'Hikvision DS-2CD2143G2-I', badges: ['onvif'], status: 'ok', meta: 'Online · 4MP' },
+    { ip: '10.0.12.38', brand: 'Dahua IPC-HFW5442T-ASE', badges: ['onvif'], status: 'ok', meta: 'Online · 4MP' },
+    { ip: '10.0.12.41', brand: 'Hanwha XNO-6120R', badges: ['poe'], status: 'ok', meta: 'Online · 2MP' },
+    { ip: '10.0.12.51', brand: 'Axis M3068-P', badges: ['multi','onvif'], status: 'ok', meta: 'Online' },
+    { ip: '10.0.12.58', brand: 'Hikvision DS-2CD2687G2T', badges: ['onvif'], status: 'ok', meta: 'Online' },
+    { ip: '10.0.12.62', brand: 'ONVIF generic', badges: [], status: 'ok', meta: 'Vendor unknown' },
+    { ip: '10.0.12.64', brand: 'Axis M3106-LVE', badges: ['onvif'], status: 'ok', meta: 'Online' },
+    { ip: '10.0.12.67', brand: 'Dahua IPC-HDBW5449', badges: ['onvif'], status: 'ok', meta: 'Online' },
+    { ip: '10.0.12.71', brand: 'Axis P3245-LVE', badges: ['onvif','poe'], status: 'ok', meta: 'Online' },
+    { ip: '10.0.12.75', brand: 'Hikvision DS-2CD2143G2', badges: ['onvif'], status: 'ok', meta: 'Online' },
+    { ip: '10.0.12.78', brand: 'Hikvision DS-2CD2T87', badges: ['onvif'], status: 'ok', meta: 'Online' },
+    { ip: '10.0.12.22', brand: 'Axis P1448-LE', badges: ['added'], status: 'mut', meta: 'Already in core', disabled: true },
+    { ip: '10.0.12.27', brand: 'Axis M3085-V', badges: ['added'], status: 'mut', meta: 'Already in core', disabled: true },
+    { ip: '10.0.12.29', brand: 'Hikvision DS-2CD2387', badges: [], status: 'warn', meta: 'Unreachable · port 80 closed', warn: true }
+  ];
+
+  let camsDiscovered = []; // progressively populated during scan
+
+  function clearScanTimers() { scanTimers.forEach(clearTimeout); scanTimers = []; }
+
+  function startScan() {
+    clearScanTimers();
+    camsDiscovered = [];
+    cams.forEach(c => { c.checked = false; });
+    document.getElementById('s2Found').textContent = '0';
+    document.getElementById('s2Added').textContent = '0';
+    document.getElementById('s2Unreach').textContent = '0';
+    document.getElementById('chipAll').textContent = '0';
+    document.getElementById('chipUnadded').textContent = '0';
+    document.getElementById('selTotal').textContent = '0';
+    document.getElementById('selCount').textContent = '0';
+    document.getElementById('s2Pulse').style.display = '';
+    document.getElementById('s2Label').textContent = '2 of 4 – Discover · scanning…';
+    document.getElementById('s2Banner').classList.remove('hidden');
+    const fill = document.getElementById('s2Scanfill');
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+    requestAnimationFrame(() => {
+      fill.style.transition = 'width 20s linear';
+      fill.style.width = '100%';
+    });
+
+    renderCamList();
+
+    // Discover cameras progressively over ~20s (sped up slightly for demo: ~6s)
+    const totalMs = 6000;
+    cams.forEach((c, idx) => {
+      const t = 300 + (idx / cams.length) * totalMs + Math.random() * 350;
+      scanTimers.push(setTimeout(() => {
+        camsDiscovered.push(c);
+        if (!c.disabled && !c.warn) c.checked = true;
+        renderCamList();
+        updateSelCount();
+        updateScanStats();
+      }, t));
+    });
+
+    // Scan complete
+    scanTimers.push(setTimeout(() => {
+      fill.style.transition = 'width .3s ease';
+      fill.style.width = '100%';
+      document.getElementById('s2Pulse').style.display = 'none';
+      document.getElementById('s2Label').textContent = '2 of 4 – Discover · scan complete';
+      document.getElementById('s2Banner').classList.add('hidden');
+    }, totalMs + 500));
+  }
+
+  function updateScanStats() {
+    const found = camsDiscovered.length;
+    const added = camsDiscovered.filter(c => c.disabled).length;
+    const unreach = camsDiscovered.filter(c => c.warn).length;
+    const unadded = camsDiscovered.filter(c => !c.disabled && !c.warn).length;
+    document.getElementById('s2Found').textContent = found;
+    document.getElementById('s2Added').textContent = added;
+    document.getElementById('s2Unreach').textContent = unreach;
+    document.getElementById('chipAll').textContent = found;
+    document.getElementById('chipUnadded').textContent = unadded;
+    document.getElementById('selTotal').textContent = unadded;
+  }
+
+  function renderCamList() {
+    const list = document.getElementById('camList');
+    list.innerHTML = '';
+    camsDiscovered.forEach((c) => {
+      const row = document.createElement('div');
+      row.className = 'cam';
+      if (c.checked) row.classList.add('selected');
+      if (c.disabled) row.classList.add('disabled');
+      if (c.warn) row.classList.add('warn');
+      const badgeLabel = b => b === 'multi' ? '4-sensor' : (b === 'poe' ? 'PoE+' : b.toUpperCase());
+      row.innerHTML = `
+        <div class="cb ${c.checked ? 'ck' : ''}">${c.checked ? '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke-width="1.8" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}</div>
+        <div class="c-main">
+          <div class="c-top"><span class="c-ip">${c.ip}</span><span class="c-sep"></span><span class="c-brand">${c.brand}</span></div>
+          <div class="c-bot"><span class="status-dot ${c.status}"></span><span>${c.meta}</span>${c.badges.map(b => `<span class="badge ${b}">${badgeLabel(b)}</span>`).join('')}</div>
+        </div>
+      `;
+      row.addEventListener('click', () => {
+        if (c.disabled) return;
+        c.checked = !c.checked;
+        renderCamList();
+        updateSelCount();
+      });
+      list.appendChild(row);
+    });
+  }
+
+  function updateSelCount() {
+    const n = camsDiscovered.filter(c => c.checked && !c.disabled).length;
+    document.getElementById('selCount').textContent = n;
+    const master = document.getElementById('triMaster');
+    const selectable = camsDiscovered.filter(c => !c.disabled && !c.warn);
+    if (n === 0) { master.className = 'cb'; master.innerHTML = ''; }
+    else if (n === selectable.length && selectable.length > 0) { master.className = 'cb ck'; master.innerHTML = '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke-width="1.8" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+    else { master.className = 'cb tri'; master.innerHTML = '<svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" rx="1"/></svg>'; }
+  }
+
+  function toggleAll() {
+    const selectable = camsDiscovered.filter(c => !c.disabled && !c.warn);
+    const allOn = selectable.every(c => c.checked);
+    selectable.forEach(c => c.checked = !allOn);
+    renderCamList();
+    updateSelCount();
+  }
+
+  // ===== Auth (S3) helpers =====
+  function togglePw() {
+    const inp = document.getElementById('pwInput');
+    const suf = inp.nextElementSibling;
+    if (inp.type === 'password') { inp.type = 'text'; inp.value = 'LumanaAdm!'; suf.textContent = 'HIDE'; }
+    else { inp.type = 'password'; inp.value = '••••••••'; suf.textContent = 'SHOW'; }
+  }
+  function applyCreds(btn) {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Applied to 12 cameras';
+    btn.style.color = 'var(--primary)';
+    btn.style.borderColor = 'var(--primary)';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2200);
+  }
+  function retryDahua() {
+    const dot = document.getElementById('dahuaDot');
+    const badge = document.getElementById('dahuaBadge');
+    const body = document.getElementById('dahuaBody');
+    const row = document.getElementById('dahuaRow');
+    const link = document.getElementById('retryAllLink');
+    dot.className = 'status-dot ok';
+    badge.className = 'badge ok';
+    badge.textContent = 'Auth OK';
+    row.classList.remove('expanded');
+    body.style.display = 'none';
+    link.style.display = 'none';
+  }
+  function restoreDahua() {
+    const dot = document.getElementById('dahuaDot');
+    const badge = document.getElementById('dahuaBadge');
+    const body = document.getElementById('dahuaBody');
+    const row = document.getElementById('dahuaRow');
+    const link = document.getElementById('retryAllLink');
+    if (!dot) return;
+    dot.className = 'status-dot err';
+    badge.className = 'badge authfail';
+    badge.textContent = 'Auth failed';
+    row.classList.add('expanded');
+    body.style.display = '';
+    link.style.display = '';
+  }
+
+  // ===== Live status list (S5) =====
+  const statusCams = [
+    { id: 1, name: 'Core3-Lobby-01', ip: '10.0.12.34', brand: 'Axis M3045-V', path: 'ok' },
+    { id: 2, name: 'Core3-Lobby-02', ip: '10.0.12.35', brand: 'Hikvision DS-2CD2143G2-I', path: 'ok' },
+    { id: 3, name: 'Core3-Lobby-03', ip: '10.0.12.38', brand: 'Dahua IPC-HFW5442T-ASE', path: 'ok' },
+    { id: 4, name: 'Core3-Lobby-04', ip: '10.0.12.41', brand: 'Hanwha XNO-6120R', path: 'ok' },
+    { id: 5, name: 'Core3-Lobby-05', ip: '10.0.12.51', brand: 'Axis M3068-P', path: 'ok', extra: '+3 sensors' },
+    { id: 6, name: 'Core3-Lobby-06', ip: '10.0.12.58', brand: 'Hikvision DS-2CD2687G2T', path: 'ok' },
+    { id: 7, name: 'Core3-Lobby-07', ip: '10.0.12.62', brand: 'ONVIF generic', path: 'authfail' },
+    { id: 8, name: 'Core3-Lobby-08', ip: '10.0.12.64', brand: 'Axis M3106-LVE', path: 'ok' },
+    { id: 9, name: 'Core3-Lobby-09', ip: '10.0.12.67', brand: 'Dahua IPC-HDBW5449', path: 'ok' },
+    { id: 10, name: 'Core3-Lobby-10', ip: '10.0.12.71', brand: 'Axis P3245-LVE', path: 'ok' },
+    { id: 11, name: 'Core3-Lobby-11', ip: '10.0.12.78', brand: 'Hikvision DS-2CD2T87', path: 'timeout' },
+    { id: 12, name: 'Core3-Lobby-12', ip: '10.0.12.75', brand: 'Hikvision DS-2CD2143G2', path: 'ok' }
+  ];
+
+  function clearStatusTimers() { statusTimers.forEach(clearTimeout); statusTimers = []; }
+
+  function statusBadgeHTML(state) {
+    switch (state) {
+      case 'connecting': return '<span class="badge connecting"><span class="mini-spinner"></span>Connecting…</span>';
+      case 'connected': return '<span class="badge connected">Connected</span>';
+      case 'online': return '<span class="badge ok">Online</span>';
+      case 'authfail': return '<button class="retry-btn" onclick="retryStatusRow(this)">Retry</button>';
+      case 'timeout': return '<button class="retry-btn err" onclick="retryStatusRow(this)">Retry</button>';
+    }
+  }
+
+  function statusDotFor(state) {
+    switch (state) {
+      case 'connecting': return 'mut';
+      case 'connected': return 'info';
+      case 'online': return 'ok';
+      case 'authfail': return 'warn';
+      case 'timeout': return 'err';
+    }
+  }
+
+  function renderStatusList() {
+    const list = document.getElementById('statusList');
+    list.innerHTML = '';
+    statusCams.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'row-cd';
+      row.id = `statusRow-${c.id}`;
+      if (c.state === 'authfail') row.style.borderColor = 'var(--warning)';
+      if (c.state === 'timeout') row.style.borderColor = 'var(--danger)';
+      const reason = c.state === 'authfail' ? ' · <span style="color:var(--warning);">auth rejected</span>' :
+                     c.state === 'timeout'  ? ' · <span style="color:var(--danger);">connection timeout</span>' : '';
+      const extra = c.extra ? ` <span style="font-size:11px; color:var(--warning); margin-left:6px;">${c.extra}</span>` : '';
+      row.innerHTML = `
+        <span class="status-dot ${statusDotFor(c.state)}"></span>
+        <div><span class="n">${c.name}${extra}</span><div class="m">${c.ip} · ${c.brand}${reason}</div></div>
+        ${statusBadgeHTML(c.state)}
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  function updateStatusStats() {
+    const online = statusCams.filter(c => c.state === 'online').length;
+    const connecting = statusCams.filter(c => c.state === 'connecting' || c.state === 'connected').length;
+    const failed = statusCams.filter(c => c.state === 'authfail' || c.state === 'timeout').length;
+    document.getElementById('sOnline').textContent = online;
+    document.getElementById('sConn').textContent = connecting;
+    document.getElementById('sFailed').textContent = failed;
+
+    if (connecting === 0) {
+      document.getElementById('postTitle').textContent = failed === 0 ? `${online} of 12 online` : `${online} of 12 online · ${failed} failed`;
+      document.getElementById('postSub').textContent = failed === 0 ? '12 cameras · all streams verified' : `${online} verified · ${failed} need attention`;
+    } else {
+      document.getElementById('postTitle').textContent = `Adding cameras…`;
+      document.getElementById('postSub').textContent = `${online + failed} of 12 settled · ${connecting} connecting`;
+    }
+
+    const banner = document.getElementById('s5Banner');
+    const retryBtn = document.getElementById('retryAllBtn');
+    if (failed > 0 && connecting === 0) {
+      banner.style.display = '';
+      retryBtn.style.display = '';
+      retryBtn.textContent = `Retry ${failed} failed`;
+    } else if (failed === 0) {
+      banner.style.display = 'none';
+      retryBtn.style.display = 'none';
+    }
+  }
+
+  function setStatus(id, state) {
+    const c = statusCams.find(c => c.id === id);
+    if (!c) return;
+    c.state = state;
+    renderStatusList();
+    updateStatusStats();
+  }
+
+  function startStatusList() {
+    clearStatusTimers();
+    // Reset all to connecting
+    statusCams.forEach(c => { c.state = 'connecting'; });
+    renderStatusList();
+    updateStatusStats();
+
+    statusCams.forEach((c, i) => {
+      const jitter = () => 80 + Math.random() * 280;
+      if (c.path === 'ok') {
+        const connectedAt = 500 + i * 200 + jitter();
+        const onlineAt = connectedAt + 900 + Math.random() * 400;
+        statusTimers.push(setTimeout(() => setStatus(c.id, 'connected'), connectedAt));
+        statusTimers.push(setTimeout(() => setStatus(c.id, 'online'), onlineAt));
+      } else if (c.path === 'authfail') {
+        statusTimers.push(setTimeout(() => setStatus(c.id, 'authfail'), 1400 + jitter()));
+      } else if (c.path === 'timeout') {
+        statusTimers.push(setTimeout(() => setStatus(c.id, 'timeout'), 2700 + jitter()));
+      }
+    });
+  }
+
+  function retryStatusRow(btn) {
+    const row = btn.closest('.row-cd');
+    if (!row) return;
+    const id = parseInt(row.id.replace('statusRow-',''));
+    const c = statusCams.find(c => c.id === id);
+    if (!c) return;
+    row.style.opacity = '0.5';
+    c.state = 'connecting';
+    setTimeout(() => {
+      setStatus(c.id, 'connected');
+      setTimeout(() => {
+        setStatus(c.id, 'online');
+        const refreshed = document.getElementById(`statusRow-${c.id}`);
+        if (refreshed) refreshed.style.opacity = '1';
+      }, 800);
+    }, 600);
+  }
+  function retryPostFailed() {
+    statusCams.filter(c => c.state === 'authfail' || c.state === 'timeout').forEach(c => {
+      const row = document.getElementById(`statusRow-${c.id}`);
+      if (row) row.style.opacity = '0.5';
+      c.state = 'connecting';
+      const delay = 400 + Math.random() * 200;
+      statusTimers.push(setTimeout(() => {
+        setStatus(c.id, 'connected');
+        statusTimers.push(setTimeout(() => {
+          setStatus(c.id, 'online');
+          const refreshed = document.getElementById(`statusRow-${c.id}`);
+          if (refreshed) refreshed.style.opacity = '1';
+        }, 700 + Math.random() * 300));
+      }, delay));
+    });
+  }
+
+  // Keyboard nav
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight' && current < screens.length - 1) {
+      if (current === 0 && !selectedCore) return;
+      go(current + 1);
+    } else if (e.key === 'ArrowLeft' && current > 0) {
+      go(current - 1);
+    } else if (e.key.toLowerCase() === 'r') resetFlow();
+  });
+
+  document.querySelectorAll('#fmSteps .fm-step').forEach(el => {
+    el.addEventListener('click', () => {
+      const target = parseInt(el.dataset.step);
+      if (target >= 1 && !selectedCore) return;
+      go(target);
+    });
+  });
+
+  updateChrome();
+</script>
+
+</body>
+</html>
