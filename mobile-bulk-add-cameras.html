@@ -394,7 +394,8 @@
   .th-col.ip-col { width: 100px; flex: 0 0 auto; }
   .th-col.sortable { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; user-select: none; transition: color .12s ease; }
   .th-col.sortable:hover { color: var(--text-default); }
-  .th-col.sortable .sort-arrow { display: inline-flex; color: var(--text-default); }
+  .th-col.sortable .sort-arrow { display: inline-flex; color: var(--text-subtlest); }
+  .th-col.sortable.active .sort-arrow { color: var(--text-default); }
 
   /* Camera list (Figma 5:100370) — all rows white per user */
   .cam-list-fig { display: flex; flex-direction: column; background: var(--surface); }
@@ -700,10 +701,10 @@
                 </div>
               </div>
               <div class="th-cols">
-                <div class="th-col ip-col sortable" onclick="toggleIpSort()">
+                <div class="th-col ip-col sortable" id="ipSortHeader" onclick="toggleIpSort()">
                   IP Address
                   <span class="sort-arrow" id="ipSortArrow">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v6M3 6l3-3 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M5 1l3 3H2z" fill="currentColor" opacity=".5"/><path d="M5 11l-3-3h6z" fill="currentColor" opacity=".5"/></svg>
                   </span>
                 </div>
                 <div class="th-col">Mac</div>
@@ -1080,22 +1081,28 @@
   const connFilters = new Set();
   const expandedIps = new Set();
   let infoMsgDismissed = false;
-  let ipSort = 'asc';
+  let ipSort = 'none'; // 'none' | 'asc' | 'desc' — default unsorted (discovery order)
 
   function ipToNumber(ip) { return ip.split('.').reduce((acc, p) => acc * 256 + parseInt(p, 10), 0); }
 
   function toggleIpSort() {
-    ipSort = ipSort === 'asc' ? 'desc' : 'asc';
+    ipSort = ipSort === 'none' ? 'asc' : ipSort === 'asc' ? 'desc' : 'asc';
     updateSortArrow();
     renderCamList();
   }
 
   function updateSortArrow() {
     const arrow = document.getElementById('ipSortArrow');
-    if (!arrow) return;
-    arrow.innerHTML = ipSort === 'asc'
-      ? '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v6M3 6l3-3 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-      : '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 9V3M3 6l3 3 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const header = document.getElementById('ipSortHeader');
+    if (!arrow || !header) return;
+    header.classList.toggle('active', ipSort !== 'none');
+    if (ipSort === 'none') {
+      arrow.innerHTML = '<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M5 1l3 3H2z" fill="currentColor" opacity=".5"/><path d="M5 11l-3-3h6z" fill="currentColor" opacity=".5"/></svg>';
+    } else if (ipSort === 'asc') {
+      arrow.innerHTML = '<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M5 1l3 3H2z" fill="currentColor"/><path d="M5 11l-3-3h6z" fill="currentColor" opacity=".3"/></svg>';
+    } else {
+      arrow.innerHTML = '<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M5 1l3 3H2z" fill="currentColor" opacity=".3"/><path d="M5 11l-3-3h6z" fill="currentColor"/></svg>';
+    }
   }
 
   function connectionLabel(c) { return c === 'good' ? 'Good' : c === 'reasonable' ? 'Reasonable' : 'Limited'; }
@@ -1111,7 +1118,7 @@
     camFilter = 'all';
     brandFilters.clear();
     connFilters.clear();
-    ipSort = 'asc';
+    ipSort = 'none';
     updateSortArrow();
     const searchInp = document.getElementById('camSearch');
     if (searchInp) searchInp.value = '';
@@ -1192,10 +1199,12 @@
       if (q && !(c.ip.includes(q) || c.mac.toLowerCase().includes(q) || c.brand.toLowerCase().includes(q))) return false;
       return true;
     });
-    list.sort((a, b) => {
-      const cmp = ipToNumber(a.ip) - ipToNumber(b.ip);
-      return ipSort === 'asc' ? cmp : -cmp;
-    });
+    if (ipSort !== 'none') {
+      list.sort((a, b) => {
+        const cmp = ipToNumber(a.ip) - ipToNumber(b.ip);
+        return ipSort === 'asc' ? cmp : -cmp;
+      });
+    }
     return list;
   }
 
