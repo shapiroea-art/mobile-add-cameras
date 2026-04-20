@@ -447,7 +447,7 @@
   .cam-details-title { font-size: 13px; font-weight: 500; color: var(--text-bold); line-height: 20px; margin-bottom: 6px; }
   .cam-detail-kv { display: grid; grid-template-columns: 110px 1fr; gap: 8px; font-size: 13px; padding: 3px 0; line-height: 20px; }
   .cam-detail-kv .k { color: var(--text-subtle); font-weight: 500; }
-  .cam-detail-kv .v { color: var(--text-default); font-weight: 500; }
+  .cam-detail-kv .v { color: var(--text-default); font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
 
   /* Info message (blue, dismissable, bottom of screen while scanning) */
   .info-msg { position: relative; background: var(--info-bg); border: 1px solid var(--info-border); border-radius: 4px; margin: 12px 16px 0; padding: 16px 52px 16px 16px; display: flex; gap: 8px; align-items: flex-start; box-shadow: inset 3px 0 0 var(--info-border); flex: 0 0 auto; }
@@ -1224,7 +1224,7 @@
         <div class="cam-details">
           <div class="cam-details-inner">
             <div class="cam-details-title">${statusTitle(c.status)}</div>
-            <div class="cam-detail-kv"><span class="k">Connection</span><span class="v">${connectionLabel(c.connection)}</span></div>
+            <div class="cam-detail-kv"><span class="k">Connection</span><span class="v"><span class="cam-conn-dot ${c.connection}"></span>${connectionLabel(c.connection)}</span></div>
             <div class="cam-detail-kv"><span class="k">Min (ms)</span><span class="v">${c.ping.min}</span></div>
             <div class="cam-detail-kv"><span class="k">Max (ms)</span><span class="v">${c.ping.max}</span></div>
             <div class="cam-detail-kv"><span class="k">Avg (ms)</span><span class="v">${c.ping.avg}</span></div>
