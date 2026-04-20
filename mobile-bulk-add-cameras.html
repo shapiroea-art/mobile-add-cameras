@@ -474,6 +474,107 @@
   .fg-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text-subtle); text-transform: uppercase; padding: 0 0 8px; }
   .fg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
+  /* ===== S4 Configuration (rebuilt) ===== */
+  .conf-list { flex: 1; overflow-y: auto; background: var(--surface); }
+  .conf-list::-webkit-scrollbar { width: 0; }
+  .conf-row { border-bottom: 1px solid var(--border); background: var(--surface); transition: background .12s ease; }
+  .conf-row.selected { background: var(--primary-soft); }
+  .conf-row-inner { display: flex; align-items: center; gap: 8px; padding: 8px; min-height: 76px; cursor: pointer; }
+  .conf-cb-wrap { padding: 14px; flex: 0 0 auto; }
+  .conf-thumb { width: 80px; height: 60px; border-radius: 2px; object-fit: cover; flex: 0 0 auto; background: var(--surface-gray200); display: block; }
+  .conf-thumb-off { width: 80px; height: 60px; border-radius: 2px; flex: 0 0 auto; background: var(--surface-subtle); border: 1px solid var(--border-input); display: grid; place-items: center; color: var(--text-subtlest); }
+  .conf-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .conf-name-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .conf-status-ico { flex: 0 0 auto; display: inline-flex; }
+  .conf-status-ico.ok { color: var(--success); }
+  .conf-status-ico.warn { color: var(--warning); }
+  .conf-status-ico.err { color: var(--danger); }
+  .conf-status-ico .mini-spinner { width: 14px; height: 14px; border: 2px solid var(--border-input); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .conf-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+  .conf-meta { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-subtle); line-height: 24px; }
+  .conf-meta .dot { color: var(--text-subtlest); }
+  .conf-fail { display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: #FEF2F2; border-radius: var(--r); }
+  .conf-fail .ft { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text-default); }
+  .conf-fail .ft-ico { color: var(--danger); flex: 0 0 auto; display: inline-flex; }
+  .conf-fail .add-creds { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border: 1px solid var(--primary-border); border-radius: var(--r); background: var(--surface); color: var(--primary); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; white-space: nowrap; }
+  .conf-fail .add-creds:hover { background: var(--primary-soft); }
+  .conf-kebab { width: 40px; height: 40px; display: grid; place-items: center; border: none; background: transparent; color: var(--text-subtlest); cursor: pointer; padding: 10px; flex: 0 0 auto; border-radius: var(--r); }
+  .conf-kebab:hover { background: var(--surface-subtle); color: var(--text-default); }
+  .conf-chev { width: 32px; height: 32px; display: grid; place-items: center; border: none; background: transparent; color: var(--text-subtlest); cursor: pointer; transition: transform .25s ease, color .12s ease; flex: 0 0 auto; padding: 0; }
+  .conf-chev:hover { color: var(--text-default); }
+  .conf-row.expanded .conf-chev { transform: rotate(180deg); }
+  .conf-details { background: var(--surface-gray200); border-top: 1px solid var(--border); padding: 12px 8px 36px; display: none; flex-direction: column; gap: 16px; }
+  .conf-row.expanded .conf-details { display: flex; }
+  .conf-hint { padding: 0 8px; font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .edit-cam-btn { align-self: stretch; display: inline-flex; gap: 8px; align-items: center; justify-content: center; padding: 8px 16px; height: 40px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); color: var(--text-default); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .edit-cam-btn:hover { background: var(--surface-subtle); }
+  .opt-list { display: flex; flex-direction: column; gap: 8px; }
+  .opt-row { display: flex; align-items: center; gap: 8px; }
+  .opt-row .opt-label { flex: 1; display: inline-flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .opt-row .opt-label .opt-ico.warn { color: var(--warning); }
+  .opt-row .opt-label .opt-ico.ok { color: var(--success); }
+  .opt-row .opt-show { padding: 8px 16px; font-size: 14px; font-weight: 500; color: var(--primary); background: none; border: none; cursor: pointer; border-radius: var(--r); }
+  .opt-row .opt-show:hover { background: var(--primary-soft); }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 14px; color: var(--text-default); line-height: 24px; }
+  .meta-grid .mg-item { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .meta-grid .mg-ico { color: var(--text-default); flex: 0 0 auto; display: inline-flex; }
+  .meta-grid .mg-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Info sheets (Mainstream / Substream) */
+  .info-sheet { max-height: 85%; overflow-y: auto; padding: 8px 0 0; }
+  .info-sheet-title { font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; padding: 10px 16px 16px; }
+  .info-sheet-body { padding: 0 16px 24px; }
+  .info-sheet-foot { border-top: 1px solid var(--border); padding: 12px 16px; background: var(--surface); }
+  .info-table { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; display: flex; flex-direction: column; }
+  .info-table-row { display: flex; border-bottom: 1px solid var(--border); }
+  .info-table-row:last-child { border-bottom: none; }
+  .info-table .th { background: var(--surface-subtle); width: 142px; flex: 0 0 142px; padding: 8px 16px; font-size: 14px; color: var(--text-subtle); line-height: 24px; }
+  .info-table .td { flex: 1; min-width: 0; padding: 8px 16px 8px 32px; font-size: 14px; color: var(--text-default); line-height: 24px; }
+  .info-table .td + .td { border-left: 1px solid var(--border); }
+  .info-table .th.blank { background: var(--surface-subtle); }
+
+  /* Edit camera sheet */
+  .edit-sheet { max-height: 88%; overflow-y: auto; padding: 8px 0 0; }
+  .edit-sheet-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 16px; }
+  .edit-field { display: flex; flex-direction: column; gap: 8px; }
+  .edit-field-label { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .edit-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .toggle-sw { width: 40px; height: 24px; border-radius: 999px; background: var(--border-input); border: none; position: relative; cursor: pointer; padding: 0; flex: 0 0 auto; transition: background .18s ease; }
+  .toggle-sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface); transition: transform .18s ease; box-shadow: 0 1px 2px rgba(16,24,40,.1); }
+  .toggle-sw.on { background: var(--primary); }
+  .toggle-sw.on::after { transform: translateX(16px); }
+  .segmented { display: inline-flex; background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--r); padding: 2px; gap: 2px; }
+  .segmented-opt { padding: 6px 12px; font-size: 14px; font-weight: 500; color: var(--text-subtle); background: none; border: none; border-radius: 3px; cursor: pointer; line-height: 20px; }
+  .segmented-opt.on { background: var(--surface); color: var(--text-bold); box-shadow: 0 1px 2px rgba(16,24,40,.08); }
+
+  /* ===== S5 Added (location page) ===== */
+  .s5-topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 4px 0 0; flex: 0 0 auto; }
+  .s5-topbar .s5-tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+  .s5-topbar .s5-title { font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .s5-filters { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
+  .s5-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border: 1px solid var(--border-input); border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--text-default); background: var(--surface); cursor: pointer; line-height: 24px; }
+  .s5-chip:hover { background: var(--surface-subtle); }
+  .s5-body { flex: 1; overflow-y: auto; background: var(--surface); position: relative; }
+  .s5-body::-webkit-scrollbar { width: 0; }
+  .s5-sec-label { background: var(--surface-subtle); padding: 16px 16px 6px; font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; }
+  .s5-loc-row { display: flex; align-items: center; height: 52px; padding-left: 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
+  .s5-loc-row:hover { background: var(--surface-subtle); }
+  .s5-loc-row .loc-main { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .s5-loc-row .loc-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
+  .s5-loc-row .loc-ico.warn { color: var(--warning); }
+  .s5-loc-row .loc-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .s5-loc-row .loc-chev { padding: 10px; color: var(--text-subtlest); display: inline-flex; }
+  .s5-dev-row { display: flex; align-items: center; gap: 12px; padding: 4px 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
+  .s5-dev-row:hover { background: var(--surface-subtle); }
+  .s5-dev-row .dev-thumb { width: 64px; height: 48px; border-radius: 2px; object-fit: cover; flex: 0 0 auto; background: var(--surface-gray200); }
+  .s5-dev-row .dev-thumb-core { width: 64px; height: 48px; border-radius: 2px; flex: 0 0 auto; background: var(--surface-subtle); display: grid; place-items: center; color: var(--text-default); }
+  .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
+  .s5-dev-row .dev-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .s5-success { position: absolute; left: 16px; right: 16px; bottom: 24px; background: #F0FDF4; border: 1px solid #22C55E; border-left: 3px solid #22C55E; border-radius: var(--r); padding: 16px; display: flex; gap: 12px; align-items: center; }
+  .s5-success .ok-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; }
+  .s5-success .ok-text { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
+
   @media (max-width: 900px) {
     .workspace { flex-direction: column; align-items: center; padding: 24px; gap: 24px; }
     .flowmap { position: static; width: 100%; max-width: 380px; }
@@ -492,8 +593,8 @@
       <div class="fm-step active" data-step="0"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">select destination</div></div></div>
       <div class="fm-step" data-step="1"><span class="n">02</span><div><div class="lbl">Detection</div><div class="sub">scan · multi-select</div></div></div>
       <div class="fm-step" data-step="2"><span class="n">03</span><div><div class="lbl">Authenticate</div><div class="sub">credentials · config</div></div></div>
-      <div class="fm-step" data-step="3"><span class="n">04</span><div><div class="lbl">Review</div><div class="sub">confirm &amp; commit</div></div></div>
-      <div class="fm-step" data-step="4"><span class="n">✓</span><div><div class="lbl">Added</div><div class="sub">live status · retry</div></div></div>
+      <div class="fm-step" data-step="3"><span class="n">04</span><div><div class="lbl">Configuration</div><div class="sub">live status · edit · commit</div></div></div>
+      <div class="fm-step" data-step="4"><span class="n">✓</span><div><div class="lbl">Added</div><div class="sub">location · success</div></div></div>
     </div>
     <button class="reset" onclick="resetFlow()">
       <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6a4 4 0 104-4M2 2v3h3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -851,7 +952,7 @@
             <div class="home-indicator"></div>
           </div>
 
-          <!-- ========== S4: Review ========== -->
+          <!-- ========== S4: Configuration ========== -->
           <div class="panel" id="s4">
             <div class="topbar">
               <div class="tb-left">
@@ -864,93 +965,224 @@
             </div>
 
             <div class="stepper">
-              <div class="sp-label">4 of 4 – Review</div>
+              <div class="sp-label">5 of 5 – Configuration</div>
               <div class="sp-bar"><div class="sp-fill" style="width: 100%;"></div></div>
             </div>
 
-            <div class="subtitle-row">Confirm before adding to core</div>
-
-            <div class="content">
-              <div class="summary">
-                <div class="s-head">
-                  <div class="s-num">12</div>
-                  <div class="s-desc">
-                    <div class="t">cameras to be added</div>
-                    <div class="d">mixed brand · 1 multi-sensor</div>
-                  </div>
-                </div>
-                <div class="s-detail">
-                  <div><div class="k">Core</div><div class="v">Core 3</div></div>
-                  <div><div class="k">Sublocation</div><div class="v">Lobby</div></div>
-                  <div><div class="k">Group</div><div class="v">Lobby cameras</div></div>
-                  <div><div class="k">Template</div><div class="v" style="font-size:12px;">Core3-Lobby-##</div></div>
-                </div>
+            <div class="table-header">
+              <div class="th-cb-wrap">
+                <div class="cb" id="confMasterCb" onclick="toggleAllConf()"></div>
               </div>
-
-              <div class="section-label">Cameras <span class="count">(12)</span></div>
-
-              <div class="cam-list">
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-01</span><div class="m">10.0.12.34 · Axis M3045-V</div></div><span class="badge ok">Ready</span></div>
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-02</span><div class="m">10.0.12.35 · Hikvision DS-2CD2143G2-I</div></div><span class="badge ok">Ready</span></div>
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-03</span><div class="m">10.0.12.38 · Dahua IPC-HFW5442T-ASE</div></div><span class="badge ok">Ready</span></div>
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-04</span><div class="m">10.0.12.41 · Hanwha XNO-6120R</div></div><span class="badge ok">Ready</span></div>
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-05 <span style="font-size:11px; color:var(--warning); margin-left:6px;">·4 sensors</span></span><div class="m">10.0.12.51 · Axis M3068-P</div></div><span class="badge ok">Ready</span></div>
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-06</span><div class="m">10.0.12.58 · Hikvision DS-2CD2687G2T</div></div><span class="badge ok">Ready</span></div>
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-07</span><div class="m">10.0.12.62 · ONVIF (generic)</div></div><span class="badge ok">Ready</span></div>
-                <div class="row-cd"><span class="status-dot ok"></span><div><span class="n">Core3-Lobby-08</span><div class="m">10.0.12.64 · Axis M3106-LVE</div></div><span class="badge ok">Ready</span></div>
-                <div style="text-align:center; padding: 2px; font-size: 12px; color: var(--text-subtle);">+ 4 more</div>
+              <div class="th-cols" style="padding-left: 4px;">
+                <div class="th-col">Cameras</div>
               </div>
+              <button class="expand-all-btn" id="confExpandAllBtn" onclick="toggleExpandAllConf()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 6l3-3 3 3M5 10l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="confExpandAllLbl">Expand all</span>
+              </button>
+            </div>
+
+            <div class="conf-list" id="confList"></div>
+
+            <div class="sel-block" id="s4SelBlock">
+              <span class="sb-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+              </span>
+              <span class="sb-text"><strong id="s4SelCount">0</strong> cameras selected</span>
             </div>
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="go(2)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(4)">
-                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8l3 3 6-7" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Add 12 cameras
-              </button>
+              <button class="btn btn-primary btn-full" onclick="go(4)">Final Setup</button>
             </div>
 
             <div class="home-indicator"></div>
+
+            <div class="sheet-backdrop" id="mainstreamSheet" onclick="closeInfoSheet(event, 'mainstreamSheet')">
+              <div class="sheet info-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title">Mainstream is not optimized</div>
+                <div class="info-sheet-body">
+                  <div class="info-table">
+                    <div class="info-table-row">
+                      <div class="th blank"></div>
+                      <div class="td" style="color:var(--text-default);">Current</div>
+                      <div class="td" style="color:var(--text-default);">Set To</div>
+                    </div>
+                    <div class="info-table-row"><div class="th">Width</div><div class="td">640</div><div class="td"></div></div>
+                    <div class="info-table-row"><div class="th">Height</div><div class="td">360</div><div class="td"></div></div>
+                    <div class="info-table-row"><div class="th">Max bitrate (Kbps)</div><div class="td">2,000</div><div class="td">3,500</div></div>
+                    <div class="info-table-row"><div class="th">Min bitrate (Kbps)</div><div class="td">4,000</div><div class="td">2,000</div></div>
+                    <div class="info-table-row"><div class="th">FPS</div><div class="td">15</div><div class="td"></div></div>
+                    <div class="info-table-row"><div class="th">Video codec</div><div class="td">HEVC</div><div class="td"></div></div>
+                    <div class="info-table-row"><div class="th">Audio codec</div><div class="td">AAC</div><div class="td"></div></div>
+                    <div class="info-table-row"><div class="th">Key frames interval</div><div class="td">640</div><div class="td"></div></div>
+                    <div class="info-table-row"><div class="th">Pixel format</div><div class="td">640</div><div class="td">320</div></div>
+                    <div class="info-table-row"><div class="th">B frames</div><div class="td">True</div><div class="td">False</div></div>
+                  </div>
+                </div>
+                <div class="info-sheet-foot">
+                  <button class="btn btn-secondary btn-full" onclick="closeSheet('mainstreamSheet')">Close</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="substreamSheet" onclick="closeInfoSheet(event, 'substreamSheet')">
+              <div class="sheet info-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title">Substream is optimized</div>
+                <div class="info-sheet-body">
+                  <div class="info-table">
+                    <div class="info-table-row">
+                      <div class="th blank"></div>
+                      <div class="td" style="color:var(--text-default);">Current</div>
+                    </div>
+                    <div class="info-table-row"><div class="th">Width</div><div class="td">640</div></div>
+                    <div class="info-table-row"><div class="th">Height</div><div class="td">360</div></div>
+                    <div class="info-table-row"><div class="th">Max bitrate (Kbps)</div><div class="td">2,000</div></div>
+                    <div class="info-table-row"><div class="th">Min bitrate (Kbps)</div><div class="td">4,000</div></div>
+                    <div class="info-table-row"><div class="th">FPS</div><div class="td">15</div></div>
+                    <div class="info-table-row"><div class="th">Video codec</div><div class="td">HEVC</div></div>
+                    <div class="info-table-row"><div class="th">Audio codec</div><div class="td">AAC</div></div>
+                    <div class="info-table-row"><div class="th">Key frames interval</div><div class="td">640</div></div>
+                    <div class="info-table-row"><div class="th">Pixel format</div><div class="td">640</div></div>
+                    <div class="info-table-row"><div class="th">B frames</div><div class="td">True</div></div>
+                  </div>
+                </div>
+                <div class="info-sheet-foot">
+                  <button class="btn btn-secondary btn-full" onclick="closeSheet('substreamSheet')">Close</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="editCamSheet" onclick="closeInfoSheet(event, 'editCamSheet')">
+              <div class="sheet edit-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title" id="editCamTitle">Edit camera</div>
+                <div class="edit-sheet-body">
+                  <div class="edit-field">
+                    <label class="edit-field-label">Camera name</label>
+                    <div class="input-field"><input type="text" id="editCamName"></div>
+                  </div>
+                  <div class="edit-row">
+                    <span class="edit-field-label">Auto-config</span>
+                    <button class="toggle-sw on" id="editCamAuto" onclick="this.classList.toggle('on')" aria-label="Auto-config"></button>
+                  </div>
+                  <div class="edit-field">
+                    <label class="edit-field-label">Type</label>
+                    <div class="segmented" id="editCamType">
+                      <button class="segmented-opt on" data-val="Static" onclick="pickSeg(this)">Static</button>
+                      <button class="segmented-opt" data-val="Fisheye" onclick="pickSeg(this)">Fisheye</button>
+                    </div>
+                  </div>
+                  <div class="edit-field">
+                    <label class="edit-field-label">Retention</label>
+                    <div class="segmented" id="editCamRetention">
+                      <button class="segmented-opt on" data-val="30" onclick="pickSeg(this)">30 days</button>
+                      <button class="segmented-opt" data-val="60" onclick="pickSeg(this)">60 days</button>
+                      <button class="segmented-opt" data-val="90" onclick="pickSeg(this)">90 days</button>
+                    </div>
+                  </div>
+                  <div class="edit-field">
+                    <label class="edit-field-label">Storage stream</label>
+                    <div class="segmented" id="editCamStorage">
+                      <button class="segmented-opt on" data-val="Substream" onclick="pickSeg(this)">Substream</button>
+                      <button class="segmented-opt" data-val="Mainstream" onclick="pickSeg(this)">Mainstream</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-sheet-foot" style="display:flex; gap:8px;">
+                  <button class="btn btn-secondary btn-full" onclick="closeSheet('editCamSheet')">Cancel</button>
+                  <button class="btn btn-primary btn-full" onclick="saveEditCam()">Save</button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- ========== S5: Live status ========== -->
+          <!-- ========== S5: Added (location landing) ========== -->
           <div class="panel" id="s5">
-            <div class="topbar">
-              <div class="tb-left">
-                <button class="btn-icon" onclick="resetFlow()" aria-label="Close">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+            <div class="s5-topbar">
+              <div class="s5-tb-left">
+                <button class="btn-icon" onclick="resetFlow()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                <div class="tb-title" id="postTitle">Adding cameras…</div>
+                <div class="s5-title">Administrative Center 1</div>
               </div>
-              <div class="tb-right"></div>
+              <button class="btn-icon" aria-label="More">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="4" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="16" cy="10" r="1.6" fill="currentColor"/></svg>
+              </button>
             </div>
 
-            <div class="subtitle-row">Core 3 · Lobby · Lobby cameras<div class="sub" id="postSub">12 cameras · starting connections</div></div>
-
-            <div class="scan-stats">
-              <div class="s"><span class="s-num ok" id="sOnline">0</span><span class="s-label">Online</span></div>
-              <div class="s"><span class="s-num" id="sConn">12</span><span class="s-label">Connecting</span></div>
-              <div class="s"><span class="s-num fail" id="sFailed">0</span><span class="s-label">Failed</span></div>
+            <div class="s5-filters">
+              <button class="btn-icon" aria-label="Search" style="padding:10px;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </button>
+              <button class="s5-chip">Status
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="s5-chip">Type
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
             </div>
 
-            <div class="content">
-              <div class="banner" id="s5Banner" style="display:none;">
-                <span class="ico"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 2l8 16H2L10 2z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-                <div>
-                  <div class="t" id="s5BannerT">2 cameras need attention</div>
-                  <div class="d">Auth rejected · connection timeout</div>
+            <div class="s5-body">
+              <div class="s5-sec-label">Sublocations</div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="loc-name">Merkaz</span>
                 </div>
-                <button class="retry-btn" onclick="retryPostFailed()">Retry all</button>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="loc-name">Sublocation 1</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="loc-name">Merkaz</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico warn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="loc-name">Administrative Center 1</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
 
-              <div class="section-label">Cameras <span class="count">(12)</span></div>
-
-              <div class="cam-list" id="statusList"></div>
+              <div class="s5-sec-label">Devices</div>
+              <div id="s5Devices"></div>
+              <div class="s5-dev-row">
+                <div class="dev-thumb-core">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
+                </div>
+                <span class="dev-ico">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="dev-name" id="s5CoreName">Core 3</span>
+              </div>
+              <div style="height: 96px;"></div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" id="retryAllBtn" onclick="retryPostFailed()" style="display:none;">Retry failed</button>
-              <button class="btn btn-primary btn-full" onclick="resetFlow()">Done</button>
+            <div class="s5-success" id="s5SuccessBanner">
+              <span class="ok-ico">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div class="ok-text" id="s5SuccessText">cameras has been added</div>
             </div>
 
             <div class="home-indicator"></div>
@@ -991,7 +1223,8 @@
     current = i;
     updateChrome();
     if (i === 1) startScan();
-    if (i === 4) startStatusList();
+    if (i === 3) startConfigAnimation();
+    if (i === 4) renderS5();
   }
 
   function resetFlow() {
@@ -1316,155 +1549,301 @@
   }
   function restoreDahua() { /* retained as no-op after s3 redesign */ }
 
-  // ===== Live status list (S5) =====
-  const statusCams = [
-    { id: 1, name: 'Core3-Lobby-01', ip: '10.0.12.34', brand: 'Axis M3045-V', path: 'ok' },
-    { id: 2, name: 'Core3-Lobby-02', ip: '10.0.12.35', brand: 'Hikvision DS-2CD2143G2-I', path: 'ok' },
-    { id: 3, name: 'Core3-Lobby-03', ip: '10.0.12.38', brand: 'Dahua IPC-HFW5442T-ASE', path: 'ok' },
-    { id: 4, name: 'Core3-Lobby-04', ip: '10.0.12.41', brand: 'Hanwha XNO-6120R', path: 'ok' },
-    { id: 5, name: 'Core3-Lobby-05', ip: '10.0.12.51', brand: 'Axis M3068-P', path: 'ok', extra: '+3 sensors' },
-    { id: 6, name: 'Core3-Lobby-06', ip: '10.0.12.58', brand: 'Hikvision DS-2CD2687G2T', path: 'ok' },
-    { id: 7, name: 'Core3-Lobby-07', ip: '10.0.12.62', brand: 'ONVIF generic', path: 'authfail' },
-    { id: 8, name: 'Core3-Lobby-08', ip: '10.0.12.64', brand: 'Axis M3106-LVE', path: 'ok' },
-    { id: 9, name: 'Core3-Lobby-09', ip: '10.0.12.67', brand: 'Dahua IPC-HDBW5449', path: 'ok' },
-    { id: 10, name: 'Core3-Lobby-10', ip: '10.0.12.71', brand: 'Axis P3245-LVE', path: 'ok' },
-    { id: 11, name: 'Core3-Lobby-11', ip: '10.0.12.78', brand: 'Hikvision DS-2CD2T87', path: 'timeout' },
-    { id: 12, name: 'Core3-Lobby-12', ip: '10.0.12.75', brand: 'Hikvision DS-2CD2143G2', path: 'ok' }
+  // ===== S4 Configuration =====
+  function coreLabel() {
+    if (!selectedCore) return 'Core 3';
+    const el = document.getElementById(selectedCore);
+    const nm = el ? el.querySelector('.name') : null;
+    return nm ? nm.textContent.trim() : 'Core 3';
+  }
+  function coreNum() {
+    const m = coreLabel().match(/(\d+)/);
+    return m ? m[1] : '3';
+  }
+  function camNameFor(idx) { return `Main office-Core${coreNum()}-${idx}`; }
+
+  const confCams = [
+    { id: 1,  ip: '10.0.12.34', brand: 'Axis M3045-V',              model: 'AXIS M3045-V',          mac: '3c:23:32:44:37:c6', path: 'ok' },
+    { id: 2,  ip: '10.0.12.35', brand: 'Hikvision DS-2CD2143G2-I',  model: 'DS-2CD2143G2-I',        mac: '3c:23:32:44:37:c7', path: 'ok' },
+    { id: 3,  ip: '10.0.12.38', brand: 'Dahua IPC-HFW5442T-ASE',    model: 'IPC-HFW5442T',          mac: '3c:23:32:44:37:c8', path: 'ok' },
+    { id: 4,  ip: '10.0.12.41', brand: 'Hanwha XNO-6120R',          model: 'XNO-6120R',             mac: '3c:23:32:44:37:c9', path: 'ok' },
+    { id: 5,  ip: '10.0.12.51', brand: 'Axis M3068-P',              model: 'AXIS M3068-P',          mac: '3c:23:32:44:37:ca', path: 'ok' },
+    { id: 6,  ip: '10.0.12.58', brand: 'Hikvision DS-2CD2687G2T',   model: 'DS-2CD2687G2T',         mac: '3c:23:32:44:37:cb', path: 'ok' },
+    { id: 7,  ip: '10.0.12.62', brand: 'ONVIF generic',             model: 'ONVIF',                 mac: '3c:23:32:44:37:cc', path: 'authfail' },
+    { id: 8,  ip: '10.0.12.64', brand: 'Axis M3106-LVE',            model: 'AXIS M3106-LVE',        mac: '3c:23:32:44:37:cd', path: 'ok' },
+    { id: 9,  ip: '10.0.12.67', brand: 'Dahua IPC-HDBW5449',        model: 'IPC-HDBW5449',          mac: '3c:23:32:44:37:ce', path: 'ok' },
+    { id: 10, ip: '10.0.12.71', brand: 'Axis P3245-LVE',            model: 'AXIS P3245-LVE',        mac: '3c:23:32:44:37:cf', path: 'ok' },
+    { id: 11, ip: '10.0.12.78', brand: 'Hikvision DS-2CD2T87',      model: 'DS-2CD2T87',            mac: '3c:23:32:44:37:d0', path: 'timeout' },
+    { id: 12, ip: '10.0.12.75', brand: 'Hikvision DS-2CD2143G2',    model: 'DS-2CD2143G2',          mac: '3c:23:32:44:37:d1', path: 'ok' }
   ];
+  confCams.forEach((c, i) => {
+    c.state = 'connecting';
+    c.checked = false;
+    c.expanded = false;
+    c.config = { autoConfig: true, type: 'Static', retention: 30, storage: 'Substream' };
+  });
+  let editingCamId = null;
+
+  // Camera thumb pool — Unsplash-ish sample images served via picsum.photos with stable seed per id
+  function thumbFor(c) { return `https://picsum.photos/seed/cam${c.id}/160/120`; }
 
   function clearStatusTimers() { statusTimers.forEach(clearTimeout); statusTimers = []; }
 
-  function statusBadgeHTML(state) {
-    switch (state) {
-      case 'connecting': return '<span class="badge connecting"><span class="mini-spinner"></span>Connecting…</span>';
-      case 'connected': return '<span class="badge connected">Connected</span>';
-      case 'online': return '<span class="badge ok">Online</span>';
-      case 'authfail': return '<button class="retry-btn" onclick="retryStatusRow(this)">Retry</button>';
-      case 'timeout': return '<button class="retry-btn err" onclick="retryStatusRow(this)">Retry</button>';
-    }
+  function reseedConfNames() {
+    confCams.forEach((c, i) => { c.name = camNameFor(i + 1); });
   }
 
-  function statusDotFor(state) {
-    switch (state) {
-      case 'connecting': return 'mut';
-      case 'connected': return 'info';
-      case 'online': return 'ok';
-      case 'authfail': return 'warn';
-      case 'timeout': return 'err';
-    }
+  function confStatusIcon(state) {
+    if (state === 'connecting') return '<span class="conf-status-ico"><span class="mini-spinner"></span></span>';
+    if (state === 'connected' || state === 'online') return '<span class="conf-status-ico ok"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+    if (state === 'authfail') return '<span class="conf-status-ico warn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l6.5 12h-13L8 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M8 6.5v3.5M8 12v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
+    if (state === 'timeout') return '<span class="conf-status-ico err"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l6.5 12h-13L8 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M8 6.5v3.5M8 12v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
+    return '';
   }
 
-  function renderStatusList() {
-    const list = document.getElementById('statusList');
+  function metaOrFailHTML(c) {
+    if (c.state === 'authfail' || c.state === 'timeout') {
+      return `<div class="conf-fail">
+        <span class="ft"><span class="ft-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5M7 9.5v.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>Connection failed. Authentication error.</span>
+        <button class="add-creds" onclick="event.stopPropagation(); addCredsForCam(${c.id})"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Add credentials</button>
+      </div>`;
+    }
+    return `<div class="conf-meta">Substream <span class="dot">•</span> ${c.config.type}</div>`;
+  }
+
+  function thumbHTML(c) {
+    if (c.state === 'authfail' || c.state === 'timeout') {
+      return `<div class="conf-thumb-off"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 3l20 18M16 10v-.5A1.5 1.5 0 0014.5 8h-4.8M4 8v8a1.5 1.5 0 001.5 1.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+    }
+    return `<img class="conf-thumb" src="${thumbFor(c)}" alt="">`;
+  }
+
+  function expandedBodyHTML(c) {
+    const retention = c.config.retention;
+    const storage = c.config.storage;
+    return `<div class="conf-details">
+      <div class="conf-hint">Select cameras on the left to configure them together</div>
+      <button class="edit-cam-btn" onclick="event.stopPropagation(); openEditCam(${c.id})">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
+        Edit camera
+      </button>
+      <div class="opt-list">
+        <div class="opt-row">
+          <span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span>
+          <button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Substream is optimized</span>
+          <button class="opt-show" onclick="event.stopPropagation(); openSheet('substreamSheet')">Show</button>
+        </div>
+      </div>
+      <div class="meta-grid">
+        <div class="mg-item"><span class="mg-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8l2 2 5-5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>${c.config.autoConfig ? 'Auto-config enabled' : 'Auto-config disabled'}</div>
+        <div class="mg-item"><span class="mg-text">Audio stream disabled</span></div>
+        <div class="mg-item"><span class="mg-text">Storage: ${storage}</span></div>
+        <div class="mg-item"><span class="mg-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8l2 2 5-5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Smart storage enabled</div>
+        <div class="mg-item"><span class="mg-text">${retention} retention days</span></div>
+        <div class="mg-item"><span class="mg-text">Model: ${c.model}</span></div>
+        <div class="mg-item"><span class="mg-text">IP: ${c.ip}</span></div>
+        <div class="mg-item"><span class="mg-text">Mac: ${c.mac}</span></div>
+      </div>
+    </div>`;
+  }
+
+  function renderConfList() {
+    const list = document.getElementById('confList');
+    if (!list) return;
     list.innerHTML = '';
-    statusCams.forEach(c => {
+    confCams.forEach(c => {
       const row = document.createElement('div');
-      row.className = 'row-cd';
-      row.id = `statusRow-${c.id}`;
-      if (c.state === 'authfail') row.style.borderColor = 'var(--warning)';
-      if (c.state === 'timeout') row.style.borderColor = 'var(--danger)';
-      const reason = c.state === 'authfail' ? ' · <span style="color:var(--warning);">auth rejected</span>' :
-                     c.state === 'timeout'  ? ' · <span style="color:var(--danger);">connection timeout</span>' : '';
-      const extra = c.extra ? ` <span style="font-size:11px; color:var(--warning); margin-left:6px;">${c.extra}</span>` : '';
+      row.className = 'conf-row';
+      if (c.checked) row.classList.add('selected');
+      if (c.expanded) row.classList.add('expanded');
+      row.id = `confRow-${c.id}`;
       row.innerHTML = `
-        <span class="status-dot ${statusDotFor(c.state)}"></span>
-        <div><span class="n">${c.name}${extra}</span><div class="m">${c.ip} · ${c.brand}${reason}</div></div>
-        ${statusBadgeHTML(c.state)}
+        <div class="conf-row-inner" data-role="row" data-id="${c.id}">
+          <div class="conf-cb-wrap" data-role="cb">
+            <div class="cb ${c.checked ? 'ck' : ''}">
+              ${c.checked ? '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+            </div>
+          </div>
+          ${thumbHTML(c)}
+          <div class="conf-body">
+            <div class="conf-name-row">${confStatusIcon(c.state)}<span class="conf-name">${c.name}</span></div>
+            ${metaOrFailHTML(c)}
+          </div>
+          <button class="conf-kebab" data-role="kebab" aria-label="More">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="4" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="16" r="1.4" fill="currentColor"/></svg>
+          </button>
+          <button class="conf-chev" data-role="chev" aria-label="Expand">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        ${expandedBodyHTML(c)}
       `;
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('[data-role="cb"]')) { toggleCheckCam(c.id); return; }
+        if (e.target.closest('[data-role="chev"]')) { toggleExpandCam(c.id); return; }
+        if (e.target.closest('[data-role="kebab"]')) { return; }
+        if (e.target.closest('.conf-details')) return;
+        toggleExpandCam(c.id);
+      });
       list.appendChild(row);
     });
+    updateS4SelBlock();
+    updateConfExpandAllLabel();
+    updateConfMasterCb();
   }
 
-  function updateStatusStats() {
-    const online = statusCams.filter(c => c.state === 'online').length;
-    const connecting = statusCams.filter(c => c.state === 'connecting' || c.state === 'connected').length;
-    const failed = statusCams.filter(c => c.state === 'authfail' || c.state === 'timeout').length;
-    document.getElementById('sOnline').textContent = online;
-    document.getElementById('sConn').textContent = connecting;
-    document.getElementById('sFailed').textContent = failed;
-
-    if (connecting === 0) {
-      document.getElementById('postTitle').textContent = failed === 0 ? `${online} of 12 online` : `${online} of 12 online · ${failed} failed`;
-      document.getElementById('postSub').textContent = failed === 0 ? '12 cameras · all streams verified' : `${online} verified · ${failed} need attention`;
-    } else {
-      document.getElementById('postTitle').textContent = `Adding cameras…`;
-      document.getElementById('postSub').textContent = `${online + failed} of 12 settled · ${connecting} connecting`;
-    }
-
-    const banner = document.getElementById('s5Banner');
-    const retryBtn = document.getElementById('retryAllBtn');
-    if (failed > 0 && connecting === 0) {
-      banner.style.display = '';
-      retryBtn.style.display = '';
-      retryBtn.textContent = `Retry ${failed} failed`;
-    } else if (failed === 0) {
-      banner.style.display = 'none';
-      retryBtn.style.display = 'none';
-    }
+  function toggleExpandCam(id) {
+    const c = confCams.find(x => x.id === id);
+    if (!c) return;
+    c.expanded = !c.expanded;
+    renderConfList();
+  }
+  function toggleCheckCam(id) {
+    const c = confCams.find(x => x.id === id);
+    if (!c) return;
+    c.checked = !c.checked;
+    renderConfList();
+  }
+  function toggleAllConf() {
+    const allChecked = confCams.every(c => c.checked);
+    confCams.forEach(c => { c.checked = !allChecked; });
+    renderConfList();
+  }
+  function updateConfMasterCb() {
+    const cb = document.getElementById('confMasterCb');
+    if (!cb) return;
+    const checked = confCams.filter(c => c.checked).length;
+    cb.classList.remove('ck', 'tri');
+    if (checked === confCams.length) cb.classList.add('ck');
+    else if (checked > 0) cb.classList.add('tri');
+    cb.innerHTML = checked === confCams.length
+      ? '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : (checked > 0 ? '<svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" rx="1"/></svg>' : '');
+  }
+  function toggleExpandAllConf() {
+    const allExpanded = confCams.every(c => c.expanded);
+    confCams.forEach(c => { c.expanded = !allExpanded; });
+    renderConfList();
+  }
+  function updateConfExpandAllLabel() {
+    const lbl = document.getElementById('confExpandAllLbl');
+    if (!lbl) return;
+    const allExpanded = confCams.every(c => c.expanded);
+    lbl.textContent = allExpanded ? 'Collapse all' : 'Expand all';
+  }
+  function updateS4SelBlock() {
+    const blk = document.getElementById('s4SelBlock');
+    const count = confCams.filter(c => c.checked).length;
+    if (!blk) return;
+    document.getElementById('s4SelCount').textContent = count;
+    blk.classList.toggle('show', count > 0);
   }
 
-  function setStatus(id, state) {
-    const c = statusCams.find(c => c.id === id);
+  function setConfStatus(id, state) {
+    const c = confCams.find(x => x.id === id);
     if (!c) return;
     c.state = state;
-    renderStatusList();
-    updateStatusStats();
+    renderConfList();
   }
 
-  function startStatusList() {
+  function startConfigAnimation() {
     clearStatusTimers();
-    // Reset all to connecting
-    statusCams.forEach(c => { c.state = 'connecting'; });
-    renderStatusList();
-    updateStatusStats();
-
-    statusCams.forEach((c, i) => {
+    reseedConfNames();
+    confCams.forEach(c => { c.state = 'connecting'; c.expanded = false; c.checked = false; });
+    renderConfList();
+    confCams.forEach((c, i) => {
       const jitter = () => 80 + Math.random() * 280;
       if (c.path === 'ok') {
-        const connectedAt = 500 + i * 200 + jitter();
-        const onlineAt = connectedAt + 900 + Math.random() * 400;
-        statusTimers.push(setTimeout(() => setStatus(c.id, 'connected'), connectedAt));
-        statusTimers.push(setTimeout(() => setStatus(c.id, 'online'), onlineAt));
+        const connectedAt = 500 + i * 180 + jitter();
+        const onlineAt = connectedAt + 800 + Math.random() * 400;
+        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'connected'), connectedAt));
+        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'online'), onlineAt));
       } else if (c.path === 'authfail') {
-        statusTimers.push(setTimeout(() => setStatus(c.id, 'authfail'), 1400 + jitter()));
+        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'authfail'), 1400 + jitter()));
       } else if (c.path === 'timeout') {
-        statusTimers.push(setTimeout(() => setStatus(c.id, 'timeout'), 2700 + jitter()));
+        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'timeout'), 2700 + jitter()));
       }
     });
   }
 
-  function retryStatusRow(btn) {
-    const row = btn.closest('.row-cd');
-    if (!row) return;
-    const id = parseInt(row.id.replace('statusRow-',''));
-    const c = statusCams.find(c => c.id === id);
+  function addCredsForCam(id) {
+    const c = confCams.find(x => x.id === id);
     if (!c) return;
-    row.style.opacity = '0.5';
     c.state = 'connecting';
-    setTimeout(() => {
-      setStatus(c.id, 'connected');
-      setTimeout(() => {
-        setStatus(c.id, 'online');
-        const refreshed = document.getElementById(`statusRow-${c.id}`);
-        if (refreshed) refreshed.style.opacity = '1';
-      }, 800);
-    }, 600);
+    renderConfList();
+    statusTimers.push(setTimeout(() => setConfStatus(id, 'connected'), 700));
+    statusTimers.push(setTimeout(() => setConfStatus(id, 'online'), 1400));
   }
-  function retryPostFailed() {
-    statusCams.filter(c => c.state === 'authfail' || c.state === 'timeout').forEach(c => {
-      const row = document.getElementById(`statusRow-${c.id}`);
-      if (row) row.style.opacity = '0.5';
-      c.state = 'connecting';
-      const delay = 400 + Math.random() * 200;
-      statusTimers.push(setTimeout(() => {
-        setStatus(c.id, 'connected');
-        statusTimers.push(setTimeout(() => {
-          setStatus(c.id, 'online');
-          const refreshed = document.getElementById(`statusRow-${c.id}`);
-          if (refreshed) refreshed.style.opacity = '1';
-        }, 700 + Math.random() * 300));
-      }, delay));
-    });
+
+  // ===== Sheets (generic) =====
+  function openSheet(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('open');
+  }
+  function closeSheet(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('open');
+  }
+  function closeInfoSheet(event, id) {
+    if (event.target.classList.contains('sheet-backdrop')) closeSheet(id);
+  }
+  function pickSeg(btn) {
+    const group = btn.parentElement;
+    group.querySelectorAll('.segmented-opt').forEach(o => o.classList.remove('on'));
+    btn.classList.add('on');
+  }
+  function openEditCam(id) {
+    const c = confCams.find(x => x.id === id);
+    if (!c) return;
+    editingCamId = id;
+    document.getElementById('editCamTitle').textContent = `Edit ${c.name}`;
+    document.getElementById('editCamName').value = c.name;
+    document.getElementById('editCamAuto').classList.toggle('on', !!c.config.autoConfig);
+    const set = (groupId, val) => {
+      document.querySelectorAll(`#${groupId} .segmented-opt`).forEach(o => o.classList.toggle('on', o.dataset.val === String(val)));
+    };
+    set('editCamType', c.config.type);
+    set('editCamRetention', c.config.retention);
+    set('editCamStorage', c.config.storage);
+    openSheet('editCamSheet');
+  }
+  function saveEditCam() {
+    const c = confCams.find(x => x.id === editingCamId);
+    if (!c) { closeSheet('editCamSheet'); return; }
+    c.name = (document.getElementById('editCamName').value || c.name).trim();
+    c.config.autoConfig = document.getElementById('editCamAuto').classList.contains('on');
+    const getSel = (gid) => {
+      const on = document.querySelector(`#${gid} .segmented-opt.on`);
+      return on ? on.dataset.val : null;
+    };
+    c.config.type = getSel('editCamType') || c.config.type;
+    const ret = getSel('editCamRetention');
+    c.config.retention = ret ? parseInt(ret, 10) : c.config.retention;
+    c.config.storage = getSel('editCamStorage') || c.config.storage;
+    closeSheet('editCamSheet');
+    renderConfList();
+  }
+
+  // ===== S5 Added =====
+  function renderS5() {
+    const core = coreLabel();
+    document.getElementById('s5CoreName').textContent = core;
+    const success = confCams.filter(c => c.state === 'online' || c.state === 'connected');
+    const list = document.getElementById('s5Devices');
+    list.innerHTML = success.map(c => `
+      <div class="s5-dev-row">
+        <img class="dev-thumb" src="${thumbFor(c)}" alt="">
+        <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="dev-name">${c.name}</span>
+      </div>
+    `).join('');
+    const plural = success.length === 1 ? 'camera' : 'cameras';
+    document.getElementById('s5SuccessText').textContent = `${success.length} ${plural} has been added to ${core}`;
   }
 
   // Status filter chips (S2)
