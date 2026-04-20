@@ -294,6 +294,23 @@
   .template-preview { font-size: 12px; color: var(--text-subtle); padding: 2px 0 0; }
   .template-preview code { color: var(--primary); background: var(--primary-soft); padding: 1px 5px; border-radius: var(--r); font-family: var(--sans); font-weight: 500; }
 
+  /* Auth card (s3) */
+  .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+  .auth-field { display: flex; flex-direction: column; gap: 8px; }
+  .auth-field-narrow { width: 100px; flex: 0 0 100px; }
+  .auth-label { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .auth-label-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .auth-label-row .auth-label { flex: 1; }
+  .auth-eye { color: var(--text-default); padding: 0; display: flex; align-items: center; }
+  .auth-info { color: var(--text-subtle); display: block; }
+  .more-creds { display: flex; flex-direction: column; gap: 24px; }
+  .row-split { display: flex; gap: 8px; align-items: flex-end; }
+  .tcp-stack { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .tcp-stack .auth-label { text-align: center; width: 100%; }
+  .tcp-check-wrap { display: flex; align-items: center; justify-content: center; padding: 14px; height: 48px; }
+  .link-btn { display: inline-flex; gap: 8px; align-items: center; padding: 12px 0; font-size: 16px; font-weight: 500; color: var(--primary-border); align-self: flex-start; background: none; border: none; cursor: pointer; }
+  .link-btn:hover { color: var(--primary); }
+
   /* Config rows */
   .cfg { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
   .cfg-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px; align-items: center; cursor: pointer; transition: background .12s ease; }
@@ -737,7 +754,7 @@
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="go(0)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(2)">Next</button>
+              <button class="btn btn-primary btn-full" onclick="go(2)">Select</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -760,129 +777,67 @@
               <div class="sp-bar"><div class="sp-fill" style="width: 75%;"></div></div>
             </div>
 
-            <div class="subtitle-row">Apply credentials to 12 cameras</div>
+            <div class="content" id="s3CredsList">
+              <div class="auth-card">
+                <div class="auth-field">
+                  <label class="auth-label">Username</label>
+                  <div class="input-field"><input type="text"></div>
+                </div>
+                <div class="auth-field">
+                  <div class="auth-label-row">
+                    <label class="auth-label">Password</label>
+                    <button class="auth-eye" onclick="togglePw3(this)" aria-label="Show password">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M1.5 10S4.5 4.5 10 4.5 18.5 10 18.5 10 15.5 15.5 10 15.5 1.5 10 1.5 10z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+                    </button>
+                  </div>
+                  <div class="input-field"><input type="password"></div>
+                </div>
 
-            <div class="content">
-              <div class="batch">
-                <div class="b-title"><span class="tag">Credentials</span> Apply to <strong>12 cameras</strong></div>
-                <div class="field">
-                  <span class="field-label">Profile</span>
-                  <div class="selector">
-                    <svg width="16" height="16" viewBox="0 0 16 16"><rect x="3" y="6" width="10" height="8" rx="1.5" stroke="#344054" stroke-width="1.4" fill="none"/><path d="M5 6V4.5a3 3 0 016 0V6" stroke="#344054" stroke-width="1.4" fill="none"/></svg>
-                    <span class="sv">Axis default <span class="dim">· root / ••••</span></span>
-                    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="#98A2B3" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                <div class="more-creds" hidden>
+                  <div class="row-split">
+                    <div class="auth-field auth-field-narrow">
+                      <label class="auth-label">RTSP port</label>
+                      <div class="input-field"><input type="text" value="554"></div>
+                    </div>
+                    <div class="tcp-stack">
+                      <label class="auth-label">TCP</label>
+                      <div class="tcp-check-wrap">
+                        <div class="cb ck" onclick="toggleTcp(this)">
+                          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="auth-field">
+                    <label class="auth-label">RTSP path</label>
+                    <div class="input-field"><input type="text" placeholder="Path: /"></div>
+                  </div>
+                  <div class="auth-field">
+                    <div class="auth-label-row">
+                      <label class="auth-label">Substream RTSP path</label>
+                      <span class="auth-info" aria-label="Info">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                      </span>
+                    </div>
+                    <div class="input-field"><input type="text" placeholder="Path: /"></div>
                   </div>
                 </div>
-                <div class="row-2">
-                  <div class="field">
-                    <span class="field-label">Username</span>
-                    <div class="input-field"><input value="root" style="font-size:14px;"></div>
-                  </div>
-                  <div class="field">
-                    <span class="field-label">Password</span>
-                    <div class="input-field"><input type="password" value="••••••••" id="pwInput" style="font-size:14px;"><span class="suffix" onclick="togglePw()">SHOW</span></div>
-                  </div>
-                </div>
-                <button class="btn btn-secondary btn-full" onclick="applyCreds(this)">
-                  <svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  Apply to all 12 cameras
+
+                <button class="link-btn" onclick="toggleMoreCreds(this)">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  <span>Add more credentials</span>
                 </button>
               </div>
 
-              <div class="batch">
-                <div class="b-title"><span class="tag">Naming</span></div>
-                <div class="field">
-                  <span class="field-label">Template</span>
-                  <div class="input-field"><input value="{core}-{sub}-{##}" style="font-size:14px;"></div>
-                  <span class="template-preview">Preview · <code>Core3-Lobby-01</code> · <code>Core3-Lobby-02</code> …</span>
-                </div>
-                <div class="row-2">
-                  <div class="field">
-                    <span class="field-label">Sublocation</span>
-                    <div class="selector"><span class="sv">Lobby</span>
-                      <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="#98A2B3" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <span class="field-label">Group</span>
-                    <div class="selector"><span class="sv">Lobby cameras</span>
-                      <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="#98A2B3" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="section-label">Cameras <span class="count">(12)</span> <span class="action" id="retryAllLink" onclick="retryDahua()">Retry failed (1)</span></div>
-
-              <div class="cfg" id="cfgList">
-                <div class="cfg-row">
-                  <span class="status-dot ok"></span>
-                  <div>
-                    <div class="cname">Core3-Lobby-01</div>
-                    <div class="cmeta">10.0.12.34 · Axis M3045-V</div>
-                  </div>
-                  <span class="badge ok">Auth OK</span>
-                </div>
-                <div class="cfg-row">
-                  <span class="status-dot ok"></span>
-                  <div>
-                    <div class="cname">Core3-Lobby-02</div>
-                    <div class="cmeta">10.0.12.35 · Hikvision DS-2CD2143G2-I</div>
-                  </div>
-                  <span class="badge ok">Auth OK</span>
-                </div>
-                <div class="cfg-row expanded" id="dahuaRow">
-                  <span class="status-dot err" id="dahuaDot"></span>
-                  <div>
-                    <div class="cname">Core3-Lobby-03</div>
-                    <div class="cmeta">10.0.12.38 · Dahua IPC-HFW5442T-ASE</div>
-                  </div>
-                  <span class="badge authfail" id="dahuaBadge">Auth failed</span>
-                </div>
-                <div class="expanded-body" id="dahuaBody">
-                  <div class="row"><span class="k">Why</span><span class="v">"Axis default" profile rejected. Dahua factory creds are <code>admin / admin</code>.</span></div>
-                  <div class="field">
-                    <span class="field-label">Override credentials</span>
-                    <div class="row-2">
-                      <div class="input-field"><input value="admin" style="font-size:14px;"></div>
-                      <div class="input-field"><input type="password" value="•••••" style="font-size:14px;"></div>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <span class="field-label">Substream RTSP path</span>
-                    <div class="input-field"><input value="/cam/realmonitor?channel=1&subtype=1" style="font-size:14px;"><span class="suffix">TEST</span></div>
-                  </div>
-                  <div style="display:flex; gap:8px; align-items:center;">
-                    <button class="retry-btn" onclick="retryDahua()">
-                      <svg width="12" height="12" viewBox="0 0 12 12"><path d="M10 6a4 4 0 10-1 2.8M10 2v3H7" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
-                      Retry this camera
-                    </button>
-                    <button class="btn-ghost" onclick="retryDahua()">Apply to all Dahua</button>
-                  </div>
-                </div>
-                <div class="cfg-row">
-                  <span class="status-dot ok"></span>
-                  <div>
-                    <div class="cname">Core3-Lobby-04</div>
-                    <div class="cmeta">10.0.12.41 · Hanwha XNO-6120R</div>
-                  </div>
-                  <span class="badge ok">Auth OK</span>
-                </div>
-                <div class="cfg-row">
-                  <span class="status-dot ok"></span>
-                  <div>
-                    <div class="cname">Core3-Lobby-05 <span style="color:var(--warning); font-size:12px; margin-left:6px;">+3 sensors</span></div>
-                    <div class="cmeta">10.0.12.51 · Axis M3068-P</div>
-                  </div>
-                  <span class="badge ok">Auth OK</span>
-                </div>
-                <div style="text-align:center; padding: 10px; font-size: 12px; color: var(--text-subtle); border-top: 1px solid var(--border);">+ 6 more cameras</div>
-              </div>
+              <button class="btn btn-secondary btn-full" onclick="addCredSet()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                Add credentials
+              </button>
             </div>
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="go(1)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(3)">Next</button>
+              <button class="btn btn-primary btn-full" onclick="go(3)">Connect</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1308,46 +1263,32 @@
   }
 
   // ===== Auth (S3) helpers =====
-  function togglePw() {
-    const inp = document.getElementById('pwInput');
-    const suf = inp.nextElementSibling;
-    if (inp.type === 'password') { inp.type = 'text'; inp.value = 'LumanaAdm!'; suf.textContent = 'HIDE'; }
-    else { inp.type = 'password'; inp.value = '••••••••'; suf.textContent = 'SHOW'; }
+  function togglePw3(btn) {
+    const field = btn.closest('.auth-field');
+    const inp = field.querySelector('input');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
   }
-  function applyCreds(btn) {
-    const orig = btn.innerHTML;
-    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Applied to 12 cameras';
-    btn.style.color = 'var(--primary)';
-    btn.style.borderColor = 'var(--primary)';
-    setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2200);
+  function toggleTcp(el) { el.classList.toggle('ck'); }
+  function toggleMoreCreds(btn) {
+    const card = btn.closest('.auth-card');
+    const more = card.querySelector('.more-creds');
+    const label = btn.querySelector('span');
+    const open = more.hasAttribute('hidden');
+    if (open) { more.removeAttribute('hidden'); label.textContent = 'Hide extra credentials'; }
+    else { more.setAttribute('hidden', ''); label.textContent = 'Add more credentials'; }
   }
-  function retryDahua() {
-    const dot = document.getElementById('dahuaDot');
-    const badge = document.getElementById('dahuaBadge');
-    const body = document.getElementById('dahuaBody');
-    const row = document.getElementById('dahuaRow');
-    const link = document.getElementById('retryAllLink');
-    dot.className = 'status-dot ok';
-    badge.className = 'badge ok';
-    badge.textContent = 'Auth OK';
-    row.classList.remove('expanded');
-    body.style.display = 'none';
-    link.style.display = 'none';
+  function addCredSet() {
+    const list = document.getElementById('s3CredsList');
+    const firstCard = list.querySelector('.auth-card');
+    const clone = firstCard.cloneNode(true);
+    clone.querySelectorAll('input').forEach(i => { i.value = i.defaultValue || ''; });
+    const more = clone.querySelector('.more-creds');
+    if (more) more.setAttribute('hidden', '');
+    const lbl = clone.querySelector('.link-btn span');
+    if (lbl) lbl.textContent = 'Add more credentials';
+    list.insertBefore(clone, list.querySelector('.btn-secondary'));
   }
-  function restoreDahua() {
-    const dot = document.getElementById('dahuaDot');
-    const badge = document.getElementById('dahuaBadge');
-    const body = document.getElementById('dahuaBody');
-    const row = document.getElementById('dahuaRow');
-    const link = document.getElementById('retryAllLink');
-    if (!dot) return;
-    dot.className = 'status-dot err';
-    badge.className = 'badge authfail';
-    badge.textContent = 'Auth failed';
-    row.classList.add('expanded');
-    body.style.display = '';
-    link.style.display = '';
-  }
+  function restoreDahua() { /* retained as no-op after s3 redesign */ }
 
   // ===== Live status list (S5) =====
   const statusCams = [
