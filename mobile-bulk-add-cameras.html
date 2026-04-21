@@ -587,9 +587,9 @@
   .s5-dev-row .dev-thumb-core { width: 64px; height: 48px; border-radius: 2px; flex: 0 0 auto; background: var(--surface-subtle); display: grid; place-items: center; color: var(--text-default); }
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
   .s5-dev-row .dev-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .s5-success { position: absolute; left: 16px; right: 16px; bottom: 24px; background: #F0FDF4; border: 1px solid #22C55E; border-left: 3px solid #22C55E; border-radius: var(--r); padding: 16px; display: flex; gap: 12px; align-items: center; }
-  .s5-success .ok-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; }
-  .s5-success .ok-text { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
+  .s5-success { position: absolute; left: 16px; right: 16px; bottom: 24px; background: #F0FDF4; border: 1px solid #22C55E; border-radius: var(--r); padding: 16px; display: flex; gap: 24px; align-items: flex-start; box-shadow: inset 3px 0 0 0 #22C55E; }
+  .s5-success .ok-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; padding: 4px; }
+  .s5-success .ok-text { flex: 1; font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
 
   @media (max-width: 900px) {
     .workspace { flex-direction: column; align-items: center; padding: 24px; gap: 24px; }
@@ -1234,7 +1234,7 @@
 
             <div class="s5-success" id="s5SuccessBanner">
               <span class="ok-ico">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
               <div class="ok-text" id="s5SuccessText">cameras has been added</div>
             </div>
