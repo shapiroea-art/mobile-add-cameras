@@ -109,8 +109,8 @@
   /* Topbar */
   .topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
   .topbar .tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
-  .topbar .btn-icon { display: grid; place-items: center; padding: 16px; border-radius: var(--r); cursor: pointer; color: var(--text-bold); }
-  .topbar .btn-icon:hover { background: var(--surface-subtle); }
+  .btn-icon { display: grid; place-items: center; padding: 16px; border-radius: var(--r); cursor: pointer; color: var(--text-bold); background: none; border: none; }
+  .btn-icon:hover { background: var(--surface-subtle); }
   .topbar .tb-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--text-bold); letter-spacing: -0.005em; padding-right: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .topbar .tb-right { display: flex; align-items: center; justify-content: center; padding: 4px 8px 4px 0; }
 
@@ -565,7 +565,7 @@
   .segmented-opt.on { background: var(--surface); color: var(--text-bold); box-shadow: 0 1px 2px rgba(16,24,40,.08); }
 
   /* ===== S5 Added (location page) ===== */
-  .s5-topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 4px 0 0; flex: 0 0 auto; }
+  .s5-topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
   .s5-topbar .s5-tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
   .s5-topbar .s5-title { font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .s5-filters { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
@@ -1162,7 +1162,7 @@
                 </button>
                 <div class="s5-title">Administrative Center 1</div>
               </div>
-              <button class="btn-icon" aria-label="More">
+              <button class="btn-icon" aria-label="More" style="padding:14px;">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="4" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="16" cy="10" r="1.6" fill="currentColor"/></svg>
               </button>
             </div>
