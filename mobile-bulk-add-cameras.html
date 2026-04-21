@@ -494,11 +494,13 @@
   .conf-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
   .conf-meta { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-subtle); line-height: 24px; }
   .conf-meta .dot { color: var(--text-subtlest); }
-  .conf-fail { display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: #FEF2F2; border-radius: var(--r); }
-  .conf-fail .ft { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text-default); }
-  .conf-fail .ft-ico { color: var(--danger); flex: 0 0 auto; display: inline-flex; }
-  .conf-fail .add-creds { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border: 1px solid var(--primary-border); border-radius: var(--r); background: var(--surface); color: var(--primary); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; white-space: nowrap; }
-  .conf-fail .add-creds:hover { background: var(--primary-soft); }
+  .conf-fail-card { margin: 0 8px 12px; padding: 12px 16px; background: #FEF2F2; border: 1px solid var(--danger); border-left-width: 3px; border-radius: var(--r); display: flex; gap: 12px; align-items: flex-start; }
+  .conf-fail-card .fc-ico { color: var(--danger); flex: 0 0 auto; padding-top: 2px; display: inline-flex; }
+  .conf-fail-card .fc-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .conf-fail-card .fc-title { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
+  .conf-fail-card .fc-desc { font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 24px; }
+  .conf-fail-card .fc-action { display: inline-flex; align-items: center; gap: 8px; padding: 8px 0 0; font-size: 16px; font-weight: 500; color: var(--primary-border); background: none; border: none; cursor: pointer; align-self: flex-start; }
+  .conf-fail-card .fc-action:hover { color: var(--primary); }
   .conf-kebab { width: 40px; height: 40px; display: grid; place-items: center; border: none; background: transparent; color: var(--text-subtlest); cursor: pointer; padding: 10px; flex: 0 0 auto; border-radius: var(--r); }
   .conf-kebab:hover { background: var(--surface-subtle); color: var(--text-default); }
   .conf-chev { width: 32px; height: 32px; display: grid; place-items: center; border: none; background: transparent; color: var(--text-subtlest); cursor: pointer; transition: transform .25s ease, color .12s ease; flex: 0 0 auto; padding: 0; }
@@ -509,13 +511,27 @@
   .conf-hint { padding: 0 8px; font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; }
   .edit-cam-btn { align-self: stretch; display: inline-flex; gap: 8px; align-items: center; justify-content: center; padding: 8px 16px; height: 40px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); color: var(--text-default); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
   .edit-cam-btn:hover { background: var(--surface-subtle); }
-  .opt-list { display: flex; flex-direction: column; gap: 8px; }
-  .opt-row { display: flex; align-items: center; gap: 8px; }
-  .opt-row .opt-label { flex: 1; display: inline-flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .opt-list { display: flex; flex-direction: column; gap: 2px; }
+  .opt-row { display: flex; align-items: center; gap: 8px; min-height: 32px; }
+  .opt-row .opt-label { flex: 1; display: inline-flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
   .opt-row .opt-label .opt-ico.warn { color: var(--warning); }
   .opt-row .opt-label .opt-ico.ok { color: var(--success); }
-  .opt-row .opt-show { padding: 8px 16px; font-size: 14px; font-weight: 500; color: var(--primary); background: none; border: none; cursor: pointer; border-radius: var(--r); }
+  .opt-row .opt-show { padding: 4px 8px; font-size: 14px; font-weight: 500; color: var(--primary); background: none; border: none; cursor: pointer; border-radius: var(--r); }
   .opt-row .opt-show:hover { background: var(--primary-soft); }
+  .conf-thumb, .conf-thumb-off { cursor: pointer; transition: opacity .12s ease; }
+  .conf-thumb:hover, .conf-thumb-off:hover { opacity: .85; }
+  .conf-meta-placeholder { min-height: 24px; }
+  .conf-meta-fail { font-size: 14px; color: var(--text-subtle); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Preview sheet */
+  .preview-sheet { max-height: 88%; overflow-y: auto; padding: 8px 0 0; }
+  .preview-sheet .pv-media { width: 100%; aspect-ratio: 16 / 9; background: #0B1021; display: block; }
+  .preview-sheet .pv-media-off { width: 100%; aspect-ratio: 16 / 9; background: var(--surface-subtle); display: grid; place-items: center; color: var(--text-subtlest); }
+  .preview-sheet .pv-head { padding: 16px 16px 8px; display: flex; flex-direction: column; gap: 4px; }
+  .preview-sheet .pv-name { font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; }
+  .preview-sheet .pv-sub { font-size: 14px; color: var(--text-subtle); line-height: 20px; display: flex; align-items: center; gap: 6px; }
+  .preview-sheet .pv-body { padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 16px; }
+
   .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 14px; color: var(--text-default); line-height: 24px; }
   .meta-grid .mg-item { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .meta-grid .mg-ico { color: var(--text-default); flex: 0 0 auto; display: inline-flex; }
@@ -593,7 +609,7 @@
       <div class="fm-step active" data-step="0"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">select destination</div></div></div>
       <div class="fm-step" data-step="1"><span class="n">02</span><div><div class="lbl">Detection</div><div class="sub">scan · multi-select</div></div></div>
       <div class="fm-step" data-step="2"><span class="n">03</span><div><div class="lbl">Authenticate</div><div class="sub">credentials · config</div></div></div>
-      <div class="fm-step" data-step="3"><span class="n">04</span><div><div class="lbl">Configuration</div><div class="sub">live status · edit · commit</div></div></div>
+      <div class="fm-step" data-step="3"><span class="n">04</span><div><div class="lbl">Final setup</div><div class="sub">live status · edit · commit</div></div></div>
       <div class="fm-step" data-step="4"><span class="n">✓</span><div><div class="lbl">Added</div><div class="sub">location · success</div></div></div>
     </div>
     <button class="reset" onclick="resetFlow()">
@@ -965,9 +981,11 @@
             </div>
 
             <div class="stepper">
-              <div class="sp-label">5 of 5 – Configuration</div>
+              <div class="sp-label">5 of 5 – Final setup</div>
               <div class="sp-bar"><div class="sp-fill" style="width: 100%;"></div></div>
             </div>
+
+            <div class="subtitle-row" style="border-bottom: 1px solid var(--border);">Select cameras on the left to add them</div>
 
             <div class="table-header">
               <div class="th-cb-wrap">
@@ -1051,6 +1069,42 @@
                 </div>
                 <div class="info-sheet-foot">
                   <button class="btn btn-secondary btn-full" onclick="closeSheet('substreamSheet')">Close</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="previewSheet" onclick="closeInfoSheet(event, 'previewSheet')">
+              <div class="sheet preview-sheet">
+                <div class="sheet-handle"></div>
+                <div id="previewMedia"></div>
+                <div class="pv-head">
+                  <div class="pv-name" id="previewName"></div>
+                  <div class="pv-sub" id="previewSub"></div>
+                </div>
+                <div class="pv-body" id="previewBody"></div>
+                <div class="info-sheet-foot">
+                  <button class="btn btn-secondary btn-full" onclick="closeSheet('previewSheet')">Close</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="addCredsSheet" onclick="closeInfoSheet(event, 'addCredsSheet')">
+              <div class="sheet edit-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title" id="addCredsTitle">Add credentials</div>
+                <div class="edit-sheet-body">
+                  <div class="edit-field">
+                    <label class="edit-field-label">Username</label>
+                    <div class="input-field"><input type="text" id="addCredsUser"></div>
+                  </div>
+                  <div class="edit-field">
+                    <label class="edit-field-label">Password</label>
+                    <div class="input-field"><input type="password" id="addCredsPw"></div>
+                  </div>
+                </div>
+                <div class="info-sheet-foot" style="display:flex; gap:8px;">
+                  <button class="btn btn-secondary btn-full" onclick="closeSheet('addCredsSheet')">Cancel</button>
+                  <button class="btn btn-primary btn-full" onclick="submitAddCreds()">Connect</button>
                 </div>
               </div>
             </div>
@@ -1596,37 +1650,46 @@
   function confStatusIcon(state) {
     if (state === 'connecting') return '<span class="conf-status-ico"><span class="mini-spinner"></span></span>';
     if (state === 'connected' || state === 'online') return '<span class="conf-status-ico ok"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-    if (state === 'authfail') return '<span class="conf-status-ico warn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l6.5 12h-13L8 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M8 6.5v3.5M8 12v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
-    if (state === 'timeout') return '<span class="conf-status-ico err"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l6.5 12h-13L8 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M8 6.5v3.5M8 12v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
+    if (state === 'authfail' || state === 'timeout') return '<span class="conf-status-ico err"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M8 4.5v3.5M8 10v.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
     return '';
   }
 
-  function metaOrFailHTML(c) {
+  function metaHTML(c) {
     if (c.state === 'authfail' || c.state === 'timeout') {
-      return `<div class="conf-fail">
-        <span class="ft"><span class="ft-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5M7 9.5v.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>Connection failed. Authentication error.</span>
-        <button class="add-creds" onclick="event.stopPropagation(); addCredsForCam(${c.id})"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Add credentials</button>
-      </div>`;
+      return `<div class="conf-meta-fail">${c.ip} <span class="dot" style="color:var(--text-subtlest);">•</span> ${c.brand} <span class="dot" style="color:var(--text-subtlest);">•</span> ${c.mac}</div>`;
     }
-    return `<div class="conf-meta">Substream <span class="dot">•</span> ${c.config.type}</div>`;
+    if (c.state === 'online') {
+      return `<div class="conf-meta">Substream <span class="dot">•</span> ${c.config.type}</div>`;
+    }
+    return '<div class="conf-meta-placeholder"></div>';
   }
 
   function thumbHTML(c) {
     if (c.state === 'authfail' || c.state === 'timeout') {
-      return `<div class="conf-thumb-off"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 3l20 18M16 10v-.5A1.5 1.5 0 0014.5 8h-4.8M4 8v8a1.5 1.5 0 001.5 1.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+      return `<div class="conf-thumb-off" data-role="thumb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 3l20 18M16 10v-.5A1.5 1.5 0 0014.5 8h-4.8M4 8v8a1.5 1.5 0 001.5 1.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
     }
-    return `<img class="conf-thumb" src="${thumbFor(c)}" alt="">`;
+    return `<img class="conf-thumb" data-role="thumb" src="${thumbFor(c)}" alt="">`;
+  }
+
+  function failCardHTML(c) {
+    if (c.state !== 'authfail' && c.state !== 'timeout') return '';
+    return `<div class="conf-fail-card" onclick="event.stopPropagation();">
+      <span class="fc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" fill="currentColor"/><path d="M10 6v4.5M10 13v.01" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+      <div class="fc-body">
+        <div class="fc-title">Connection failed.</div>
+        <div class="fc-desc">Authentication error.</div>
+        <button class="fc-action" onclick="event.stopPropagation(); openAddCreds(${c.id})">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Add credentials
+        </button>
+      </div>
+    </div>`;
   }
 
   function expandedBodyHTML(c) {
     const retention = c.config.retention;
     const storage = c.config.storage;
     return `<div class="conf-details">
-      <div class="conf-hint">Select cameras on the left to configure them together</div>
-      <button class="edit-cam-btn" onclick="event.stopPropagation(); openEditCam(${c.id})">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
-        Edit camera
-      </button>
       <div class="opt-list">
         <div class="opt-row">
           <span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span>
@@ -1647,6 +1710,10 @@
         <div class="mg-item"><span class="mg-text">IP: ${c.ip}</span></div>
         <div class="mg-item"><span class="mg-text">Mac: ${c.mac}</span></div>
       </div>
+      <button class="edit-cam-btn" onclick="event.stopPropagation(); openEditCam(${c.id})">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
+        Edit camera
+      </button>
     </div>`;
   }
 
@@ -1670,22 +1737,21 @@
           ${thumbHTML(c)}
           <div class="conf-body">
             <div class="conf-name-row">${confStatusIcon(c.state)}<span class="conf-name">${c.name}</span></div>
-            ${metaOrFailHTML(c)}
+            ${metaHTML(c)}
           </div>
-          <button class="conf-kebab" data-role="kebab" aria-label="More">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="4" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="16" r="1.4" fill="currentColor"/></svg>
-          </button>
           <button class="conf-chev" data-role="chev" aria-label="Expand">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
+        ${failCardHTML(c)}
         ${expandedBodyHTML(c)}
       `;
       row.addEventListener('click', (e) => {
         if (e.target.closest('[data-role="cb"]')) { toggleCheckCam(c.id); return; }
+        if (e.target.closest('[data-role="thumb"]')) { openPreview(c.id); return; }
         if (e.target.closest('[data-role="chev"]')) { toggleExpandCam(c.id); return; }
-        if (e.target.closest('[data-role="kebab"]')) { return; }
         if (e.target.closest('.conf-details')) return;
+        if (e.target.closest('.conf-fail-card')) return;
         toggleExpandCam(c.id);
       });
       list.appendChild(row);
@@ -1754,28 +1820,85 @@
     reseedConfNames();
     confCams.forEach(c => { c.state = 'connecting'; c.expanded = false; c.checked = false; });
     renderConfList();
-    confCams.forEach((c, i) => {
-      const jitter = () => 80 + Math.random() * 280;
-      if (c.path === 'ok') {
-        const connectedAt = 500 + i * 180 + jitter();
-        const onlineAt = connectedAt + 800 + Math.random() * 400;
-        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'connected'), connectedAt));
-        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'online'), onlineAt));
-      } else if (c.path === 'authfail') {
-        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'authfail'), 1400 + jitter()));
-      } else if (c.path === 'timeout') {
-        statusTimers.push(setTimeout(() => setConfStatus(c.id, 'timeout'), 2700 + jitter()));
-      }
+    // Stretch across ~10s. OK cams: Connected staggered 2.5-8s, Online +1-2s landing 6-10s.
+    // Fails: authfail at ~8s, timeout at ~9s so user sees successes first.
+    const okCams = confCams.filter(c => c.path === 'ok');
+    okCams.forEach((c, idx) => {
+      const frac = okCams.length > 1 ? idx / (okCams.length - 1) : 0; // 0..1
+      const connectedAt = 2500 + frac * 5500 + (Math.random() * 300 - 150);
+      const onlineAt = connectedAt + 1000 + Math.random() * 900;
+      statusTimers.push(setTimeout(() => setConfStatus(c.id, 'connected'), connectedAt));
+      statusTimers.push(setTimeout(() => setConfStatus(c.id, 'online'), Math.min(onlineAt, 10000)));
+    });
+    confCams.filter(c => c.path === 'authfail').forEach(c => {
+      statusTimers.push(setTimeout(() => setConfStatus(c.id, 'authfail'), 8000 + Math.random() * 400));
+    });
+    confCams.filter(c => c.path === 'timeout').forEach(c => {
+      statusTimers.push(setTimeout(() => setConfStatus(c.id, 'timeout'), 9000 + Math.random() * 400));
     });
   }
 
-  function addCredsForCam(id) {
+  // ===== Add credentials sheet =====
+  let addCredsCamId = null;
+  function openAddCreds(id) {
+    const c = confCams.find(x => x.id === id);
+    if (!c) return;
+    addCredsCamId = id;
+    document.getElementById('addCredsTitle').textContent = `Add credentials · ${c.name}`;
+    document.getElementById('addCredsUser').value = '';
+    document.getElementById('addCredsPw').value = '';
+    openSheet('addCredsSheet');
+  }
+  function submitAddCreds() {
+    const id = addCredsCamId;
+    closeSheet('addCredsSheet');
     const c = confCams.find(x => x.id === id);
     if (!c) return;
     c.state = 'connecting';
     renderConfList();
     statusTimers.push(setTimeout(() => setConfStatus(id, 'connected'), 700));
-    statusTimers.push(setTimeout(() => setConfStatus(id, 'online'), 1400));
+    statusTimers.push(setTimeout(() => setConfStatus(id, 'online'), 1600));
+  }
+
+  // ===== Camera preview sheet =====
+  function openPreview(id) {
+    const c = confCams.find(x => x.id === id);
+    if (!c) return;
+    const media = document.getElementById('previewMedia');
+    if (c.state === 'authfail' || c.state === 'timeout') {
+      media.innerHTML = `<div class="pv-media-off"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M2 3l20 18M16 10v-.5A1.5 1.5 0 0014.5 8h-4.8M4 8v8a1.5 1.5 0 001.5 1.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+    } else {
+      media.innerHTML = `<img class="pv-media" src="https://picsum.photos/seed/cam${c.id}/1280/720" alt="">`;
+    }
+    document.getElementById('previewName').textContent = c.name;
+    const stateLabel = c.state === 'online' ? 'Online' : c.state === 'connected' ? 'Connected' : c.state === 'connecting' ? 'Connecting…' : c.state === 'authfail' ? 'Auth failed' : 'Connection timeout';
+    const stateColor = (c.state === 'online' || c.state === 'connected') ? 'var(--success)' : (c.state === 'connecting') ? 'var(--text-subtle)' : 'var(--danger)';
+    document.getElementById('previewSub').innerHTML = `<span style="width:8px; height:8px; border-radius:50%; background:${stateColor}; display:inline-block;"></span>${stateLabel} <span style="color:var(--text-subtlest);">•</span> Substream <span style="color:var(--text-subtlest);">•</span> ${c.config.type}`;
+    const retention = c.config.retention;
+    const storage = c.config.storage;
+    document.getElementById('previewBody').innerHTML = `
+      <div class="opt-list">
+        <div class="opt-row">
+          <span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span>
+          <button class="opt-show" onclick="openSheet('mainstreamSheet')">Show</button>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Substream is optimized</span>
+          <button class="opt-show" onclick="openSheet('substreamSheet')">Show</button>
+        </div>
+      </div>
+      <div class="meta-grid">
+        <div class="mg-item">${c.config.autoConfig ? 'Auto-config enabled' : 'Auto-config disabled'}</div>
+        <div class="mg-item">Audio stream disabled</div>
+        <div class="mg-item">Storage: ${storage}</div>
+        <div class="mg-item">Smart storage enabled</div>
+        <div class="mg-item">${retention} retention days</div>
+        <div class="mg-item">Model: ${c.model}</div>
+        <div class="mg-item">IP: ${c.ip}</div>
+        <div class="mg-item">Mac: ${c.mac}</div>
+      </div>
+    `;
+    openSheet('previewSheet');
   }
 
   // ===== Sheets (generic) =====
