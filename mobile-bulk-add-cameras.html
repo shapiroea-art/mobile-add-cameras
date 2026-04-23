@@ -664,7 +664,8 @@
   .core-card .cc-secondary-link:hover { color: var(--primary); text-decoration: underline; }
   .core-card .cc-manual-row { display: flex; gap: 8px; }
   .core-card .cc-manual-row .input-field { flex: 1; min-width: 0; }
-  .core-card .cc-confirm { padding: 0 16px; height: 48px; border-radius: var(--r); border: 1px solid var(--primary-border); background: var(--primary); color: var(--text-inverse); font-size: 14px; font-weight: 500; cursor: pointer; flex: 0 0 auto; }
+  .core-card .cc-confirm { width: 48px; height: 48px; padding: 0; display: grid; place-items: center; border-radius: var(--r); border: 1px solid var(--primary-border); background: var(--primary); color: var(--text-inverse); cursor: pointer; flex: 0 0 auto; }
+  .core-card .cc-confirm:hover { background: var(--primary-hover); }
   .core-card .cc-confirm.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
   .core-card .cc-status { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; line-height: 20px; }
   .core-card .cc-status.connecting { color: var(--text-subtle); }
@@ -2599,7 +2600,9 @@
       wrap.innerHTML = `
         <div class="cc-manual-row">
           <div class="input-field"><input type="text" id="ccManual-${d.id}" placeholder="Enter Core ID" value="${_escHtml(d.coreId || '')}" oninput="onManualInputChange(${d.id})"></div>
-          <button class="cc-confirm ${d.coreId && d.coreId.trim() ? '' : 'disabled'}" id="ccManualConfirm-${d.id}" onclick="confirmManualId(${d.id})">Confirm</button>
+          <button class="cc-confirm ${d.coreId && d.coreId.trim() ? '' : 'disabled'}" id="ccManualConfirm-${d.id}" onclick="confirmManualId(${d.id})" aria-label="Confirm Core ID">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10.5l3 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
         <button class="cc-secondary-link" onclick="cancelManualForDraft(${d.id})">Cancel manual entry</button>`;
       return wrap;
