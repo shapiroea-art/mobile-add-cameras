@@ -64,6 +64,8 @@
   .flowmap { position: sticky; top: 48px; width: 240px; flex: 0 0 auto; }
   .flowmap .fm-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; color: var(--text-subtle); text-transform: uppercase; margin-bottom: 14px; }
   .fm-steps { display: flex; flex-direction: column; gap: 2px; }
+  .fm-section { font-size: 10px; font-weight: 600; letter-spacing: .08em; color: var(--text-subtlest); text-transform: uppercase; padding: 14px 12px 6px; }
+  .fm-section:first-child { padding-top: 2px; }
   .fm-step { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 10px 12px; border-radius: var(--r); cursor: pointer; align-items: center; transition: background .12s ease; border: 1px solid transparent; }
   .fm-step:hover { background: var(--surface); }
   .fm-step.active { background: var(--surface); border-color: var(--border); box-shadow: 0 1px 2px rgba(16,24,40,.04); }
@@ -732,11 +734,20 @@
   <aside class="flowmap">
     <div class="fm-title">Flow map</div>
     <div class="fm-steps" id="fmSteps">
-      <div class="fm-step active" data-step="0"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">select destination</div></div></div>
-      <div class="fm-step" data-step="1"><span class="n">02</span><div><div class="lbl">Detection</div><div class="sub">scan · multi-select</div></div></div>
-      <div class="fm-step" data-step="2"><span class="n">03</span><div><div class="lbl">Authenticate</div><div class="sub">credentials · config</div></div></div>
-      <div class="fm-step" data-step="3"><span class="n">04</span><div><div class="lbl">Final setup</div><div class="sub">live status · edit · commit</div></div></div>
-      <div class="fm-step" data-step="4"><span class="n">✓</span><div><div class="lbl">Added</div><div class="sub">location · success</div></div></div>
+      <div class="fm-section">Location</div>
+      <div class="fm-step" data-panel="sDevices" onclick="jumpToPanel('sDevices')"><span class="n">·</span><div><div class="lbl">Devices</div><div class="sub">all locations</div></div></div>
+      <div class="fm-step" data-panel="s0" onclick="jumpToPanel('s0')"><span class="n">·</span><div><div class="lbl">Administrative Center 1</div><div class="sub">sublocations · devices</div></div></div>
+
+      <div class="fm-section">Add core</div>
+      <div class="fm-step" data-panel="sAddCore" onclick="jumpToPanel('sAddCore')"><span class="n">01</span><div><div class="lbl">Add core</div><div class="sub">name · core ID</div></div></div>
+      <div class="fm-step" data-panel="sBarcodeScan" onclick="jumpToPanel('sBarcodeScan')"><span class="n">02</span><div><div class="lbl">Scan barcode</div><div class="sub">viewfinder</div></div></div>
+
+      <div class="fm-section">Add cameras</div>
+      <div class="fm-step active" data-panel="s1" onclick="jumpToPanel('s1')"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">select destination</div></div></div>
+      <div class="fm-step" data-panel="s2" onclick="jumpToPanel('s2')"><span class="n">02</span><div><div class="lbl">Discover</div><div class="sub">scan · multi-select</div></div></div>
+      <div class="fm-step" data-panel="s3" onclick="jumpToPanel('s3')"><span class="n">03</span><div><div class="lbl">Sign in</div><div class="sub">credentials · config</div></div></div>
+      <div class="fm-step" data-panel="s4" onclick="jumpToPanel('s4')"><span class="n">04</span><div><div class="lbl">Configure</div><div class="sub">live status · edit · commit</div></div></div>
+      <div class="fm-step" data-panel="s5" onclick="jumpToPanel('s5')"><span class="n">✓</span><div><div class="lbl">Added</div><div class="sub">location · success</div></div></div>
     </div>
     <button class="reset" onclick="resetFlow()">
       <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6a4 4 0 104-4M2 2v3h3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1746,10 +1757,55 @@
   let statusTimers = [];
 
   function updateChrome() {
-    document.querySelectorAll('#fmSteps .fm-step').forEach((el, idx) => {
-      el.classList.toggle('active', idx === current);
-      el.classList.toggle('done', idx < current);
+    const activePanel = document.querySelector('.panel.active');
+    const activeId = activePanel ? activePanel.id : '';
+    const cameraFlow = ['s1','s2','s3','s4','s5'];
+    const activeCamIdx = cameraFlow.indexOf(activeId);
+    document.querySelectorAll('#fmSteps .fm-step').forEach(el => {
+      const panel = el.dataset.panel;
+      const camIdx = cameraFlow.indexOf(panel);
+      el.classList.toggle('active', panel === activeId);
+      el.classList.toggle('done', camIdx !== -1 && activeCamIdx !== -1 && camIdx < activeCamIdx);
     });
+  }
+
+  function jumpToPanel(panelId) {
+    try { closeMethodSheet(); } catch (e) {}
+    try { closeFilterSheet(); } catch (e) {}
+    try { closeLocationMenu(); } catch (e) {}
+    clearStatusTimers();
+    clearScanTimers();
+    clearCoreConnectTimers();
+    if (panelId === 's2' || panelId === 's3' || panelId === 's4') {
+      if (!selectedCore) selectCore('core3');
+    }
+    if (panelId === 'sAddCore') {
+      if (coreDrafts.length === 0) {
+        coreDrafts = [];
+        nextCoreSuffix = 1;
+        addAnotherCoreDraft();
+      } else {
+        renderCoreDrafts();
+      }
+    }
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active','exit-left'));
+    const target = document.getElementById(panelId);
+    if (!target) return;
+    target.classList.add('active');
+    const numberedIdx = screens.indexOf(panelId);
+    if (numberedIdx !== -1) current = numberedIdx;
+    if (panelId === 's2') startScan();
+    if (panelId === 's4') startConfigAnimation();
+    if (panelId === 's5') renderS5();
+    if (panelId === 'sBarcodeScan') {
+      if (coreDrafts.length === 0) {
+        coreDrafts = [];
+        nextCoreSuffix = 1;
+        addAnotherCoreDraft();
+      }
+      scanningDraftId = coreDrafts[0].id;
+      coreConnectTimers.push(setTimeout(finishBarcodeScan, 2000));
+    }
   }
 
   function go(i) {
@@ -3041,20 +3097,22 @@
   // Keyboard nav
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT') return;
+    if (e.key.toLowerCase() === 'r') { resetFlow(); return; }
+    const activePanel = document.querySelector('.panel.active');
+    const activeId = activePanel ? activePanel.id : '';
+    if (screens.indexOf(activeId) === -1) return;
     if (e.key === 'ArrowRight' && current < screens.length - 1) {
       if (current === 0 && !selectedCore) return;
       go(current + 1);
     } else if (e.key === 'ArrowLeft' && current > 0) {
       go(current - 1);
-    } else if (e.key.toLowerCase() === 'r') resetFlow();
+    }
   });
 
-  document.querySelectorAll('#fmSteps .fm-step').forEach(el => {
-    el.addEventListener('click', () => {
-      const target = parseInt(el.dataset.step);
-      if (target >= 1 && !selectedCore) return;
-      go(target);
-    });
+  // Flowmap stays in sync by observing panel class changes
+  const _panelObserver = new MutationObserver(updateChrome);
+  document.querySelectorAll('.panel').forEach(p => {
+    _panelObserver.observe(p, { attributes: true, attributeFilter: ['class'] });
   });
 
   updateChrome();
