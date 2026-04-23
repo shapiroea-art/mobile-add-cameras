@@ -636,6 +636,25 @@
 
   /* Add-core flow */
   .core-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+  .input-clear { width: 20px; height: 20px; border-radius: 10px; background: var(--text-subtlest); color: var(--surface); border: none; padding: 0; display: none; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 auto; }
+  .input-field.has-clear .input-clear { display: inline-flex; }
+  .input-clear:hover { background: var(--text-subtle); }
+
+  /* Simulated mobile keyboard */
+  .mobile-keyboard { position: absolute; left: 0; right: 0; bottom: 0; background: #D1D5DB; padding: 10px 4px 8px; z-index: 20; transform: translateY(100%); transition: transform .22s cubic-bezier(.22,.8,.28,1); user-select: none; }
+  .mobile-keyboard.show { transform: translateY(0); }
+  .kb-row { display: flex; gap: 6px; margin-bottom: 10px; padding: 0 4px; }
+  .kb-row.indent { padding: 0 22px; }
+  .kb-row:last-child { margin-bottom: 0; }
+  .kb-key { flex: 1 0 0; background: white; border: none; border-radius: 5px; padding: 10px 0; text-align: center; font-size: 16px; font-weight: 400; color: #111827; box-shadow: 0 1px 0 rgba(0,0,0,.18); min-width: 20px; cursor: pointer; font-family: inherit; }
+  .kb-key:active { background: #E5E7EB; }
+  .kb-key.fn { background: #ACB0B8; color: #111827; flex: 1.5; font-size: 14px; }
+  .kb-key.fn:active { background: #9CA3AF; }
+  .kb-key.return { background: #3B82F6; color: white; flex: 2; font-size: 14px; }
+  .kb-key.return:active { background: #2563EB; }
+  .kb-key.space { flex: 5; }
+  .kb-key .kb-glyph { display: inline-block; }
+
   #coreDraftsList .card-delete { display: none; }
   #coreDraftsList.multi .card-delete { display: inline-flex; }
   .core-card .cc-id-actions { display: flex; flex-direction: column; gap: 8px; }
@@ -1726,6 +1745,21 @@
             <button class="ut-btn" onclick="clickUndo()">Undo</button>
           </div>
 
+          <div class="mobile-keyboard" id="mobileKeyboard">
+            <div class="kb-row">
+              <button class="kb-key">q</button><button class="kb-key">w</button><button class="kb-key">e</button><button class="kb-key">r</button><button class="kb-key">t</button><button class="kb-key">y</button><button class="kb-key">u</button><button class="kb-key">i</button><button class="kb-key">o</button><button class="kb-key">p</button>
+            </div>
+            <div class="kb-row indent">
+              <button class="kb-key">a</button><button class="kb-key">s</button><button class="kb-key">d</button><button class="kb-key">f</button><button class="kb-key">g</button><button class="kb-key">h</button><button class="kb-key">j</button><button class="kb-key">k</button><button class="kb-key">l</button>
+            </div>
+            <div class="kb-row">
+              <button class="kb-key fn">⇧</button><button class="kb-key">z</button><button class="kb-key">x</button><button class="kb-key">c</button><button class="kb-key">v</button><button class="kb-key">b</button><button class="kb-key">n</button><button class="kb-key">m</button><button class="kb-key fn">⌫</button>
+            </div>
+            <div class="kb-row">
+              <button class="kb-key fn">123</button><button class="kb-key fn">🌐</button><button class="kb-key space">space</button><button class="kb-key return" onmousedown="event.preventDefault()" onclick="blurKbInput()">return</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -2513,7 +2547,12 @@
       </button>
       <div class="auth-field">
         <label class="auth-label">Core name</label>
-        <div class="input-field"><input type="text" value="${_escHtml(d.name)}" oninput="updateDraftName(${d.id}, this.value)" ${d.status === 'connecting' ? 'disabled' : ''}></div>
+        <div class="input-field" id="coreNameField-${d.id}">
+          <input type="text" id="coreNameInput-${d.id}" value="${_escHtml(d.name)}" oninput="onCoreNameInput(${d.id}, this.value)" onfocus="onCoreNameFocus(${d.id})" onblur="onCoreNameBlur(${d.id})" ${d.status === 'connecting' ? 'disabled' : ''}>
+          <button type="button" class="input-clear" onmousedown="event.preventDefault()" onclick="clearCoreName(${d.id})" aria-label="Clear">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3L3 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+        </div>
       </div>
       <div class="auth-field">
         <label class="auth-label">Core ID</label>
@@ -2574,6 +2613,34 @@
   function updateDraftName(id, value) {
     const d = coreDrafts.find(x => x.id === id);
     if (d) d.name = value;
+  }
+  function onCoreNameInput(id, value) {
+    updateDraftName(id, value);
+    const field = document.getElementById(`coreNameField-${id}`);
+    if (field) field.classList.toggle('has-clear', value.length > 0);
+  }
+  function onCoreNameFocus(id) {
+    const field = document.getElementById(`coreNameField-${id}`);
+    const input = document.getElementById(`coreNameInput-${id}`);
+    if (field && input && input.value.length > 0) field.classList.add('has-clear');
+    document.getElementById('mobileKeyboard').classList.add('show');
+  }
+  function onCoreNameBlur(id) {
+    const field = document.getElementById(`coreNameField-${id}`);
+    if (field) field.classList.remove('has-clear');
+    document.getElementById('mobileKeyboard').classList.remove('show');
+  }
+  function clearCoreName(id) {
+    const input = document.getElementById(`coreNameInput-${id}`);
+    if (!input) return;
+    input.value = '';
+    updateDraftName(id, '');
+    const field = document.getElementById(`coreNameField-${id}`);
+    if (field) field.classList.remove('has-clear');
+    input.focus();
+  }
+  function blurKbInput() {
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') document.activeElement.blur();
   }
   function startManualForDraft(id) {
     const d = coreDrafts.find(x => x.id === id);
