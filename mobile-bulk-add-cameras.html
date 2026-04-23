@@ -466,6 +466,26 @@
   .info-msg.warn { background: var(--warning-soft); border-color: var(--warning); box-shadow: inset 3px 0 0 var(--warning); }
   .info-msg.warn .im-icon { color: var(--warning); }
   .info-msg.cap-banner { padding: 16px; }
+  .info-msg .im-link { margin-top: 4px; align-self: flex-start; padding: 4px 0; font-size: 14px; font-weight: 500; color: var(--primary-border); background: none; border: none; cursor: pointer; text-align: left; }
+  .info-msg .im-link:hover { color: var(--primary); text-decoration: underline; }
+
+  /* Keep-criteria screen (S4 subscreen) */
+  .kc-content { flex: 1; overflow-y: auto; padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 20px; }
+  .kc-sub { font-size: 14px; color: var(--text-subtle); line-height: 20px; padding: 0 16px 8px; }
+  .kc-group { display: flex; flex-direction: column; gap: 8px; }
+  .kc-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text-subtle); text-transform: uppercase; }
+  .kc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .kc-range { display: flex; align-items: center; gap: 8px; }
+  .kc-range .input-field { flex: 1; min-width: 0; padding: 0 12px; }
+  .kc-range .input-field input { font-size: 14px; }
+  .kc-range .kc-range-sep { color: var(--text-subtlest); font-size: 16px; line-height: 1; flex: 0 0 auto; }
+  .kc-preview { flex: 0 0 auto; padding: 12px 16px; background: var(--surface-subtle); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+  .kc-preview-line1 { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
+  .kc-preview-line2 { font-size: 14px; line-height: 20px; }
+  .kc-preview-line2.fits { color: var(--success); }
+  .kc-preview-line2.over { color: var(--warning); }
+  .kc-preview-line2.empty { color: var(--danger); }
+  .kc-preview-line2.noop { color: var(--text-subtle); }
 
   /* Selected-cameras block (Figma 5:100473) — above action bar */
   .sel-block { background: var(--info-bg); padding: 12px 16px; display: none; gap: 8px; align-items: center; flex: 0 0 auto; }
@@ -1200,6 +1220,70 @@
             </div>
           </div>
 
+          <!-- ========== S4-Keep: criteria subscreen ========== -->
+          <div class="panel" id="s4Keep">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeKeepCriteria()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Keep cameras matching…</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+            <div class="kc-sub">All criteria apply together. Empty fields are ignored.</div>
+
+            <div class="kc-content">
+              <div class="kc-group">
+                <div class="kc-label">IP range</div>
+                <div class="kc-range">
+                  <div class="input-field"><input type="text" id="kcIpFrom" inputmode="decimal" placeholder="10.0.12.1" oninput="onKeepChange()"></div>
+                  <span class="kc-range-sep">–</span>
+                  <div class="input-field"><input type="text" id="kcIpTo" inputmode="decimal" placeholder="10.0.12.255" oninput="onKeepChange()"></div>
+                </div>
+              </div>
+
+              <div class="kc-group">
+                <div class="kc-label">Brand</div>
+                <div class="kc-chips" id="kcBrandChips">
+                  <span class="chip" data-brand="Axis">Axis</span>
+                  <span class="chip" data-brand="Hikvision">Hikvision</span>
+                  <span class="chip" data-brand="Dahua">Dahua</span>
+                  <span class="chip" data-brand="Hanwha">Hanwha</span>
+                  <span class="chip" data-brand="ONVIF">ONVIF</span>
+                </div>
+              </div>
+
+              <div class="kc-group">
+                <div class="kc-label">Type</div>
+                <div class="kc-chips" id="kcTypeChips">
+                  <span class="chip" data-type="Dome">Dome</span>
+                  <span class="chip" data-type="Bullet">Bullet</span>
+                  <span class="chip" data-type="PTZ">PTZ</span>
+                  <span class="chip" data-type="Fisheye">Fisheye</span>
+                  <span class="chip" data-type="Multi-sensor">Multi-sensor</span>
+                </div>
+              </div>
+
+              <div class="kc-group">
+                <div class="kc-label">OUI prefix</div>
+                <div class="input-field"><input type="text" id="kcOui" placeholder="3c:23:32" oninput="onKeepChange()"></div>
+              </div>
+            </div>
+
+            <div class="kc-preview">
+              <div class="kc-preview-line1" id="kcPreviewLine1">All 12 match · 0 will be removed</div>
+              <div class="kc-preview-line2 noop" id="kcPreviewLine2">Pick criteria to narrow the list.</div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="closeKeepCriteria()">Cancel</button>
+              <button class="btn btn-primary btn-full disabled" id="kcApplyBtn" onclick="applyKeepCriteria()">Keep all</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
           <!-- ========== S5: Added (location landing) ========== -->
           <div class="panel" id="s5">
             <div class="s5-topbar">
@@ -1704,18 +1788,18 @@
   function camNameFor(idx) { return `Main office-Core${coreNum()}-${idx}`; }
 
   const confCams = [
-    { id: 1,  ip: '10.0.12.34', brand: 'Axis M3045-V',              model: 'AXIS M3045-V',          mac: '3c:23:32:44:37:c6', path: 'ok' },
-    { id: 2,  ip: '10.0.12.35', brand: 'Hikvision DS-2CD2143G2-I',  model: 'DS-2CD2143G2-I',        mac: '3c:23:32:44:37:c7', path: 'ok' },
-    { id: 3,  ip: '10.0.12.38', brand: 'Dahua IPC-HFW5442T-ASE',    model: 'IPC-HFW5442T',          mac: '3c:23:32:44:37:c8', path: 'ok' },
-    { id: 4,  ip: '10.0.12.41', brand: 'Hanwha XNO-6120R',          model: 'XNO-6120R',             mac: '3c:23:32:44:37:c9', path: 'ok' },
-    { id: 5,  ip: '10.0.12.51', brand: 'Axis M3068-P',              model: 'AXIS M3068-P',          mac: '3c:23:32:44:37:ca', path: 'ok' },
-    { id: 6,  ip: '10.0.12.58', brand: 'Hikvision DS-2CD2687G2T',   model: 'DS-2CD2687G2T',         mac: '3c:23:32:44:37:cb', path: 'ok' },
-    { id: 7,  ip: '10.0.12.62', brand: 'ONVIF generic',             model: 'ONVIF',                 mac: '3c:23:32:44:37:cc', path: 'authfail' },
-    { id: 8,  ip: '10.0.12.64', brand: 'Axis M3106-LVE',            model: 'AXIS M3106-LVE',        mac: '3c:23:32:44:37:cd', path: 'ok' },
-    { id: 9,  ip: '10.0.12.67', brand: 'Dahua IPC-HDBW5449',        model: 'IPC-HDBW5449',          mac: '3c:23:32:44:37:ce', path: 'ok' },
-    { id: 10, ip: '10.0.12.71', brand: 'Axis P3245-LVE',            model: 'AXIS P3245-LVE',        mac: '3c:23:32:44:37:cf', path: 'ok' },
-    { id: 11, ip: '10.0.12.78', brand: 'Hikvision DS-2CD2T87',      model: 'DS-2CD2T87',            mac: '3c:23:32:44:37:d0', path: 'timeout' },
-    { id: 12, ip: '10.0.12.75', brand: 'Hikvision DS-2CD2143G2',    model: 'DS-2CD2143G2',          mac: '3c:23:32:44:37:d1', path: 'ok' }
+    { id: 1,  ip: '10.0.12.34', brand: 'Axis',      brandModel: 'Axis M3045-V',              model: 'AXIS M3045-V',      type: 'Dome',         mac: '3c:23:32:44:37:c6', path: 'ok' },
+    { id: 2,  ip: '10.0.12.35', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2143G2-I',  model: 'DS-2CD2143G2-I',    type: 'Dome',         mac: '3c:23:32:44:37:c7', path: 'ok' },
+    { id: 3,  ip: '10.0.12.38', brand: 'Dahua',     brandModel: 'Dahua IPC-HFW5442T-ASE',    model: 'IPC-HFW5442T',      type: 'Bullet',       mac: '3c:23:32:44:37:c8', path: 'ok' },
+    { id: 4,  ip: '10.0.12.41', brand: 'Hanwha',    brandModel: 'Hanwha XNO-6120R',          model: 'XNO-6120R',         type: 'Bullet',       mac: '1c:a4:0b:44:37:c9', path: 'ok' },
+    { id: 5,  ip: '10.0.12.51', brand: 'Axis',      brandModel: 'Axis M3068-P',              model: 'AXIS M3068-P',      type: 'Fisheye',      mac: '3c:23:32:44:37:ca', path: 'ok' },
+    { id: 6,  ip: '10.0.12.58', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2687G2T',   model: 'DS-2CD2687G2T',     type: 'Multi-sensor', mac: '3c:23:32:44:37:cb', path: 'ok' },
+    { id: 7,  ip: '10.0.12.62', brand: 'ONVIF',     brandModel: 'ONVIF generic',             model: 'ONVIF',             type: 'Dome',         mac: '78:e9:d8:44:37:cc', path: 'authfail' },
+    { id: 8,  ip: '10.0.12.64', brand: 'Axis',      brandModel: 'Axis M3106-LVE',            model: 'AXIS M3106-LVE',    type: 'Dome',         mac: '3c:23:32:44:37:cd', path: 'ok' },
+    { id: 9,  ip: '10.0.12.67', brand: 'Dahua',     brandModel: 'Dahua IPC-HDBW5449',        model: 'IPC-HDBW5449',      type: 'PTZ',          mac: '3c:23:32:44:37:ce', path: 'ok' },
+    { id: 10, ip: '10.0.12.71', brand: 'Axis',      brandModel: 'Axis P3245-LVE',            model: 'AXIS P3245-LVE',    type: 'Bullet',       mac: '3c:23:32:44:37:cf', path: 'ok' },
+    { id: 11, ip: '10.0.12.78', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2T87',      model: 'DS-2CD2T87',        type: 'Bullet',       mac: '3c:23:32:44:37:d0', path: 'timeout' },
+    { id: 12, ip: '10.0.12.75', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2143G2',    model: 'DS-2CD2143G2',      type: 'PTZ',          mac: '3c:23:32:44:37:d1', path: 'ok' }
   ];
   const s4Loads = [10, 9, 11, 10, 9, 10, 8, 11, 10, 12, 10, 10];
   confCams.forEach((c, i) => {
@@ -1728,6 +1812,7 @@
   let editingCamId = null;
   let pendingDeleteCamId = null;
   let s4FailFilterOn = false;
+  const keepCriteria = { ipFrom: '', ipTo: '', brands: new Set(), types: new Set(), oui: '' };
 
   // Camera thumb pool — Unsplash-ish sample images served via picsum.photos with stable seed per id
   function thumbFor(c) { return `https://picsum.photos/seed/cam${c.id}/160/120`; }
@@ -1747,7 +1832,7 @@
 
   function metaHTML(c) {
     if (c.state === 'authfail' || c.state === 'timeout') {
-      return `<div class="conf-meta-fail">${c.ip} <span class="dot" style="color:var(--text-subtlest);">•</span> ${c.brand} <span class="dot" style="color:var(--text-subtlest);">•</span> ${c.mac}</div>`;
+      return `<div class="conf-meta-fail">${c.ip} <span class="dot" style="color:var(--text-subtlest);">•</span> ${c.brandModel} <span class="dot" style="color:var(--text-subtlest);">•</span> ${c.mac}</div>`;
     }
     if (c.state === 'online') {
       return `<div class="conf-meta">Substream <span class="dot">•</span> ${c.config.type}</div>`;
@@ -1896,8 +1981,106 @@
       <div class="im-body">
         <div class="im-title">Over capacity · ${load}% core load</div>
         <div class="im-desc">Adding all ${n} cameras exceeds the 100% limit. Remove cameras to fit.</div>
+        <button class="im-link" onclick="openKeepCriteria()">Trim by criteria…</button>
       </div>`;
   }
+  // ===== Keep-criteria subscreen =====
+  function openKeepCriteria() {
+    resetKeepCriteriaUI();
+    renderKeepPreview();
+    document.getElementById('s4').classList.remove('active');
+    document.getElementById('s4Keep').classList.add('active');
+  }
+  function closeKeepCriteria() {
+    document.getElementById('s4Keep').classList.remove('active');
+    document.getElementById('s4').classList.add('active');
+  }
+  function resetKeepCriteriaUI() {
+    keepCriteria.ipFrom = '';
+    keepCriteria.ipTo = '';
+    keepCriteria.brands.clear();
+    keepCriteria.types.clear();
+    keepCriteria.oui = '';
+    ['kcIpFrom','kcIpTo','kcOui'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.querySelectorAll('#kcBrandChips .chip, #kcTypeChips .chip').forEach(c => c.classList.remove('active'));
+  }
+  function onKeepChange() {
+    keepCriteria.ipFrom = (document.getElementById('kcIpFrom')?.value || '').trim();
+    keepCriteria.ipTo = (document.getElementById('kcIpTo')?.value || '').trim();
+    keepCriteria.oui = (document.getElementById('kcOui')?.value || '').trim().toLowerCase().replace(/-/g, ':');
+    renderKeepPreview();
+  }
+  function camMatchesKeepCriteria(c) {
+    const kc = keepCriteria;
+    if (kc.ipFrom && _ipRegex.test(kc.ipFrom) && ipToNumber(c.ip) < ipToNumber(kc.ipFrom)) return false;
+    if (kc.ipTo && _ipRegex.test(kc.ipTo) && ipToNumber(c.ip) > ipToNumber(kc.ipTo)) return false;
+    if (kc.brands.size && !kc.brands.has(c.brand)) return false;
+    if (kc.types.size && !kc.types.has(c.type)) return false;
+    if (kc.oui) {
+      const macNorm = c.mac.toLowerCase().replace(/-/g, ':');
+      if (!macNorm.startsWith(kc.oui)) return false;
+    }
+    return true;
+  }
+  function keepCriteriaActive() {
+    const kc = keepCriteria;
+    return !!(kc.ipFrom || kc.ipTo || kc.brands.size || kc.types.size || kc.oui);
+  }
+  function renderKeepPreview() {
+    const line1 = document.getElementById('kcPreviewLine1');
+    const line2 = document.getElementById('kcPreviewLine2');
+    const btn = document.getElementById('kcApplyBtn');
+    if (!line1 || !line2 || !btn) return;
+    const matched = confCams.filter(camMatchesKeepCriteria);
+    const removed = confCams.length - matched.length;
+    const active = keepCriteriaActive();
+    const projected = matched.reduce((s, c) => s + (c.load || 0), 0);
+    if (!active) {
+      line1.textContent = `All ${confCams.length} match · 0 will be removed`;
+      line2.className = 'kc-preview-line2 noop';
+      line2.textContent = 'Pick criteria to narrow the list.';
+      btn.textContent = 'Keep all';
+      btn.classList.add('disabled');
+      return;
+    }
+    if (matched.length === 0) {
+      line1.textContent = `0 match · all ${confCams.length} would be removed`;
+      line2.className = 'kc-preview-line2 empty';
+      line2.textContent = 'No cameras match these criteria. Refine to continue.';
+      btn.textContent = 'Keep 0';
+      btn.classList.add('disabled');
+      return;
+    }
+    if (removed === 0) {
+      line1.textContent = `All ${confCams.length} match · 0 will be removed`;
+      line2.className = 'kc-preview-line2 noop';
+      line2.textContent = 'All cameras already match. Nothing to remove.';
+      btn.textContent = 'Keep all';
+      btn.classList.add('disabled');
+      return;
+    }
+    line1.textContent = `${matched.length} match · ${removed} will be removed`;
+    if (projected <= 100) {
+      line2.className = 'kc-preview-line2 fits';
+      line2.textContent = `Fits core · ${projected}% load after`;
+    } else {
+      line2.className = 'kc-preview-line2 over';
+      line2.textContent = `Still over capacity · ${projected}% load after. Refine criteria to fit.`;
+    }
+    btn.textContent = `Keep ${matched.length}, remove ${removed}`;
+    btn.classList.remove('disabled');
+  }
+  function applyKeepCriteria() {
+    const matched = confCams.filter(camMatchesKeepCriteria);
+    if (matched.length === 0 || matched.length === confCams.length) return;
+    const keepIds = new Set(matched.map(c => c.id));
+    for (let i = confCams.length - 1; i >= 0; i--) {
+      if (!keepIds.has(confCams[i].id)) confCams.splice(i, 1);
+    }
+    closeKeepCriteria();
+    renderConfList();
+  }
+
   function toggleExpandAllConf() {
     const allExpanded = confCams.every(c => c.expanded);
     confCams.forEach(c => { c.expanded = !allExpanded; });
@@ -2125,6 +2308,27 @@
     chip.classList.toggle('active');
     updateFilterBtn();
     renderCamList();
+  });
+
+  // Keep-criteria brand chips
+  document.getElementById('kcBrandChips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    const b = chip.dataset.brand;
+    if (keepCriteria.brands.has(b)) keepCriteria.brands.delete(b);
+    else keepCriteria.brands.add(b);
+    chip.classList.toggle('active');
+    renderKeepPreview();
+  });
+  // Keep-criteria type chips
+  document.getElementById('kcTypeChips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    const t = chip.dataset.type;
+    if (keepCriteria.types.has(t)) keepCriteria.types.delete(t);
+    else keepCriteria.types.add(t);
+    chip.classList.toggle('active');
+    renderKeepPreview();
   });
 
   // Keyboard nav
