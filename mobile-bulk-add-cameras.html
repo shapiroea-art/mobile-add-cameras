@@ -1027,7 +1027,7 @@
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="resetFlow()">Back</button>
-              <button class="btn btn-primary btn-full disabled" id="s1Next" onclick="go(1)">Next</button>
+              <button class="btn btn-primary btn-full disabled" id="s1Next" onclick="go(1)">Next: Scan</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1050,7 +1050,7 @@
             </div>
 
             <div class="stepper">
-              <div class="sp-label">2 of 4 – Detection</div>
+              <div class="sp-label">2 of 4 – Discover</div>
               <div class="sp-bar"><div class="sp-fill" style="width: 50%;"></div></div>
             </div>
 
@@ -1139,7 +1139,7 @@
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="go(0)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(2)">Select</button>
+              <button class="btn btn-primary btn-full" onclick="go(2)">Next: Authenticate</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1225,7 +1225,7 @@
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="go(1)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(3)">Connect</button>
+              <button class="btn btn-primary btn-full" onclick="go(3)">Next: Configure</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1244,7 +1244,7 @@
             </div>
 
             <div class="stepper">
-              <div class="sp-label">4 of 4 – Final setup</div>
+              <div class="sp-label">4 of 4 – Configure</div>
               <div class="sp-bar"><div class="sp-fill" style="width: 100%;"></div></div>
             </div>
 
@@ -1275,7 +1275,7 @@
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="go(2)">Back</button>
-              <button class="btn btn-primary btn-full" id="s4NextBtn" onclick="go(4)">Final Setup</button>
+              <button class="btn btn-primary btn-full" id="s4NextBtn" onclick="go(4)">Add 12 cameras</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2357,6 +2357,10 @@
     const count = confCams.length;
     document.getElementById('s4SelCount').textContent = count;
     blk.classList.toggle('show', count > 0);
+    const nextBtn = document.getElementById('s4NextBtn');
+    if (nextBtn && !nextBtn.classList.contains('disabled-override')) {
+      nextBtn.textContent = `Add ${count} camera${count === 1 ? '' : 's'}`;
+    }
     const failCount = confCams.filter(c => c.state === 'authfail' || c.state === 'timeout').length;
     const chip = document.getElementById('s4FailFilterBtn');
     const lbl = document.getElementById('s4FailFilterLbl');
