@@ -473,6 +473,11 @@
   .sel-block .sb-icon { color: var(--primary); flex: 0 0 auto; display: grid; place-items: center; }
   .sel-block .sb-text { font-size: 16px; font-weight: 500; color: var(--primary); line-height: 24px; }
   .sel-block .sb-load { margin-left: auto; font-size: 16px; font-weight: 400; color: var(--primary); line-height: 24px; }
+  .sb-filter { margin-left: auto; display: none; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 14px; border: 1px solid var(--danger); background: var(--surface); color: var(--danger); font-size: 14px; font-weight: 500; line-height: 20px; cursor: pointer; flex: 0 0 auto; }
+  .sb-filter.show { display: inline-flex; }
+  .sb-filter.active { background: var(--danger); color: var(--text-inverse); }
+  .sb-filter:hover { background: var(--danger-soft); }
+  .sb-filter.active:hover { background: #D92D20; }
 
   /* Filter sheet groups */
   .sheet-title-row { display: flex; align-items: center; padding: 4px; margin-bottom: 8px; }
@@ -1019,6 +1024,10 @@
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
               </span>
               <span class="sb-text"><strong id="s4SelCount">0</strong> cameras to add</span>
+              <button class="sb-filter" id="s4FailFilterBtn" onclick="toggleS4FailFilter()" aria-pressed="false">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                <span id="s4FailFilterLbl">0 errors</span>
+              </button>
             </div>
 
             <div class="action-bar">
@@ -1678,6 +1687,7 @@
   });
   let editingCamId = null;
   let pendingDeleteCamId = null;
+  let s4FailFilterOn = false;
 
   // Camera thumb pool — Unsplash-ish sample images served via picsum.photos with stable seed per id
   function thumbFor(c) { return `https://picsum.photos/seed/cam${c.id}/160/120`; }
@@ -1760,7 +1770,10 @@
     const list = document.getElementById('confList');
     if (!list) return;
     list.innerHTML = '';
-    confCams.forEach(c => {
+    const rows = s4FailFilterOn
+      ? confCams.filter(c => c.state === 'authfail' || c.state === 'timeout')
+      : confCams;
+    rows.forEach(c => {
       const row = document.createElement('div');
       row.className = 'conf-row';
       if (c.checked) row.classList.add('selected');
@@ -1862,6 +1875,20 @@
     const count = confCams.length;
     document.getElementById('s4SelCount').textContent = count;
     blk.classList.toggle('show', count > 0);
+    const failCount = confCams.filter(c => c.state === 'authfail' || c.state === 'timeout').length;
+    const chip = document.getElementById('s4FailFilterBtn');
+    const lbl = document.getElementById('s4FailFilterLbl');
+    if (chip && lbl) {
+      chip.classList.toggle('show', failCount > 0);
+      chip.classList.toggle('active', s4FailFilterOn && failCount > 0);
+      chip.setAttribute('aria-pressed', String(s4FailFilterOn && failCount > 0));
+      lbl.textContent = `${failCount} error${failCount === 1 ? '' : 's'}`;
+      if (s4FailFilterOn && failCount === 0) s4FailFilterOn = false;
+    }
+  }
+  function toggleS4FailFilter() {
+    s4FailFilterOn = !s4FailFilterOn;
+    renderConfList();
   }
 
   function setConfStatus(id, state) {
@@ -1875,6 +1902,7 @@
     clearStatusTimers();
     reseedConfNames();
     confCams.forEach(c => { c.state = 'connecting'; c.expanded = false; c.checked = false; });
+    s4FailFilterOn = false;
     renderConfList();
     // Stretch across ~10s. OK cams: Connected staggered 2.5-8s, Online +1-2s landing 6-10s.
     // Fails: authfail at ~8s, timeout at ~9s so user sees successes first.
