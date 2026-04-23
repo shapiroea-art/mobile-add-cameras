@@ -505,12 +505,10 @@
   .conf-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
   .conf-meta { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-subtle); line-height: 24px; }
   .conf-meta .dot { color: var(--text-subtlest); }
-  .conf-fail-card { margin: 0 8px 12px; padding: 12px 16px; background: #FEF2F2; border: 1px solid var(--danger); border-left-width: 3px; border-radius: var(--r); display: flex; gap: 12px; align-items: flex-start; }
-  .conf-fail-card .fc-ico { color: var(--danger); flex: 0 0 auto; padding-top: 2px; display: inline-flex; }
-  .conf-fail-card .fc-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-  .conf-fail-card .fc-title { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
-  .conf-fail-card .fc-desc { font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 24px; }
-  .conf-fail-card .fc-action { display: inline-flex; align-items: center; gap: 8px; padding: 8px 0 0; font-size: 16px; font-weight: 500; color: var(--primary-border); background: none; border: none; cursor: pointer; align-self: flex-start; }
+  .conf-fail-card { margin: 0 8px 8px; padding: 8px 12px; background: var(--danger-soft); border-radius: var(--r); display: flex; gap: 8px; align-items: center; }
+  .conf-fail-card .fc-ico { color: var(--danger); flex: 0 0 auto; display: inline-flex; }
+  .conf-fail-card .fc-text { flex: 1; min-width: 0; font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 20px; }
+  .conf-fail-card .fc-action { display: inline-flex; align-items: center; gap: 4px; padding: 0; font-size: 14px; font-weight: 500; color: var(--primary-border); background: none; border: none; cursor: pointer; flex: 0 0 auto; }
   .conf-fail-card .fc-action:hover { color: var(--primary); }
   .conf-kebab { width: 40px; height: 40px; display: grid; place-items: center; border: none; background: transparent; color: var(--text-subtlest); cursor: pointer; padding: 10px; flex: 0 0 auto; border-radius: var(--r); }
   .conf-kebab:hover { background: var(--surface-subtle); color: var(--text-default); }
@@ -1716,16 +1714,14 @@
 
   function failCardHTML(c) {
     if (c.state !== 'authfail' && c.state !== 'timeout') return '';
+    const reason = c.state === 'timeout' ? 'Connection timeout' : 'Authentication error';
     return `<div class="conf-fail-card" onclick="event.stopPropagation();">
-      <span class="fc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" fill="currentColor"/><path d="M10 6v4.5M10 13v.01" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></span>
-      <div class="fc-body">
-        <div class="fc-title">Connection failed.</div>
-        <div class="fc-desc">Authentication error.</div>
-        <button class="fc-action" onclick="event.stopPropagation(); openAddCreds(${c.id})">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          Add credentials
-        </button>
-      </div>
+      <span class="fc-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M8 4.5v3.5M8 10v.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <div class="fc-text">Connection failed — ${reason}</div>
+      <button class="fc-action" onclick="event.stopPropagation(); openAddCreds(${c.id})">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Add credentials
+      </button>
     </div>`;
   }
 
