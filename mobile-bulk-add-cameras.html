@@ -2725,10 +2725,9 @@
   function updateCoreCommitBtn() {
     const btn = document.getElementById('coreCommitBtn');
     if (!btn) return;
-    const n = coreDrafts.length;
-    const allConnected = n > 0 && coreDrafts.every(d => d.status === 'connected');
-    btn.classList.toggle('disabled', !allConnected);
-    btn.textContent = `Add ${n} core${n === 1 ? '' : 's'}`;
+    const connected = coreDrafts.filter(d => d.status === 'connected').length;
+    btn.classList.toggle('disabled', connected === 0);
+    btn.textContent = connected === 0 ? 'Add cores' : `Add ${connected} core${connected === 1 ? '' : 's'}`;
   }
   function commitCoreDrafts() {
     const connected = coreDrafts.filter(d => d.status === 'connected');
