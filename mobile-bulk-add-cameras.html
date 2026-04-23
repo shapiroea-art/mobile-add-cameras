@@ -139,6 +139,8 @@
   .btn-primary.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
   .btn-secondary { background: var(--surface); color: var(--text-default); border-color: var(--border-input); }
   .btn-secondary:hover { background: var(--surface-subtle); }
+  .btn-danger { background: var(--danger); color: var(--text-inverse); border-color: var(--danger); }
+  .btn-danger:hover { background: #D92D20; }
   .btn-full { flex: 1; }
   .btn-compact { height: 40px; flex: 0 0 auto; width: 100%; padding: 8px 16px; font-size: 14px; line-height: 24px; }
   .btn-ghost { background: transparent; color: var(--primary); font-weight: 500; padding: 8px 10px; font-size: 14px; border: none; }
@@ -461,6 +463,9 @@
   .info-msg .im-desc { font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 22px; }
   .info-msg .im-close { position: absolute; top: 5px; right: 3px; display: grid; place-items: center; padding: 14px; cursor: pointer; background: none; border: none; color: var(--text-default); border-radius: 4px; }
   .info-msg .im-close:hover { background: rgba(255,255,255,.6); }
+  .info-msg.warn { background: var(--warning-soft); border-color: var(--warning); box-shadow: inset 3px 0 0 var(--warning); }
+  .info-msg.warn .im-icon { color: var(--warning); }
+  .info-msg.cap-banner { padding: 16px; }
 
   /* Selected-cameras block (Figma 5:100473) — above action bar */
   .sel-block { background: var(--info-bg); padding: 12px 16px; display: none; gap: 8px; align-items: center; flex: 0 0 auto; }
@@ -485,6 +490,8 @@
   .conf-row.selected { background: var(--primary-soft); }
   .conf-row-inner { display: flex; align-items: center; gap: 8px; padding: 8px; min-height: 76px; cursor: pointer; }
   .conf-cb-wrap { padding: 14px; flex: 0 0 auto; }
+  .conf-del-wrap { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--r); color: var(--text-subtle); flex: 0 0 auto; cursor: pointer; }
+  .conf-del-wrap:hover { color: var(--danger); background: var(--danger-soft); }
   .conf-thumb { width: 80px; height: 60px; border-radius: 2px; object-fit: cover; flex: 0 0 auto; background: var(--surface-gray200); display: block; }
   .conf-thumb-off { width: 80px; height: 60px; border-radius: 2px; flex: 0 0 auto; background: var(--surface-subtle); border: 1px solid var(--border-input); display: grid; place-items: center; color: var(--text-subtlest); }
   .conf-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -993,17 +1000,14 @@
             </div>
 
             <div class="stepper">
-              <div class="sp-label">5 of 5 – Final setup</div>
+              <div class="sp-label">4 of 4 – Final setup</div>
               <div class="sp-bar"><div class="sp-fill" style="width: 100%;"></div></div>
             </div>
 
-            <div class="subtitle-row" style="border-bottom: 1px solid var(--border);">Select cameras on the left to add them</div>
+            <div class="info-msg cap-banner" id="s4CapBanner"></div>
 
             <div class="table-header">
-              <div class="th-cb-wrap">
-                <div class="cb" id="confMasterCb" onclick="toggleAllConf()"></div>
-              </div>
-              <div class="th-cols" style="padding-left: 4px;">
+              <div class="th-cols" style="padding-left: 16px;">
                 <div class="th-col">Cameras</div>
               </div>
               <button class="expand-all-btn" id="confExpandAllBtn" onclick="toggleExpandAllConf()">
@@ -1018,7 +1022,7 @@
               <span class="sb-icon">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
               </span>
-              <span class="sb-text"><strong id="s4SelCount">0</strong> cameras selected</span>
+              <span class="sb-text"><strong id="s4SelCount">0</strong> cameras to add</span>
             </div>
 
             <div class="action-bar">
@@ -1096,6 +1100,20 @@
                 <div class="pv-body" id="previewBody"></div>
                 <div class="info-sheet-foot">
                   <button class="btn btn-secondary btn-full" onclick="closeSheet('previewSheet')">Close</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="confirmDeleteSheet" onclick="closeInfoSheet(event, 'confirmDeleteSheet')">
+              <div class="sheet edit-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title" id="confirmDeleteTitle">Remove camera?</div>
+                <div class="edit-sheet-body">
+                  <p id="confirmDeleteDesc" style="font-size:14px; color:var(--text-default); line-height:22px; margin:0;">This camera won't be added to your site.</p>
+                </div>
+                <div class="info-sheet-foot" style="display:flex; gap:8px;">
+                  <button class="btn btn-secondary btn-full" onclick="closeSheet('confirmDeleteSheet')">Cancel</button>
+                  <button class="btn btn-danger btn-full" onclick="confirmDeleteCam()">Remove</button>
                 </div>
               </div>
             </div>
@@ -1654,13 +1672,16 @@
     { id: 11, ip: '10.0.12.78', brand: 'Hikvision DS-2CD2T87',      model: 'DS-2CD2T87',            mac: '3c:23:32:44:37:d0', path: 'timeout' },
     { id: 12, ip: '10.0.12.75', brand: 'Hikvision DS-2CD2143G2',    model: 'DS-2CD2143G2',          mac: '3c:23:32:44:37:d1', path: 'ok' }
   ];
+  const s4Loads = [10, 9, 11, 10, 9, 10, 8, 11, 10, 12, 10, 10];
   confCams.forEach((c, i) => {
     c.state = 'connecting';
     c.checked = false;
     c.expanded = false;
+    c.load = s4Loads[i] ?? 10;
     c.config = { autoConfig: true, type: 'Static', retention: 30, storage: 'Substream' };
   });
   let editingCamId = null;
+  let pendingDeleteCamId = null;
 
   // Camera thumb pool — Unsplash-ish sample images served via picsum.photos with stable seed per id
   function thumbFor(c) { return `https://picsum.photos/seed/cam${c.id}/160/120`; }
@@ -1753,10 +1774,8 @@
       row.id = `confRow-${c.id}`;
       row.innerHTML = `
         <div class="conf-row-inner" data-role="row" data-id="${c.id}">
-          <div class="conf-cb-wrap" data-role="cb">
-            <div class="cb ${c.checked ? 'ck' : ''}">
-              ${c.checked ? '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
-            </div>
+          <div class="conf-del-wrap" data-role="delete" aria-label="Remove camera" role="button">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           ${thumbHTML(c)}
           <div class="conf-body">
@@ -1771,7 +1790,7 @@
         ${expandedBodyHTML(c)}
       `;
       row.addEventListener('click', (e) => {
-        if (e.target.closest('[data-role="cb"]')) { toggleCheckCam(c.id); return; }
+        if (e.target.closest('[data-role="delete"]')) { requestDeleteCam(c.id); return; }
         if (e.target.closest('[data-role="thumb"]')) { openPreview(c.id); return; }
         if (e.target.closest('[data-role="chev"]')) { toggleExpandCam(c.id); return; }
         if (e.target.closest('.conf-details')) return;
@@ -1782,7 +1801,7 @@
     });
     updateS4SelBlock();
     updateConfExpandAllLabel();
-    updateConfMasterCb();
+    updateS4CapBanner();
   }
 
   function toggleExpandCam(id) {
@@ -1791,27 +1810,49 @@
     c.expanded = !c.expanded;
     renderConfList();
   }
-  function toggleCheckCam(id) {
+  function requestDeleteCam(id) {
     const c = confCams.find(x => x.id === id);
     if (!c) return;
-    c.checked = !c.checked;
+    pendingDeleteCamId = id;
+    document.getElementById('confirmDeleteTitle').textContent = `Remove ${c.name}?`;
+    document.getElementById('confirmDeleteDesc').textContent = `This camera won't be added to your site. You can add it later from Devices.`;
+    openSheet('confirmDeleteSheet');
+  }
+  function confirmDeleteCam() {
+    const id = pendingDeleteCamId;
+    pendingDeleteCamId = null;
+    closeSheet('confirmDeleteSheet');
+    if (id == null) return;
+    const idx = confCams.findIndex(c => c.id === id);
+    if (idx === -1) return;
+    confCams.splice(idx, 1);
     renderConfList();
   }
-  function toggleAllConf() {
-    const allChecked = confCams.every(c => c.checked);
-    confCams.forEach(c => { c.checked = !allChecked; });
-    renderConfList();
+  function coreLoadTotal() {
+    return confCams.reduce((s, c) => s + (c.load || 0), 0);
   }
-  function updateConfMasterCb() {
-    const cb = document.getElementById('confMasterCb');
-    if (!cb) return;
-    const checked = confCams.filter(c => c.checked).length;
-    cb.classList.remove('ck', 'tri');
-    if (checked === confCams.length) cb.classList.add('ck');
-    else if (checked > 0) cb.classList.add('tri');
-    cb.innerHTML = checked === confCams.length
-      ? '<svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-      : (checked > 0 ? '<svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" rx="1"/></svg>' : '');
+  function updateS4CapBanner() {
+    const el = document.getElementById('s4CapBanner');
+    if (!el) return;
+    const load = coreLoadTotal();
+    const n = confCams.length;
+    const over = load > 100;
+    el.classList.toggle('warn', over);
+    const title = over
+      ? `Over capacity · ${load}% core load`
+      : `Within capacity · ${load}% core load`;
+    const desc = over
+      ? `Adding all ${n} cameras exceeds the 100% limit. Remove cameras to fit.`
+      : `All ${n} cameras fit. Ready to add.`;
+    const iconSvg = over
+      ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l7 12H1l7-12z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M8 6.5v3.5M8 12v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    el.innerHTML = `
+      <span class="im-icon">${iconSvg}</span>
+      <div class="im-body">
+        <div class="im-title">${title}</div>
+        <div class="im-desc">${desc}</div>
+      </div>`;
   }
   function toggleExpandAllConf() {
     const allExpanded = confCams.every(c => c.expanded);
@@ -1826,8 +1867,8 @@
   }
   function updateS4SelBlock() {
     const blk = document.getElementById('s4SelBlock');
-    const count = confCams.filter(c => c.checked).length;
     if (!blk) return;
+    const count = confCams.length;
     document.getElementById('s4SelCount').textContent = count;
     blk.classList.toggle('show', count > 0);
   }
