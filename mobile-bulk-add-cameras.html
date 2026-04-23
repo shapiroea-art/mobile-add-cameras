@@ -632,6 +632,12 @@
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
   .s5-dev-row .dev-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+  /* Bottom tabs (sDevices) */
+  .bottom-tabs { background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: stretch; flex: 0 0 auto; }
+  .bottom-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 10px 0 8px; cursor: pointer; color: var(--text-default); background: none; border: none; }
+  .bottom-tab.active { color: var(--primary-border); }
+  .bottom-tab .bt-label { font-size: 12px; font-weight: 500; line-height: 20px; }
+
   /* Location menu sheet (S0) */
   .location-menu-sheet { padding: 12px 0 16px; }
   .loc-menu-item { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 12px 16px; cursor: pointer; }
@@ -761,11 +767,99 @@
             </div>
           </div>
 
-          <!-- ========== S0: Location landing (entry) ========== -->
-          <div class="panel active" id="s0">
+          <!-- ========== sDevices: Devices top level (entry) ========== -->
+          <div class="panel active" id="sDevices">
             <div class="s5-topbar">
               <div class="s5-tb-left">
-                <button class="btn-icon" aria-label="Back">
+                <button class="btn-icon" aria-label="Menu">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <div class="s5-title">Devices</div>
+              </div>
+              <div style="display:flex; align-items:center;">
+                <button class="btn-icon" aria-label="Add location" style="padding:14px;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5c-3 0-5.5 2.3-5.5 5.3 0 4 5.5 9.7 5.5 9.7s5.5-5.7 5.5-9.7c0-3-2.5-5.3-5.5-5.3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M10 6.5v3M8.5 8h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+                <button class="btn-icon" aria-label="Notifications" style="padding:14px;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5a5 5 0 00-5 5v3L3.5 13h13L15 10.5v-3a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M8 15.5a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="s5-filters">
+              <button class="btn-icon" aria-label="Search" style="padding:10px;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </button>
+              <button class="s5-chip">Location
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="s5-chip">Status
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="s5-chip">Type
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
+            <div class="s5-body">
+              <div class="s5-sec-label">Locations</div>
+              <div class="s5-loc-row" onclick="enterLocationFromDevices()">
+                <div class="loc-main">
+                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="loc-name">Merkaz</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row" onclick="enterLocationFromDevices()">
+                <div class="loc-main">
+                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="loc-name">Sublocation 1</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row" onclick="enterLocationFromDevices()">
+                <div class="loc-main">
+                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="loc-name">Merkaz</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row" onclick="enterLocationFromDevices()">
+                <div class="loc-main">
+                  <span class="loc-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                  <span class="loc-name">Administrative Center 1</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+
+            <div class="bottom-tabs">
+              <button class="bottom-tab active">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="6" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M14 9l4-2v6l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                <span class="bt-label">Devices</span>
+              </button>
+              <button class="bottom-tab">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <span class="bt-label">Search</span>
+              </button>
+              <button class="bottom-tab">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5a5 5 0 00-5 5v3L3.5 13h13L15 10.5v-3a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M8 15.5a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+                <span class="bt-label">Alerts</span>
+              </button>
+              <button class="bottom-tab">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="5" height="5" rx=".5" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="3" width="5" height="5" rx=".5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="12" width="5" height="5" rx=".5" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="12" width="5" height="5" rx=".5" stroke="currentColor" stroke-width="1.5"/></svg>
+                <span class="bt-label">Walls</span>
+              </button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== S0: Location landing ========== -->
+          <div class="panel" id="s0">
+            <div class="s5-topbar">
+              <div class="s5-tb-left">
+                <button class="btn-icon" onclick="returnToDevices()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="s5-title">Administrative Center 1</div>
@@ -2133,6 +2227,14 @@
   function returnToS0() {
     document.getElementById('s1').classList.remove('active');
     document.getElementById('s0').classList.add('active');
+  }
+  function enterLocationFromDevices() {
+    document.getElementById('sDevices').classList.remove('active');
+    document.getElementById('s0').classList.add('active');
+  }
+  function returnToDevices() {
+    document.getElementById('s0').classList.remove('active');
+    document.getElementById('sDevices').classList.add('active');
   }
 
   // ===== Keep-criteria subscreen =====
