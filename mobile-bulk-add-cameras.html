@@ -631,6 +631,14 @@
   .s5-dev-row .dev-thumb-core { width: 64px; height: 48px; border-radius: 2px; flex: 0 0 auto; background: var(--surface-subtle); display: grid; place-items: center; color: var(--text-default); }
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
   .s5-dev-row .dev-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Location menu sheet (S0) */
+  .location-menu-sheet { padding: 12px 0 16px; }
+  .loc-menu-item { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 12px 16px; cursor: pointer; }
+  .loc-menu-item:hover { background: var(--surface-subtle); }
+  .loc-menu-item .lmi-ico { width: 20px; height: 20px; flex: 0 0 auto; color: var(--text-default); display: inline-flex; align-items: center; justify-content: center; }
+  .loc-menu-item .lmi-text { flex: 1; min-width: 0; font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; }
+  .loc-menu-divider { height: 1px; background: var(--border); margin: 8px 16px; }
   .s5-success { position: absolute; left: 16px; right: 16px; bottom: 24px; background: #F0FDF4; border: 1px solid #22C55E; border-radius: var(--r); padding: 16px; display: flex; gap: 24px; align-items: flex-start; box-shadow: inset 3px 0 0 0 #22C55E; }
   .s5-success .ok-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; padding: 4px; }
   .s5-success .ok-text { flex: 1; font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
@@ -753,11 +761,114 @@
             </div>
           </div>
 
+          <!-- ========== S0: Location landing (entry) ========== -->
+          <div class="panel active" id="s0">
+            <div class="s5-topbar">
+              <div class="s5-tb-left">
+                <button class="btn-icon" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="s5-title">Administrative Center 1</div>
+              </div>
+              <button class="btn-icon" aria-label="More" onclick="openLocationMenu()" style="padding:14px;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="4" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="16" cy="10" r="1.6" fill="currentColor"/></svg>
+              </button>
+            </div>
+
+            <div class="s5-filters">
+              <button class="btn-icon" aria-label="Search" style="padding:10px;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </button>
+              <button class="s5-chip">Status
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="s5-chip">Type
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
+            <div class="s5-body">
+              <div class="s5-sec-label">Sublocations</div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="loc-name">Merkaz</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="loc-name">Sublocation 1</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="loc-name">Merkaz</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <div class="s5-loc-row">
+                <div class="loc-main">
+                  <span class="loc-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                  <span class="loc-name">Administrative Center 1</span>
+                </div>
+                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+
+              <div class="s5-sec-label">Devices</div>
+              <div class="s5-dev-row">
+                <img class="dev-thumb" src="https://picsum.photos/seed/s0cam1/160/120" alt="">
+                <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="dev-name">Main entrance</span>
+              </div>
+              <div class="s5-dev-row">
+                <img class="dev-thumb" src="https://picsum.photos/seed/s0cam2/160/120" alt="">
+                <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="dev-name">Lobby</span>
+              </div>
+              <div class="s5-dev-row">
+                <div class="dev-thumb-core">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
+                </div>
+                <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="dev-name">Core 3</span>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="locationMenuSheet" onclick="if(event.target.id==='locationMenuSheet') closeLocationMenu()">
+              <div class="sheet location-menu-sheet">
+                <div class="sheet-handle"></div>
+                <div class="loc-menu-item" onclick="closeLocationMenu()">
+                  <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></span>
+                  <span class="lmi-text">Edit location</span>
+                </div>
+                <div class="loc-menu-divider"></div>
+                <div class="loc-menu-item" onclick="closeLocationMenu()">
+                  <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5c-3 0-5.5 2.3-5.5 5.3 0 4 5.5 9.7 5.5 9.7s5.5-5.7 5.5-9.7c0-3-2.5-5.3-5.5-5.3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M10 6.5v3M8.5 8h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                  <span class="lmi-text">Add sublocation</span>
+                </div>
+                <div class="loc-menu-item" onclick="closeLocationMenu()">
+                  <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6.5" width="13" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 9h2M4.5 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 14.5h3M16 13v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                  <span class="lmi-text">Add core</span>
+                </div>
+                <div class="loc-menu-item" onclick="addCameraFromMenu()">
+                  <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 8.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M14.5 15.5h3M16 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                  <span class="lmi-text">Add camera</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
           <!-- ========== S1: Core ========== -->
-          <div class="panel active" id="s1">
+          <div class="panel" id="s1">
             <div class="topbar">
               <div class="tb-left">
-                <button class="btn-icon" aria-label="Close">
+                <button class="btn-icon" onclick="returnToS0()" aria-label="Close">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
                 </button>
                 <div class="tb-title">Add cameras</div>
@@ -1432,8 +1543,9 @@
     clearStatusTimers();
     closeMethodSheet();
     closeFilterSheet();
+    closeLocationMenu();
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active','exit-left'));
-    document.getElementById('s1').classList.add('active');
+    document.getElementById('s0').classList.add('active');
     current = 0;
     selectedCore = null;
     document.querySelectorAll('.radio-row').forEach(r => r.classList.remove('selected'));
@@ -2010,6 +2122,19 @@
         </div>
       </div>`;
   }
+  // ===== S0 location menu =====
+  function openLocationMenu() { document.getElementById('locationMenuSheet').classList.add('open'); }
+  function closeLocationMenu() { document.getElementById('locationMenuSheet').classList.remove('open'); }
+  function addCameraFromMenu() {
+    closeLocationMenu();
+    document.getElementById('s0').classList.remove('active');
+    document.getElementById('s1').classList.add('active');
+  }
+  function returnToS0() {
+    document.getElementById('s1').classList.remove('active');
+    document.getElementById('s0').classList.add('active');
+  }
+
   // ===== Keep-criteria subscreen =====
   function openKeepCriteria() {
     resetKeepCriteriaUI();
