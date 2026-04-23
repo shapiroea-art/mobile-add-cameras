@@ -1269,6 +1269,15 @@
               </div>
 
               <div class="kc-group">
+                <div class="kc-label">Camera status</div>
+                <div class="kc-chips" id="kcStatusChips">
+                  <span class="chip" data-status="online">Online</span>
+                  <span class="chip" data-status="warning">Warning</span>
+                  <span class="chip" data-status="offline">Offline</span>
+                </div>
+              </div>
+
+              <div class="kc-group">
                 <div class="kc-label">OUI prefix</div>
                 <div class="input-field"><input type="text" id="kcOui" placeholder="3c:23:32" oninput="onKeepChange()"></div>
               </div>
@@ -1791,18 +1800,18 @@
   function camNameFor(idx) { return `Main office-Core${coreNum()}-${idx}`; }
 
   const confCams = [
-    { id: 1,  ip: '10.0.12.34', brand: 'Axis',      brandModel: 'Axis M3045-V',              model: 'AXIS M3045-V',      type: 'Dome',         mac: '3c:23:32:44:37:c6', path: 'ok' },
-    { id: 2,  ip: '10.0.12.35', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2143G2-I',  model: 'DS-2CD2143G2-I',    type: 'Dome',         mac: '3c:23:32:44:37:c7', path: 'ok' },
-    { id: 3,  ip: '10.0.12.38', brand: 'Dahua',     brandModel: 'Dahua IPC-HFW5442T-ASE',    model: 'IPC-HFW5442T',      type: 'Bullet',       mac: '3c:23:32:44:37:c8', path: 'ok' },
-    { id: 4,  ip: '10.0.12.41', brand: 'Hanwha',    brandModel: 'Hanwha XNO-6120R',          model: 'XNO-6120R',         type: 'Bullet',       mac: '1c:a4:0b:44:37:c9', path: 'ok' },
-    { id: 5,  ip: '10.0.12.51', brand: 'Axis',      brandModel: 'Axis M3068-P',              model: 'AXIS M3068-P',      type: 'Fisheye',      mac: '3c:23:32:44:37:ca', path: 'ok' },
-    { id: 6,  ip: '10.0.12.58', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2687G2T',   model: 'DS-2CD2687G2T',     type: 'Multi-sensor', mac: '3c:23:32:44:37:cb', path: 'ok' },
-    { id: 7,  ip: '10.0.12.62', brand: 'ONVIF',     brandModel: 'ONVIF generic',             model: 'ONVIF',             type: 'Dome',         mac: '78:e9:d8:44:37:cc', path: 'authfail' },
-    { id: 8,  ip: '10.0.12.64', brand: 'Axis',      brandModel: 'Axis M3106-LVE',            model: 'AXIS M3106-LVE',    type: 'Dome',         mac: '3c:23:32:44:37:cd', path: 'ok' },
-    { id: 9,  ip: '10.0.12.67', brand: 'Dahua',     brandModel: 'Dahua IPC-HDBW5449',        model: 'IPC-HDBW5449',      type: 'PTZ',          mac: '3c:23:32:44:37:ce', path: 'ok' },
-    { id: 10, ip: '10.0.12.71', brand: 'Axis',      brandModel: 'Axis P3245-LVE',            model: 'AXIS P3245-LVE',    type: 'Bullet',       mac: '3c:23:32:44:37:cf', path: 'ok' },
-    { id: 11, ip: '10.0.12.78', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2T87',      model: 'DS-2CD2T87',        type: 'Bullet',       mac: '3c:23:32:44:37:d0', path: 'timeout' },
-    { id: 12, ip: '10.0.12.75', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2143G2',    model: 'DS-2CD2143G2',      type: 'PTZ',          mac: '3c:23:32:44:37:d1', path: 'ok' }
+    { id: 1,  ip: '10.0.12.34', brand: 'Axis',      brandModel: 'Axis M3045-V',              model: 'AXIS M3045-V',      type: 'Dome',         mac: '3c:23:32:44:37:c6', path: 'ok',       statusLevel: 'online'  },
+    { id: 2,  ip: '10.0.12.35', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2143G2-I',  model: 'DS-2CD2143G2-I',    type: 'Dome',         mac: '3c:23:32:44:37:c7', path: 'ok',       statusLevel: 'online'  },
+    { id: 3,  ip: '10.0.12.38', brand: 'Dahua',     brandModel: 'Dahua IPC-HFW5442T-ASE',    model: 'IPC-HFW5442T',      type: 'Bullet',       mac: '3c:23:32:44:37:c8', path: 'ok',       statusLevel: 'warning' },
+    { id: 4,  ip: '10.0.12.41', brand: 'Hanwha',    brandModel: 'Hanwha XNO-6120R',          model: 'XNO-6120R',         type: 'Bullet',       mac: '1c:a4:0b:44:37:c9', path: 'ok',       statusLevel: 'online'  },
+    { id: 5,  ip: '10.0.12.51', brand: 'Axis',      brandModel: 'Axis M3068-P',              model: 'AXIS M3068-P',      type: 'Fisheye',      mac: '3c:23:32:44:37:ca', path: 'ok',       statusLevel: 'online'  },
+    { id: 6,  ip: '10.0.12.58', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2687G2T',   model: 'DS-2CD2687G2T',     type: 'Multi-sensor', mac: '3c:23:32:44:37:cb', path: 'ok',       statusLevel: 'warning' },
+    { id: 7,  ip: '10.0.12.62', brand: 'ONVIF',     brandModel: 'ONVIF generic',             model: 'ONVIF',             type: 'Dome',         mac: '78:e9:d8:44:37:cc', path: 'authfail', statusLevel: 'offline' },
+    { id: 8,  ip: '10.0.12.64', brand: 'Axis',      brandModel: 'Axis M3106-LVE',            model: 'AXIS M3106-LVE',    type: 'Dome',         mac: '3c:23:32:44:37:cd', path: 'ok',       statusLevel: 'online'  },
+    { id: 9,  ip: '10.0.12.67', brand: 'Dahua',     brandModel: 'Dahua IPC-HDBW5449',        model: 'IPC-HDBW5449',      type: 'PTZ',          mac: '3c:23:32:44:37:ce', path: 'ok',       statusLevel: 'warning' },
+    { id: 10, ip: '10.0.12.71', brand: 'Axis',      brandModel: 'Axis P3245-LVE',            model: 'AXIS P3245-LVE',    type: 'Bullet',       mac: '3c:23:32:44:37:cf', path: 'ok',       statusLevel: 'online'  },
+    { id: 11, ip: '10.0.12.78', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2T87',      model: 'DS-2CD2T87',        type: 'Bullet',       mac: '3c:23:32:44:37:d0', path: 'timeout',  statusLevel: 'offline' },
+    { id: 12, ip: '10.0.12.75', brand: 'Hikvision', brandModel: 'Hikvision DS-2CD2143G2',    model: 'DS-2CD2143G2',      type: 'PTZ',          mac: '3c:23:32:44:37:d1', path: 'ok',       statusLevel: 'online'  }
   ];
   const s4Loads = [10, 9, 11, 10, 9, 10, 8, 11, 10, 12, 10, 10];
   confCams.forEach((c, i) => {
@@ -1815,7 +1824,7 @@
   let editingCamId = null;
   let pendingDeleteCamId = null;
   let s4FailFilterOn = false;
-  const keepCriteria = { ipFrom: '', ipTo: '', brands: new Set(), types: new Set(), oui: '' };
+  const keepCriteria = { ipFrom: '', ipTo: '', brands: new Set(), types: new Set(), statuses: new Set(), oui: '' };
 
   // Camera thumb pool — Unsplash-ish sample images served via picsum.photos with stable seed per id
   function thumbFor(c) { return `https://picsum.photos/seed/cam${c.id}/160/120`; }
@@ -1869,12 +1878,13 @@
   function expandedBodyHTML(c) {
     const retention = c.config.retention;
     const storage = c.config.storage;
+    const mainstreamWarn = c.statusLevel !== 'online';
+    const mainstreamRow = mainstreamWarn
+      ? `<div class="opt-row"><span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span><button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button></div>`
+      : `<div class="opt-row"><span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Mainstream is optimized</span></div>`;
     return `<div class="conf-details">
       <div class="opt-list">
-        <div class="opt-row">
-          <span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span>
-          <button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button>
-        </div>
+        ${mainstreamRow}
         <div class="opt-row">
           <span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Substream is optimized</span>
           <button class="opt-show" onclick="event.stopPropagation(); openSheet('substreamSheet')">Show</button>
@@ -2008,9 +2018,10 @@
     keepCriteria.ipTo = '';
     keepCriteria.brands.clear();
     keepCriteria.types.clear();
+    keepCriteria.statuses.clear();
     keepCriteria.oui = '';
     ['kcIpFrom','kcIpTo','kcOui'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-    document.querySelectorAll('#kcBrandChips .chip, #kcTypeChips .chip').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('#kcBrandChips .chip, #kcTypeChips .chip, #kcStatusChips .chip').forEach(c => c.classList.remove('active'));
   }
   function onKeepChange() {
     keepCriteria.ipFrom = (document.getElementById('kcIpFrom')?.value || '').trim();
@@ -2018,12 +2029,17 @@
     keepCriteria.oui = (document.getElementById('kcOui')?.value || '').trim().toLowerCase().replace(/-/g, ':');
     renderKeepPreview();
   }
+  function camStatusLevel(c) {
+    if (c.state === 'authfail' || c.state === 'timeout') return 'offline';
+    return c.statusLevel || 'online';
+  }
   function camMatchesKeepCriteria(c) {
     const kc = keepCriteria;
     if (kc.ipFrom && _ipRegex.test(kc.ipFrom) && ipToNumber(c.ip) < ipToNumber(kc.ipFrom)) return false;
     if (kc.ipTo && _ipRegex.test(kc.ipTo) && ipToNumber(c.ip) > ipToNumber(kc.ipTo)) return false;
     if (kc.brands.size && !kc.brands.has(c.brand)) return false;
     if (kc.types.size && !kc.types.has(c.type)) return false;
+    if (kc.statuses.size && !kc.statuses.has(camStatusLevel(c))) return false;
     if (kc.oui) {
       const macNorm = c.mac.toLowerCase().replace(/-/g, ':');
       if (!macNorm.startsWith(kc.oui)) return false;
@@ -2032,7 +2048,7 @@
   }
   function keepCriteriaActive() {
     const kc = keepCriteria;
-    return !!(kc.ipFrom || kc.ipTo || kc.brands.size || kc.types.size || kc.oui);
+    return !!(kc.ipFrom || kc.ipTo || kc.brands.size || kc.types.size || kc.statuses.size || kc.oui);
   }
   function renderKeepPreview() {
     const line1 = document.getElementById('kcPreviewLine1');
@@ -2335,6 +2351,16 @@
     const t = chip.dataset.type;
     if (keepCriteria.types.has(t)) keepCriteria.types.delete(t);
     else keepCriteria.types.add(t);
+    chip.classList.toggle('active');
+    renderKeepPreview();
+  });
+  // Keep-criteria status chips
+  document.getElementById('kcStatusChips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    const s = chip.dataset.status;
+    if (keepCriteria.statuses.has(s)) keepCriteria.statuses.delete(s);
+    else keepCriteria.statuses.add(s);
     chip.classList.toggle('active');
     renderKeepPreview();
   });
