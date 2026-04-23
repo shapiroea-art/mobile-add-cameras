@@ -696,17 +696,14 @@
   .scan-flashlight:hover { background: white; }
   .scan-flashlight.on { background: var(--warning); color: white; }
 
-  /* Cores-added banner on S0 (mirrors .s5-success) */
-  .s0-success { position: absolute; left: 16px; right: 16px; bottom: 48px; background: var(--success); color: var(--text-inverse); padding: 12px 16px; border-radius: var(--r); display: none; align-items: center; gap: 12px; box-shadow: 0 8px 24px rgba(18,183,106,.28); z-index: 12; }
-  .s0-success.show { display: flex; }
-  .s0-success .ok-ico { flex: 0 0 auto; display: inline-flex; }
-  .s0-success .ok-text { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
-  .s0-success .ok-action { background: none; border: none; color: var(--text-inverse); font-weight: 700; font-size: 14px; cursor: pointer; padding: 0; text-decoration: underline; flex: 0 0 auto; }
-  .s0-success .ok-action:hover { opacity: .9; }
-
-  /* Continue adding link on S5 banner */
-  .s5-success .ok-action { background: none; border: none; color: #15803D; font-weight: 600; font-size: 14px; cursor: pointer; padding: 0; text-decoration: underline; flex: 0 0 auto; white-space: nowrap; align-self: center; }
-  .s5-success .ok-action:hover { color: #166534; }
+  /* Unified success banner (S0 cores-added · S5 cameras-added) */
+  .success-card { position: absolute; left: 16px; right: 16px; bottom: 24px; background: #F0FDF4; border: 1px solid #22C55E; border-radius: var(--r); padding: 16px; display: none; flex-direction: column; gap: 12px; box-shadow: inset 3px 0 0 0 #22C55E; z-index: 12; }
+  .success-card.show { display: flex; }
+  .success-card .sc-top { display: flex; gap: 12px; align-items: flex-start; }
+  .success-card .ok-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; padding: 4px; }
+  .success-card .ok-text { flex: 1; min-width: 0; font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
+  .success-card .ok-action { align-self: flex-start; background: none; border: none; padding: 0; font-size: 14px; font-weight: 600; color: var(--primary); cursor: pointer; }
+  .success-card .ok-action:hover { color: var(--primary-hover); text-decoration: underline; }
 
   /* Undo toast */
   .undo-toast { position: absolute; left: 16px; right: 16px; bottom: 118px; background: var(--text-bold); color: var(--text-inverse); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 8px 24px rgba(16,24,40,.18); font-size: 14px; line-height: 20px; z-index: 15; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .18s ease, transform .18s ease; }
@@ -728,9 +725,6 @@
   .loc-menu-item .lmi-ico { width: 20px; height: 20px; flex: 0 0 auto; color: var(--text-default); display: inline-flex; align-items: center; justify-content: center; }
   .loc-menu-item .lmi-text { flex: 1; min-width: 0; font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; }
   .loc-menu-divider { height: 1px; background: var(--border); margin: 8px 16px; }
-  .s5-success { position: absolute; left: 16px; right: 16px; bottom: 24px; background: #F0FDF4; border: 1px solid #22C55E; border-radius: var(--r); padding: 16px; display: flex; gap: 24px; align-items: flex-start; box-shadow: inset 3px 0 0 0 #22C55E; }
-  .s5-success .ok-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; padding: 4px; }
-  .s5-success .ok-text { flex: 1; font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; }
 
   @media (max-width: 900px) {
     .workspace { flex-direction: column; align-items: center; padding: 24px; gap: 24px; }
@@ -1047,9 +1041,11 @@
               </div>
             </div>
 
-            <div class="s0-success" id="s0SuccessBanner">
-              <span class="ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <div class="ok-text" id="s0SuccessText">cores successfully added</div>
+            <div class="success-card" id="s0SuccessBanner">
+              <div class="sc-top">
+                <span class="ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="ok-text" id="s0SuccessText">cores added</div>
+              </div>
               <button class="ok-action" onclick="startAddCamerasFromS0Banner()">Add cameras</button>
             </div>
 
@@ -1735,11 +1731,11 @@
               <div style="height: 96px;"></div>
             </div>
 
-            <div class="s5-success" id="s5SuccessBanner">
-              <span class="ok-ico">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-              <div class="ok-text" id="s5SuccessText">cameras has been added</div>
+            <div class="success-card show" id="s5SuccessBanner">
+              <div class="sc-top">
+                <span class="ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="ok-text" id="s5SuccessText">cameras added</div>
+              </div>
               <button class="ok-action" onclick="continueAddingCameras()">Continue adding cameras</button>
             </div>
 
@@ -2737,7 +2733,7 @@
     document.getElementById('s0').classList.add('active');
     const banner = document.getElementById('s0SuccessBanner');
     const text = document.getElementById('s0SuccessText');
-    text.textContent = `${n} core${n === 1 ? '' : 's'} successfully added`;
+    text.textContent = `${n} core${n === 1 ? '' : 's'} added to Administrative Center 1`;
     banner.classList.add('show');
     coreDrafts = [];
   }
@@ -3086,7 +3082,7 @@
       </div>
     `).join('');
     const plural = success.length === 1 ? 'camera' : 'cameras';
-    document.getElementById('s5SuccessText').textContent = `${success.length} ${plural} has been added to ${core}`;
+    document.getElementById('s5SuccessText').textContent = `${success.length} ${plural} added to ${core}`;
   }
 
   // Status filter chips (S2)
