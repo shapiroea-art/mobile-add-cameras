@@ -1142,7 +1142,7 @@
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
 
-                <div class="core-list">
+                <div class="core-list" id="s1CoreList">
                   <div class="radio-row" id="core1" onclick="selectCore('core1')">
                     <div class="radio-wrap"><div class="radio"></div></div>
                     <div class="radio-body">
@@ -2725,10 +2725,35 @@
     btn.classList.toggle('disabled', connected === 0);
     btn.textContent = connected === 0 ? 'Add cores' : `Add ${connected} core${connected === 1 ? '' : 's'}`;
   }
+  let lastAddedCoreId = null;
   function commitCoreDrafts() {
     const connected = coreDrafts.filter(d => d.status === 'connected');
     if (connected.length === 0) return;
     const n = connected.length;
+    const s1List = document.getElementById('s1CoreList');
+    if (s1List) {
+      connected.forEach((d, idx) => {
+        const newId = `addedCore-${Date.now()}-${idx}`;
+        const row = document.createElement('div');
+        row.className = 'radio-row';
+        row.id = newId;
+        row.setAttribute('onclick', `selectCore('${newId}')`);
+        row.innerHTML = `
+          <div class="radio-wrap"><div class="radio"></div></div>
+          <div class="radio-body">
+            <div class="top">
+              <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+              <span class="name">${_escHtml(d.name)}</span>
+              <span class="sep">•</span>
+              <span class="pct">0%
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+              </span>
+            </div>
+          </div>`;
+        s1List.insertBefore(row, s1List.firstChild);
+        lastAddedCoreId = newId;
+      });
+    }
     document.getElementById('sAddCore').classList.remove('active');
     document.getElementById('s0').classList.add('active');
     const banner = document.getElementById('s0SuccessBanner');
@@ -2744,6 +2769,9 @@
     dismissS0SuccessBanner();
     document.getElementById('s0').classList.remove('active');
     document.getElementById('s1').classList.add('active');
+    if (lastAddedCoreId && document.getElementById(lastAddedCoreId)) {
+      selectCore(lastAddedCoreId);
+    }
   }
   function toggleScanFlashlight() {
     document.getElementById('scanFlashlight').classList.toggle('on');
