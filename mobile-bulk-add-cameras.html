@@ -296,7 +296,10 @@
   .template-preview code { color: var(--primary); background: var(--primary-soft); padding: 1px 5px; border-radius: var(--r); font-family: var(--sans); font-weight: 500; }
 
   /* Auth card (s3) */
-  .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+  .auth-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+  .card-delete { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; display: none; align-items: center; justify-content: center; color: var(--text-subtle); background: none; border: none; border-radius: var(--r); cursor: pointer; }
+  .card-delete:hover { color: var(--danger); background: var(--surface-subtle); }
+  #s3CredsList.multi .card-delete { display: inline-flex; }
   .auth-field { display: flex; flex-direction: column; gap: 8px; }
   .auth-field-narrow { width: 100px; flex: 0 0 100px; }
   .auth-label { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
@@ -910,6 +913,9 @@
 
             <div class="content" id="s3CredsList">
               <div class="auth-card">
+                <button class="card-delete" onclick="deleteCredSet(this)" aria-label="Delete credential set">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
                 <div class="auth-field">
                   <label class="auth-label">Username</label>
                   <div class="input-field"><input type="text"></div>
@@ -956,13 +962,13 @@
 
                 <button class="link-btn" onclick="toggleMoreCreds(this)">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-                  <span>Add more credentials</span>
+                  <span>Advanced options</span>
                 </button>
               </div>
 
               <button class="btn btn-secondary btn-compact" onclick="addCredSet()">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-                Add credentials
+                Add another credential set
               </button>
             </div>
 
@@ -1593,8 +1599,13 @@
     const more = card.querySelector('.more-creds');
     const label = btn.querySelector('span');
     const open = more.hasAttribute('hidden');
-    if (open) { more.removeAttribute('hidden'); label.textContent = 'Hide extra credentials'; }
-    else { more.setAttribute('hidden', ''); label.textContent = 'Add more credentials'; }
+    if (open) { more.removeAttribute('hidden'); label.textContent = 'Hide advanced options'; }
+    else { more.setAttribute('hidden', ''); label.textContent = 'Advanced options'; }
+  }
+  function refreshCredMulti() {
+    const list = document.getElementById('s3CredsList');
+    const count = list.querySelectorAll('.auth-card').length;
+    list.classList.toggle('multi', count > 1);
   }
   function addCredSet() {
     const list = document.getElementById('s3CredsList');
@@ -1604,8 +1615,15 @@
     const more = clone.querySelector('.more-creds');
     if (more) more.setAttribute('hidden', '');
     const lbl = clone.querySelector('.link-btn span');
-    if (lbl) lbl.textContent = 'Add more credentials';
+    if (lbl) lbl.textContent = 'Advanced options';
     list.insertBefore(clone, list.querySelector('.btn-secondary'));
+    refreshCredMulti();
+  }
+  function deleteCredSet(btn) {
+    const list = document.getElementById('s3CredsList');
+    if (list.querySelectorAll('.auth-card').length <= 1) return;
+    btn.closest('.auth-card').remove();
+    refreshCredMulti();
   }
   function restoreDahua() { /* retained as no-op after s3 redesign */ }
 
