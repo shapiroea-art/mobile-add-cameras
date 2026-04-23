@@ -632,6 +632,67 @@
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
   .s5-dev-row .dev-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+  /* Add-core flow */
+  .core-drafts-list { display: flex; flex-direction: column; gap: 12px; padding: 16px; overflow-y: auto; flex: 1; }
+  .core-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+  .core-card .cc-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .core-card .cc-head-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text-subtle); text-transform: uppercase; }
+  .core-card .cc-del { width: 28px; height: 28px; display: grid; place-items: center; border: none; background: none; color: var(--text-subtle); border-radius: 4px; cursor: pointer; padding: 0; }
+  .core-card .cc-del:hover { color: var(--danger); background: var(--danger-soft); }
+  .core-drafts-list:not(.multi) .cc-del { display: none; }
+  .core-card .cc-field { display: flex; flex-direction: column; gap: 8px; }
+  .core-card .cc-label { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .core-card .cc-id-actions { display: flex; flex-direction: column; gap: 8px; }
+  .core-card .cc-primary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 16px; border-radius: var(--r); border: 1px solid var(--primary-border); background: var(--primary); color: var(--text-inverse); font-size: 16px; font-weight: 500; cursor: pointer; }
+  .core-card .cc-primary-btn:hover { background: var(--primary-hover); }
+  .core-card .cc-secondary-link { display: inline-flex; align-items: center; justify-content: center; padding: 8px 0; font-size: 14px; font-weight: 500; color: var(--primary-border); background: none; border: none; cursor: pointer; align-self: center; }
+  .core-card .cc-secondary-link:hover { color: var(--primary); text-decoration: underline; }
+  .core-card .cc-manual-row { display: flex; gap: 8px; }
+  .core-card .cc-manual-row .input-field { flex: 1; min-width: 0; }
+  .core-card .cc-confirm { padding: 0 16px; height: 48px; border-radius: var(--r); border: 1px solid var(--primary-border); background: var(--primary); color: var(--text-inverse); font-size: 14px; font-weight: 500; cursor: pointer; flex: 0 0 auto; }
+  .core-card .cc-confirm.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
+  .core-card .cc-status { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; line-height: 20px; }
+  .core-card .cc-status.connecting { color: var(--text-subtle); }
+  .core-card .cc-status.connected { color: var(--success); }
+  .core-card .cc-status.error { color: var(--danger); }
+  .core-card .cc-status .mini-spinner { width: 14px; height: 14px; border: 2px solid var(--border-input); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .core-card .cc-id-value { font-size: 14px; color: var(--text-subtle); line-height: 20px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .core-card .cc-error-msg { font-size: 14px; color: var(--text-default); line-height: 20px; }
+  .core-card .cc-error-actions { display: flex; gap: 16px; align-items: center; }
+  .core-card .cc-error-actions button { padding: 0; background: none; border: none; font-size: 14px; font-weight: 500; color: var(--primary-border); cursor: pointer; }
+  .core-card .cc-error-actions button:hover { color: var(--primary); text-decoration: underline; }
+  .add-core-foot { padding: 12px 16px 0; flex: 0 0 auto; }
+  .add-core-foot .btn-secondary { width: 100%; gap: 8px; }
+
+  /* Barcode scanner */
+  #sBarcodeScan { background: #0B1021; }
+  .scan-body { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 0; background: linear-gradient(180deg, #1a1f2d 0%, #0B1021 100%); overflow: hidden; }
+  .scan-caption { color: white; font-size: 16px; font-weight: 500; text-align: center; line-height: 24px; padding: 24px 32px; background: rgba(16,24,40,.55); width: 100%; flex: 0 0 auto; }
+  .scan-viewfinder-wrap { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; }
+  .scan-viewfinder { width: 280px; height: 170px; position: relative; }
+  .scan-corner { position: absolute; width: 28px; height: 28px; border: 3px solid white; border-radius: 2px; }
+  .scan-corner.tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+  .scan-corner.tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+  .scan-corner.br { bottom: 0; right: 0; border-left: none; border-top: none; }
+  .scan-corner.bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+  .scan-line { position: absolute; left: 10px; right: 10px; height: 2px; background: linear-gradient(90deg, transparent, rgba(67,103,246,.8), transparent); top: 50%; animation: scan-sweep 2s ease-in-out infinite; box-shadow: 0 0 8px rgba(67,103,246,.6); }
+  @keyframes scan-sweep { 0% { top: 12%; } 50% { top: 82%; } 100% { top: 12%; } }
+  .scan-flashlight { width: 48px; height: 48px; border-radius: 24px; background: rgba(255,255,255,.9); color: var(--text-bold); display: grid; place-items: center; border: none; cursor: pointer; margin-bottom: 48px; flex: 0 0 auto; }
+  .scan-flashlight:hover { background: white; }
+  .scan-flashlight.on { background: var(--warning); color: white; }
+
+  /* Cores-added banner on S0 (mirrors .s5-success) */
+  .s0-success { position: absolute; left: 16px; right: 16px; bottom: 48px; background: var(--success); color: var(--text-inverse); padding: 12px 16px; border-radius: var(--r); display: none; align-items: center; gap: 12px; box-shadow: 0 8px 24px rgba(18,183,106,.28); z-index: 12; }
+  .s0-success.show { display: flex; }
+  .s0-success .ok-ico { flex: 0 0 auto; display: inline-flex; }
+  .s0-success .ok-text { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
+  .s0-success .ok-action { background: none; border: none; color: var(--text-inverse); font-weight: 700; font-size: 14px; cursor: pointer; padding: 0; text-decoration: underline; flex: 0 0 auto; }
+  .s0-success .ok-action:hover { opacity: .9; }
+
+  /* Continue adding link on S5 banner */
+  .s5-success .ok-action { background: none; border: none; color: #15803D; font-weight: 600; font-size: 14px; cursor: pointer; padding: 0; text-decoration: underline; flex: 0 0 auto; white-space: nowrap; align-self: center; }
+  .s5-success .ok-action:hover { color: #166534; }
+
   /* Undo toast */
   .undo-toast { position: absolute; left: 16px; right: 16px; bottom: 118px; background: var(--text-bold); color: var(--text-inverse); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 8px 24px rgba(16,24,40,.18); font-size: 14px; line-height: 20px; z-index: 15; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .18s ease, transform .18s ease; }
   .undo-toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
@@ -951,7 +1012,7 @@
                   <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5c-3 0-5.5 2.3-5.5 5.3 0 4 5.5 9.7 5.5 9.7s5.5-5.7 5.5-9.7c0-3-2.5-5.3-5.5-5.3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M10 6.5v3M8.5 8h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
                   <span class="lmi-text">Add sublocation</span>
                 </div>
-                <div class="loc-menu-item" onclick="closeLocationMenu()">
+                <div class="loc-menu-item" onclick="openAddCoreFlow()">
                   <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6.5" width="13" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 9h2M4.5 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 14.5h3M16 13v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
                   <span class="lmi-text">Add core</span>
                 </div>
@@ -962,7 +1023,71 @@
               </div>
             </div>
 
+            <div class="s0-success" id="s0SuccessBanner">
+              <span class="ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="ok-text" id="s0SuccessText">cores successfully added</div>
+              <button class="ok-action" onclick="startAddCamerasFromS0Banner()">Add cameras</button>
+            </div>
+
             <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sAddCore: Add core list ========== -->
+          <div class="panel" id="sAddCore">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="cancelCoreFlow()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Add core</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="core-drafts-list" id="coreDraftsList"></div>
+
+            <div class="add-core-foot">
+              <button class="btn btn-secondary btn-compact" onclick="addAnotherCoreDraft()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                Add another core
+              </button>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="cancelCoreFlow()">Cancel</button>
+              <button class="btn btn-primary btn-full disabled" id="coreCommitBtn" onclick="commitCoreDrafts()">Add 1 core</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sBarcodeScan: barcode scanner ========== -->
+          <div class="panel" id="sBarcodeScan">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="cancelBarcodeScan()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Scan core barcode</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="scan-body">
+              <div class="scan-caption">Position the barcode entirely within the frame to capture the Core ID</div>
+              <div class="scan-viewfinder-wrap">
+                <div class="scan-viewfinder">
+                  <div class="scan-corner tl"></div>
+                  <div class="scan-corner tr"></div>
+                  <div class="scan-corner br"></div>
+                  <div class="scan-corner bl"></div>
+                  <div class="scan-line"></div>
+                </div>
+              </div>
+              <button class="scan-flashlight" id="scanFlashlight" onclick="toggleScanFlashlight()" aria-label="Flashlight">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 2h6l-1 5h2l-6 11 1-8H7l1-5-1-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+              </button>
+            </div>
           </div>
 
           <!-- ========== S1: Core ========== -->
@@ -1595,6 +1720,7 @@
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
               <div class="ok-text" id="s5SuccessText">cameras has been added</div>
+              <button class="ok-action" onclick="continueAddingCameras()">Continue adding cameras</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2283,6 +2409,237 @@
   function returnToDevices() {
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sDevices').classList.add('active');
+  }
+
+  // ===== Add-core flow =====
+  let coreDrafts = [];
+  let nextCoreSuffix = 1;
+  let coreDraftIdSeq = 1;
+  let scanningDraftId = null;
+  let coreConnectTimers = [];
+  function clearCoreConnectTimers() { coreConnectTimers.forEach(clearTimeout); coreConnectTimers = []; }
+  function _escHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+  function openAddCoreFlow() {
+    closeLocationMenu();
+    coreDrafts = [];
+    nextCoreSuffix = 1;
+    addAnotherCoreDraft();
+    document.getElementById('s0').classList.remove('active');
+    document.getElementById('sAddCore').classList.add('active');
+  }
+  function cancelCoreFlow() {
+    clearCoreConnectTimers();
+    coreDrafts = [];
+    document.getElementById('sAddCore').classList.remove('active');
+    document.getElementById('s0').classList.add('active');
+  }
+  function addAnotherCoreDraft() {
+    const id = coreDraftIdSeq++;
+    coreDrafts.push({
+      id,
+      name: `Main office-Core${nextCoreSuffix++}`,
+      coreId: '',
+      status: 'idle',
+      mode: 'idle',
+      attemptNumber: 0
+    });
+    renderCoreDrafts();
+  }
+  function removeCoreDraft(id) {
+    if (coreDrafts.length <= 1) return;
+    coreDrafts = coreDrafts.filter(d => d.id !== id);
+    renderCoreDrafts();
+  }
+  function renderCoreDrafts() {
+    const list = document.getElementById('coreDraftsList');
+    if (!list) return;
+    list.innerHTML = '';
+    list.classList.toggle('multi', coreDrafts.length > 1);
+    coreDrafts.forEach(d => list.appendChild(buildCoreCard(d)));
+    updateCoreCommitBtn();
+  }
+  function buildCoreCard(d) {
+    const card = document.createElement('div');
+    card.className = 'core-card';
+    card.setAttribute('data-draft-id', d.id);
+    card.innerHTML = `
+      <div class="cc-head">
+        <span class="cc-head-label">Core</span>
+        <button class="cc-del" onclick="removeCoreDraft(${d.id})" aria-label="Remove core">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="cc-field">
+        <label class="cc-label">Core name</label>
+        <div class="input-field"><input type="text" value="${_escHtml(d.name)}" oninput="updateDraftName(${d.id}, this.value)" ${d.status === 'connecting' ? 'disabled' : ''}></div>
+      </div>
+      <div class="cc-field">
+        <label class="cc-label">Core ID</label>
+      </div>
+    `;
+    card.lastElementChild.appendChild(buildCoreIdSection(d));
+    return card;
+  }
+  function buildCoreIdSection(d) {
+    const wrap = document.createElement('div');
+    wrap.className = 'cc-id-section';
+    if (d.status === 'connecting') {
+      wrap.innerHTML = `<div class="cc-status connecting"><span class="mini-spinner"></span>Connecting to core…</div>`;
+      return wrap;
+    }
+    if (d.status === 'connected') {
+      wrap.innerHTML = `
+        <div class="cc-status connected">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Core connected
+        </div>
+        <div class="cc-id-value">${_escHtml(d.coreId)}</div>`;
+      return wrap;
+    }
+    if (d.status === 'error') {
+      wrap.innerHTML = `
+        <div class="cc-status error">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M8 4.5v3.5M8 10v.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Couldn't connect to the core
+        </div>
+        <div class="cc-error-msg">Make sure it's on and online, then try again.</div>
+        <div class="cc-error-actions">
+          <button onclick="startScanForDraft(${d.id})">Scan again</button>
+          <button onclick="startManualForDraft(${d.id})">Edit ID</button>
+        </div>`;
+      return wrap;
+    }
+    if (d.mode === 'manual') {
+      wrap.innerHTML = `
+        <div class="cc-manual-row">
+          <div class="input-field"><input type="text" id="ccManual-${d.id}" placeholder="Enter Core ID" value="${_escHtml(d.coreId || '')}" oninput="onManualInputChange(${d.id})"></div>
+          <button class="cc-confirm ${d.coreId && d.coreId.trim() ? '' : 'disabled'}" id="ccManualConfirm-${d.id}" onclick="confirmManualId(${d.id})">Confirm</button>
+        </div>
+        <button class="cc-secondary-link" onclick="cancelManualForDraft(${d.id})">Cancel manual entry</button>`;
+      return wrap;
+    }
+    // idle
+    wrap.innerHTML = `
+      <div class="cc-id-actions">
+        <button class="cc-primary-btn" onclick="startScanForDraft(${d.id})">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 7v6M8 7v6M11 7v6M14 7v6" stroke="currentColor" stroke-width="1.5"/></svg>
+          Scan barcode
+        </button>
+        <button class="cc-secondary-link" onclick="startManualForDraft(${d.id})">Enter ID manually</button>
+      </div>`;
+    return wrap;
+  }
+  function updateDraftName(id, value) {
+    const d = coreDrafts.find(x => x.id === id);
+    if (d) d.name = value;
+  }
+  function startManualForDraft(id) {
+    const d = coreDrafts.find(x => x.id === id);
+    if (!d) return;
+    d.mode = 'manual';
+    d.status = 'idle';
+    renderCoreDrafts();
+    setTimeout(() => { const el = document.getElementById(`ccManual-${id}`); if (el) el.focus(); }, 0);
+  }
+  function cancelManualForDraft(id) {
+    const d = coreDrafts.find(x => x.id === id);
+    if (!d) return;
+    d.mode = 'idle';
+    d.status = 'idle';
+    renderCoreDrafts();
+  }
+  function onManualInputChange(id) {
+    const d = coreDrafts.find(x => x.id === id);
+    if (!d) return;
+    const input = document.getElementById(`ccManual-${id}`);
+    d.coreId = (input?.value || '').trim();
+    const btn = document.getElementById(`ccManualConfirm-${id}`);
+    if (btn) btn.classList.toggle('disabled', !d.coreId);
+  }
+  function confirmManualId(id) {
+    const d = coreDrafts.find(x => x.id === id);
+    if (!d || !d.coreId) return;
+    d.mode = 'idle';
+    beginCoreConnect(d);
+  }
+  function startScanForDraft(id) {
+    scanningDraftId = id;
+    document.getElementById('sAddCore').classList.remove('active');
+    document.getElementById('sBarcodeScan').classList.add('active');
+    // Auto-detect after 2s
+    coreConnectTimers.push(setTimeout(finishBarcodeScan, 2000));
+  }
+  function cancelBarcodeScan() {
+    clearCoreConnectTimers();
+    scanningDraftId = null;
+    document.getElementById('sBarcodeScan').classList.remove('active');
+    document.getElementById('sAddCore').classList.add('active');
+  }
+  function finishBarcodeScan() {
+    const id = scanningDraftId;
+    scanningDraftId = null;
+    document.getElementById('sBarcodeScan').classList.remove('active');
+    document.getElementById('sAddCore').classList.add('active');
+    const d = coreDrafts.find(x => x.id === id);
+    if (!d) return;
+    // Generate a fake scanned ID
+    d.coreId = fakeBarcodeId();
+    d.mode = 'idle';
+    beginCoreConnect(d);
+  }
+  function fakeBarcodeId() {
+    const hex = '0123456789abcdef';
+    let out = '';
+    for (let i = 0; i < 24; i++) out += hex[Math.floor(Math.random() * 16)];
+    return out;
+  }
+  function beginCoreConnect(d) {
+    d.status = 'connecting';
+    d.attemptNumber = (d.attemptNumber || 0) + 1;
+    renderCoreDrafts();
+    // Deterministic demo: 2nd draft's 1st attempt fails, everything else succeeds
+    const idxInList = coreDrafts.findIndex(x => x.id === d.id);
+    const shouldFail = idxInList === 1 && d.attemptNumber === 1;
+    coreConnectTimers.push(setTimeout(() => {
+      d.status = shouldFail ? 'error' : 'connected';
+      renderCoreDrafts();
+    }, 5000));
+  }
+  function updateCoreCommitBtn() {
+    const btn = document.getElementById('coreCommitBtn');
+    if (!btn) return;
+    const n = coreDrafts.length;
+    const allConnected = n > 0 && coreDrafts.every(d => d.status === 'connected');
+    btn.classList.toggle('disabled', !allConnected);
+    btn.textContent = `Add ${n} core${n === 1 ? '' : 's'}`;
+  }
+  function commitCoreDrafts() {
+    const connected = coreDrafts.filter(d => d.status === 'connected');
+    if (connected.length === 0) return;
+    const n = connected.length;
+    document.getElementById('sAddCore').classList.remove('active');
+    document.getElementById('s0').classList.add('active');
+    const banner = document.getElementById('s0SuccessBanner');
+    const text = document.getElementById('s0SuccessText');
+    text.textContent = `${n} core${n === 1 ? '' : 's'} successfully added`;
+    banner.classList.add('show');
+    coreDrafts = [];
+  }
+  function dismissS0SuccessBanner() {
+    document.getElementById('s0SuccessBanner').classList.remove('show');
+  }
+  function startAddCamerasFromS0Banner() {
+    dismissS0SuccessBanner();
+    document.getElementById('s0').classList.remove('active');
+    document.getElementById('s1').classList.add('active');
+  }
+  function toggleScanFlashlight() {
+    document.getElementById('scanFlashlight').classList.toggle('on');
+  }
+  function continueAddingCameras() {
+    resetFlow();
+    document.getElementById('s0').classList.remove('active');
+    document.getElementById('s1').classList.add('active');
   }
 
   // ===== Keep-criteria subscreen =====
