@@ -487,6 +487,10 @@
   .fg-group { padding: 6px 4px 14px; }
   .fg-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text-subtle); text-transform: uppercase; padding: 0 0 8px; }
   .fg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .fg-range { display: flex; align-items: center; gap: 8px; }
+  .fg-range .input-field { flex: 1; min-width: 0; padding: 0 12px; }
+  .fg-range .input-field input { font-size: 14px; }
+  .fg-range .fg-range-sep { color: var(--text-subtlest); font-size: 16px; line-height: 1; flex: 0 0 auto; }
 
   /* ===== S4 Configuration (rebuilt) ===== */
   .conf-list { flex: 1; overflow-y: auto; background: var(--surface); }
@@ -709,6 +713,14 @@
                   <span class="chip with-icon" data-conn="good"><span class="cam-conn-dot good"></span>Good</span>
                   <span class="chip with-icon" data-conn="reasonable"><span class="cam-conn-dot reasonable"></span>Reasonable</span>
                   <span class="chip with-icon" data-conn="limited"><span class="cam-conn-dot limited"></span>Limited</span>
+                </div>
+              </div>
+              <div class="fg-group">
+                <div class="fg-label">IP range</div>
+                <div class="fg-range">
+                  <div class="input-field"><input type="text" id="ipRangeFrom" inputmode="decimal" placeholder="192.168.100.1" oninput="onIpRangeChange()"></div>
+                  <span class="fg-range-sep">–</span>
+                  <div class="input-field"><input type="text" id="ipRangeTo" inputmode="decimal" placeholder="192.168.100.255" oninput="onIpRangeChange()"></div>
                 </div>
               </div>
               <button class="btn btn-primary btn-full" onclick="closeFilterSheet()" style="margin-top: 4px;">Done</button>
@@ -1364,6 +1376,7 @@
   let camFilter = 'all';
   const brandFilters = new Set();
   const connFilters = new Set();
+  const ipRange = { from: '', to: '' };
   const expandedIps = new Set();
   let infoMsgDismissed = false;
   let ipSort = 'none'; // 'none' | 'asc' | 'desc' — default unsorted (discovery order)
@@ -1420,6 +1433,7 @@
     camFilter = 'all';
     brandFilters.clear();
     connFilters.clear();
+    clearIpRangeInputs();
     ipSort = 'none';
     updateSortArrow();
     const searchInp = document.getElementById('camSearch');
@@ -1498,6 +1512,7 @@
       if (camFilter !== 'all' && c.status !== camFilter) return false;
       if (brandFilters.size && !brandFilters.has(c.brand)) return false;
       if (connFilters.size && !connFilters.has(c.connection)) return false;
+      if (!ipInRange(c.ip)) return false;
       if (q && !(c.ip.includes(q) || c.mac.toLowerCase().includes(q) || c.brand.toLowerCase().includes(q))) return false;
       return true;
     });
@@ -1600,6 +1615,7 @@
   function clearFilters() {
     brandFilters.clear();
     connFilters.clear();
+    clearIpRangeInputs();
     document.querySelectorAll('#brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
     updateFilterBtn();
     renderCamList();
@@ -1607,7 +1623,31 @@
   function updateFilterBtn() {
     const btn = document.getElementById('filterBtn');
     if (!btn) return;
-    btn.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0);
+    const ipRangeActive = !!(ipRange.from || ipRange.to);
+    btn.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0 || ipRangeActive);
+  }
+  function clearIpRangeInputs() {
+    ipRange.from = '';
+    ipRange.to = '';
+    const f = document.getElementById('ipRangeFrom');
+    const t = document.getElementById('ipRangeTo');
+    if (f) f.value = '';
+    if (t) t.value = '';
+  }
+  function onIpRangeChange() {
+    ipRange.from = (document.getElementById('ipRangeFrom')?.value || '').trim();
+    ipRange.to = (document.getElementById('ipRangeTo')?.value || '').trim();
+    updateFilterBtn();
+    renderCamList();
+  }
+  const _ipRegex = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+  function ipInRange(ip) {
+    const from = ipRange.from, to = ipRange.to;
+    if (!from && !to) return true;
+    const n = ipToNumber(ip);
+    if (from && _ipRegex.test(from) && n < ipToNumber(from)) return false;
+    if (to && _ipRegex.test(to) && n > ipToNumber(to)) return false;
+    return true;
   }
 
   // ===== Auth (S3) helpers =====
