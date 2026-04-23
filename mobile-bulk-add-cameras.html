@@ -632,6 +632,13 @@
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
   .s5-dev-row .dev-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+  /* Undo toast */
+  .undo-toast { position: absolute; left: 16px; right: 16px; bottom: 118px; background: var(--text-bold); color: var(--text-inverse); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 8px 24px rgba(16,24,40,.18); font-size: 14px; line-height: 20px; z-index: 15; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .18s ease, transform .18s ease; }
+  .undo-toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .undo-toast .ut-label { flex: 1; min-width: 0; }
+  .undo-toast .ut-btn { background: none; border: none; color: #A5B4FC; font-weight: 500; cursor: pointer; padding: 0; font-size: 14px; line-height: 20px; flex: 0 0 auto; }
+  .undo-toast .ut-btn:hover { text-decoration: underline; color: var(--text-inverse); }
+
   /* Bottom tabs (sDevices) */
   .bottom-tabs { background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: stretch; flex: 0 0 auto; }
   .bottom-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 10px 0 8px; cursor: pointer; color: var(--text-default); background: none; border: none; }
@@ -1593,6 +1600,11 @@
             <div class="home-indicator"></div>
           </div>
 
+          <div class="undo-toast" id="undoToast">
+            <span class="ut-label" id="undoToastLabel">Removed</span>
+            <button class="ut-btn" onclick="clickUndo()">Undo</button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1990,8 +2002,15 @@
   function deleteCredSet(btn) {
     const list = document.getElementById('s3CredsList');
     if (list.querySelectorAll('.auth-card').length <= 1) return;
-    btn.closest('.auth-card').remove();
+    const card = btn.closest('.auth-card');
+    const nextSibling = card.nextSibling;
+    const parent = card.parentNode;
+    parent.removeChild(card);
     refreshCredMulti();
+    showUndoToast('Credential set removed', () => {
+      parent.insertBefore(card, nextSibling);
+      refreshCredMulti();
+    });
   }
   function restoreDahua() { /* retained as no-op after s3 redesign */ }
 
@@ -2187,8 +2206,12 @@
     if (id == null) return;
     const idx = confCams.findIndex(c => c.id === id);
     if (idx === -1) return;
-    confCams.splice(idx, 1);
+    const [removed] = confCams.splice(idx, 1);
     renderConfList();
+    showUndoToast(`${removed.name || 'Camera'} removed`, () => {
+      confCams.splice(Math.min(idx, confCams.length), 0, removed);
+      renderConfList();
+    });
   }
   function coreLoadTotal() {
     return confCams.reduce((s, c) => s + (c.load || 0), 0);
@@ -2216,6 +2239,29 @@
         </div>
       </div>`;
   }
+  // ===== Undo toast =====
+  let undoToastTimer = null;
+  let undoState = null;
+  function showUndoToast(label, onUndo) {
+    undoState = { onUndo };
+    const toast = document.getElementById('undoToast');
+    document.getElementById('undoToastLabel').textContent = label;
+    toast.classList.add('show');
+    if (undoToastTimer) clearTimeout(undoToastTimer);
+    undoToastTimer = setTimeout(dismissUndoToast, 5000);
+  }
+  function dismissUndoToast() {
+    document.getElementById('undoToast').classList.remove('show');
+    if (undoToastTimer) { clearTimeout(undoToastTimer); undoToastTimer = null; }
+    undoState = null;
+  }
+  function clickUndo() {
+    if (!undoState) return;
+    const fn = undoState.onUndo;
+    dismissUndoToast();
+    fn();
+  }
+
   // ===== S0 location menu =====
   function openLocationMenu() { document.getElementById('locationMenuSheet').classList.add('open'); }
   function closeLocationMenu() { document.getElementById('locationMenuSheet').classList.remove('open'); }
@@ -2333,11 +2379,21 @@
     const matched = confCams.filter(camMatchesKeepCriteria);
     if (matched.length === 0 || matched.length === confCams.length) return;
     const keepIds = new Set(matched.map(c => c.id));
+    const removed = [];
     for (let i = confCams.length - 1; i >= 0; i--) {
-      if (!keepIds.has(confCams[i].id)) confCams.splice(i, 1);
+      if (!keepIds.has(confCams[i].id)) {
+        removed.push({ cam: confCams[i], idx: i });
+        confCams.splice(i, 1);
+      }
     }
     closeKeepCriteria();
     renderConfList();
+    const n = removed.length;
+    showUndoToast(`${n} camera${n === 1 ? '' : 's'} removed`, () => {
+      removed.sort((a, b) => a.idx - b.idx);
+      removed.forEach(r => confCams.splice(Math.min(r.idx, confCams.length), 0, r.cam));
+      renderConfList();
+    });
   }
 
   function toggleExpandAllConf() {
