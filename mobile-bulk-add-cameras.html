@@ -2092,7 +2092,9 @@
 
   function failCardHTML(c) {
     if (c.state !== 'authfail' && c.state !== 'timeout') return '';
-    const reason = c.state === 'timeout' ? 'Connection timeout' : 'Authentication error';
+    const reason = c.state === 'timeout'
+      ? 'Connection timeout'
+      : (c.retried ? 'Retry failed — credentials still incorrect' : 'Authentication error');
     return `<div class="conf-fail-card" onclick="event.stopPropagation();">
       <span class="fc-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M8 4.5v3.5M8 10v.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       <div class="fc-text">Connection failed — ${reason}</div>
@@ -2438,6 +2440,7 @@
     if (!c) return;
     const wasState = c.state;
     if (wasState !== 'authfail' && wasState !== 'timeout') return;
+    if (wasState === 'authfail') c.retried = true;
     c.state = 'connecting';
     renderConfList();
     statusTimers.push(setTimeout(() => {
@@ -2460,7 +2463,7 @@
   function startConfigAnimation() {
     clearStatusTimers();
     reseedConfNames();
-    confCams.forEach(c => { c.state = 'connecting'; c.expanded = false; c.checked = false; });
+    confCams.forEach(c => { c.state = 'connecting'; c.expanded = false; c.checked = false; c.retried = false; });
     s4FailFilterOn = false;
     renderConfList();
     // Stretch across ~10s. OK cams: Connected staggered 2.5-8s, Online +1-2s landing 6-10s.
@@ -2497,6 +2500,7 @@
     closeSheet('addCredsSheet');
     const c = confCams.find(x => x.id === id);
     if (!c) return;
+    c.retried = false;
     c.state = 'connecting';
     renderConfList();
     statusTimers.push(setTimeout(() => setConfStatus(id, 'connected'), 700));
