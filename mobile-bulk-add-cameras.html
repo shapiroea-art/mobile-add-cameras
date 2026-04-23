@@ -1027,7 +1027,7 @@
 
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="go(2)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(4)">Final Setup</button>
+              <button class="btn btn-primary btn-full" id="s4NextBtn" onclick="go(4)">Final Setup</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1833,25 +1833,22 @@
   }
   function updateS4CapBanner() {
     const el = document.getElementById('s4CapBanner');
+    const nextBtn = document.getElementById('s4NextBtn');
     if (!el) return;
     const load = coreLoadTotal();
     const n = confCams.length;
     const over = load > 100;
+    el.classList.toggle('hidden', !over);
     el.classList.toggle('warn', over);
-    const title = over
-      ? `Over capacity · ${load}% core load`
-      : `Within capacity · ${load}% core load`;
-    const desc = over
-      ? `Adding all ${n} cameras exceeds the 100% limit. Remove cameras to fit.`
-      : `All ${n} cameras fit. Ready to add.`;
-    const iconSvg = over
-      ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l7 12H1l7-12z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M8 6.5v3.5M8 12v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'
-      : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    if (nextBtn) nextBtn.classList.toggle('disabled', over);
+    if (!over) { el.innerHTML = ''; return; }
     el.innerHTML = `
-      <span class="im-icon">${iconSvg}</span>
+      <span class="im-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l7 12H1l7-12z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M8 6.5v3.5M8 12v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </span>
       <div class="im-body">
-        <div class="im-title">${title}</div>
-        <div class="im-desc">${desc}</div>
+        <div class="im-title">Over capacity · ${load}% core load</div>
+        <div class="im-desc">Adding all ${n} cameras exceeds the 100% limit. Remove cameras to fit.</div>
       </div>`;
   }
   function toggleExpandAllConf() {
