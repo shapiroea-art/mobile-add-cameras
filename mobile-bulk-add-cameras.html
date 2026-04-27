@@ -674,6 +674,19 @@
   .cb-row.checked .cb-square { background: var(--primary); border-color: var(--primary-border); }
   .cb-row.checked .cb-square .cb-check { display: block; }
   .cb-label { flex: 1; font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; font-family: var(--sans); }
+  /* Type filter sheet */
+  .type-sheet { padding: 0; }
+  .type-sheet .ts-handle { padding: 10px 0; display: flex; justify-content: center; }
+  .type-sheet .ts-handle::after { content:''; width: 44px; height: 6px; background: var(--text-subtlest); border-radius: 100px; }
+  .type-sheet .ts-title { padding: 16px; font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; }
+  .type-sheet .ts-list { display: flex; flex-direction: column; padding: 8px 0 16px; }
+  .type-sheet .ts-foot { border-top: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 8px; }
+  .type-sheet .ts-foot .btn { flex: 1; }
+  .type-sheet .cb-divider { padding: 8px 16px; }
+  .type-sheet .cb-divider hr { border: none; border-top: 1px solid var(--border); margin: 0; }
+  .type-sheet .cb-row .cb-icon { display: inline-flex; flex: 0 0 auto; color: var(--text-default); }
+  .type-sheet .cb-row .cb-label { padding-left: 6px; }
+  .type-sheet .cb-row .cb-badge { display: inline-flex; align-items: center; padding: 2px 8px; background: var(--surface-gray200); color: var(--text-default); font-size: 12px; line-height: 20px; border-radius: 24px; flex: 0 0 auto; font-weight: 400; }
   .s5-loc-row { display: flex; align-items: center; height: 52px; padding-left: 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
   .s5-loc-row .loc-main { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
   .s5-loc-row .loc-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
@@ -908,6 +921,74 @@
             </div>
           </div>
 
+          <!-- Bottom sheet: Type filter (shared by Devices + AC1) -->
+          <div class="sheet-backdrop" id="typeFilterSheet" onclick="if(event.target.id==='typeFilterSheet') closeSheet('typeFilterSheet')">
+            <div class="sheet type-sheet">
+              <div class="ts-handle"></div>
+              <div class="ts-title">Type</div>
+              <div class="ts-list" id="typeFilterList">
+                <div class="cb-row" data-type="all" onclick="toggleTypeAll(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-label">Select All</span>
+                  <span class="cb-badge">36</span>
+                </div>
+                <div class="cb-divider"><hr></div>
+                <div class="cb-row" data-type="cameras" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6" width="11" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 8.5l4-2v7l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></span>
+                  <span class="cb-label">Cameras</span>
+                  <span class="cb-badge">12</span>
+                </div>
+                <div class="cb-row" data-type="sensors" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/></svg></span>
+                  <span class="cb-label">Sensors</span>
+                  <span class="cb-badge">5</span>
+                </div>
+                <div class="cb-row" data-type="cores" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5.5" width="15" height="9" rx="1.25" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5h6M5 11.5h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="14.5" cy="10" r="0.9" fill="currentColor"/></svg></span>
+                  <span class="cb-label">Cores</span>
+                  <span class="cb-badge">3</span>
+                </div>
+                <div class="cb-row" data-type="doors" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5.5" y="2.75" width="9" height="14.5" stroke="currentColor" stroke-width="1.5"/><circle cx="11.75" cy="10" r="0.9" fill="currentColor"/></svg></span>
+                  <span class="cb-label">Doors</span>
+                  <span class="cb-badge">4</span>
+                </div>
+                <div class="cb-row" data-type="speakers" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 7.5h3l4-3v11l-4-3H3V7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M13.5 7.5a3.5 3.5 0 010 5M15.5 5a6 6 0 010 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></span>
+                  <span class="cb-label">Speakers</span>
+                  <span class="cb-badge">2</span>
+                </div>
+                <div class="cb-row" data-type="appletv" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14 11c0-2 1.5-2.7 1.6-2.8-0.9-1.3-2.2-1.4-2.7-1.5-1.2-0.1-2.3 0.7-2.9 0.7-0.6 0-1.5-0.7-2.5-0.6-1.3 0-2.5 0.8-3.2 2-1.4 2.4-0.4 5.9 1 7.8 0.7 0.9 1.5 1.9 2.6 1.9 1 0 1.4-0.7 2.7-0.7 1.2 0 1.6 0.7 2.7 0.6 1.1 0 1.8-0.9 2.5-1.8 0.6-0.7 1-1.6 1.2-2.4-1.6-0.6-3-2.3-3-3.2zM12 5.4c0.5-0.7 0.9-1.6 0.8-2.4-0.7 0-1.6 0.5-2.1 1.1-0.5 0.5-0.9 1.4-0.8 2.3 0.8 0.1 1.6-0.4 2.1-1z" fill="currentColor"/></svg></span>
+                  <span class="cb-label">Apple TV</span>
+                  <span class="cb-badge">1</span>
+                </div>
+                <div class="cb-row" data-type="remoteio" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 6h6M11.5 6h5.5M3 14h2.5M8 14h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10.25" cy="6" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="6.75" cy="14" r="2" stroke="currentColor" stroke-width="1.5"/></svg></span>
+                  <span class="cb-label">Remote IOs</span>
+                  <span class="cb-badge">2</span>
+                </div>
+                <div class="cb-row" data-type="storage" onclick="toggleTypeOption(this)">
+                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2.5" y="11" width="15" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="14.5" cy="6.5" r="0.9" fill="currentColor"/><circle cx="14.5" cy="13.5" r="0.9" fill="currentColor"/></svg></span>
+                  <span class="cb-label">External storage</span>
+                  <span class="cb-badge">7</span>
+                </div>
+              </div>
+              <div class="ts-foot">
+                <button class="btn btn-secondary" onclick="clearTypeFilters()">Clear All</button>
+                <button class="btn btn-primary" onclick="applyTypeFilters()">Apply Filters</button>
+              </div>
+            </div>
+          </div>
+
           <!-- Bottom sheet: Camera detection method -->
           <div class="sheet-backdrop" id="methodSheet" onclick="if(event.target.id==='methodSheet') closeMethodSheet()">
             <div class="sheet">
@@ -1039,7 +1120,7 @@
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" onclick="toggleTypeChip(this)"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openSheet('typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
@@ -1129,7 +1210,7 @@
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" onclick="toggleTypeChip(this)"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openSheet('typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
@@ -1853,7 +1934,7 @@
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" onclick="toggleTypeChip(this)"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openSheet('typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
@@ -2694,7 +2775,33 @@
     const searchBtn = panel.querySelector('.s5-filters .btn-icon[aria-label="Search"]');
     if (searchBtn) searchBtn.classList.toggle('used', !!(input && input.value.trim()));
   }
-  function toggleTypeChip(btn) { btn.classList.toggle('selected'); }
+  function toggleTypeOption(row) {
+    row.classList.toggle('checked');
+    syncTypeAll();
+  }
+  function toggleTypeAll(row) {
+    const willCheck = !row.classList.contains('checked');
+    row.classList.toggle('checked', willCheck);
+    document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"])').forEach(r => r.classList.toggle('checked', willCheck));
+  }
+  function syncTypeAll() {
+    const items = document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"])');
+    const checked = document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"]).checked');
+    const all = document.querySelector('#typeFilterList .cb-row[data-type="all"]');
+    if (all) all.classList.toggle('checked', items.length > 0 && checked.length === items.length);
+  }
+  function clearTypeFilters() {
+    document.querySelectorAll('#typeFilterList .cb-row.checked').forEach(r => r.classList.remove('checked'));
+  }
+  function applyTypeFilters() {
+    const n = document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"]).checked').length;
+    document.querySelectorAll('.s5-chip[data-chip="type"]').forEach(chip => {
+      chip.classList.toggle('selected', n > 0);
+      const countEl = chip.querySelector('.s5-chip-count');
+      if (countEl) countEl.textContent = n;
+    });
+    closeSheet('typeFilterSheet');
+  }
   function onSearchInput(input) {
     const pill = input.closest('.s5-search-pill');
     if (pill) pill.classList.toggle('has-value', !!input.value);
