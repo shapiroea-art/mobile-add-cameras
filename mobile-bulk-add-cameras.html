@@ -1113,11 +1113,22 @@
               <div class="tb-right"></div>
             </div>
 
+            <div class="info-msg" id="sAddCoreInfoMsg">
+              <span class="im-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <div class="im-body">
+                <div class="im-desc">The core is added as soon as you enter the Core ID and it connects.</div>
+              </div>
+              <button class="im-close" onclick="document.getElementById('sAddCoreInfoMsg').classList.add('hidden')" aria-label="Dismiss">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+
             <div class="content" id="coreDraftsList"></div>
 
             <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="cancelCoreFlow()">Cancel</button>
-              <button class="btn btn-primary btn-full disabled" id="coreCommitBtn" onclick="commitCoreDrafts()">Add 1 core</button>
+              <button class="btn btn-secondary btn-full" onclick="cancelCoreFlow()">Back</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2561,7 +2572,10 @@
     closeLocationMenu();
     coreDrafts = [];
     nextCoreSuffix = 1;
+    sessionCoresAdded = 0;
     addAnotherCoreDraft();
+    const im = document.getElementById('sAddCoreInfoMsg');
+    if (im) im.classList.remove('hidden');
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sAddCore').classList.add('active');
   }
@@ -2570,6 +2584,14 @@
     coreDrafts = [];
     document.getElementById('sAddCore').classList.remove('active');
     document.getElementById('s0').classList.add('active');
+    if (sessionCoresAdded > 0) {
+      const n = sessionCoresAdded;
+      const banner = document.getElementById('s0SuccessBanner');
+      const text = document.getElementById('s0SuccessText');
+      if (text) text.textContent = `${n} core${n === 1 ? '' : 's'} added to Administrative Center 1`;
+      if (banner) banner.classList.add('show');
+      sessionCoresAdded = 0;
+    }
   }
   function addAnotherCoreDraft() {
     const id = coreDraftIdSeq++;
@@ -2629,14 +2651,14 @@
     const wrap = document.createElement('div');
     wrap.className = 'cc-id-section';
     if (d.status === 'connecting') {
-      wrap.innerHTML = `<div class="cc-status connecting"><span class="mini-spinner"></span>Connecting to core…</div>`;
+      wrap.innerHTML = `<div class="cc-status connecting"><span class="mini-spinner"></span>Core initializing…</div>`;
       return wrap;
     }
     if (d.status === 'connected') {
       wrap.innerHTML = `
         <div class="cc-status connected">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Core connected
+          Core successfully added
         </div>
         <div class="cc-id-value">${_escHtml(d.coreId)}</div>`;
       return wrap;
@@ -2777,16 +2799,39 @@
     const shouldFail = idxInList === 1 && d.attemptNumber === 1;
     coreConnectTimers.push(setTimeout(() => {
       d.status = shouldFail ? 'error' : 'connected';
+      if (d.status === 'connected' && !d.committed) {
+        d.committed = true;
+        addCoreToList(d);
+      }
       renderCoreDrafts();
     }, 5000));
   }
-  function updateCoreCommitBtn() {
-    const btn = document.getElementById('coreCommitBtn');
-    if (!btn) return;
-    const connected = coreDrafts.filter(d => d.status === 'connected').length;
-    btn.classList.toggle('disabled', connected === 0);
-    btn.textContent = connected === 0 ? 'Add cores' : `Add ${connected} core${connected === 1 ? '' : 's'}`;
+  function updateCoreCommitBtn() {}
+  function addCoreToList(d) {
+    const s1List = document.getElementById('s1CoreList');
+    if (!s1List) return;
+    const newId = `addedCore-${Date.now()}-${d.id}`;
+    const row = document.createElement('div');
+    row.className = 'radio-row';
+    row.id = newId;
+    row.setAttribute('onclick', `selectCore('${newId}')`);
+    row.innerHTML = `
+      <div class="radio-wrap"><div class="radio"></div></div>
+      <div class="radio-body">
+        <div class="top">
+          <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          <span class="name">${_escHtml(d.name)}</span>
+          <span class="sep">•</span>
+          <span class="pct">0%
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+          </span>
+        </div>
+      </div>`;
+    s1List.insertBefore(row, s1List.firstChild);
+    lastAddedCoreId = newId;
+    sessionCoresAdded += 1;
   }
+  let sessionCoresAdded = 0;
   let lastAddedCoreId = null;
   function commitCoreDrafts() {
     const connected = coreDrafts.filter(d => d.status === 'connected');
