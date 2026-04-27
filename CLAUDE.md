@@ -37,7 +37,7 @@ Pain points from competitor reviews to design against: case-sensitive verificati
 
 ## UX decisions (2026-04-20)
 
-Flow is **4 steps** (Core → Discover → Authenticate → Review) + a post-commit status screen outside the stepper.
+Flow is **4 steps** (Core → Detection → Authenticate → Review) + a post-commit status screen outside the stepper. (Step 2 was renamed from "Discover" to "Detection" on 2026-04-27.)
 
 **1. Scan-first, no method picker.** Flow starts scanning automatically when the user enters step 2. Alternative add methods (*Add by IP · Scan IP range · Scan QR · Add by RTSP*) live in an overflow (kebab) menu in the top bar and a "Didn't find it? Add manually" row below the scan results. Why: a method-picker screen was a tax on every installer for a decision that's the same ~95% of the time. Why not filter chips: filters narrow the current result set; add methods *acquire* new cameras — conflating them confuses users.
 
@@ -46,6 +46,17 @@ Flow is **4 steps** (Core → Discover → Authenticate → Review) + a post-com
 **3. Audio/mic is auto-detected — no toggle in bulk add.** Per-camera mic control lives in the device detail screen *after* add, where the admin who cares about privacy/compliance looks anyway. Why: fewer decisions for installers, cleaner rows, same capability for downstream config.
 
 **4. Post-commit is a progressive status list (no ring, no overlay).** Tapping "Add N cameras" navigates straight to the status list with all rows at **Connecting…**. Over ~3–4 seconds, rows stagger-cycle through **Connected** (intermediate: stream up, verification pending) → **Online** (verified and streaming). 50–300ms jitter per row so it doesn't look mocked. Two problematic cameras remain for the retry UX: one flips to **Auth failed** at ~1.5s, another to **Connection timeout** at ~2.5s. A live counter (Online · Connecting · Failed) sits at the top. Retry-failed button appears only once failures surface. Why: honest live feedback matching the real technical pipeline, replaces the fake ring progress with the real progression.
+
+## Recent prototype updates (2026-04-27)
+
+Latest iteration of `mobile-bulk-add-cameras.html`, pushed to `github.com/shapiroea-art/mobile-add-cameras`:
+
+- **Devices + Administrative Center 1 lists.** Filter chips are now `Status · Type · Tags` (Location chip removed; Tags added at the end).
+- **Search-active mode** on Devices, AC1 (entry), and AC1 (post-add success). Tapping the magnifier swaps the chips row for a full-width pill input on `#F2F4F7` with placeholder "Search device or location"; chevron-up collapses it. Pattern from Figma node `5:6765`. Visual only — input doesn't filter rows yet.
+- **Add-core seed name** is now `Administrative Center 1-CoreN` (was `Main office-CoreN`); auto-generated camera names follow the same prefix.
+- **S1 core picker rows** wrap and grow vertically when names are too long for one line, instead of overflowing.
+- **Step 2 renamed** from "Discover" to "Detection" (stepper label + file menu).
+- **Detection screen restructure.** Round scan-progress indicator moved to the left of "Select cameras to authenticate" in the title row. The Unregistered / Registered / Unknown chips moved into the Filter bottom sheet under a new "Devices" group at the top. The previous chips row and its separator are gone. Device chips are radio-style: tapping the active chip clears it back to All; the filter button shows its has-filters dot when a device filter is active.
 
 ## Working conventions
 
