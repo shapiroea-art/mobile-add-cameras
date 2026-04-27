@@ -616,7 +616,6 @@
   .s5-topbar .s5-title { font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .s5-filters { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
   .s5-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border: 1px solid var(--border-input); border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--text-default); background: var(--surface); cursor: pointer; line-height: 24px; }
-  .s5-chip:hover { background: var(--surface-subtle); }
   .s5-search-row { background: var(--surface); display: none; align-items: center; padding: 6px 16px; flex: 0 0 auto; }
   .panel.search-on .s5-search-row { display: flex; }
   .panel.search-on .s5-filters > .btn-icon[aria-label="Search"] { display: none; }
@@ -630,14 +629,12 @@
   .s5-body::-webkit-scrollbar { width: 0; }
   .s5-sec-label { background: var(--surface-subtle); padding: 16px 16px 6px; font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; }
   .s5-loc-row { display: flex; align-items: center; height: 52px; padding-left: 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
-  .s5-loc-row:hover { background: var(--surface-subtle); }
   .s5-loc-row .loc-main { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
   .s5-loc-row .loc-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
   .s5-loc-row .loc-ico.warn { color: var(--warning); }
   .s5-loc-row .loc-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .s5-loc-row .loc-chev { padding: 10px; color: var(--text-subtlest); display: inline-flex; }
   .s5-dev-row { display: flex; align-items: center; gap: 12px; padding: 4px 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
-  .s5-dev-row:hover { background: var(--surface-subtle); }
   .s5-dev-row .dev-thumb { width: 64px; height: 48px; border-radius: 2px; object-fit: cover; flex: 0 0 auto; background: var(--surface-gray200); }
   .s5-dev-row .dev-thumb-core { width: 64px; height: 48px; border-radius: 2px; flex: 0 0 auto; background: var(--surface-subtle); display: grid; place-items: center; color: var(--text-default); }
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
@@ -1032,28 +1029,28 @@
               <div class="s5-loc-row">
                 <div class="loc-main">
                   <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  <span class="loc-name">Merkaz</span>
+                  <span class="loc-name">Lobby</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
               <div class="s5-loc-row">
                 <div class="loc-main">
                   <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  <span class="loc-name">Sublocation 1</span>
+                  <span class="loc-name">2nd floor</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
               <div class="s5-loc-row">
                 <div class="loc-main">
                   <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  <span class="loc-name">Merkaz</span>
+                  <span class="loc-name">3rd floor</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
               <div class="s5-loc-row">
                 <div class="loc-main">
                   <span class="loc-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-                  <span class="loc-name">Administrative Center 1</span>
+                  <span class="loc-name">Parking lot</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
@@ -1745,7 +1742,7 @@
                   <span class="loc-ico">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </span>
-                  <span class="loc-name">Merkaz</span>
+                  <span class="loc-name">Lobby</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
@@ -1754,7 +1751,7 @@
                   <span class="loc-ico">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </span>
-                  <span class="loc-name">Sublocation 1</span>
+                  <span class="loc-name">2nd floor</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
@@ -1763,7 +1760,7 @@
                   <span class="loc-ico">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </span>
-                  <span class="loc-name">Merkaz</span>
+                  <span class="loc-name">3rd floor</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
@@ -1772,7 +1769,7 @@
                   <span class="loc-ico warn">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                   </span>
-                  <span class="loc-name">Administrative Center 1</span>
+                  <span class="loc-name">Parking lot</span>
                 </div>
                 <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
