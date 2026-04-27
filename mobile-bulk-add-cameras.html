@@ -734,7 +734,7 @@
   .core-card .cc-secondary-link:hover { color: var(--primary); text-decoration: underline; }
   .core-card .cc-manual-row { display: flex; gap: 8px; }
   .core-card .cc-manual-row .input-field { flex: 1; min-width: 0; }
-  .core-card .cc-confirm { width: 48px; height: 48px; padding: 0; display: grid; place-items: center; border-radius: var(--r); border: 1px solid var(--primary-border); background: var(--primary); color: var(--text-inverse); cursor: pointer; flex: 0 0 auto; }
+  .core-card .cc-confirm { height: 48px; padding: 0 16px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--r); border: 1px solid var(--primary-border); background: var(--primary); color: var(--text-inverse); cursor: pointer; flex: 0 0 auto; font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; white-space: nowrap; }
   .core-card .cc-confirm:hover { background: var(--primary-hover); }
   .core-card .cc-confirm.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
   .core-card .cc-status { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; line-height: 20px; }
@@ -1311,18 +1311,6 @@
                 <div class="tb-title">Add core</div>
               </div>
               <div class="tb-right"></div>
-            </div>
-
-            <div class="info-msg" id="sAddCoreInfoMsg">
-              <span class="im-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              </span>
-              <div class="im-body">
-                <div class="im-desc">The core is added as soon as you enter the Core ID and it connects.</div>
-              </div>
-              <button class="im-close" onclick="document.getElementById('sAddCoreInfoMsg').classList.add('hidden')" aria-label="Dismiss">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-              </button>
             </div>
 
             <div class="content" id="coreDraftsList"></div>
@@ -2844,8 +2832,6 @@
     nextCoreSuffix = 1;
     sessionCoresAdded = 0;
     addAnotherCoreDraft();
-    const im = document.getElementById('sAddCoreInfoMsg');
-    if (im) im.classList.remove('hidden');
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sAddCore').classList.add('active');
   }
@@ -2952,9 +2938,7 @@
       wrap.innerHTML = `
         <div class="cc-manual-row">
           <div class="input-field"><input type="text" id="ccManual-${d.id}" placeholder="Enter Core ID" value="${_escHtml(d.coreId || '')}" oninput="onManualInputChange(${d.id})"></div>
-          <button class="cc-confirm ${d.coreId && d.coreId.trim() ? '' : 'disabled'}" id="ccManualConfirm-${d.id}" onclick="confirmManualId(${d.id})" aria-label="Confirm Core ID">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10.5l3 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+          <button class="cc-confirm ${d.coreId && d.coreId.trim() ? '' : 'disabled'}" id="ccManualConfirm-${d.id}" onclick="confirmManualId(${d.id})">Add core</button>
         </div>
         <button class="cc-secondary-link" onclick="cancelManualForDraft(${d.id})">Cancel manual entry</button>`;
       return wrap;
