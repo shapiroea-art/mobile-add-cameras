@@ -639,6 +639,19 @@
   .s5-sec-chev { display: inline-flex; color: var(--text-subtle); transition: transform .18s ease; }
   .s5-sec-label.collapsed .s5-sec-chev { transform: rotate(-180deg); }
   .s5-sec-content.collapsed { display: none; }
+  /* Tags filter sheet */
+  .tags-sheet { padding: 0; }
+  .tags-sheet .ts-handle { padding: 10px 0; display: flex; justify-content: center; }
+  .tags-sheet .ts-handle::after { content:''; width: 44px; height: 6px; background: var(--text-subtlest); border-radius: 100px; }
+  .tags-sheet .ts-title { padding: 16px; font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; }
+  .tags-sheet .ts-chips { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px 16px 20px; }
+  .tag-chip { height: 36px; padding: 6px 16px; border-radius: 40px; border: 1px solid var(--border-input); background: var(--surface); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .tag-chip .tc-dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+  .tag-chip .tc-icon { display: inline-flex; flex: 0 0 auto; color: var(--text-default); }
+  .tag-chip.selected { border-color: var(--primary-border); color: var(--primary-border); }
+  .tag-chip.selected .tc-icon { color: var(--primary-border); }
+  .tags-sheet .ts-foot { border-top: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 8px; }
+  .tags-sheet .ts-foot .btn { flex: 1; }
   .s5-loc-row { display: flex; align-items: center; height: 52px; padding-left: 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
   .s5-loc-row .loc-main { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
   .s5-loc-row .loc-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
@@ -804,6 +817,45 @@
 
         <div class="screens">
 
+          <!-- Bottom sheet: Tags filter (shared by Devices + AC1) -->
+          <div class="sheet-backdrop" id="tagsFilterSheet" onclick="if(event.target.id==='tagsFilterSheet') closeSheet('tagsFilterSheet')">
+            <div class="sheet tags-sheet">
+              <div class="ts-handle"></div>
+              <div class="ts-title">Tags</div>
+              <div class="ts-chips" id="tagsFilterChips">
+                <button class="tag-chip" data-tag="entrance-1" onclick="toggleTagChip(this)">
+                  <span class="tc-dot" style="background:#A855F7;"></span>
+                  <span>Entrance</span>
+                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                </button>
+                <button class="tag-chip" data-tag="many-people" onclick="toggleTagChip(this)">
+                  <span class="tc-dot" style="background:#4367F6;"></span>
+                  <span>Many people</span>
+                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                </button>
+                <button class="tag-chip" data-tag="ok" onclick="toggleTagChip(this)">
+                  <span class="tc-dot" style="background:#12B76A;"></span>
+                  <span>OK</span>
+                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                </button>
+                <button class="tag-chip" data-tag="check-danger" onclick="toggleTagChip(this)">
+                  <span class="tc-dot" style="background:#F04438;"></span>
+                  <span>Check danger</span>
+                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                </button>
+                <button class="tag-chip" data-tag="entrance-2" onclick="toggleTagChip(this)">
+                  <span class="tc-dot" style="background:#A855F7;"></span>
+                  <span>Entrance</span>
+                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                </button>
+              </div>
+              <div class="ts-foot">
+                <button class="btn btn-secondary" onclick="clearTagFilters()">Clear All</button>
+                <button class="btn btn-primary" onclick="closeSheet('tagsFilterSheet')">Apply Filters</button>
+              </div>
+            </div>
+          </div>
+
           <!-- Bottom sheet: Camera detection method -->
           <div class="sheet-backdrop" id="methodSheet" onclick="if(event.target.id==='methodSheet') closeMethodSheet()">
             <div class="sheet">
@@ -937,7 +989,7 @@
               <button class="s5-chip">Type
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
-              <button class="s5-chip">Tags
+              <button class="s5-chip" onclick="openSheet('tagsFilterSheet')">Tags
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
@@ -1030,7 +1082,7 @@
               <button class="s5-chip">Type
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
-              <button class="s5-chip">Tags
+              <button class="s5-chip" onclick="openSheet('tagsFilterSheet')">Tags
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
@@ -1757,7 +1809,7 @@
               <button class="s5-chip">Type
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
-              <button class="s5-chip">Tags
+              <button class="s5-chip" onclick="openSheet('tagsFilterSheet')">Tags
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
@@ -3174,6 +3226,19 @@
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.remove('open');
+  }
+  function toggleTagChip(btn) {
+    const selected = btn.classList.toggle('selected');
+    const ico = btn.querySelector('.tc-icon');
+    if (ico) {
+      ico.dataset.icon = selected ? 'check' : 'plus';
+      ico.innerHTML = selected
+        ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    }
+  }
+  function clearTagFilters() {
+    document.querySelectorAll('#tagsFilterChips .tag-chip.selected').forEach(c => toggleTagChip(c));
   }
   function closeInfoSheet(event, id) {
     if (event.target.classList.contains('sheet-backdrop')) closeSheet(id);
