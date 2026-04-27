@@ -173,10 +173,10 @@
   .radio-row.selected .radio::after { content:''; position: absolute; inset: 4px; border-radius: 50%; background: var(--primary); }
   .radio-wrap { padding: 14px; display: flex; align-items: flex-start; }
   .radio { width: 20px; height: 20px; border: 1px solid var(--border-input); border-radius: 50%; background: var(--surface); position: relative; flex: 0 0 auto; }
-  .radio-body { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-  .radio-body .top { display: flex; align-items: center; gap: 16px; }
-  .radio-body .top .check-icon { color: var(--success); }
-  .radio-body .top .name { font-size: 16px; color: var(--text-default); line-height: 24px; }
+  .radio-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 12px 16px 12px 0; }
+  .radio-body .top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; row-gap: 4px; }
+  .radio-body .top .check-icon { color: var(--success); flex: 0 0 auto; }
+  .radio-body .top .name { font-size: 16px; color: var(--text-default); line-height: 24px; flex: 1 1 auto; min-width: 0; word-break: break-word; }
   .radio-body .top .sep { font-size: 14px; color: var(--text-subtlest); font-weight: 500; }
   .radio-body .top .pct { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-subtle); font-weight: 500; }
 
