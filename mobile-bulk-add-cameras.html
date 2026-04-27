@@ -609,6 +609,13 @@
   .segmented { display: inline-flex; background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--r); padding: 2px; gap: 2px; }
   .segmented-opt { padding: 6px 12px; font-size: 14px; font-weight: 500; color: var(--text-subtle); background: none; border: none; border-radius: 3px; cursor: pointer; line-height: 20px; }
   .segmented-opt.on { background: var(--surface); color: var(--text-bold); box-shadow: 0 1px 2px rgba(16,24,40,.08); }
+  .type-radio-list { display: flex; flex-direction: column; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+  .type-radio-opt { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: none; border: none; border-bottom: 1px solid var(--border); cursor: pointer; text-align: left; font-size: 16px; color: var(--text-default); line-height: 24px; font-family: var(--sans); }
+  .type-radio-opt:last-child { border-bottom: none; }
+  .type-radio-opt .tr-radio { width: 20px; height: 20px; border: 1px solid var(--border-input); border-radius: 50%; background: var(--surface); position: relative; flex: 0 0 auto; }
+  .type-radio-opt.on .tr-radio { border-color: var(--primary); }
+  .type-radio-opt.on .tr-radio::after { content:''; position: absolute; inset: 4px; border-radius: 50%; background: var(--primary); }
+  .type-radio-opt .tr-name { flex: 1; min-width: 0; }
 
   /* ===== S5 Added (location page) ===== */
   .s5-topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
@@ -1607,9 +1614,15 @@
                   </div>
                   <div class="edit-field">
                     <label class="edit-field-label">Type</label>
-                    <div class="segmented" id="editCamType">
-                      <button class="segmented-opt on" data-val="Static" onclick="pickSeg(this)">Static</button>
-                      <button class="segmented-opt" data-val="Fisheye" onclick="pickSeg(this)">Fisheye</button>
+                    <div class="type-radio-list" id="editCamType">
+                      <button class="type-radio-opt on" data-val="Standard" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Standard</span></button>
+                      <button class="type-radio-opt" data-val="PTZ" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">PTZ</span></button>
+                      <button class="type-radio-opt" data-val="FishEye ceiling mounted" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">FishEye ceiling mounted</span></button>
+                      <button class="type-radio-opt" data-val="FishEye wall mounted" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">FishEye wall mounted</span></button>
+                      <button class="type-radio-opt" data-val="Thermal" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Thermal</span></button>
+                      <button class="type-radio-opt" data-val="Thermal - PTZ" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Thermal - PTZ</span></button>
+                      <button class="type-radio-opt" data-val="Ceiling (Top down)" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Ceiling (Top down)</span></button>
+                      <button class="type-radio-opt" data-val="Mobile" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Mobile</span></button>
                     </div>
                   </div>
                   <div class="edit-field">
@@ -2331,7 +2344,7 @@
     c.checked = false;
     c.expanded = false;
     c.load = s4Loads[i] ?? 10;
-    c.config = { autoConfig: true, type: 'Static', retention: 30, storage: 'Substream' };
+    c.config = { autoConfig: true, type: 'Standard', retention: 30, storage: 'Substream' };
   });
   let editingCamId = null;
   let pendingDeleteCamId = null;
@@ -3169,6 +3182,11 @@
     group.querySelectorAll('.segmented-opt').forEach(o => o.classList.remove('on'));
     btn.classList.add('on');
   }
+  function pickRadio(btn) {
+    const group = btn.parentElement;
+    group.querySelectorAll('.type-radio-opt').forEach(o => o.classList.remove('on'));
+    btn.classList.add('on');
+  }
   function openEditCam(id) {
     const c = confCams.find(x => x.id === id);
     if (!c) return;
@@ -3177,7 +3195,7 @@
     document.getElementById('editCamName').value = c.name;
     document.getElementById('editCamAuto').classList.toggle('on', !!c.config.autoConfig);
     const set = (groupId, val) => {
-      document.querySelectorAll(`#${groupId} .segmented-opt`).forEach(o => o.classList.toggle('on', o.dataset.val === String(val)));
+      document.querySelectorAll(`#${groupId} [data-val]`).forEach(o => o.classList.toggle('on', o.dataset.val === String(val)));
     };
     set('editCamType', c.config.type);
     set('editCamRetention', c.config.retention);
@@ -3190,7 +3208,7 @@
     c.name = (document.getElementById('editCamName').value || c.name).trim();
     c.config.autoConfig = document.getElementById('editCamAuto').classList.contains('on');
     const getSel = (gid) => {
-      const on = document.querySelector(`#${gid} .segmented-opt.on`);
+      const on = document.querySelector(`#${gid} [data-val].on`);
       return on ? on.dataset.val : null;
     };
     c.config.type = getSel('editCamType') || c.config.type;
