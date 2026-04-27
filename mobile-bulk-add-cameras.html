@@ -694,6 +694,26 @@
   .s5-loc-row .loc-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .s5-loc-row .loc-chev { padding: 10px; color: var(--text-subtlest); display: inline-flex; }
   .s5-dev-row { display: flex; align-items: center; gap: 12px; padding: 4px 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
+  /* Camera detail screen */
+  #sCamera { background: var(--surface); }
+  .cam-topbar { background: var(--surface); display: flex; align-items: center; padding: 4px 4px 4px 0; flex: 0 0 auto; }
+  .cam-topbar .btn-icon { padding: 16px; }
+  .cam-topbar .cam-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--text-bold); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cam-tabs { padding: 0 8px 0; flex: 0 0 auto; }
+  .cam-tabs-group { display: flex; padding: 2px; background: var(--surface-gray200); border-radius: var(--r); gap: 2px; }
+  .cam-tabs-group .seg-opt { flex: 1; height: 32px; padding: 0 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--text-subtle); background: none; border: none; cursor: pointer; border-radius: 3px; font-family: var(--sans); line-height: 24px; }
+  .cam-tabs-group .seg-opt.on { background: var(--surface); color: var(--primary-border); box-shadow: 0 1px 2px rgba(16,24,40,.1), 0 1px 1.5px rgba(16,24,40,.06); }
+  .cam-video { position: relative; width: 100%; height: 224px; background: var(--surface-gray200); overflow: hidden; flex: 0 0 auto; }
+  .cam-video img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cam-time-pill { position: absolute; left: 6px; bottom: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; background: rgba(16,24,40,.64); color: white; font-size: 14px; font-weight: 500; line-height: 24px; border-radius: 15px; }
+  .cam-time-pill .ok-mark { color: #22C55E; display: inline-flex; }
+  .cam-actions { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 24px 0; flex: 0 0 auto; }
+  .cam-actions-row { display: flex; gap: 16px; align-items: flex-start; }
+  .cam-action { display: flex; flex-direction: column; gap: 4px; align-items: center; cursor: pointer; }
+  .cam-action .ca-circle { width: 50px; height: 50px; border-radius: 30px; background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; color: var(--text-subtle); }
+  .cam-action.active .ca-circle { background: var(--surface-gray200); }
+  .cam-action .ca-label { font-size: 12px; font-weight: 400; color: var(--text-subtle); line-height: 1.3; text-align: center; width: 60px; }
+  .cam-action .ca-hq { font-size: 14px; font-weight: 700; line-height: 24px; color: var(--text-subtle); }
   .s5-dev-row .dev-thumb { width: 64px; height: 48px; border-radius: 2px; object-fit: cover; flex: 0 0 auto; background: var(--surface-gray200); }
   .s5-dev-row .dev-thumb-core { width: 64px; height: 48px; border-radius: 2px; flex: 0 0 auto; background: var(--surface-subtle); display: grid; place-items: center; color: var(--text-default); }
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
@@ -1255,12 +1275,12 @@
                 <span class="s5-sec-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 10l4.5-4.5L12.5 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
               <div class="s5-sec-content" data-section="s0Dev">
-                <div class="s5-dev-row">
+                <div class="s5-dev-row" onclick="openCameraScreen('Main entrance', 'https://picsum.photos/seed/s0cam1/720/448')">
                   <img class="dev-thumb" src="https://picsum.photos/seed/s0cam1/160/120" alt="">
                   <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                   <span class="dev-name">Main entrance</span>
                 </div>
-                <div class="s5-dev-row">
+                <div class="s5-dev-row" onclick="openCameraScreen('Lobby', 'https://picsum.photos/seed/s0cam2/720/448')">
                   <img class="dev-thumb" src="https://picsum.photos/seed/s0cam2/160/120" alt="">
                   <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                   <span class="dev-name">Lobby</span>
@@ -1298,6 +1318,71 @@
               </div>
             </div>
 
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCamera: Camera live view ========== -->
+          <div class="panel" id="sCamera">
+            <div class="cam-topbar">
+              <button class="btn-icon" onclick="closeCameraScreen()" aria-label="Back">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="cam-title" id="camTitle">Main entrance</div>
+            </div>
+            <div class="cam-tabs">
+              <div class="cam-tabs-group">
+                <button class="seg-opt on" onclick="pickCamTab(this)">Live</button>
+                <button class="seg-opt" onclick="pickCamTab(this)">Playback</button>
+                <button class="seg-opt" onclick="pickCamTab(this)">Alerts</button>
+                <button class="seg-opt" onclick="pickCamTab(this)">Search</button>
+              </div>
+            </div>
+            <div class="cam-video">
+              <img id="camVideo" src="https://picsum.photos/seed/s0cam1/720/448" alt="">
+              <div class="cam-time-pill">
+                <span class="ok-mark"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span>2:00:44 IST</span>
+              </div>
+            </div>
+            <div class="cam-actions">
+              <div class="cam-actions-row">
+                <button class="cam-action active">
+                  <span class="ca-circle"><span class="ca-hq">HQ</span></span>
+                  <span class="ca-label">Quality</span>
+                </button>
+                <button class="cam-action">
+                  <span class="ca-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="2.5" width="6.5" height="6.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="2.5" width="6.5" height="6.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2.5" y="11" width="6.5" height="6.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="6.5" height="6.5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg></span>
+                  <span class="ca-label">Multi-cameras</span>
+                </button>
+                <button class="cam-action">
+                  <span class="ca-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="7.5" cy="8" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 14l4-4 4 3.5 3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" fill="none"/></svg></span>
+                  <span class="ca-label">Snapshot</span>
+                </button>
+                <button class="cam-action">
+                  <span class="ca-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3.5" fill="currentColor"/></svg></span>
+                  <span class="ca-label">Record</span>
+                </button>
+              </div>
+              <div class="cam-actions-row">
+                <button class="cam-action">
+                  <span class="ca-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3" width="15" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M3.75 7v8.5a1.5 1.5 0 001.5 1.5h9.5a1.5 1.5 0 001.5-1.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M8.5 11l1.5 1.5L11.5 11M10 9.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
+                  <span class="ca-label">Archive</span>
+                </button>
+                <button class="cam-action">
+                  <span class="ca-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10.5l5-5v3.5h2.5c4 0 6 2.5 6.5 6.5-1.5-2.5-3-3.5-6.5-3.5H8V15.5l-5-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" fill="none"/></svg></span>
+                  <span class="ca-label">Share</span>
+                </button>
+                <button class="cam-action">
+                  <span class="ca-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8.5 4l1.5-1.5L11.5 4M8.5 16l1.5 1.5L11.5 16M4 8.5L2.5 10 4 11.5M16 8.5l1.5 1.5L16 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
+                  <span class="ca-label">PTZ</span>
+                </button>
+                <button class="cam-action">
+                  <span class="ca-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2.5 10h3l2-4 3 8 2-4h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
+                  <span class="ca-label">Health</span>
+                </button>
+              </div>
+            </div>
+            <div style="flex:1;"></div>
             <div class="home-indicator"></div>
           </div>
 
@@ -2745,6 +2830,20 @@
   function returnToDevices() {
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sDevices').classList.add('active');
+  }
+  function openCameraScreen(name, thumbSrc) {
+    document.getElementById('camTitle').textContent = name;
+    document.getElementById('camVideo').src = thumbSrc;
+    document.getElementById('s0').classList.remove('active');
+    document.getElementById('sCamera').classList.add('active');
+  }
+  function closeCameraScreen() {
+    document.getElementById('sCamera').classList.remove('active');
+    document.getElementById('s0').classList.add('active');
+  }
+  function pickCamTab(btn) {
+    btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
+    btn.classList.add('on');
   }
   function openDevicesSearch(btn) {
     const panel = btn.closest('.panel');
