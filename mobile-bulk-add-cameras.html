@@ -668,6 +668,10 @@
   #coreDraftsList .card-delete { display: none; }
   #coreDraftsList.multi .card-delete { display: inline-flex; }
   .core-card .cc-id-actions { display: flex; flex-direction: column; gap: 8px; }
+  .core-card .cc-id-section { display: flex; flex-direction: column; gap: 8px; }
+  .core-card .input-field.locked { background: var(--surface-subtle); border-color: var(--border); }
+  .core-card .input-field input:disabled { color: var(--text-default); -webkit-text-fill-color: var(--text-default); cursor: default; }
+  .core-card .auth-field.locked .auth-label { color: var(--text-subtle); }
   .core-card .cc-primary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 16px; border-radius: var(--r); border: 1px solid var(--primary-border); background: var(--primary); color: var(--text-inverse); font-size: 16px; font-weight: 500; cursor: pointer; }
   .core-card .cc-primary-btn:hover { background: var(--primary-hover); }
   .core-card .cc-secondary-link { display: inline-flex; align-items: center; justify-content: center; padding: 8px 0; font-size: 14px; font-weight: 500; color: var(--primary-border); background: none; border: none; cursor: pointer; align-self: center; }
@@ -2618,20 +2622,21 @@
     const card = document.createElement('div');
     card.className = 'core-card';
     card.setAttribute('data-draft-id', d.id);
+    const locked = d.status === 'connecting' || d.status === 'connected';
     card.innerHTML = `
       <button class="card-delete" onclick="removeCoreDraft(${d.id})" aria-label="Remove core">
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="auth-field">
+      <div class="auth-field${locked ? ' locked' : ''}">
         <label class="auth-label">Core name</label>
-        <div class="input-field" id="coreNameField-${d.id}">
-          <input type="text" id="coreNameInput-${d.id}" value="${_escHtml(d.name)}" oninput="onCoreNameInput(${d.id}, this.value)" onfocus="onCoreNameFocus(${d.id})" onblur="onCoreNameBlur(${d.id})" ${d.status === 'connecting' ? 'disabled' : ''}>
-          <button type="button" class="input-clear" onmousedown="event.preventDefault()" onclick="clearCoreName(${d.id})" aria-label="Clear">
+        <div class="input-field${locked ? ' locked' : ''}" id="coreNameField-${d.id}">
+          <input type="text" id="coreNameInput-${d.id}" value="${_escHtml(d.name)}" oninput="onCoreNameInput(${d.id}, this.value)" onfocus="onCoreNameFocus(${d.id})" onblur="onCoreNameBlur(${d.id})" ${locked ? 'disabled' : ''}>
+          ${locked ? '' : `<button type="button" class="input-clear" onmousedown="event.preventDefault()" onclick="clearCoreName(${d.id})" aria-label="Clear">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3L3 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          </button>
+          </button>`}
         </div>
       </div>
-      <div class="auth-field">
+      <div class="auth-field${locked ? ' locked' : ''}">
         <label class="auth-label">Core ID</label>
       </div>
     `;
@@ -2642,16 +2647,22 @@
     const wrap = document.createElement('div');
     wrap.className = 'cc-id-section';
     if (d.status === 'connecting') {
-      wrap.innerHTML = `<div class="cc-status connecting"><span class="mini-spinner"></span>Core initializing…</div>`;
+      wrap.innerHTML = `
+        <div class="input-field locked">
+          <input type="text" value="${_escHtml(d.coreId || '')}" disabled>
+        </div>
+        <div class="cc-status connecting"><span class="mini-spinner"></span>Core initializing…</div>`;
       return wrap;
     }
     if (d.status === 'connected') {
       wrap.innerHTML = `
+        <div class="input-field locked">
+          <input type="text" value="${_escHtml(d.coreId)}" disabled>
+        </div>
         <div class="cc-success-msg">
           <span class="cc-success-ico"><svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <div class="cc-success-body">
             <div class="cc-success-title">Core added successfully</div>
-            <div class="cc-id-value">${_escHtml(d.coreId)}</div>
           </div>
           <button class="cc-success-action" onclick="goToAddCamerasForDraft(${d.id})">Add cameras</button>
         </div>`;
