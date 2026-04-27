@@ -622,7 +622,12 @@
   .s5-topbar .s5-tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
   .s5-topbar .s5-title { font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .s5-filters { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
-  .s5-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border: 1px solid var(--border-input); border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--text-default); background: var(--surface); cursor: pointer; line-height: 24px; }
+  .s5-filters .btn-icon[aria-label="Search"].used { background: var(--surface-subtle); border-radius: 16px; }
+  .s5-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border: 1px solid var(--border-input); border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--text-default); background: var(--surface); cursor: pointer; line-height: 24px; font-family: var(--sans); }
+  .s5-chip .s5-chip-count { display: none; }
+  .s5-chip.selected { border-color: var(--primary-border); color: var(--primary-border); }
+  .s5-chip.selected .s5-chip-chev { display: none; }
+  .s5-chip.selected .s5-chip-count { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px; background: #F4F6FE; color: var(--primary-border); font-size: 10px; font-weight: 500; line-height: 16px; border-radius: 400px; }
   .s5-search-row { background: var(--surface); display: none; align-items: center; padding: 6px 16px; flex: 0 0 auto; }
   .panel.search-on .s5-search-row { display: flex; }
   .panel.search-on .s5-filters > .btn-icon[aria-label="Search"] { display: none; }
@@ -851,7 +856,7 @@
               </div>
               <div class="ts-foot">
                 <button class="btn btn-secondary" onclick="clearTagFilters()">Clear All</button>
-                <button class="btn btn-primary" onclick="closeSheet('tagsFilterSheet')">Apply Filters</button>
+                <button class="btn btn-primary" onclick="applyTagFilters()">Apply Filters</button>
               </div>
             </div>
           </div>
@@ -983,15 +988,9 @@
               <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
-              <button class="s5-chip">Status
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button class="s5-chip">Type
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button class="s5-chip" onclick="openSheet('tagsFilterSheet')">Tags
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
+              <button class="s5-chip selected" onclick="toggleStatusChip(this)"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" onclick="toggleTypeChip(this)"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-body">
@@ -1076,15 +1075,9 @@
               <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
-              <button class="s5-chip">Status
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button class="s5-chip">Type
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button class="s5-chip" onclick="openSheet('tagsFilterSheet')">Tags
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
+              <button class="s5-chip selected" onclick="toggleStatusChip(this)"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" onclick="toggleTypeChip(this)"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-body">
@@ -1803,15 +1796,9 @@
               <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
-              <button class="s5-chip">Status
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button class="s5-chip">Type
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button class="s5-chip" onclick="openSheet('tagsFilterSheet')">Tags
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
+              <button class="s5-chip selected" onclick="toggleStatusChip(this)"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" onclick="toggleTypeChip(this)"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-body">
@@ -2646,8 +2633,11 @@
     if (!panel) return;
     panel.classList.remove('search-on');
     const input = panel.querySelector('.s5-search-pill input');
-    if (input) input.value = '';
+    const searchBtn = panel.querySelector('.s5-filters .btn-icon[aria-label="Search"]');
+    if (searchBtn) searchBtn.classList.toggle('used', !!(input && input.value.trim()));
   }
+  function toggleStatusChip(btn) { btn.classList.toggle('selected'); }
+  function toggleTypeChip(btn) { btn.classList.toggle('selected'); }
 
   // ===== Add-core flow =====
   let coreDrafts = [];
@@ -3239,6 +3229,15 @@
   }
   function clearTagFilters() {
     document.querySelectorAll('#tagsFilterChips .tag-chip.selected').forEach(c => toggleTagChip(c));
+  }
+  function applyTagFilters() {
+    const n = document.querySelectorAll('#tagsFilterChips .tag-chip.selected').length;
+    document.querySelectorAll('.s5-chip[data-chip="tags"]').forEach(chip => {
+      chip.classList.toggle('selected', n > 0);
+      const countEl = chip.querySelector('.s5-chip-count');
+      if (countEl) countEl.textContent = n;
+    });
+    closeSheet('tagsFilterSheet');
   }
   function closeInfoSheet(event, id) {
     if (event.target.classList.contains('sheet-backdrop')) closeSheet(id);
