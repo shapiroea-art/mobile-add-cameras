@@ -636,6 +636,8 @@
   .s5-search-pill .s5-search-icon { padding: 10px; display: inline-flex; color: var(--text-subtle); flex: 0 0 auto; }
   .s5-search-pill input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font: 400 14px/24px 'Satoshi', sans-serif; color: var(--text-default); padding: 10px 16px 10px 0; }
   .s5-search-pill input::placeholder { color: var(--text-subtle); }
+  .s5-search-pill .s5-search-clear { padding: 10px; display: none; align-items: center; justify-content: center; color: var(--text-subtle); background: none; border: none; cursor: pointer; flex: 0 0 auto; }
+  .s5-search-pill.has-value .s5-search-clear { display: inline-flex; }
   .s5-search-collapse { padding: 10px; background: none; border: none; color: var(--text-default); cursor: pointer; flex: 0 0 auto; display: inline-flex; }
   .s5-body { flex: 1; overflow-y: auto; background: var(--surface); position: relative; }
   .s5-body::-webkit-scrollbar { width: 0; }
@@ -1022,7 +1024,10 @@
             <div class="s5-search-row">
               <div class="s5-search-pill">
                 <span class="s5-search-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-                <input type="text" placeholder="Search device or location" autocomplete="off">
+                <input type="text" placeholder="Search device or location" autocomplete="off" oninput="onSearchInput(this)">
+                <button class="s5-search-clear" aria-label="Clear" onclick="clearSearchInput(this)">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                </button>
               </div>
               <button class="s5-search-collapse" aria-label="Collapse search" onclick="closeDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 12l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1109,7 +1114,10 @@
             <div class="s5-search-row">
               <div class="s5-search-pill">
                 <span class="s5-search-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-                <input type="text" placeholder="Search device or location" autocomplete="off">
+                <input type="text" placeholder="Search device or location" autocomplete="off" oninput="onSearchInput(this)">
+                <button class="s5-search-clear" aria-label="Clear" onclick="clearSearchInput(this)">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                </button>
               </div>
               <button class="s5-search-collapse" aria-label="Collapse search" onclick="closeDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 12l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1830,7 +1838,10 @@
             <div class="s5-search-row">
               <div class="s5-search-pill">
                 <span class="s5-search-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-                <input type="text" placeholder="Search device or location" autocomplete="off">
+                <input type="text" placeholder="Search device or location" autocomplete="off" oninput="onSearchInput(this)">
+                <button class="s5-search-clear" aria-label="Clear" onclick="clearSearchInput(this)">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                </button>
               </div>
               <button class="s5-search-collapse" aria-label="Collapse search" onclick="closeDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 12l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2670,7 +2681,9 @@
     const panel = btn.closest('.panel');
     if (!panel) return;
     panel.classList.add('search-on');
-    const input = panel.querySelector('.s5-search-pill input');
+    const pill = panel.querySelector('.s5-search-pill');
+    const input = pill && pill.querySelector('input');
+    if (pill && input) pill.classList.toggle('has-value', !!input.value);
     if (input) setTimeout(() => input.focus(), 0);
   }
   function closeDevicesSearch(btn) {
@@ -2682,6 +2695,20 @@
     if (searchBtn) searchBtn.classList.toggle('used', !!(input && input.value.trim()));
   }
   function toggleTypeChip(btn) { btn.classList.toggle('selected'); }
+  function onSearchInput(input) {
+    const pill = input.closest('.s5-search-pill');
+    if (pill) pill.classList.toggle('has-value', !!input.value);
+  }
+  function clearSearchInput(btn) {
+    const pill = btn.closest('.s5-search-pill');
+    if (!pill) return;
+    const input = pill.querySelector('input');
+    if (input) {
+      input.value = '';
+      pill.classList.remove('has-value');
+      input.focus();
+    }
+  }
   function toggleStatusOption(row) { row.classList.toggle('checked'); }
   function clearStatusFilters() {
     document.querySelectorAll('#statusFilterList .cb-row.checked').forEach(r => r.classList.remove('checked'));
