@@ -627,7 +627,10 @@
   .s5-search-collapse { padding: 10px; background: none; border: none; color: var(--text-default); cursor: pointer; flex: 0 0 auto; display: inline-flex; }
   .s5-body { flex: 1; overflow-y: auto; background: var(--surface); position: relative; }
   .s5-body::-webkit-scrollbar { width: 0; }
-  .s5-sec-label { background: var(--surface-subtle); padding: 16px 16px 6px; font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; }
+  .s5-sec-label { background: var(--surface-subtle); padding: 16px 16px 6px; font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .s5-sec-toggle { background: none; border: none; padding: 0; font-size: 12px; font-weight: 600; color: var(--primary); cursor: pointer; line-height: 20px; letter-spacing: .04em; text-transform: uppercase; }
+  .s5-sec-toggle:hover { color: var(--primary-hover); }
+  .s5-sec-content.collapsed { display: none; }
   .s5-loc-row { display: flex; align-items: center; height: 52px; padding-left: 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
   .s5-loc-row .loc-main { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
   .s5-loc-row .loc-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
@@ -1025,53 +1028,63 @@
             </div>
 
             <div class="s5-body">
-              <div class="s5-sec-label">Sublocations</div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  <span class="loc-name">Lobby</span>
-                </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="s5-sec-label">
+                <span>Sublocations</span>
+                <button class="s5-sec-toggle" data-target="s0Sub" onclick="toggleAcSection(this)">Hide</button>
               </div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  <span class="loc-name">2nd floor</span>
+              <div class="s5-sec-content" data-section="s0Sub">
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="loc-name">Lobby</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  <span class="loc-name">3rd floor</span>
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="loc-name">2nd floor</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-                  <span class="loc-name">Parking lot</span>
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="loc-name">3rd floor</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                    <span class="loc-name">Parking lot</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </div>
               </div>
 
-              <div class="s5-sec-label">Devices</div>
-              <div class="s5-dev-row">
-                <img class="dev-thumb" src="https://picsum.photos/seed/s0cam1/160/120" alt="">
-                <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                <span class="dev-name">Main entrance</span>
+              <div class="s5-sec-label">
+                <span>Devices</span>
+                <button class="s5-sec-toggle" data-target="s0Dev" onclick="toggleAcSection(this)">Hide</button>
               </div>
-              <div class="s5-dev-row">
-                <img class="dev-thumb" src="https://picsum.photos/seed/s0cam2/160/120" alt="">
-                <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                <span class="dev-name">Lobby</span>
-              </div>
-              <div class="s5-dev-row">
-                <div class="dev-thumb-core">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
+              <div class="s5-sec-content" data-section="s0Dev">
+                <div class="s5-dev-row">
+                  <img class="dev-thumb" src="https://picsum.photos/seed/s0cam1/160/120" alt="">
+                  <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="dev-name">Main entrance</span>
                 </div>
-                <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                <span class="dev-name">Core 3</span>
+                <div class="s5-dev-row">
+                  <img class="dev-thumb" src="https://picsum.photos/seed/s0cam2/160/120" alt="">
+                  <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="dev-name">Lobby</span>
+                </div>
+                <div class="s5-dev-row">
+                  <div class="dev-thumb-core">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
+                  </div>
+                  <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="dev-name">Core 3</span>
+                </div>
               </div>
             </div>
 
@@ -1736,54 +1749,64 @@
             </div>
 
             <div class="s5-body">
-              <div class="s5-sec-label">Sublocations</div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </span>
-                  <span class="loc-name">Lobby</span>
-                </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="s5-sec-label">
+                <span>Sublocations</span>
+                <button class="s5-sec-toggle" data-target="s5Sub" onclick="toggleAcSection(this)">Hide</button>
               </div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </span>
-                  <span class="loc-name">2nd floor</span>
+              <div class="s5-sec-content" data-section="s5Sub">
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <span class="loc-name">Lobby</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </span>
-                  <span class="loc-name">3rd floor</span>
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <span class="loc-name">2nd floor</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </div>
-              <div class="s5-loc-row">
-                <div class="loc-main">
-                  <span class="loc-ico warn">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-                  </span>
-                  <span class="loc-name">Parking lot</span>
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <span class="loc-name">3rd floor</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
-                <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="s5-loc-row">
+                  <div class="loc-main">
+                    <span class="loc-ico warn">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                    </span>
+                    <span class="loc-name">Parking lot</span>
+                  </div>
+                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </div>
               </div>
 
-              <div class="s5-sec-label">Devices</div>
-              <div id="s5Devices"></div>
-              <div class="s5-dev-row">
-                <div class="dev-thumb-core">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
+              <div class="s5-sec-label">
+                <span>Devices</span>
+                <button class="s5-sec-toggle" data-target="s5Dev" onclick="toggleAcSection(this)">Hide</button>
+              </div>
+              <div class="s5-sec-content" data-section="s5Dev">
+                <div id="s5Devices"></div>
+                <div class="s5-dev-row">
+                  <div class="dev-thumb-core">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
+                  </div>
+                  <span class="dev-ico">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="dev-name" id="s5CoreName">Core 3</span>
                 </div>
-                <span class="dev-ico">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-                <span class="dev-name" id="s5CoreName">Core 3</span>
               </div>
               <div style="height: 96px;"></div>
             </div>
@@ -2849,6 +2872,14 @@
   }
   function toggleScanFlashlight() {
     document.getElementById('scanFlashlight').classList.toggle('on');
+  }
+  function toggleAcSection(btn) {
+    const target = btn.dataset.target;
+    const panel = btn.closest('.panel');
+    const content = panel && panel.querySelector(`.s5-sec-content[data-section="${target}"]`);
+    if (!content) return;
+    const collapsed = content.classList.toggle('collapsed');
+    btn.textContent = collapsed ? 'Show' : 'Hide';
   }
   function continueAddingCameras() {
     resetFlow();
