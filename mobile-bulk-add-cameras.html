@@ -617,6 +617,15 @@
   .s5-filters { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
   .s5-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border: 1px solid var(--border-input); border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--text-default); background: var(--surface); cursor: pointer; line-height: 24px; }
   .s5-chip:hover { background: var(--surface-subtle); }
+  .s5-search-row { background: var(--surface); display: none; align-items: center; padding: 6px 16px; flex: 0 0 auto; }
+  .panel.search-on .s5-search-row { display: flex; }
+  .panel.search-on .s5-filters > .btn-icon[aria-label="Search"] { display: none; }
+  .panel.search-on .s5-filters { padding: 6px 16px 12px; border-bottom: 1px solid var(--border); }
+  .s5-search-pill { flex: 1; min-width: 0; height: 44px; background: var(--surface-gray200); border-radius: 16px; display: flex; align-items: center; }
+  .s5-search-pill .s5-search-icon { padding: 10px; display: inline-flex; color: var(--text-subtle); flex: 0 0 auto; }
+  .s5-search-pill input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font: 400 14px/24px 'Satoshi', sans-serif; color: var(--text-default); padding: 10px 16px 10px 0; }
+  .s5-search-pill input::placeholder { color: var(--text-subtle); }
+  .s5-search-collapse { padding: 10px; background: none; border: none; color: var(--text-default); cursor: pointer; flex: 0 0 auto; display: inline-flex; }
   .s5-body { flex: 1; overflow-y: auto; background: var(--surface); position: relative; }
   .s5-body::-webkit-scrollbar { width: 0; }
   .s5-sec-label { background: var(--surface-subtle); padding: 16px 16px 6px; font-size: 12px; font-weight: 500; color: var(--text-subtle); line-height: 20px; }
@@ -872,8 +881,18 @@
               </div>
             </div>
 
+            <div class="s5-search-row">
+              <div class="s5-search-pill">
+                <span class="s5-search-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                <input type="text" placeholder="Search device or location" autocomplete="off">
+              </div>
+              <button class="s5-search-collapse" aria-label="Collapse search" onclick="closeDevicesSearch(this)">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 12l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
             <div class="s5-filters">
-              <button class="btn-icon" aria-label="Search" style="padding:10px;">
+              <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip">Status
@@ -955,8 +974,18 @@
               </button>
             </div>
 
+            <div class="s5-search-row">
+              <div class="s5-search-pill">
+                <span class="s5-search-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                <input type="text" placeholder="Search device or location" autocomplete="off">
+              </div>
+              <button class="s5-search-collapse" aria-label="Collapse search" onclick="closeDevicesSearch(this)">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 12l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
             <div class="s5-filters">
-              <button class="btn-icon" aria-label="Search" style="padding:10px;">
+              <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip">Status
@@ -1669,8 +1698,18 @@
               </button>
             </div>
 
+            <div class="s5-search-row">
+              <div class="s5-search-pill">
+                <span class="s5-search-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                <input type="text" placeholder="Search device or location" autocomplete="off">
+              </div>
+              <button class="s5-search-collapse" aria-label="Collapse search" onclick="closeDevicesSearch(this)">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 12l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
             <div class="s5-filters">
-              <button class="btn-icon" aria-label="Search" style="padding:10px;">
+              <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip">Status
@@ -2491,6 +2530,20 @@
   function returnToDevices() {
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sDevices').classList.add('active');
+  }
+  function openDevicesSearch(btn) {
+    const panel = btn.closest('.panel');
+    if (!panel) return;
+    panel.classList.add('search-on');
+    const input = panel.querySelector('.s5-search-pill input');
+    if (input) setTimeout(() => input.focus(), 0);
+  }
+  function closeDevicesSearch(btn) {
+    const panel = btn.closest('.panel');
+    if (!panel) return;
+    panel.classList.remove('search-on');
+    const input = panel.querySelector('.s5-search-pill input');
+    if (input) input.value = '';
   }
 
   // ===== Add-core flow =====
