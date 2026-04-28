@@ -836,6 +836,13 @@
   .cd-divider { height: 1px; background: var(--border); margin: 0; }
   .cd-delete-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid #DC2626; border-radius: var(--r); background: var(--surface); color: #DC2626; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
   .cd-delete-btn:hover { background: #FEF2F2; }
+  .cd-label-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .cd-link-action { display: inline-flex; align-items: center; gap: 8px; background: none; border: none; padding: 0; color: var(--primary-border); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .cd-link-action:hover { color: var(--primary); }
+  .cd-test-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--primary-border); border-radius: var(--r); background: var(--surface); color: var(--primary-border); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .cd-test-btn:hover { background: var(--primary-soft); }
+  .cd-stream-preview { border: 1px dashed var(--border); border-radius: var(--r); height: 200px; background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-default); font-size: 14px; font-weight: 500; line-height: 24px; }
+  .cd-stream-preview .cd-stream-ico { display: inline-flex; }
 
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
@@ -1631,7 +1638,7 @@
                   <span class="cs-row-label">Details</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCamStreams()">
                   <span class="cs-row-label">Streams</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -1873,6 +1880,73 @@
             </div>
             <div class="action-bar cd-action-info">
               <button class="btn btn-primary btn-full" onclick="closeCamDetails()">Close</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCamStreams: Camera streams (Mainstream/Substream) ========== -->
+          <div class="panel" id="sCamStreams" data-tab="mainstream">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCamStreams()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Streams</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-tabs">
+              <button class="cd-tab active" type="button" onclick="pickStreamTab(this)" data-tab="mainstream">Mainstream</button>
+              <button class="cd-tab" type="button" onclick="pickStreamTab(this)" data-tab="substream">Substream</button>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <div class="cd-stream-preview">
+                  <span class="cd-stream-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 8.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></span>
+                  <span>Camera preview</span>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="csIp">IP Address</label>
+                  <div class="input-field"><input type="text" id="csIp" value="172.17.65.95" oninput="updateCsSaveBtn()"></div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="csPort">RTSP Port</label>
+                  <div class="input-field"><input type="text" id="csPort" value="554" oninput="updateCsSaveBtn()"></div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="csUser">Username</label>
+                  <div class="input-field"><input type="text" id="csUser" value="Felipe Rosas" oninput="updateCsSaveBtn()"></div>
+                </div>
+
+                <div class="cd-field">
+                  <div class="cd-label-row">
+                    <label class="cd-label" for="csPass">Password</label>
+                    <button type="button" class="cd-link-action" onclick="toggleCsPass(this)">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10c1.8-3.5 4.7-5.5 8-5.5s6.2 2 8 5.5c-1.8 3.5-4.7 5.5-8 5.5s-6.2-2-8-5.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+                      <span>Show password</span>
+                    </button>
+                  </div>
+                  <div class="input-field"><input type="password" id="csPass" value="cameraPass2025" oninput="updateCsSaveBtn()"></div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="csConn">Connection string</label>
+                  <div class="input-field"><input type="text" id="csConn" value="/cam/realmonitor?channel=1&subtype=0" oninput="updateCsSaveBtn()"></div>
+                </div>
+
+                <button type="button" class="cd-test-btn">Test</button>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="closeCamStreams()">Close</button>
+              <button class="btn btn-primary btn-full disabled" id="csSaveBtn" onclick="saveCamStreams()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3480,6 +3554,60 @@
     btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('sCamDetails').dataset.tab = btn.dataset.tab || 'edit';
+  }
+
+  // ===== Camera streams =====
+  let csInitialState = null;
+  function captureCsState() {
+    return {
+      ip: document.getElementById('csIp').value,
+      port: document.getElementById('csPort').value,
+      user: document.getElementById('csUser').value,
+      pass: document.getElementById('csPass').value,
+      conn: document.getElementById('csConn').value,
+    };
+  }
+  function isCsDirty() {
+    if (!csInitialState) return false;
+    const cur = captureCsState();
+    return cur.ip !== csInitialState.ip
+      || cur.port !== csInitialState.port
+      || cur.user !== csInitialState.user
+      || cur.pass !== csInitialState.pass
+      || cur.conn !== csInitialState.conn;
+  }
+  function updateCsSaveBtn() {
+    document.getElementById('csSaveBtn').classList.toggle('disabled', !isCsDirty());
+  }
+  function openCamStreams() {
+    document.getElementById('sCamSettings').classList.remove('active');
+    const panel = document.getElementById('sCamStreams');
+    panel.classList.add('active');
+    panel.dataset.tab = 'mainstream';
+    panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'mainstream'));
+    csInitialState = captureCsState();
+    updateCsSaveBtn();
+  }
+  function closeCamStreams() {
+    document.getElementById('sCamStreams').classList.remove('active');
+    document.getElementById('sCamSettings').classList.add('active');
+  }
+  function saveCamStreams() {
+    if (document.getElementById('csSaveBtn').classList.contains('disabled')) return;
+    csInitialState = captureCsState();
+    updateCsSaveBtn();
+    showCopyToast('Changes saved');
+  }
+  function pickStreamTab(btn) {
+    btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sCamStreams').dataset.tab = btn.dataset.tab || 'mainstream';
+  }
+  function toggleCsPass(btn) {
+    const input = document.getElementById('csPass');
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    btn.querySelector('span').textContent = isHidden ? 'Hide password' : 'Show password';
   }
   function pickCamTab(btn) {
     btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
