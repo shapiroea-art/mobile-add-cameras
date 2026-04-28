@@ -856,6 +856,8 @@
   #sCamStreams[data-tested="true"] .cd-stream-preview-image { display: block; }
   #sCamStreams[data-tested="true"] .cd-test-msg { display: flex; }
   #sCamStreams[data-tested="true"] .cd-stream-info-list { display: flex; }
+  #sCamStreams[data-tab="mainstream"] .cd-pane-substream,
+  #sCamStreams[data-tab="substream"] .cd-pane-mainstream { display: none; }
 
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
@@ -1916,7 +1918,7 @@
             </div>
 
             <div class="cd-content">
-              <div class="cd-pane">
+              <div class="cd-pane cd-pane-mainstream">
                 <div class="cd-stream-preview">
                   <span class="cd-stream-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 8.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></span>
                   <span>Camera preview</span>
@@ -1970,6 +1972,13 @@
                   <div class="cd-stream-info-row"><span class="cd-stream-info-label">Bitrate (Kbps)</span><span class="cd-stream-info-val"></span></div>
                   <div class="cd-stream-info-row"><span class="cd-stream-info-label">FPS</span><span class="cd-stream-info-val"></span></div>
                   <div class="cd-stream-info-row"><span class="cd-stream-info-label">Codec</span><span class="cd-stream-info-val"></span></div>
+                </div>
+              </div>
+
+              <div class="cd-pane cd-pane-substream">
+                <div class="cd-toggle-row">
+                  <button class="toggle-sw" type="button" id="csSubstreamToggle" onclick="this.classList.toggle('on'); updateCsSaveBtn();" aria-label="Substream"></button>
+                  <span class="cd-toggle-label">Substream</span>
                 </div>
               </div>
             </div>
@@ -3595,6 +3604,7 @@
       user: document.getElementById('csUser').value,
       pass: document.getElementById('csPass').value,
       conn: document.getElementById('csConn').value,
+      substream: document.getElementById('csSubstreamToggle').classList.contains('on'),
     };
   }
   function isCsDirty() {
@@ -3604,7 +3614,8 @@
       || cur.port !== csInitialState.port
       || cur.user !== csInitialState.user
       || cur.pass !== csInitialState.pass
-      || cur.conn !== csInitialState.conn;
+      || cur.conn !== csInitialState.conn
+      || cur.substream !== csInitialState.substream;
   }
   function updateCsSaveBtn() {
     const tested = document.getElementById('sCamStreams').dataset.tested === 'true';
@@ -3626,6 +3637,7 @@
     panel.dataset.tab = 'mainstream';
     panel.dataset.tested = 'false';
     panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'mainstream'));
+    document.getElementById('csSubstreamToggle').classList.remove('on');
     csInitialState = captureCsState();
     updateCsSaveBtn();
   }
