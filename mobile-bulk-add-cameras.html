@@ -858,6 +858,8 @@
   #sCamStreams[data-tested="true"] .cd-stream-info-list { display: flex; }
   #sCamStreams[data-tab="mainstream"] .cd-pane-substream,
   #sCamStreams[data-tab="substream"] .cd-pane-mainstream { display: none; }
+  .cd-substream-form { display: none; flex-direction: column; gap: 16px; }
+  #sCamStreams[data-substream="on"] .cd-substream-form { display: flex; }
 
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
@@ -1977,9 +1979,10 @@
 
               <div class="cd-pane cd-pane-substream">
                 <div class="cd-toggle-row">
-                  <button class="toggle-sw" type="button" id="csSubstreamToggle" onclick="this.classList.toggle('on'); updateCsSaveBtn();" aria-label="Substream"></button>
+                  <button class="toggle-sw" type="button" id="csSubstreamToggle" onclick="onSubstreamToggle()" aria-label="Substream"></button>
                   <span class="cd-toggle-label">Substream</span>
                 </div>
+                <div class="cd-substream-form" id="csSubstreamForm"></div>
               </div>
             </div>
 
@@ -3630,6 +3633,20 @@
       requestAnimationFrame(() => content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' }));
     }
   }
+  function onSubstreamToggle() {
+    const toggle = document.getElementById('csSubstreamToggle');
+    toggle.classList.toggle('on');
+    const on = toggle.classList.contains('on');
+    const panel = document.getElementById('sCamStreams');
+    panel.dataset.substream = on ? 'on' : 'off';
+    const target = document.getElementById('csSubstreamForm');
+    target.innerHTML = '';
+    if (on) {
+      const main = document.querySelector('#sCamStreams .cd-pane-mainstream');
+      Array.from(main.children).forEach(child => target.appendChild(child.cloneNode(true)));
+    }
+    updateCsSaveBtn();
+  }
   function openCamStreams() {
     document.getElementById('sCamSettings').classList.remove('active');
     const panel = document.getElementById('sCamStreams');
@@ -3638,6 +3655,8 @@
     panel.dataset.tested = 'false';
     panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'mainstream'));
     document.getElementById('csSubstreamToggle').classList.remove('on');
+    panel.dataset.substream = 'off';
+    document.getElementById('csSubstreamForm').innerHTML = '';
     csInitialState = captureCsState();
     updateCsSaveBtn();
   }
