@@ -949,6 +949,12 @@
   .cd-issue-title { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; opacity: 0.8; }
   .cd-issue-desc { font-size: 14px; font-weight: 400; color: var(--text-subtle); line-height: 24px; }
 
+  /* Success message bar (shown after software update) */
+  .cd-success-bar { position: absolute; left: 16px; right: 16px; bottom: 50px; display: none; align-items: flex-start; gap: 24px; padding: 16px; border: 1px solid #22C55E; border-radius: var(--r); background: #F0FDF4; box-shadow: inset 3px 0 0 0 #22C55E; }
+  .cd-success-bar.show { display: flex; }
+  .cd-success-bar .csb-ico { color: #22C55E; flex: 0 0 auto; padding: 4px; display: inline-flex; }
+  .cd-success-bar .csb-label { flex: 1; min-width: 0; font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; color: var(--text-bold); }
+
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
   .core-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
@@ -2543,15 +2549,20 @@
                     </div>
                     <button type="button" class="cd-test-btn">Reset core</button>
                   </div>
-                  <div class="cd-issue-row">
+                  <div class="cd-issue-row" id="coreIssueUpdate">
                     <div class="cd-issue-body">
                       <div class="cd-issue-title">Need software update</div>
                       <div class="cd-issue-desc">Current version: 1.2.3. Next version 1.2.4 from 01 Aug</div>
                     </div>
-                    <button type="button" class="cd-test-btn">Update</button>
+                    <button type="button" class="cd-test-btn" onclick="runCoreUpdate()">Update</button>
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div class="cd-success-bar" id="coreUpdateSuccess">
+              <span class="csb-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="csb-label">Software has been updated to version 1.5.89</span>
             </div>
 
             <div class="home-indicator"></div>
@@ -4583,12 +4594,18 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     document.getElementById('sCore').classList.add('active');
   }
   function openCoreIssues() {
+    document.getElementById('coreIssueUpdate').style.display = '';
+    document.getElementById('coreUpdateSuccess').classList.remove('show');
     document.getElementById('sCore').classList.remove('active');
     document.getElementById('sCoreIssues').classList.add('active');
   }
   function closeCoreIssues() {
     document.getElementById('sCoreIssues').classList.remove('active');
     document.getElementById('sCore').classList.add('active');
+  }
+  function runCoreUpdate() {
+    document.getElementById('coreIssueUpdate').style.display = 'none';
+    document.getElementById('coreUpdateSuccess').classList.add('show');
   }
   function saveCoreNetwork() {
     if (document.getElementById('cnSaveBtn').classList.contains('disabled')) return;
