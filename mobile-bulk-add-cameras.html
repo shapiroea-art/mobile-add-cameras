@@ -1782,7 +1782,7 @@
             </div>
 
             <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="closeCamDetails()">Cancel</button>
+              <button class="btn btn-secondary btn-full" onclick="closeCamDetails()">Close</button>
               <button class="btn btn-primary btn-full disabled" id="cdSaveBtn" onclick="saveCamDetails()">Save</button>
             </div>
 
@@ -3381,7 +3381,8 @@
   function saveCamDetails() {
     if (document.getElementById('cdSaveBtn').classList.contains('disabled')) return;
     cdInitialState = captureCdState();
-    closeCamDetails();
+    updateCdSaveBtn();
+    showCopyToast('Changes saved');
   }
   function pickCdTab(btn) {
     btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
