@@ -889,11 +889,12 @@
   .cd-loc-map { flex: 1; min-height: 220px; position: relative; border-radius: var(--r); overflow: hidden; background: #E8EEE6; }
   .cd-loc-map img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .cd-loc-pin { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: var(--primary-border); border: 3px solid #2748CC; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 2px 8px rgba(16,24,40,.18); }
-  .cd-loc-dropdown { display: none; position: absolute; left: 16px; right: 16px; top: 104px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 8px 0; box-shadow: 0 8px 24px rgba(16,24,40,.12); max-height: 320px; overflow-y: auto; z-index: 5; }
+  .cd-loc-dropdown { display: none; position: absolute; left: 0; right: 0; top: 104px; bottom: 0; background: var(--surface); padding: 8px 0; overflow-y: auto; z-index: 5; }
   .cd-loc-dropdown.show { display: block; }
   .cd-loc-item { padding: 12px 16px; cursor: pointer; font-size: 16px; color: var(--text-default); line-height: 24px; }
   .cd-loc-item:hover { background: var(--surface-subtle); }
   .cd-loc-item strong { font-weight: 700; color: var(--text-default); }
+  #sCamLocation[data-typing="true"] .cd-loc-map { visibility: hidden; }
 
   /* Camera issues screen */
   #sCamIssues { background: var(--surface); }
@@ -2202,8 +2203,8 @@
               <div class="cd-field cd-loc-field has-value" id="cdLocField">
                 <label class="cd-label" for="cdLocInput">Camera location</label>
                 <div class="input-field">
-                  <input type="text" id="cdLocInput" value="Israel, Caesariae, HaEshel 3" oninput="onLocInput()">
-                  <button type="button" class="cd-loc-input-clear" onclick="clearLocInput()" aria-label="Clear location">
+                  <input type="text" id="cdLocInput" value="Israel, Caesariae, HaEshel 3" oninput="onLocInput()" onfocus="onLocFocus()" onblur="onLocBlur()">
+                  <button type="button" class="cd-loc-input-clear" onmousedown="event.preventDefault()" onclick="clearLocInput()" aria-label="Clear location">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                   </button>
                 </div>
@@ -4016,15 +4017,30 @@
     cdLocInitial = document.getElementById('cdLocInput').value;
     syncLocClear();
     document.getElementById('cdLocDropdown').classList.remove('show');
+    document.getElementById('sCamLocation').dataset.typing = 'false';
   }
   function closeCamLocation() {
     document.getElementById('sCamLocation').classList.remove('active');
     document.getElementById('sCamSettings').classList.add('active');
+    document.getElementById('mobileKeyboard').classList.remove('show');
   }
   function saveCamLocation() {
     cdLocInitial = document.getElementById('cdLocInput').value;
     document.getElementById('cdLocDropdown').classList.remove('show');
+    document.getElementById('sCamLocation').dataset.typing = 'false';
     showCopyToast('Changes saved');
+  }
+  function onLocFocus() {
+    document.getElementById('mobileKeyboard').classList.add('show');
+  }
+  function onLocBlur() {
+    setTimeout(() => {
+      const active = document.activeElement;
+      if (active && active.id === 'cdLocInput') return;
+      document.getElementById('sCamLocation').dataset.typing = 'false';
+      document.getElementById('mobileKeyboard').classList.remove('show');
+      document.getElementById('cdLocDropdown').classList.remove('show');
+    }, 120);
   }
   function syncLocClear() {
     const field = document.getElementById('cdLocField');
@@ -4034,25 +4050,36 @@
   function onLocInput() {
     const input = document.getElementById('cdLocInput');
     const dropdown = document.getElementById('cdLocDropdown');
+    const panel = document.getElementById('sCamLocation');
     const value = input.value;
     syncLocClear();
-    if (!value) { dropdown.classList.remove('show'); return; }
+    if (!value || value === cdLocInitial) {
+      dropdown.classList.remove('show');
+      panel.dataset.typing = 'false';
+      return;
+    }
     const lower = value.toLowerCase();
     const matches = LOC_SUGGESTIONS.filter(s => s.toLowerCase().includes(lower)).slice(0, 6);
-    if (!matches.length) { dropdown.classList.remove('show'); return; }
+    if (!matches.length) {
+      dropdown.classList.remove('show');
+      panel.dataset.typing = 'false';
+      return;
+    }
     dropdown.innerHTML = matches.map(s => {
       const idx = s.toLowerCase().indexOf(lower);
       const before = _escHtml(s.substring(0, idx));
       const match = _escHtml(s.substring(idx, idx + value.length));
       const after = _escHtml(s.substring(idx + value.length));
       const safe = s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-      return `<div class="cd-loc-item" onclick="pickLocation('${safe}')">${before}<strong>${match}</strong>${after}</div>`;
+      return `<div class="cd-loc-item" onmousedown="event.preventDefault()" onclick="pickLocation('${safe}')">${before}<strong>${match}</strong>${after}</div>`;
     }).join('');
     dropdown.classList.add('show');
+    panel.dataset.typing = 'true';
   }
   function pickLocation(loc) {
     document.getElementById('cdLocInput').value = loc;
     document.getElementById('cdLocDropdown').classList.remove('show');
+    document.getElementById('sCamLocation').dataset.typing = 'false';
     syncLocClear();
   }
   function clearLocInput() {
@@ -4060,6 +4087,7 @@
     input.value = '';
     syncLocClear();
     document.getElementById('cdLocDropdown').classList.remove('show');
+    document.getElementById('sCamLocation').dataset.typing = 'false';
     input.focus();
   }
 
