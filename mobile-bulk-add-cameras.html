@@ -861,6 +861,25 @@
   .cd-substream-form { display: none; flex-direction: column; gap: 16px; }
   #sCamStreams[data-substream="on"] .cd-substream-form { display: flex; }
 
+  /* Camera storage screen */
+  #sCamStorage { background: var(--surface); }
+  .cd-section-title { font-size: 20px; font-weight: 500; color: var(--text-default); line-height: 28px; margin: 0; }
+  .cd-section-divider { height: 1px; background: var(--border); margin: 0; }
+  .toggle-sw.green.on { background: #22C55E; }
+  .cd-toggle-desc-row { display: flex; align-items: flex-start; gap: 0; }
+  .cd-toggle-desc-row .toggle-sw { margin: 14px 10px; flex: 0 0 auto; }
+  .cd-toggle-desc-row .cd-toggle-text { display: flex; flex-direction: column; gap: 4px; padding-top: 12px; }
+  .cd-toggle-desc-row .cd-toggle-label { font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 24px; }
+  .cd-toggle-desc-row .cd-toggle-desc { font-size: 12px; font-weight: 400; color: var(--text-subtle); line-height: 20px; }
+  .cd-input-text-suffix { display: flex; align-items: stretch; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); overflow: hidden; height: 48px; }
+  .cd-input-text-suffix:focus-within { border-color: var(--primary); }
+  .cd-input-text-suffix input { flex: 1; min-width: 0; padding: 0 16px; border: none; outline: none; font-family: var(--sans); font-size: 16px; color: var(--text-default); background: var(--surface); }
+  .cd-input-text-suffix .cd-suffix-text { display: inline-flex; align-items: center; padding: 0 16px; background: #FCFCFD; border-left: 1px solid var(--border-input); color: var(--text-subtle); font-family: var(--sans); font-size: 14px; line-height: 24px; }
+  .cd-readonly-field { display: flex; align-items: center; height: 48px; padding: 0 16px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); font-size: 16px; color: var(--text-default); line-height: 24px; }
+  .cd-row-2col { display: flex; gap: 24px; align-items: flex-start; }
+  .cd-row-2col > * { flex: 1; min-width: 0; }
+  .cd-subheader { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; margin: 0; }
+
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
   .core-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
@@ -1659,7 +1678,7 @@
                   <span class="cs-row-label">Streams</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCamStorage()">
                   <span class="cs-row-label">Storage</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -1989,6 +2008,156 @@
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="closeCamStreams()">Close</button>
               <button class="btn btn-primary btn-full disabled" id="csSaveBtn" onclick="saveCamStreams()">Save</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCamStorage: Camera storage ========== -->
+          <div class="panel" id="sCamStorage">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCamStorage()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Storage</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <h3 class="cd-section-title">Data retention</h3>
+
+                <div class="cd-field">
+                  <label class="cd-label">Search, alerts, thumbnails, etc.</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">30 days</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Snapshot retention days</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">3 days</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-section-divider"></div>
+
+                <h3 class="cd-section-title">Video storage</h3>
+
+                <div class="cd-field">
+                  <label class="cd-label">Select stream for storage</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">Main stream</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Local storage retention period</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">30 days</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Storage schedule</label>
+                  <div class="cd-readonly-field">All time</div>
+                </div>
+
+                <div class="cd-toggle-desc-row">
+                  <button class="toggle-sw green on" type="button" id="csgSmart" onclick="this.classList.toggle('on'); updateCsgSaveBtn();" aria-label="Smart storage"></button>
+                  <div class="cd-toggle-text">
+                    <span class="cd-toggle-label">Smart storage</span>
+                    <span class="cd-toggle-desc">Save alert videos in high quality</span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="csgPre">Pre-Event-Duration</label>
+                  <div class="cd-input-text-suffix">
+                    <input type="text" id="csgPre" value="125" oninput="updateCsgSaveBtn()">
+                    <span class="cd-suffix-text">Sec</span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="csgPost">Post-Event-Duration</label>
+                  <div class="cd-input-text-suffix">
+                    <input type="text" id="csgPost" value="5" oninput="updateCsgSaveBtn()">
+                    <span class="cd-suffix-text">Sec</span>
+                  </div>
+                </div>
+
+                <div class="cd-section-divider"></div>
+
+                <h3 class="cd-section-title">Additional video storage</h3>
+
+                <div class="cd-row-2col">
+                  <div class="cd-toggle-desc-row">
+                    <button class="toggle-sw green on" type="button" id="csgAdditional" onclick="this.classList.toggle('on'); updateCsgSaveBtn();" aria-label="Additional storage"></button>
+                    <div class="cd-toggle-text">
+                      <span class="cd-toggle-label">Additional storage</span>
+                    </div>
+                  </div>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">Cloud</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Cloud retention period</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">30 days</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <span class="cd-subheader">Video to backup</span>
+                  <div class="cd-toggle-desc-row" style="margin-top:0;">
+                    <button class="toggle-sw green on" type="button" id="csgStorageSq" onclick="this.classList.toggle('on'); updateCsgSaveBtn();" aria-label="Storage SQ"></button>
+                    <div class="cd-toggle-text">
+                      <span class="cd-toggle-label">Storage (SQ)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Upload video that happened at</label>
+                  <div class="cd-readonly-field">All time</div>
+                </div>
+
+                <div class="cd-toggle-desc-row">
+                  <button class="toggle-sw green" type="button" id="csgAlertsHq" onclick="this.classList.toggle('on'); updateCsgSaveBtn();" aria-label="Alerts HQ"></button>
+                  <div class="cd-toggle-text">
+                    <span class="cd-toggle-label">Alerts (HQ)</span>
+                  </div>
+                </div>
+
+                <div class="cd-toggle-desc-row">
+                  <button class="toggle-sw green" type="button" id="csgEventTags" onclick="this.classList.toggle('on'); updateCsgSaveBtn();" aria-label="Event tags"></button>
+                  <div class="cd-toggle-text">
+                    <span class="cd-toggle-label">Event tags</span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">When the upload should occur</label>
+                  <div class="cd-readonly-field">All time</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="closeCamStorage()">Close</button>
+              <button class="btn btn-primary btn-full disabled" id="csgSaveBtn" onclick="saveCamStorage()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3680,6 +3849,45 @@
     const isHidden = input.type === 'password';
     input.type = isHidden ? 'text' : 'password';
     btn.querySelector('span').textContent = isHidden ? 'Hide password' : 'Show password';
+  }
+
+  // ===== Camera storage =====
+  let csgInitialState = null;
+  function captureCsgState() {
+    const on = id => document.getElementById(id).classList.contains('on');
+    return {
+      pre: document.getElementById('csgPre').value,
+      post: document.getElementById('csgPost').value,
+      smart: on('csgSmart'),
+      additional: on('csgAdditional'),
+      storageSq: on('csgStorageSq'),
+      alertsHq: on('csgAlertsHq'),
+      eventTags: on('csgEventTags'),
+    };
+  }
+  function isCsgDirty() {
+    if (!csgInitialState) return false;
+    const cur = captureCsgState();
+    return Object.keys(cur).some(k => cur[k] !== csgInitialState[k]);
+  }
+  function updateCsgSaveBtn() {
+    document.getElementById('csgSaveBtn').classList.toggle('disabled', !isCsgDirty());
+  }
+  function openCamStorage() {
+    document.getElementById('sCamSettings').classList.remove('active');
+    document.getElementById('sCamStorage').classList.add('active');
+    csgInitialState = captureCsgState();
+    updateCsgSaveBtn();
+  }
+  function closeCamStorage() {
+    document.getElementById('sCamStorage').classList.remove('active');
+    document.getElementById('sCamSettings').classList.add('active');
+  }
+  function saveCamStorage() {
+    if (document.getElementById('csgSaveBtn').classList.contains('disabled')) return;
+    csgInitialState = captureCsgState();
+    updateCsgSaveBtn();
+    showCopyToast('Changes saved');
   }
   function pickCamTab(btn) {
     btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
