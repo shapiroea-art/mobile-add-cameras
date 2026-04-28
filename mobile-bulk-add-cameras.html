@@ -1077,7 +1077,7 @@
               <div class="ts-body">
                 <div class="auth-field">
                   <label class="auth-label" for="newTagName">Name</label>
-                  <div class="input-field"><input type="text" id="newTagName" oninput="onNewTagNameInput()"></div>
+                  <div class="input-field"><input type="text" id="newTagName" placeholder="e.g. Outdoor cameras" oninput="onNewTagNameInput()"></div>
                 </div>
                 <div class="auth-field">
                   <label class="auth-label">Color</label>
@@ -3736,7 +3736,6 @@
     renderNewTagColors();
     updateNewTagAddBtn();
     openSheet('newTagSheet');
-    if (nameEl) setTimeout(() => nameEl.focus(), 0);
   }
   function cancelNewTagSheet() {
     closeSheet('newTagSheet');
