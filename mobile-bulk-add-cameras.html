@@ -903,7 +903,8 @@
   .cn-action-testing { display: none; }
   .cn-test-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--primary-border); border-radius: var(--r); background: var(--surface); color: var(--primary-border); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; flex: 0 0 auto; }
   .cn-test-btn:hover { background: var(--primary-soft); }
-  .cn-test-output { flex: 1; min-height: 0; background: var(--surface-gray200); border: 1px solid var(--border-input); border-radius: var(--r); padding: 8px 16px; }
+  .cn-test-output { flex: 1; min-height: 0; background: var(--surface-gray200); border: 1px solid var(--border-input); border-radius: var(--r); padding: 8px 16px; overflow-y: auto; font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--text-default); white-space: pre-wrap; word-wrap: break-word; }
+  .cn-test-output::-webkit-scrollbar { width: 0; }
   .cn-section-title { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; padding-top: 20px; margin: 0; }
 
   /* Core screen */
@@ -2449,10 +2450,10 @@
               </div>
 
               <div class="cd-pane cn-pane-testing">
-                <button type="button" class="cn-test-btn">Firewall check</button>
-                <button type="button" class="cn-test-btn">Speedtest connection</button>
-                <button type="button" class="cn-test-btn">Test local connection</button>
-                <div class="cn-test-output"></div>
+                <button type="button" class="cn-test-btn" onclick="runNetworkTest()">Firewall check</button>
+                <button type="button" class="cn-test-btn" onclick="runNetworkTest()">Speedtest connection</button>
+                <button type="button" class="cn-test-btn" onclick="runNetworkTest()">Test local connection</button>
+                <div class="cn-test-output" id="cnTestOutput"></div>
               </div>
             </div>
 
@@ -3350,6 +3351,7 @@
       target.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'eth1'));
       document.getElementById('cnDhcp').classList.add('on');
       cnInitialDhcp = true;
+      document.getElementById('cnTestOutput').textContent = '';
       updateCnSaveBtn();
     }
     const numberedIdx = screens.indexOf(panelId);
@@ -4378,6 +4380,66 @@
   }
 
   // ===== Core > Network =====
+  const NETWORK_TEST_RESULT = `--- Available hosts ---
+*us-east*.compute.amazonaws.com - amazon compare center
+*us-west*.compute.amazonaws.com - amazon compure center
+*eu-central*.compute.amazonaws.com - amazon compure center
+*.data.mediastore.us-west-2.amazonaws.com - medaistore endpoint
+lumixai-alert-thumbnails.s3.us-west-1.amazonaws.com - lumixai-alert-thumbnails
+lumixai-training-thumbnails.s3.us-west-1.amazonaws.com - lumixai-training-thumbnails
+lumixai-thumbnails.s3.us-west-1.amazonaws.com - lumixai-thumbnails
+*.cloudfront.net - cloudfront server
+auth.docker.io - dockerhub access
+registry*.docker.io - dockerhub access
+production.cloudflare.docker.com - cloudflare access
+0.pool.ntp.org - ntp server
+1.pool.ntp.org - ntp server
+time.cloudflare.com - ntp server
+time.google.com - ntp server
+ntp.ubuntu.com - ntp server
+pool.ntp.org - ntp server
+*lumix.ai - lumix server access
+*lumana.ai - lumana server access
+lpr.lumix.ai - lumana lpr access
+api.lumix.ai - lumana server access
+loki.lumix.ai - lumana loki access
+packages.lumix.ai - lumana installation pkg
+mq.lumix.ai - lumana mqtt broker
+kafka.lumix.ai - lumana kafka broker
+stream.lumana.ai - lumana US livekit
+stream-il.lumana.ai - lumana IL livekit
+turn.lumana.ai - lumana US turn server
+turn-il.lumana.ai - lumana IL turn server
+global.stun.twilio.com - global stun servers
+stun1.l.google.com - google stun 1 servers
+stun.l.google.com - google stun servers
+Media server UDP - US media server UDP: 3478
+Media server UDP - US media server UDP: 50000
+Media server UDP - US media server UDP: 50100
+Media server UDP - US media server UDP: 60000
+Media server UDP - IL media server UDP: 3478
+Media server UDP - IL media server UDP: 50000
+Media server UDP - IL media server UDP: 50100
+Media server UDP - IL media server UDP: 60000
+public-lumana-thanos-us-central-lumixai-kafka.b.aivencloud.com - US promethues
+public-lumana-thanos-il-central-lumixai-kafka.l.aivencloud.com - IL promethues
+*nac.nodebalancer.linode.com - load balancer
+*bc.googleusercontent.com - google cloud
+8.8.8.8 - google DNS service
+8.8.4.4 - google DNS service
+www.speedtest.net - speed test: www.speedtest
+api.speedtest.net - speed test: api.speedtest
+c.speedtest.net - speed test: c.speedtest
+
+-------------------- Unavailable hosts -------------------------
+failed connection: Media server TCP, port: 7881, verification address: 35.232.212.113, info: US media server TCP: 7881, Exception: timed out
+failed connection: Media server TCP, port: 7881, verification address: 34.165.225.198, info: IL media server TCP: 7881, Exception: timed out
+`;
+  function runNetworkTest() {
+    const out = document.getElementById('cnTestOutput');
+    out.textContent = NETWORK_TEST_RESULT;
+    out.scrollTop = 0;
+  }
   let cnInitialDhcp = true;
   function captureCnState() {
     return { dhcp: document.getElementById('cnDhcp').classList.contains('on') };
@@ -4396,6 +4458,7 @@
     panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'eth1'));
     document.getElementById('cnDhcp').classList.add('on');
     cnInitialDhcp = true;
+    document.getElementById('cnTestOutput').textContent = '';
     updateCnSaveBtn();
   }
   function closeCoreNetwork() {
