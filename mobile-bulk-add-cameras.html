@@ -883,6 +883,14 @@
   .undo-toast .ut-btn { background: none; border: none; color: #A5B4FC; font-weight: 500; cursor: pointer; padding: 0; font-size: 14px; line-height: 20px; flex: 0 0 auto; }
   .undo-toast .ut-btn:hover { text-decoration: underline; color: var(--text-inverse); }
 
+  /* Copy toast */
+  .copy-toast { position: absolute; left: 16px; right: 16px; bottom: 24px; background: var(--text-bold); color: var(--text-inverse); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 8px 24px rgba(16,24,40,.18); font-size: 14px; line-height: 20px; z-index: 30; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .18s ease, transform .18s ease; }
+  .copy-toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .copy-toast .ct-ico { color: #22C55E; display: inline-flex; flex: 0 0 auto; }
+  .copy-toast .ct-label { flex: 1; min-width: 0; }
+  .copy-toast .ct-close { background: none; border: none; color: var(--text-subtlest); padding: 0; cursor: pointer; display: inline-flex; flex: 0 0 auto; border-radius: 4px; }
+  .copy-toast .ct-close:hover { color: var(--text-inverse); }
+
   /* Bottom tabs (sDevices) */
   .bottom-tabs { background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: stretch; flex: 0 0 auto; }
   .bottom-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 10px 0 8px; cursor: pointer; color: var(--text-default); background: none; border: none; }
@@ -1584,7 +1592,7 @@
                     <div class="cs-info-label">MAC address</div>
                     <div class="cs-info-value">e4:f1:4c:63:85:39</div>
                   </div>
-                  <button class="cs-copy-btn" type="button" aria-label="Copy MAC address">
+                  <button class="cs-copy-btn" type="button" onclick="copyCamField('MAC address', 'e4:f1:4c:63:85:39')" aria-label="Copy MAC address">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
@@ -1593,7 +1601,7 @@
                     <div class="cs-info-label">Camera ID</div>
                     <div class="cs-info-value">67ebb6bd1b7b80525ed4d55d</div>
                   </div>
-                  <button class="cs-copy-btn" type="button" aria-label="Copy Camera ID">
+                  <button class="cs-copy-btn" type="button" onclick="copyCamField('Camera ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy Camera ID">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
@@ -2305,6 +2313,14 @@
           <div class="undo-toast" id="undoToast">
             <span class="ut-label" id="undoToastLabel">Removed</span>
             <button class="ut-btn" onclick="clickUndo()">Undo</button>
+          </div>
+
+          <div class="copy-toast" id="copyToast">
+            <span class="ct-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="ct-label" id="copyToastLabel">Copied</span>
+            <button class="ct-close" onclick="dismissCopyToast()" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </button>
           </div>
 
           <div class="mobile-keyboard" id="mobileKeyboard">
@@ -3055,6 +3071,26 @@
     const fn = undoState.onUndo;
     dismissUndoToast();
     fn();
+  }
+
+  // ===== Copy toast =====
+  let copyToastTimer = null;
+  function showCopyToast(label) {
+    const toast = document.getElementById('copyToast');
+    document.getElementById('copyToastLabel').textContent = label;
+    toast.classList.add('show');
+    if (copyToastTimer) clearTimeout(copyToastTimer);
+    copyToastTimer = setTimeout(dismissCopyToast, 2000);
+  }
+  function dismissCopyToast() {
+    document.getElementById('copyToast').classList.remove('show');
+    if (copyToastTimer) { clearTimeout(copyToastTimer); copyToastTimer = null; }
+  }
+  function copyCamField(label, value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(value).catch(() => {});
+    }
+    showCopyToast(`${label} copied to clipboard`);
   }
 
   // ===== S0 location menu =====
