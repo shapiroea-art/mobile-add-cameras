@@ -2353,14 +2353,19 @@
                   <div class="cs-info-body">
                     <div class="cs-info-label-row">
                       <span class="cs-info-label">Software version</span>
-                      <button type="button" class="cs-info-link">Update</button>
+                      <button type="button" class="cs-info-link" id="coreSoftwareUpdateBtn" onclick="runCoreSoftwareUpdate()">Update</button>
                     </div>
-                    <div class="cs-info-value cs-info-value-subtle">v2.1.416.0_release_or_5.1.2</div>
+                    <div class="cs-info-value cs-info-value-subtle" id="coreSoftwareVersion">v2.1.416.0_release_or_5.1.2</div>
                   </div>
                 </div>
               </div>
 
               <button type="button" class="core-restart-btn">Restart core</button>
+            </div>
+
+            <div class="cd-success-bar" id="coreSoftwareSuccess">
+              <span class="csb-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="csb-label">Software has been updated to version 1.5.89</span>
             </div>
 
             <div class="home-indicator"></div>
@@ -4474,12 +4479,23 @@
   // ===== Core screen =====
   function openCoreScreen(name) {
     if (name) document.getElementById('coreTitle').textContent = name;
+    resetCoreSoftwareUpdate();
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sCore').classList.add('active');
   }
   function closeCoreScreen() {
     document.getElementById('sCore').classList.remove('active');
     document.getElementById('s0').classList.add('active');
+  }
+  function runCoreSoftwareUpdate() {
+    document.getElementById('coreSoftwareUpdateBtn').style.display = 'none';
+    document.getElementById('coreSoftwareVersion').textContent = 'v1.5.89';
+    document.getElementById('coreSoftwareSuccess').classList.add('show');
+  }
+  function resetCoreSoftwareUpdate() {
+    document.getElementById('coreSoftwareUpdateBtn').style.display = '';
+    document.getElementById('coreSoftwareVersion').textContent = 'v2.1.416.0_release_or_5.1.2';
+    document.getElementById('coreSoftwareSuccess').classList.remove('show');
   }
 
   // ===== Core > Details =====
