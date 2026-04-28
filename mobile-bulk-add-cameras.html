@@ -3614,6 +3614,10 @@
   function runStreamTest() {
     document.getElementById('sCamStreams').dataset.tested = 'true';
     document.getElementById('csSaveBtn').classList.remove('disabled');
+    const content = document.querySelector('#sCamStreams .cd-content');
+    if (content) {
+      requestAnimationFrame(() => content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' }));
+    }
   }
   function openCamStreams() {
     document.getElementById('sCamSettings').classList.remove('active');
