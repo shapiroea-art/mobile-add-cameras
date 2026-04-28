@@ -2741,12 +2741,14 @@
     renderConfList();
   }
   function requestDeleteCam(id) {
-    const c = confCams.find(x => x.id === id);
-    if (!c) return;
-    pendingDeleteCamId = id;
-    document.getElementById('confirmDeleteTitle').textContent = `Remove ${c.name}?`;
-    document.getElementById('confirmDeleteDesc').textContent = `This camera won't be added to your site. You can add it later from Devices.`;
-    openSheet('confirmDeleteSheet');
+    const idx = confCams.findIndex(c => c.id === id);
+    if (idx === -1) return;
+    const [removed] = confCams.splice(idx, 1);
+    renderConfList();
+    showUndoToast(`${removed.name || 'Camera'} removed`, () => {
+      confCams.splice(Math.min(idx, confCams.length), 0, removed);
+      renderConfList();
+    });
   }
   function confirmDeleteCam() {
     const id = pendingDeleteCamId;
