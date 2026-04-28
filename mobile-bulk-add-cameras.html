@@ -1069,7 +1069,7 @@
           </div>
 
           <!-- Bottom sheet: New tag (level 3 — opens above tag picker) -->
-          <div class="sheet-backdrop" id="newTagSheet" onclick="if(event.target.id==='newTagSheet') closeSheet('newTagSheet')">
+          <div class="sheet-backdrop" id="newTagSheet" onclick="if(event.target.id==='newTagSheet') cancelNewTagSheet()">
             <div class="sheet addsub-sheet">
               <div class="ts-handle"></div>
               <div class="ts-title">New tag</div>
@@ -1084,20 +1084,20 @@
                 </div>
               </div>
               <div class="ts-foot">
-                <button class="btn btn-secondary" onclick="closeSheet('newTagSheet')">Cancel</button>
+                <button class="btn btn-secondary" onclick="cancelNewTagSheet()">Cancel</button>
                 <button class="btn btn-primary disabled" id="newTagAddBtn" onclick="commitNewTag()">Add</button>
               </div>
             </div>
           </div>
 
           <!-- Bottom sheet: Manage tags (level 3 — opens above tag picker) -->
-          <div class="sheet-backdrop" id="manageTagsSheet" onclick="if(event.target.id==='manageTagsSheet') closeSheet('manageTagsSheet')">
+          <div class="sheet-backdrop" id="manageTagsSheet" onclick="if(event.target.id==='manageTagsSheet') closeManageTagsSheet()">
             <div class="sheet manage-tags-sheet">
               <div class="ts-handle"></div>
               <div class="ts-title">Manage tags</div>
               <div class="manage-tags-list" id="manageTagsList"></div>
               <div class="ts-foot">
-                <button class="btn btn-primary" onclick="closeSheet('manageTagsSheet')">Done</button>
+                <button class="btn btn-primary" onclick="closeManageTagsSheet()">Done</button>
               </div>
             </div>
           </div>
@@ -3724,8 +3724,9 @@
     closeSheet('tagPickerSheet');
   }
 
-  // ===== New tag sheet (level 3) =====
+  // ===== New tag sheet (level 3) — replaces the picker while open =====
   function openNewTagSheet() {
+    closeSheet('tagPickerSheet');
     newTagColor = TAG_PALETTE[TAG_PALETTE.length - 1]; // gray default
     const nameEl = document.getElementById('newTagName');
     if (nameEl) nameEl.value = '';
@@ -3733,6 +3734,10 @@
     updateNewTagAddBtn();
     openSheet('newTagSheet');
     if (nameEl) setTimeout(() => nameEl.focus(), 0);
+  }
+  function cancelNewTagSheet() {
+    closeSheet('newTagSheet');
+    openSheet('tagPickerSheet');
   }
   function renderNewTagColors() {
     const row = document.getElementById('newTagColorRow');
@@ -3762,13 +3767,19 @@
     renderTagPickerChips();
     renderTagFilterChips();
     closeSheet('newTagSheet');
+    openSheet('tagPickerSheet');
   }
 
-  // ===== Manage tags sheet (level 3) =====
+  // ===== Manage tags sheet (level 3) — replaces the picker while open =====
   function openManageTagsSheet() {
+    closeSheet('tagPickerSheet');
     mtRenameId = null;
     renderManageTagsList();
     openSheet('manageTagsSheet');
+  }
+  function closeManageTagsSheet() {
+    closeSheet('manageTagsSheet');
+    openSheet('tagPickerSheet');
   }
   function renderManageTagsList() {
     const list = document.getElementById('manageTagsList');
