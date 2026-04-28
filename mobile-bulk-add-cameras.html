@@ -707,8 +707,9 @@
   .sub-tag-add { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 40px; border: 1px dashed var(--border-input); background: var(--surface); color: var(--text-subtle); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
   .sub-tag-add:hover { color: var(--text-default); border-color: var(--text-subtle); }
   /* "+ New tag" chip at end of picker chip flow (data-driven) */
-  .tag-chip.new-tag-chip { border-style: dashed; border-color: var(--border-input); color: var(--text-subtle); }
-  .tag-chip.new-tag-chip:hover { color: var(--text-default); border-color: var(--text-subtle); }
+  .tag-chip.new-tag-chip { background: var(--primary-soft); border-color: var(--primary-border); color: var(--primary-border); font-weight: 600; }
+  .tag-chip.new-tag-chip .tc-icon { color: var(--primary-border); }
+  .tag-chip.new-tag-chip:hover { background: #DDE5FE; }
   /* Color picker row */
   .tag-color-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .tag-color-dot { width: 28px; height: 28px; border-radius: 50%; padding: 0; border: none; cursor: pointer; position: relative; box-shadow: 0 0 0 0 transparent; transition: box-shadow .12s ease; }
