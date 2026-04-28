@@ -1036,7 +1036,7 @@
                 </div>
               </div>
               <div class="ts-foot">
-                <button class="btn btn-primary" onclick="closeSheet('addSublocationSheet')">Add</button>
+                <button class="btn btn-primary" onclick="submitAddSublocation()">Add</button>
               </div>
             </div>
           </div>
@@ -1347,6 +1347,13 @@
                   <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 8.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M14.5 15.5h3M16 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
                   <span class="lmi-text">Add camera</span>
                 </div>
+              </div>
+            </div>
+
+            <div class="success-card" id="addSubSuccessBanner">
+              <div class="sc-top">
+                <span class="ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="ok-text" id="addSubSuccessText">Sublocation added</div>
               </div>
             </div>
 
@@ -2855,6 +2862,20 @@
     if (name) name.value = '';
     if (notes) notes.value = '';
     openSheet('addSublocationSheet');
+  }
+  let addSubBannerTimer = null;
+  function submitAddSublocation() {
+    const nameEl = document.getElementById('addSubName');
+    const name = nameEl && nameEl.value.trim();
+    const banner = document.getElementById('addSubSuccessBanner');
+    const text = document.getElementById('addSubSuccessText');
+    if (text) text.textContent = name ? `${name} added` : 'Sublocation added';
+    closeSheet('addSublocationSheet');
+    if (banner) {
+      banner.classList.add('show');
+      if (addSubBannerTimer) clearTimeout(addSubBannerTimer);
+      addSubBannerTimer = setTimeout(() => banner.classList.remove('show'), 3500);
+    }
   }
   function addCameraFromMenu() {
     closeLocationMenu();
