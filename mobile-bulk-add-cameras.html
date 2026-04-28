@@ -949,6 +949,19 @@
   .cd-issue-title { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; opacity: 0.8; }
   .cd-issue-desc { font-size: 14px; font-weight: 400; color: var(--text-subtle); line-height: 24px; }
 
+  /* Info message bar (inline) */
+  .cd-info-bar { display: flex; align-items: flex-start; gap: 24px; padding: 16px; border-radius: var(--r); background: #EFF6FF; box-shadow: inset 3px 0 0 0 #3B82F6; }
+  .cd-info-bar .cib-ico { color: #3B82F6; flex: 0 0 auto; padding: 4px; display: inline-flex; }
+  .cd-info-bar .cib-label { flex: 1; min-width: 0; font-family: var(--sans); font-size: 14px; font-weight: 400; line-height: 24px; color: var(--text-bold); }
+
+  /* Helper text under input */
+  .cd-help-text { font-size: 12px; line-height: 20px; color: var(--text-subtle); }
+
+  /* DHCP screen */
+  #sCoreDhcp { background: var(--surface); }
+  #sCoreDhcp .cn-readonly { background: var(--surface); }
+  #sCoreDhcp .cn-ip-display .ip-dot { color: var(--text-subtlest); }
+
   /* Success message bar (shown after software update) */
   .cd-success-bar { position: absolute; left: 16px; right: 16px; bottom: 50px; display: none; align-items: flex-start; gap: 24px; padding: 16px; border: 1px solid #22C55E; border-radius: var(--r); background: #F0FDF4; box-shadow: inset 3px 0 0 0 #22C55E; }
   .cd-success-bar.show { display: flex; }
@@ -1156,6 +1169,7 @@
           <div class="fm-step" data-panel="sCoreDetails" onclick="jumpToPanel('sCoreDetails')"><span class="n">02</span><div><div class="lbl">Details</div><div class="sub">name · install date</div></div></div>
           <div class="fm-step" data-panel="sCoreNetwork" onclick="jumpToPanel('sCoreNetwork')"><span class="n">03</span><div><div class="lbl">Network</div><div class="sub">DHCP · IPv4 · DNS</div></div></div>
           <div class="fm-step" data-panel="sCoreIssues" onclick="jumpToPanel('sCoreIssues')"><span class="n">04</span><div><div class="lbl">Issues</div><div class="sub">spec · update</div></div></div>
+          <div class="fm-step" data-panel="sCoreDhcp" onclick="jumpToPanel('sCoreDhcp')"><span class="n">05</span><div><div class="lbl">DHCP Server</div><div class="sub">IP range · DNS · gateway</div></div></div>
         </div>
       </div>
     </div>
@@ -2333,7 +2347,7 @@
                   <span class="cs-row-label">Issues</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCoreDhcp()">
                   <span class="cs-row-label">DHCP Server</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -2568,6 +2582,79 @@
             <div class="cd-success-bar" id="coreUpdateSuccess">
               <span class="csb-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               <span class="csb-label">Software has been updated to version 1.5.89</span>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCoreDhcp: Core > DHCP Server ========== -->
+          <div class="panel" id="sCoreDhcp">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCoreDhcp()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">DHCP Server</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <div class="cd-info-bar">
+                  <span class="cib-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7.25v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5.25" r="0.85" fill="currentColor"/></svg></span>
+                  <span class="cib-label">DHCP server is supported on Ethernet 2</span>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Starting IP address</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Ending IP address</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">DNS servers</label>
+                  <div class="input-field">
+                    <input type="text" id="dhcpDns">
+                  </div>
+                  <div class="cd-help-text">The field must contain one or more valid IPv4 addresses, separated by commas</div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Gateway</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Lease time</label>
+                  <div class="input-field">
+                    <input type="text" id="dhcpLease" value="3600">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary btn-full disabled" id="dhcpEnableBtn">Enable</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -4622,6 +4709,14 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   function runCoreUpdate() {
     document.getElementById('coreIssueUpdate').style.display = 'none';
     document.getElementById('coreUpdateSuccess').classList.add('show');
+  }
+  function openCoreDhcp() {
+    document.getElementById('sCore').classList.remove('active');
+    document.getElementById('sCoreDhcp').classList.add('active');
+  }
+  function closeCoreDhcp() {
+    document.getElementById('sCoreDhcp').classList.remove('active');
+    document.getElementById('sCore').classList.add('active');
   }
   function saveCoreNetwork() {
     if (document.getElementById('cnSaveBtn').classList.contains('disabled')) return;
