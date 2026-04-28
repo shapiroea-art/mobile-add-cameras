@@ -807,7 +807,16 @@
   .cd-tab.active { color: var(--primary-border); border-bottom-color: var(--primary-border); }
   .cd-content { flex: 1; overflow-y: auto; background: var(--surface); }
   .cd-content::-webkit-scrollbar { width: 0; }
-  .cd-form { display: flex; flex-direction: column; gap: 16px; padding: 24px 16px; }
+  .cd-pane { display: flex; flex-direction: column; gap: 16px; padding: 24px 16px; }
+  #sCamDetails[data-tab="edit"] .cd-pane-info,
+  #sCamDetails[data-tab="info"] .cd-pane-edit { display: none; }
+  #sCamDetails[data-tab="edit"] .cd-action-info,
+  #sCamDetails[data-tab="info"] .cd-action-edit { display: none; }
+  .cd-info-list { display: flex; flex-direction: column; }
+  .cd-info-row { display: flex; align-items: center; gap: 10px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .cd-info-row .cd-info-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .cd-info-row .cd-info-label { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .cd-info-row .cd-info-value { font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cd-toggle-row { display: flex; align-items: center; gap: 8px; padding: 14px 10px; }
   .cd-toggle-row .cd-toggle-label { font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 24px; }
   .cd-field { display: flex; flex-direction: column; gap: 8px; }
@@ -1685,7 +1694,7 @@
           </div>
 
           <!-- ========== sCamDetails: Camera details (Edit/Info) ========== -->
-          <div class="panel" id="sCamDetails">
+          <div class="panel" id="sCamDetails" data-tab="edit">
             <div class="topbar">
               <div class="tb-left">
                 <button class="btn-icon" onclick="closeCamDetails()" aria-label="Back">
@@ -1697,12 +1706,12 @@
             </div>
 
             <div class="cd-tabs">
-              <button class="cd-tab active" type="button" onclick="pickCdTab(this)">Edit</button>
-              <button class="cd-tab" type="button" onclick="pickCdTab(this)">Info</button>
+              <button class="cd-tab active" type="button" onclick="pickCdTab(this)" data-tab="edit">Edit</button>
+              <button class="cd-tab" type="button" onclick="pickCdTab(this)" data-tab="info">Info</button>
             </div>
 
             <div class="cd-content">
-              <div class="cd-form">
+              <div class="cd-pane cd-pane-edit">
                 <div class="cd-toggle-row">
                   <button class="toggle-sw" type="button" onclick="this.classList.toggle('on'); updateCdSaveBtn();" aria-label="Disable camera"></button>
                   <span class="cd-toggle-label">Disable camera</span>
@@ -1779,11 +1788,91 @@
 
                 <button type="button" class="cd-delete-btn">Delete camera</button>
               </div>
+
+              <div class="cd-pane cd-pane-info">
+                <div class="cd-info-list">
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">Manufacturer</div>
+                      <div class="cd-info-value">Sony</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Manufacturer', 'Sony')" aria-label="Copy manufacturer">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">Model</div>
+                      <div class="cd-info-value">DE-1025</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Model', 'DE-1025')" aria-label="Copy model">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">Hardware ID</div>
+                      <div class="cd-info-value">67ebb6bd1b7b80525ed4d55d</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Hardware ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy hardware ID">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">Serial</div>
+                      <div class="cd-info-value">67ebb6bd1b7b80525ed4d55d</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Serial', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy serial">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">MAC address</div>
+                      <div class="cd-info-value">e4:f1:4c:63:85:39</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('MAC address', 'e4:f1:4c:63:85:39')" aria-label="Copy MAC address">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">Camera ID</div>
+                      <div class="cd-info-value">67ebb6bd1b7b80525ed4d55d</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Camera ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy camera ID">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">Entity counter</div>
+                      <div class="cd-info-value">1003407</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Entity counter', '1003407')" aria-label="Copy entity counter">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                  <div class="cd-info-row">
+                    <div class="cd-info-body">
+                      <div class="cd-info-label">Installation date</div>
+                      <div class="cd-info-value">04/01/2025</div>
+                    </div>
+                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Installation date', '04/01/2025')" aria-label="Copy installation date">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="action-bar">
+            <div class="action-bar cd-action-edit">
               <button class="btn btn-secondary btn-full" onclick="closeCamDetails()">Close</button>
               <button class="btn btn-primary btn-full disabled" id="cdSaveBtn" onclick="saveCamDetails()">Save</button>
+            </div>
+            <div class="action-bar cd-action-info">
+              <button class="btn btn-primary btn-full" onclick="closeCamDetails()">Close</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3370,7 +3459,10 @@
   }
   function openCamDetails() {
     document.getElementById('sCamSettings').classList.remove('active');
-    document.getElementById('sCamDetails').classList.add('active');
+    const panel = document.getElementById('sCamDetails');
+    panel.classList.add('active');
+    panel.dataset.tab = 'edit';
+    panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'edit'));
     cdInitialState = captureCdState();
     updateCdSaveBtn();
   }
@@ -3387,6 +3479,7 @@
   function pickCdTab(btn) {
     btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
+    document.getElementById('sCamDetails').dataset.tab = btn.dataset.tab || 'edit';
   }
   function pickCamTab(btn) {
     btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
