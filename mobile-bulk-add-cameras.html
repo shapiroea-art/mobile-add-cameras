@@ -880,6 +880,17 @@
   .cd-row-2col > * { flex: 1; min-width: 0; }
   .cd-subheader { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; margin: 0; }
 
+  /* Core screen */
+  #sCore { background: var(--surface-subtle); }
+  #sCore .tb-left { gap: 0; }
+  .core-tb-icon { display: inline-flex; align-items: center; padding-right: 8px; color: var(--text-bold); }
+  .cs-info-label-row { display: flex; align-items: center; gap: 12px; }
+  .cs-info-label-row .cs-info-link { background: none; border: none; padding: 0; color: var(--primary-border); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; flex: 0 0 auto; }
+  .cs-info-label-row .cs-info-link:hover { color: var(--primary); text-decoration: underline; }
+  .cs-info-value-subtle { color: var(--text-subtle); }
+  .core-restart-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--primary-border); border-radius: var(--r); background: var(--surface); color: var(--primary-border); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; }
+  .core-restart-btn:hover { background: var(--primary-soft); }
+
   /* Camera location screen */
   #sCamLocation { background: var(--surface); }
   .cd-loc-content { flex: 1; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px; background: var(--surface); position: relative; overflow: hidden; }
@@ -1574,7 +1585,7 @@
                   <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                   <span class="dev-name">Lobby</span>
                 </div>
-                <div class="s5-dev-row">
+                <div class="s5-dev-row" onclick="openCoreScreen('Core 3')">
                   <div class="dev-thumb-core">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
                   </div>
@@ -2233,6 +2244,70 @@
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="closeCamLocation()">Cancel</button>
               <button class="btn btn-primary btn-full" onclick="saveCamLocation()">Save</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCore: Core screen ========== -->
+          <div class="panel" id="sCore">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCoreScreen()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <span class="core-tb-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6.5" width="18" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5.5" y="9.5" width="3" height="2" rx=".5" fill="currentColor"/><rect x="5.5" y="13" width="3" height="2" rx=".5" fill="currentColor"/></svg></span>
+                <div class="tb-title" id="coreTitle">Core 1</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cs-content">
+              <div class="cs-card cs-card-list">
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Details</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Network</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Cameras</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Issues</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">DHCP Server</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+              </div>
+
+              <div class="cs-card cs-card-pad">
+                <div class="cs-info-row">
+                  <div class="cs-info-body">
+                    <div class="cs-info-label">Core ID</div>
+                    <div class="cs-info-value cs-info-value-subtle">651e6958984ba62cf7828443</div>
+                  </div>
+                  <button class="cs-copy-btn" type="button" onclick="copyCamField('Core ID', '651e6958984ba62cf7828443')" aria-label="Copy core ID">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+                <div class="cs-info-row">
+                  <div class="cs-info-body">
+                    <div class="cs-info-label-row">
+                      <span class="cs-info-label">Software version</span>
+                      <button type="button" class="cs-info-link">Update</button>
+                    </div>
+                    <div class="cs-info-value cs-info-value-subtle">v2.1.416.0_release_or_5.1.2</div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="core-restart-btn">Restart core</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -4127,6 +4202,17 @@
     document.getElementById('cdLocDropdown').classList.remove('show');
     document.getElementById('sCamLocation').dataset.typing = 'false';
     input.focus();
+  }
+
+  // ===== Core screen =====
+  function openCoreScreen(name) {
+    if (name) document.getElementById('coreTitle').textContent = name;
+    document.getElementById('s0').classList.remove('active');
+    document.getElementById('sCore').classList.add('active');
+  }
+  function closeCoreScreen() {
+    document.getElementById('sCore').classList.remove('active');
+    document.getElementById('s0').classList.add('active');
   }
 
   // ===== Camera issues =====
