@@ -746,6 +746,7 @@
   #sCamera { background: var(--surface); }
   .cam-topbar { background: var(--surface); display: flex; align-items: center; padding: 4px 4px 4px 0; flex: 0 0 auto; }
   .cam-topbar .btn-icon { padding: 16px; }
+  .cam-topbar .btn-icon.btn-edit { padding: 14px; }
   .cam-topbar .cam-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--text-bold); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cam-tabs { padding: 0 8px 0; flex: 0 0 auto; }
   .cam-tabs-group { display: flex; padding: 2px; background: var(--surface-gray200); border-radius: var(--r); gap: 2px; }
@@ -1435,6 +1436,9 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
               <div class="cam-title" id="camTitle">Main entrance</div>
+              <button class="btn-icon btn-edit" onclick="openEditCamFromScreen()" aria-label="Edit camera">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+              </button>
             </div>
             <div class="cam-tabs">
               <div class="cam-tabs-group">
@@ -3944,6 +3948,13 @@
     group.querySelectorAll('.type-radio-opt').forEach(o => o.classList.remove('on'));
     btn.classList.add('on');
   }
+  function openEditCamFromScreen() {
+    const name = document.getElementById('camTitle').textContent;
+    editingCamId = null;
+    document.getElementById('editCamTitle').textContent = `Edit ${name}`;
+    document.getElementById('editCamName').value = name;
+    openSheet('editCamSheet');
+  }
   function openEditCam(id) {
     const c = confCams.find(x => x.id === id);
     if (!c) return;
@@ -3961,7 +3972,12 @@
   }
   function saveEditCam() {
     const c = confCams.find(x => x.id === editingCamId);
-    if (!c) { closeSheet('editCamSheet'); return; }
+    if (!c) {
+      const newName = (document.getElementById('editCamName').value || '').trim();
+      if (newName) document.getElementById('camTitle').textContent = newName;
+      closeSheet('editCamSheet');
+      return;
+    }
     c.name = (document.getElementById('editCamName').value || c.name).trim();
     c.config.autoConfig = document.getElementById('editCamAuto').classList.contains('on');
     const getSel = (gid) => {
