@@ -1149,6 +1149,7 @@
           <div class="fm-step" data-panel="sCore" onclick="jumpToPanel('sCore')"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">details · network · cameras</div></div></div>
           <div class="fm-step" data-panel="sCoreDetails" onclick="jumpToPanel('sCoreDetails')"><span class="n">02</span><div><div class="lbl">Details</div><div class="sub">name · install date</div></div></div>
           <div class="fm-step" data-panel="sCoreNetwork" onclick="jumpToPanel('sCoreNetwork')"><span class="n">03</span><div><div class="lbl">Network</div><div class="sub">DHCP · IPv4 · DNS</div></div></div>
+          <div class="fm-step" data-panel="sCoreIssues" onclick="jumpToPanel('sCoreIssues')"><span class="n">04</span><div><div class="lbl">Issues</div><div class="sub">spec · update</div></div></div>
         </div>
       </div>
     </div>
@@ -2322,7 +2323,7 @@
                   <span class="cs-row-label">Cameras</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCoreIssues()">
                   <span class="cs-row-label">Issues</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -2515,6 +2516,42 @@
             </div>
             <div class="action-bar cn-action-testing">
               <button class="btn btn-primary btn-full" onclick="closeCoreNetwork()">Done</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCoreIssues: Core issues ========== -->
+          <div class="panel" id="sCoreIssues">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCoreIssues()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Issues</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <div class="cd-issue-list">
+                  <div class="cd-issue-row">
+                    <div class="cd-issue-body">
+                      <div class="cd-issue-title">Out of spec</div>
+                      <div class="cd-issue-desc">description</div>
+                    </div>
+                    <button type="button" class="cd-test-btn">Reset core</button>
+                  </div>
+                  <div class="cd-issue-row">
+                    <div class="cd-issue-body">
+                      <div class="cd-issue-title">Need software update</div>
+                      <div class="cd-issue-desc">Current version: 1.2.3. Next version 1.2.4 from 01 Aug</div>
+                    </div>
+                    <button type="button" class="cd-test-btn">Update</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="home-indicator"></div>
@@ -4543,6 +4580,14 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   }
   function closeCoreNetwork() {
     document.getElementById('sCoreNetwork').classList.remove('active');
+    document.getElementById('sCore').classList.add('active');
+  }
+  function openCoreIssues() {
+    document.getElementById('sCore').classList.remove('active');
+    document.getElementById('sCoreIssues').classList.add('active');
+  }
+  function closeCoreIssues() {
+    document.getElementById('sCoreIssues').classList.remove('active');
     document.getElementById('sCore').classList.add('active');
   }
   function saveCoreNetwork() {
