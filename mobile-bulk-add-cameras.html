@@ -1247,7 +1247,7 @@
           </div>
 
           <!-- Bottom sheet: Tag picker (level 2 — opens above sublocation sheet) -->
-          <div class="sheet-backdrop" id="tagPickerSheet" onclick="if(event.target.id==='tagPickerSheet') { closeSheet('tagPickerSheet'); setActiveSubStep('add'); }">
+          <div class="sheet-backdrop" id="tagPickerSheet" onclick="if(event.target.id==='tagPickerSheet') dismissTagPicker()">
             <div class="sheet tags-sheet">
               <div class="ts-handle"></div>
               <div class="ts-title">Tags</div>
@@ -1849,6 +1849,11 @@
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Tags</label>
+                  <div class="sub-tags-field" id="cdDetailsTagsField"></div>
                 </div>
 
                 <div class="cd-divider"></div>
@@ -3836,6 +3841,7 @@
       desc: document.getElementById('cdCamDesc').value,
       metadata: document.getElementById('cdMetadata').value,
       integrationId: document.getElementById('cdIntegrationId').value,
+      tags: Array.from(cdDetailsDraftTags).sort().join(','),
     };
   }
   function isCdDirty() {
@@ -3845,7 +3851,8 @@
       || cur.name !== cdInitialState.name
       || cur.desc !== cdInitialState.desc
       || cur.metadata !== cdInitialState.metadata
-      || cur.integrationId !== cdInitialState.integrationId;
+      || cur.integrationId !== cdInitialState.integrationId
+      || cur.tags !== cdInitialState.tags;
   }
   function updateCdSaveBtn() {
     document.getElementById('cdSaveBtn').classList.toggle('disabled', !isCdDirty());
@@ -3856,6 +3863,7 @@
     panel.classList.add('active');
     panel.dataset.tab = 'edit';
     panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'edit'));
+    renderCdDetailsTagsField();
     cdInitialState = captureCdState();
     updateCdSaveBtn();
   }
@@ -4764,6 +4772,8 @@
   const TAG_PALETTE = ['#A855F7','#4367F6','#12B76A','#F79009','#F04438','#98A2B3'];
   let filterTagSelection = new Set();
   let sublocationDraftTags = new Set();
+  let cdDetailsDraftTags = new Set();
+  let tagPickerOwner = 'sublocation';
   let pickerSnapshot = new Set();
   let mtRenameId = null;
   let mtRenameColor = null;
@@ -4829,12 +4839,37 @@
     renderSublocationTagsField();
   }
 
+  function renderCdDetailsTagsField() {
+    const field = document.getElementById('cdDetailsTagsField');
+    if (!field) return;
+    const chips = tagLibrary
+      .filter(t => cdDetailsDraftTags.has(t.id))
+      .map(t => `<button type="button" class="sub-tag-pill" onclick="openTagPicker('camDetails')">
+        <span class="stp-dot" style="background:${t.color};"></span>
+        <span>${_escHtml(t.name)}</span>
+        <span class="stp-x" onclick="event.stopPropagation(); removeCdDetailsTag('${t.id}')" aria-label="Remove">${ICON_X_SMALL}</span>
+      </button>`)
+      .join('');
+    const addPill = `<button type="button" class="sub-tag-add" onclick="openTagPicker('camDetails')">${ICON_PLUS}<span>Add tag</span></button>`;
+    field.innerHTML = chips + addPill;
+  }
+  function removeCdDetailsTag(id) {
+    cdDetailsDraftTags.delete(id);
+    renderCdDetailsTagsField();
+    updateCdSaveBtn();
+  }
+
   // ===== Tag picker (level 2) =====
-  function openTagPicker() {
-    pickerSnapshot = new Set(sublocationDraftTags);
+  function openTagPicker(owner) {
+    tagPickerOwner = owner || 'sublocation';
+    if (tagPickerOwner === 'camDetails') {
+      pickerSnapshot = new Set(cdDetailsDraftTags);
+    } else {
+      pickerSnapshot = new Set(sublocationDraftTags);
+    }
     renderTagPickerChips();
     openSheet('tagPickerSheet');
-    setActiveSubStep('pickTags');
+    if (tagPickerOwner === 'sublocation') setActiveSubStep('pickTags');
   }
   function renderTagPickerChips() {
     const list = document.getElementById('tagPickerChips');
@@ -4853,11 +4888,24 @@
     else pickerSnapshot.add(id);
     renderTagPickerChips();
   }
-  function commitTagPicker() {
-    sublocationDraftTags = new Set(pickerSnapshot);
-    renderSublocationTagsField();
+  function dismissTagPicker() {
     closeSheet('tagPickerSheet');
-    setActiveSubStep('add');
+    if (tagPickerOwner === 'sublocation') setActiveSubStep('add');
+    tagPickerOwner = 'sublocation';
+  }
+  function commitTagPicker() {
+    if (tagPickerOwner === 'camDetails') {
+      cdDetailsDraftTags = new Set(pickerSnapshot);
+      renderCdDetailsTagsField();
+      closeSheet('tagPickerSheet');
+      updateCdSaveBtn();
+    } else {
+      sublocationDraftTags = new Set(pickerSnapshot);
+      renderSublocationTagsField();
+      closeSheet('tagPickerSheet');
+      setActiveSubStep('add');
+    }
+    tagPickerOwner = 'sublocation';
   }
 
   // ===== New tag sheet (level 3) — replaces the picker while open =====
@@ -4869,12 +4917,12 @@
     renderNewTagColors();
     updateNewTagAddBtn();
     openSheet('newTagSheet');
-    setActiveSubStep('newTag');
+    if (tagPickerOwner === 'sublocation') setActiveSubStep('newTag');
   }
   function cancelNewTagSheet() {
     closeSheet('newTagSheet');
     openSheet('tagPickerSheet');
-    setActiveSubStep('pickTags');
+    if (tagPickerOwner === 'sublocation') setActiveSubStep('pickTags');
   }
   function renderNewTagColors() {
     const row = document.getElementById('newTagColorRow');
@@ -4905,7 +4953,7 @@
     renderTagFilterChips();
     closeSheet('newTagSheet');
     openSheet('tagPickerSheet');
-    setActiveSubStep('pickTags');
+    if (tagPickerOwner === 'sublocation') setActiveSubStep('pickTags');
   }
 
   // ===== Manage tags sheet (level 3) — replaces the picker while open =====
@@ -4914,12 +4962,12 @@
     mtRenameId = null;
     renderManageTagsList();
     openSheet('manageTagsSheet');
-    setActiveSubStep('manageTags');
+    if (tagPickerOwner === 'sublocation') setActiveSubStep('manageTags');
   }
   function closeManageTagsSheet() {
     closeSheet('manageTagsSheet');
     openSheet('tagPickerSheet');
-    setActiveSubStep('pickTags');
+    if (tagPickerOwner === 'sublocation') setActiveSubStep('pickTags');
   }
   function renderManageTagsList() {
     const list = document.getElementById('manageTagsList');
