@@ -880,6 +880,20 @@
   .cd-row-2col > * { flex: 1; min-width: 0; }
   .cd-subheader { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; margin: 0; }
 
+  /* Core network screen */
+  #sCoreNetwork { background: var(--surface); }
+  .cn-checkbox-row { display: flex; align-items: center; gap: 8px; padding: 14px 14px 14px 14px; }
+  .cn-checkbox { width: 20px; height: 20px; border: 1px solid var(--border-input); border-radius: 4px; background: var(--surface); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; flex: 0 0 auto; color: white; transition: background .12s, border-color .12s; }
+  .cn-checkbox.on { background: var(--primary); border-color: var(--primary-border); }
+  .cn-checkbox svg { opacity: 0; }
+  .cn-checkbox.on svg { opacity: 1; }
+  .cn-checkbox-label { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .cn-readonly { display: flex; align-items: center; height: 48px; padding: 0 16px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface-gray200); font-size: 14px; color: var(--text-default); line-height: 24px; }
+  .cn-ip-display { gap: 10px; }
+  .cn-ip-display .ip-octet { width: 25px; height: 24px; display: inline-flex; align-items: center; justify-content: center; }
+  .cn-ip-display .ip-dot { color: var(--text-default); }
+  .cn-section-title { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; padding-top: 20px; margin: 0; }
+
   /* Core screen */
   #sCore { background: var(--surface-subtle); }
   #sCore .tb-left { gap: 0; }
@@ -2269,7 +2283,7 @@
                   <span class="cs-row-label">Details</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCoreNetwork()">
                   <span class="cs-row-label">Network</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -2309,6 +2323,109 @@
               </div>
 
               <button type="button" class="core-restart-btn">Restart core</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCoreNetwork: Core > Network ========== -->
+          <div class="panel" id="sCoreNetwork" data-tab="eth1">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCoreNetwork()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Network</div>
+              </div>
+              <div class="tb-right">
+                <button class="btn-icon" aria-label="Refresh" style="padding: 14px;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3.5 10a6.5 6.5 0 1111.4 4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M3 6v3.5h3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="cd-tabs">
+              <button class="cd-tab active" type="button" onclick="pickNetTab(this)" data-tab="eth1">Ethernet 1</button>
+              <button class="cd-tab" type="button" onclick="pickNetTab(this)" data-tab="eth2">Ethernet 2</button>
+              <button class="cd-tab" type="button" onclick="pickNetTab(this)" data-tab="testing">Testing</button>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <div class="cn-checkbox-row">
+                  <button class="cn-checkbox on" type="button" id="cnDhcp" onclick="this.classList.toggle('on'); updateCnSaveBtn();" aria-label="DHCP">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <span class="cn-checkbox-label">DHCP</span>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">IPv4 Address</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">IPv4 subnet mask</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">IPv4 default gateway</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Mac address</label>
+                  <div class="cn-readonly"></div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Speed</label>
+                  <div class="cn-readonly"></div>
+                </div>
+
+                <h3 class="cn-section-title">DNS Servers</h3>
+
+                <div class="cd-field">
+                  <label class="cd-label">Preferred DNS server</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Alternate DNS server</label>
+                  <div class="cn-readonly cn-ip-display">
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span><span class="ip-dot">.</span>
+                    <span class="ip-octet"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="closeCoreNetwork()">Close</button>
+              <button class="btn btn-primary btn-full disabled" id="cnSaveBtn" onclick="saveCoreNetwork()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -4214,6 +4331,43 @@
   function closeCoreScreen() {
     document.getElementById('sCore').classList.remove('active');
     document.getElementById('s0').classList.add('active');
+  }
+
+  // ===== Core > Network =====
+  let cnInitialDhcp = true;
+  function captureCnState() {
+    return { dhcp: document.getElementById('cnDhcp').classList.contains('on') };
+  }
+  function isCnDirty() {
+    return captureCnState().dhcp !== cnInitialDhcp;
+  }
+  function updateCnSaveBtn() {
+    document.getElementById('cnSaveBtn').classList.toggle('disabled', !isCnDirty());
+  }
+  function openCoreNetwork() {
+    document.getElementById('sCore').classList.remove('active');
+    const panel = document.getElementById('sCoreNetwork');
+    panel.classList.add('active');
+    panel.dataset.tab = 'eth1';
+    panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'eth1'));
+    document.getElementById('cnDhcp').classList.add('on');
+    cnInitialDhcp = true;
+    updateCnSaveBtn();
+  }
+  function closeCoreNetwork() {
+    document.getElementById('sCoreNetwork').classList.remove('active');
+    document.getElementById('sCore').classList.add('active');
+  }
+  function saveCoreNetwork() {
+    if (document.getElementById('cnSaveBtn').classList.contains('disabled')) return;
+    cnInitialDhcp = captureCnState().dhcp;
+    updateCnSaveBtn();
+    showCopyToast('Changes saved');
+  }
+  function pickNetTab(btn) {
+    btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sCoreNetwork').dataset.tab = btn.dataset.tab || 'eth1';
   }
 
   // ===== Camera issues =====
