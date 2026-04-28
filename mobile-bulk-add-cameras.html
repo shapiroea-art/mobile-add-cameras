@@ -1030,7 +1030,7 @@
   <aside class="flowmap">
     <div class="fm-title">Flow map</div>
     <div class="fm-steps" id="fmSteps">
-      <div class="fm-group">
+      <div class="fm-group collapsed">
         <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
           <span>Location</span>
           <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1041,7 +1041,7 @@
         </div>
       </div>
 
-      <div class="fm-group">
+      <div class="fm-group collapsed">
         <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
           <span>Add sublocation</span>
           <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1054,7 +1054,7 @@
         </div>
       </div>
 
-      <div class="fm-group">
+      <div class="fm-group collapsed">
         <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
           <span>Add core</span>
           <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1065,7 +1065,7 @@
         </div>
       </div>
 
-      <div class="fm-group">
+      <div class="fm-group collapsed">
         <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
           <span>Add cameras</span>
           <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1079,7 +1079,7 @@
         </div>
       </div>
 
-      <div class="fm-group">
+      <div class="fm-group collapsed">
         <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
           <span>Camera</span>
           <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1087,6 +1087,11 @@
         <div class="fm-group-body">
           <div class="fm-step" data-panel="sCamera" onclick="jumpToPanel('sCamera')"><span class="n">01</span><div><div class="lbl">Camera screen</div><div class="sub">live · playback · alerts</div></div></div>
           <div class="fm-step" data-panel="sCamSettings" onclick="jumpToPanel('sCamSettings')"><span class="n">02</span><div><div class="lbl">Camera settings</div><div class="sub">details · streams · meta</div></div></div>
+          <div class="fm-step" data-panel="sCamDetails" onclick="jumpToPanel('sCamDetails')"><span class="n">03</span><div><div class="lbl">Details</div><div class="sub">edit · info</div></div></div>
+          <div class="fm-step" data-panel="sCamStreams" onclick="jumpToPanel('sCamStreams')"><span class="n">04</span><div><div class="lbl">Streams</div><div class="sub">main · sub · test</div></div></div>
+          <div class="fm-step" data-panel="sCamStorage" onclick="jumpToPanel('sCamStorage')"><span class="n">05</span><div><div class="lbl">Storage</div><div class="sub">retention · backup</div></div></div>
+          <div class="fm-step" data-panel="sCamIssues" onclick="jumpToPanel('sCamIssues')"><span class="n">06</span><div><div class="lbl">Issues</div><div class="sub">image · spec · update</div></div></div>
+          <div class="fm-step" data-panel="sCamLocation" onclick="jumpToPanel('sCamLocation')"><span class="n">07</span><div><div class="lbl">Location</div><div class="sub">address · map</div></div></div>
         </div>
       </div>
     </div>
@@ -3077,7 +3082,8 @@
         renderCoreDrafts();
       }
     }
-    if (panelId === 'sCamera' || panelId === 'sCamSettings') {
+    const camPanels = ['sCamera','sCamSettings','sCamDetails','sCamStreams','sCamStorage','sCamIssues','sCamLocation'];
+    if (camPanels.indexOf(panelId) !== -1) {
       document.getElementById('camTitle').textContent = 'Main entrance';
       document.getElementById('camVideo').src = 'https://picsum.photos/seed/s0cam1/720/448';
     }
@@ -3085,6 +3091,30 @@
     const target = document.getElementById(panelId);
     if (!target) return;
     target.classList.add('active');
+    if (panelId === 'sCamDetails') {
+      target.dataset.tab = 'edit';
+      target.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'edit'));
+      renderCdDetailsTagsField();
+      cdInitialState = captureCdState();
+      updateCdSaveBtn();
+    } else if (panelId === 'sCamStreams') {
+      target.dataset.tab = 'mainstream';
+      target.dataset.tested = 'false';
+      target.dataset.substream = 'off';
+      target.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'mainstream'));
+      document.getElementById('csSubstreamToggle').classList.remove('on');
+      document.getElementById('csSubstreamForm').innerHTML = '';
+      csInitialState = captureCsState();
+      updateCsSaveBtn();
+    } else if (panelId === 'sCamStorage') {
+      csgInitialState = captureCsgState();
+      updateCsgSaveBtn();
+    } else if (panelId === 'sCamLocation') {
+      cdLocInitial = document.getElementById('cdLocInput').value;
+      syncLocClear();
+      document.getElementById('cdLocDropdown').classList.remove('show');
+      target.dataset.typing = 'false';
+    }
     const numberedIdx = screens.indexOf(panelId);
     if (numberedIdx !== -1) current = numberedIdx;
     if (panelId === 's2') startScan();
