@@ -2745,7 +2745,7 @@
     if (idx === -1) return;
     const [removed] = confCams.splice(idx, 1);
     renderConfList();
-    showUndoToast(`${removed.name || 'Camera'} removed`, () => {
+    showUndoToast(`Camera ${removed.name || ''} removed`.replace(/\s+/g,' ').trim(), () => {
       confCams.splice(Math.min(idx, confCams.length), 0, removed);
       renderConfList();
     });
@@ -2759,7 +2759,7 @@
     if (idx === -1) return;
     const [removed] = confCams.splice(idx, 1);
     renderConfList();
-    showUndoToast(`${removed.name || 'Camera'} removed`, () => {
+    showUndoToast(`Camera ${removed.name || ''} removed`.replace(/\s+/g,' ').trim(), () => {
       confCams.splice(Math.min(idx, confCams.length), 0, removed);
       renderConfList();
     });
