@@ -880,6 +880,12 @@
   .cd-row-2col > * { flex: 1; min-width: 0; }
   .cd-subheader { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; margin: 0; }
 
+  /* Core details screen */
+  #sCoreDetails { background: var(--surface); }
+  .cd-input-copy.cd-readonly-bg { background: var(--surface-gray200); }
+  .cd-input-copy.cd-readonly-bg input { background: var(--surface-gray200); }
+  .cd-input-copy.cd-readonly-bg:focus-within { border-color: var(--border-input); }
+
   /* Core network screen */
   #sCoreNetwork { background: var(--surface); }
   .cn-checkbox-row { display: flex; align-items: center; gap: 8px; padding: 14px 14px 14px 14px; }
@@ -1141,7 +1147,8 @@
         </button>
         <div class="fm-group-body">
           <div class="fm-step" data-panel="sCore" onclick="jumpToPanel('sCore')"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">details · network · cameras</div></div></div>
-          <div class="fm-step" data-panel="sCoreNetwork" onclick="jumpToPanel('sCoreNetwork')"><span class="n">02</span><div><div class="lbl">Network</div><div class="sub">DHCP · IPv4 · DNS</div></div></div>
+          <div class="fm-step" data-panel="sCoreDetails" onclick="jumpToPanel('sCoreDetails')"><span class="n">02</span><div><div class="lbl">Details</div><div class="sub">name · install date</div></div></div>
+          <div class="fm-step" data-panel="sCoreNetwork" onclick="jumpToPanel('sCoreNetwork')"><span class="n">03</span><div><div class="lbl">Network</div><div class="sub">DHCP · IPv4 · DNS</div></div></div>
         </div>
       </div>
     </div>
@@ -2303,7 +2310,7 @@
 
             <div class="cs-content">
               <div class="cs-card cs-card-list">
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCoreDetails()">
                   <span class="cs-row-label">Details</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -2347,6 +2354,51 @@
               </div>
 
               <button type="button" class="core-restart-btn">Restart core</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCoreDetails: Core > Details ========== -->
+          <div class="panel" id="sCoreDetails">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCoreDetails()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Details</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <div class="cd-field">
+                  <label class="cd-label" for="cdCoreName">Name</label>
+                  <div class="input-field">
+                    <input type="text" id="cdCoreName" value="Core #1" oninput="updateCoreDetailsSaveBtn()">
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Installation date</label>
+                  <div class="cd-input-copy cd-readonly-bg">
+                    <input type="text" value="08/04/2025" readonly>
+                    <button type="button" class="cd-copy-suffix" onclick="copyCamField('Installation date', '08/04/2025')" aria-label="Copy installation date">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="cd-divider"></div>
+
+                <button type="button" class="cd-delete-btn">Remove core</button>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-secondary btn-full" onclick="closeCoreDetails()">Close</button>
+              <button class="btn btn-primary btn-full disabled" id="cdCoreSaveBtn" onclick="saveCoreDetails()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3346,6 +3398,9 @@
       target.dataset.typing = 'false';
     } else if (panelId === 'sCore') {
       document.getElementById('coreTitle').textContent = 'Core 1';
+    } else if (panelId === 'sCoreDetails') {
+      cdCoreNameInitial = document.getElementById('cdCoreName').value;
+      updateCoreDetailsSaveBtn();
     } else if (panelId === 'sCoreNetwork') {
       target.dataset.tab = 'eth1';
       target.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'eth1'));
@@ -4377,6 +4432,31 @@
   function closeCoreScreen() {
     document.getElementById('sCore').classList.remove('active');
     document.getElementById('s0').classList.add('active');
+  }
+
+  // ===== Core > Details =====
+  let cdCoreNameInitial = '';
+  function isCoreDetailsDirty() {
+    return document.getElementById('cdCoreName').value !== cdCoreNameInitial;
+  }
+  function updateCoreDetailsSaveBtn() {
+    document.getElementById('cdCoreSaveBtn').classList.toggle('disabled', !isCoreDetailsDirty());
+  }
+  function openCoreDetails() {
+    document.getElementById('sCore').classList.remove('active');
+    document.getElementById('sCoreDetails').classList.add('active');
+    cdCoreNameInitial = document.getElementById('cdCoreName').value;
+    updateCoreDetailsSaveBtn();
+  }
+  function closeCoreDetails() {
+    document.getElementById('sCoreDetails').classList.remove('active');
+    document.getElementById('sCore').classList.add('active');
+  }
+  function saveCoreDetails() {
+    if (document.getElementById('cdCoreSaveBtn').classList.contains('disabled')) return;
+    cdCoreNameInitial = document.getElementById('cdCoreName').value;
+    updateCoreDetailsSaveBtn();
+    showCopyToast('Changes saved');
   }
 
   // ===== Core > Network =====
