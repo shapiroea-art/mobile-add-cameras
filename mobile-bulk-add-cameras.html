@@ -692,7 +692,8 @@
   .type-sheet .cb-divider hr { border: none; border-top: 1px solid var(--border); margin: 0; }
   .type-sheet .cb-row .cb-icon { display: inline-flex; flex: 0 0 auto; color: var(--text-default); }
   .type-sheet .cb-row .cb-label { padding-left: 6px; }
-  .type-sheet .cb-row .cb-badge { display: inline-flex; align-items: center; padding: 2px 8px; background: var(--surface-gray200); color: var(--text-default); font-size: 12px; line-height: 20px; border-radius: 24px; flex: 0 0 auto; font-weight: 400; }
+  .type-sheet .cb-row .cb-badge,
+  .status-sheet .cb-row .cb-badge { display: inline-flex; align-items: center; padding: 2px 8px; background: var(--surface-gray200); color: var(--text-default); font-size: 12px; line-height: 20px; border-radius: 24px; flex: 0 0 auto; font-weight: 400; }
   /* Add sublocation sheet */
   .addsub-sheet { padding: 0; }
   .addsub-sheet .ts-handle { padding: 10px 0; display: flex; justify-content: center; }
@@ -1215,18 +1216,22 @@
                 <div class="cb-row checked" data-status="online" onclick="toggleStatusOption(this)">
                   <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
                   <span class="cb-label">Online</span>
+                  <span class="cb-badge">28</span>
                 </div>
                 <div class="cb-row" data-status="offline" onclick="toggleStatusOption(this)">
                   <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
                   <span class="cb-label">Offline</span>
+                  <span class="cb-badge">4</span>
                 </div>
                 <div class="cb-row" data-status="unhealthy" onclick="toggleStatusOption(this)">
                   <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
                   <span class="cb-label">Unhealthy</span>
+                  <span class="cb-badge">3</span>
                 </div>
                 <div class="cb-row" data-status="no-status" onclick="toggleStatusOption(this)">
                   <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
                   <span class="cb-label">No status</span>
+                  <span class="cb-badge">1</span>
                 </div>
               </div>
               <div class="ts-foot">
