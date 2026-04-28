@@ -880,6 +880,14 @@
   .cd-row-2col > * { flex: 1; min-width: 0; }
   .cd-subheader { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; margin: 0; }
 
+  /* Camera issues screen */
+  #sCamIssues { background: var(--surface); }
+  .cd-issue-list { display: flex; flex-direction: column; }
+  .cd-issue-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .cd-issue-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .cd-issue-title { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; opacity: 0.8; }
+  .cd-issue-desc { font-size: 14px; font-weight: 400; color: var(--text-subtle); line-height: 24px; }
+
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
   .core-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
@@ -1682,7 +1690,7 @@
                   <span class="cs-row-label">Storage</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCamIssues()">
                   <span class="cs-row-label">Issues</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -2158,6 +2166,49 @@
             <div class="action-bar">
               <button class="btn btn-secondary btn-full" onclick="closeCamStorage()">Close</button>
               <button class="btn btn-primary btn-full disabled" id="csgSaveBtn" onclick="saveCamStorage()">Save</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCamIssues: Camera issues ========== -->
+          <div class="panel" id="sCamIssues">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCamIssues()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Issues</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <div class="cd-issue-list">
+                  <div class="cd-issue-row">
+                    <div class="cd-issue-body">
+                      <div class="cd-issue-title">Image quality issues</div>
+                      <div class="cd-issue-desc">Current version: 1.2.3. Next version 1.2.4 from 01 Aug</div>
+                    </div>
+                    <button type="button" class="cd-test-btn">Action</button>
+                  </div>
+                  <div class="cd-issue-row">
+                    <div class="cd-issue-body">
+                      <div class="cd-issue-title">Out of spec</div>
+                      <div class="cd-issue-desc">description</div>
+                    </div>
+                    <button type="button" class="cd-test-btn">Action</button>
+                  </div>
+                  <div class="cd-issue-row">
+                    <div class="cd-issue-body">
+                      <div class="cd-issue-title">Need software update</div>
+                      <div class="cd-issue-desc">Current version: 1.2.3. Next version 1.2.4 from 01 Aug</div>
+                    </div>
+                    <button type="button" class="cd-test-btn">Update</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="home-indicator"></div>
@@ -3888,6 +3939,16 @@
     csgInitialState = captureCsgState();
     updateCsgSaveBtn();
     showCopyToast('Changes saved');
+  }
+
+  // ===== Camera issues =====
+  function openCamIssues() {
+    document.getElementById('sCamSettings').classList.remove('active');
+    document.getElementById('sCamIssues').classList.add('active');
+  }
+  function closeCamIssues() {
+    document.getElementById('sCamIssues').classList.remove('active');
+    document.getElementById('sCamSettings').classList.add('active');
   }
   function pickCamTab(btn) {
     btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
