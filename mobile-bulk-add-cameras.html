@@ -698,6 +698,42 @@
   .addsub-sheet textarea { width: 100%; height: 124px; resize: none; padding: 8px 16px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); color: var(--text-default); font-family: var(--sans); font-size: 16px; line-height: 24px; outline: none; box-sizing: border-box; }
   .addsub-sheet textarea:focus { border-color: var(--primary); }
   .addsub-sheet textarea::placeholder { color: var(--text-subtlest); }
+  /* Tags field inside Add sublocation sheet */
+  .sub-tags-field { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sub-tag-pill { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 40px; border: 1px solid var(--primary-border); background: var(--surface); color: var(--primary-border); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .sub-tag-pill .stp-dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+  .sub-tag-pill .stp-x { display: inline-flex; padding: 2px; margin: -2px -6px -2px 0; color: var(--primary-border); cursor: pointer; }
+  .sub-tag-pill .stp-x:hover { color: var(--primary-hover); }
+  .sub-tag-add { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 40px; border: 1px dashed var(--border-input); background: var(--surface); color: var(--text-subtle); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .sub-tag-add:hover { color: var(--text-default); border-color: var(--text-subtle); }
+  /* "+ New tag" chip at end of picker chip flow (data-driven) */
+  .tag-chip.new-tag-chip { border-style: dashed; border-color: var(--border-input); color: var(--text-subtle); }
+  .tag-chip.new-tag-chip:hover { color: var(--text-default); border-color: var(--text-subtle); }
+  /* Color picker row */
+  .tag-color-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .tag-color-dot { width: 28px; height: 28px; border-radius: 50%; padding: 0; border: none; cursor: pointer; position: relative; box-shadow: 0 0 0 0 transparent; transition: box-shadow .12s ease; }
+  .tag-color-dot.on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary); }
+  /* Manage tags list */
+  .manage-tags-sheet { padding: 0; }
+  .manage-tags-sheet .ts-handle { padding: 10px 0; display: flex; justify-content: center; }
+  .manage-tags-sheet .ts-handle::after { content:''; width: 44px; height: 6px; background: var(--text-subtlest); border-radius: 100px; }
+  .manage-tags-sheet .ts-title { padding: 16px; font-size: 24px; font-weight: 500; color: var(--text-bold); line-height: 32px; }
+  .manage-tags-sheet .ts-foot { border-top: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 8px; }
+  .manage-tags-sheet .ts-foot .btn { flex: 1; }
+  .manage-tags-list { display: flex; flex-direction: column; padding: 8px 8px 16px; max-height: 420px; overflow-y: auto; }
+  .mt-row { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 4px; }
+  .mt-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; border: none; cursor: pointer; flex: 0 0 auto; }
+  .mt-action.danger { background: var(--danger); color: var(--text-inverse); }
+  .mt-action.danger:hover { background: #D92D20; }
+  .mt-action.primary { background: var(--primary); color: var(--text-inverse); }
+  .mt-action.primary:hover { background: var(--primary-hover); }
+  .mt-chip { flex: 1; min-width: 0; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--border-input); border-radius: 40px; background: var(--surface); font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .mt-chip .mt-dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+  .mt-chip .mt-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mt-rename { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
+  .mt-rename .mt-input { flex: 1; min-width: 0; height: 36px; padding: 0 12px; border: 1px solid var(--primary-border); border-radius: 40px; outline: none; font-family: var(--sans); font-size: 14px; color: var(--text-default); background: var(--surface); }
+  .mt-rename .mt-color-row { display: inline-flex; gap: 6px; }
+  .mt-rename .mt-color-row .tag-color-dot { width: 22px; height: 22px; }
   .s5-loc-row { display: flex; align-items: center; height: 52px; padding-left: 16px; border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; }
   .s5-loc-row .loc-main { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
   .s5-loc-row .loc-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
@@ -888,33 +924,7 @@
             <div class="sheet tags-sheet">
               <div class="ts-handle"></div>
               <div class="ts-title">Tags</div>
-              <div class="ts-chips" id="tagsFilterChips">
-                <button class="tag-chip" data-tag="entrance-1" onclick="toggleTagChip(this)">
-                  <span class="tc-dot" style="background:#A855F7;"></span>
-                  <span>Entrance</span>
-                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-                </button>
-                <button class="tag-chip" data-tag="many-people" onclick="toggleTagChip(this)">
-                  <span class="tc-dot" style="background:#4367F6;"></span>
-                  <span>Many people</span>
-                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-                </button>
-                <button class="tag-chip" data-tag="ok" onclick="toggleTagChip(this)">
-                  <span class="tc-dot" style="background:#12B76A;"></span>
-                  <span>OK</span>
-                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-                </button>
-                <button class="tag-chip" data-tag="check-danger" onclick="toggleTagChip(this)">
-                  <span class="tc-dot" style="background:#F04438;"></span>
-                  <span>Check danger</span>
-                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-                </button>
-                <button class="tag-chip" data-tag="entrance-2" onclick="toggleTagChip(this)">
-                  <span class="tc-dot" style="background:#A855F7;"></span>
-                  <span>Entrance</span>
-                  <span class="tc-icon" data-icon="plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-                </button>
-              </div>
+              <div class="ts-chips" id="tagsFilterChips"></div>
               <div class="ts-foot">
                 <button class="btn btn-secondary" onclick="clearTagFilters()">Clear All</button>
                 <button class="btn btn-primary" onclick="applyTagFilters()">Apply Filters</button>
@@ -1034,9 +1044,60 @@
                   <label class="auth-label" for="addSubNotes">Notes</label>
                   <textarea id="addSubNotes"></textarea>
                 </div>
+                <div class="auth-field">
+                  <label class="auth-label">Tags</label>
+                  <div class="sub-tags-field" id="subTagsField"></div>
+                </div>
               </div>
               <div class="ts-foot">
                 <button class="btn btn-primary" onclick="submitAddSublocation()">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom sheet: Tag picker (level 2 — opens above sublocation sheet) -->
+          <div class="sheet-backdrop" id="tagPickerSheet" onclick="if(event.target.id==='tagPickerSheet') closeSheet('tagPickerSheet')">
+            <div class="sheet tags-sheet">
+              <div class="ts-handle"></div>
+              <div class="ts-title">Tags</div>
+              <div class="ts-chips" id="tagPickerChips"></div>
+              <div class="ts-foot">
+                <button class="btn btn-secondary" onclick="openManageTagsSheet()">Manage tags</button>
+                <button class="btn btn-primary" onclick="commitTagPicker()">Done</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom sheet: New tag (level 3 — opens above tag picker) -->
+          <div class="sheet-backdrop" id="newTagSheet" onclick="if(event.target.id==='newTagSheet') closeSheet('newTagSheet')">
+            <div class="sheet addsub-sheet">
+              <div class="ts-handle"></div>
+              <div class="ts-title">New tag</div>
+              <div class="ts-body">
+                <div class="auth-field">
+                  <label class="auth-label" for="newTagName">Name</label>
+                  <div class="input-field"><input type="text" id="newTagName" oninput="onNewTagNameInput()"></div>
+                </div>
+                <div class="auth-field">
+                  <label class="auth-label">Color</label>
+                  <div class="tag-color-row" id="newTagColorRow"></div>
+                </div>
+              </div>
+              <div class="ts-foot">
+                <button class="btn btn-secondary" onclick="closeSheet('newTagSheet')">Cancel</button>
+                <button class="btn btn-primary disabled" id="newTagAddBtn" onclick="commitNewTag()">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom sheet: Manage tags (level 3 — opens above tag picker) -->
+          <div class="sheet-backdrop" id="manageTagsSheet" onclick="if(event.target.id==='manageTagsSheet') closeSheet('manageTagsSheet')">
+            <div class="sheet manage-tags-sheet">
+              <div class="ts-handle"></div>
+              <div class="ts-title">Manage tags</div>
+              <div class="manage-tags-list" id="manageTagsList"></div>
+              <div class="ts-foot">
+                <button class="btn btn-primary" onclick="closeSheet('manageTagsSheet')">Done</button>
               </div>
             </div>
           </div>
@@ -2861,6 +2922,8 @@
     const notes = document.getElementById('addSubNotes');
     if (name) name.value = '';
     if (notes) notes.value = '';
+    sublocationDraftTags = new Set();
+    renderSublocationTagsField();
     openSheet('addSublocationSheet');
   }
   let addSubBannerTimer = null;
@@ -2871,6 +2934,7 @@
     const text = document.getElementById('addSubSuccessText');
     if (text) text.textContent = name ? `${name} added` : 'Sublocation added';
     closeSheet('addSublocationSheet');
+    sublocationDraftTags = new Set();
     if (banner) {
       banner.classList.add('show');
       if (addSubBannerTimer) clearTimeout(addSubBannerTimer);
@@ -3554,21 +3618,55 @@
     if (!el) return;
     el.classList.remove('open');
   }
-  function toggleTagChip(btn) {
-    const selected = btn.classList.toggle('selected');
-    const ico = btn.querySelector('.tc-icon');
-    if (ico) {
-      ico.dataset.icon = selected ? 'check' : 'plus';
-      ico.innerHTML = selected
-        ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
-    }
+  // ===== Tag library (single source of truth) =====
+  let tagLibrary = [
+    { id: 'tag-entrance-1',   name: 'Entrance',     color: '#A855F7' },
+    { id: 'tag-many-people',  name: 'Many people',  color: '#4367F6' },
+    { id: 'tag-ok',           name: 'OK',           color: '#12B76A' },
+    { id: 'tag-check-danger', name: 'Check danger', color: '#F04438' },
+    { id: 'tag-entrance-2',   name: 'Entrance',     color: '#A855F7' },
+  ];
+  let tagIdSeq = 100;
+  const TAG_PALETTE = ['#A855F7','#4367F6','#12B76A','#F79009','#F04438','#98A2B3'];
+  let filterTagSelection = new Set();
+  let sublocationDraftTags = new Set();
+  let pickerSnapshot = new Set();
+  let mtRenameId = null;
+  let mtRenameColor = null;
+  let newTagColor = '#98A2B3';
+
+  const ICON_PLUS = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  const ICON_CHECK = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const ICON_X_SMALL = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+
+  function tagChipMarkup(t, selected, onclickAttr) {
+    const ico = selected ? ICON_CHECK : ICON_PLUS;
+    return `<button class="tag-chip${selected ? ' selected' : ''}" data-tag-id="${t.id}" ${onclickAttr}>
+      <span class="tc-dot" style="background:${t.color};"></span>
+      <span>${_escHtml(t.name)}</span>
+      <span class="tc-icon" data-icon="${selected ? 'check' : 'plus'}">${ico}</span>
+    </button>`;
+  }
+
+  // ===== Devices/AC1 filter (data-driven) =====
+  function renderTagFilterChips() {
+    const list = document.getElementById('tagsFilterChips');
+    if (!list) return;
+    list.innerHTML = tagLibrary.map(t =>
+      tagChipMarkup(t, filterTagSelection.has(t.id), `onclick="toggleFilterTag('${t.id}')"`)
+    ).join('');
+  }
+  function toggleFilterTag(id) {
+    if (filterTagSelection.has(id)) filterTagSelection.delete(id);
+    else filterTagSelection.add(id);
+    renderTagFilterChips();
   }
   function clearTagFilters() {
-    document.querySelectorAll('#tagsFilterChips .tag-chip.selected').forEach(c => toggleTagChip(c));
+    filterTagSelection.clear();
+    renderTagFilterChips();
   }
   function applyTagFilters() {
-    const n = document.querySelectorAll('#tagsFilterChips .tag-chip.selected').length;
+    const n = filterTagSelection.size;
     document.querySelectorAll('.s5-chip[data-chip="tags"]').forEach(chip => {
       chip.classList.toggle('selected', n > 0);
       const countEl = chip.querySelector('.s5-chip-count');
@@ -3576,6 +3674,208 @@
     });
     closeSheet('tagsFilterSheet');
   }
+
+  // ===== Add sublocation: Tags field =====
+  function renderSublocationTagsField() {
+    const field = document.getElementById('subTagsField');
+    if (!field) return;
+    const chips = tagLibrary
+      .filter(t => sublocationDraftTags.has(t.id))
+      .map(t => `<button type="button" class="sub-tag-pill" onclick="openTagPicker()">
+        <span class="stp-dot" style="background:${t.color};"></span>
+        <span>${_escHtml(t.name)}</span>
+        <span class="stp-x" onclick="event.stopPropagation(); removeSublocationTag('${t.id}')" aria-label="Remove">${ICON_X_SMALL}</span>
+      </button>`)
+      .join('');
+    const addPill = `<button type="button" class="sub-tag-add" onclick="openTagPicker()">${ICON_PLUS}<span>Add tag</span></button>`;
+    field.innerHTML = chips + addPill;
+  }
+  function removeSublocationTag(id) {
+    sublocationDraftTags.delete(id);
+    renderSublocationTagsField();
+  }
+
+  // ===== Tag picker (level 2) =====
+  function openTagPicker() {
+    pickerSnapshot = new Set(sublocationDraftTags);
+    renderTagPickerChips();
+    openSheet('tagPickerSheet');
+  }
+  function renderTagPickerChips() {
+    const list = document.getElementById('tagPickerChips');
+    if (!list) return;
+    const chips = tagLibrary.map(t =>
+      tagChipMarkup(t, pickerSnapshot.has(t.id), `onclick="togglePickerTag('${t.id}')"`)
+    ).join('');
+    const newTag = `<button class="tag-chip new-tag-chip" onclick="openNewTagSheet()">
+      <span class="tc-icon">${ICON_PLUS}</span>
+      <span>New tag</span>
+    </button>`;
+    list.innerHTML = chips + newTag;
+  }
+  function togglePickerTag(id) {
+    if (pickerSnapshot.has(id)) pickerSnapshot.delete(id);
+    else pickerSnapshot.add(id);
+    renderTagPickerChips();
+  }
+  function commitTagPicker() {
+    sublocationDraftTags = new Set(pickerSnapshot);
+    renderSublocationTagsField();
+    closeSheet('tagPickerSheet');
+  }
+
+  // ===== New tag sheet (level 3) =====
+  function openNewTagSheet() {
+    newTagColor = TAG_PALETTE[TAG_PALETTE.length - 1]; // gray default
+    const nameEl = document.getElementById('newTagName');
+    if (nameEl) nameEl.value = '';
+    renderNewTagColors();
+    updateNewTagAddBtn();
+    openSheet('newTagSheet');
+    if (nameEl) setTimeout(() => nameEl.focus(), 0);
+  }
+  function renderNewTagColors() {
+    const row = document.getElementById('newTagColorRow');
+    if (!row) return;
+    row.innerHTML = TAG_PALETTE.map(c =>
+      `<button type="button" class="tag-color-dot${c === newTagColor ? ' on' : ''}" style="background:${c};" onclick="pickNewTagColor('${c}')" aria-label="${c}"></button>`
+    ).join('');
+  }
+  function pickNewTagColor(c) {
+    newTagColor = c;
+    renderNewTagColors();
+  }
+  function onNewTagNameInput() { updateNewTagAddBtn(); }
+  function updateNewTagAddBtn() {
+    const btn = document.getElementById('newTagAddBtn');
+    const nameEl = document.getElementById('newTagName');
+    if (!btn || !nameEl) return;
+    btn.classList.toggle('disabled', !nameEl.value.trim());
+  }
+  function commitNewTag() {
+    const nameEl = document.getElementById('newTagName');
+    const name = (nameEl && nameEl.value.trim()) || '';
+    if (!name) return;
+    const id = `tag-${tagIdSeq++}`;
+    tagLibrary.push({ id, name, color: newTagColor });
+    pickerSnapshot.add(id);
+    renderTagPickerChips();
+    renderTagFilterChips();
+    closeSheet('newTagSheet');
+  }
+
+  // ===== Manage tags sheet (level 3) =====
+  function openManageTagsSheet() {
+    mtRenameId = null;
+    renderManageTagsList();
+    openSheet('manageTagsSheet');
+  }
+  function renderManageTagsList() {
+    const list = document.getElementById('manageTagsList');
+    if (!list) return;
+    list.innerHTML = tagLibrary.map(t => {
+      if (t.id === mtRenameId) {
+        const palette = TAG_PALETTE.map(c =>
+          `<button type="button" class="tag-color-dot${c === mtRenameColor ? ' on' : ''}" style="background:${c};" onclick="pickRenameColor('${c}')"></button>`
+        ).join('');
+        return `<div class="mt-row">
+          <button class="mt-action danger" onclick="cancelRename()" aria-label="Cancel"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+          <div class="mt-rename">
+            <input class="mt-input" type="text" id="mtRenameInput-${t.id}" value="${_escHtml(t.name)}" autofocus>
+            <span class="mt-color-row">${palette}</span>
+          </div>
+          <button class="mt-action primary" onclick="commitRename('${t.id}')" aria-label="Save"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>`;
+      }
+      return `<div class="mt-row">
+        <button class="mt-action danger" onclick="deleteTag('${t.id}')" aria-label="Delete"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M5.5 4.5V3a1 1 0 011-1h3a1 1 0 011 1v1.5M5 4.5v8.5a1 1 0 001 1h4a1 1 0 001-1V4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="mt-chip">
+          <span class="mt-dot" style="background:${t.color};"></span>
+          <span class="mt-name">${_escHtml(t.name)}</span>
+        </div>
+        <button class="mt-action primary" onclick="startRename('${t.id}')" aria-label="Rename"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2.5l2.5 2.5-7.5 7.5H3.5v-2.5l7.5-7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></button>
+      </div>`;
+    }).join('');
+  }
+  function startRename(id) {
+    const t = tagLibrary.find(x => x.id === id);
+    if (!t) return;
+    mtRenameId = id;
+    mtRenameColor = t.color;
+    renderManageTagsList();
+    setTimeout(() => {
+      const inp = document.getElementById(`mtRenameInput-${id}`);
+      if (inp) { inp.focus(); inp.select(); }
+    }, 0);
+  }
+  function pickRenameColor(c) {
+    mtRenameColor = c;
+    renderManageTagsList();
+    setTimeout(() => {
+      const inp = document.getElementById(`mtRenameInput-${mtRenameId}`);
+      if (inp) inp.focus();
+    }, 0);
+  }
+  function cancelRename() {
+    mtRenameId = null;
+    mtRenameColor = null;
+    renderManageTagsList();
+  }
+  function commitRename(id) {
+    const inp = document.getElementById(`mtRenameInput-${id}`);
+    const t = tagLibrary.find(x => x.id === id);
+    if (!t) { cancelRename(); return; }
+    const newName = (inp && inp.value.trim()) || t.name;
+    t.name = newName;
+    if (mtRenameColor) t.color = mtRenameColor;
+    mtRenameId = null;
+    mtRenameColor = null;
+    renderManageTagsList();
+    renderTagPickerChips();
+    renderTagFilterChips();
+    renderSublocationTagsField();
+  }
+  function deleteTag(id) {
+    const idx = tagLibrary.findIndex(t => t.id === id);
+    if (idx === -1) return;
+    const removed = tagLibrary[idx];
+    const wasInFilter = filterTagSelection.has(id);
+    const wasInSnapshot = pickerSnapshot.has(id);
+    const wasInSublocation = sublocationDraftTags.has(id);
+    tagLibrary.splice(idx, 1);
+    filterTagSelection.delete(id);
+    pickerSnapshot.delete(id);
+    sublocationDraftTags.delete(id);
+    renderManageTagsList();
+    renderTagPickerChips();
+    renderTagFilterChips();
+    renderSublocationTagsField();
+    refreshFilterTagsChipCount();
+    showUndoToast(`Tag ${removed.name} removed`, () => {
+      tagLibrary.splice(Math.min(idx, tagLibrary.length), 0, removed);
+      if (wasInFilter) filterTagSelection.add(id);
+      if (wasInSnapshot) pickerSnapshot.add(id);
+      if (wasInSublocation) sublocationDraftTags.add(id);
+      renderManageTagsList();
+      renderTagPickerChips();
+      renderTagFilterChips();
+      renderSublocationTagsField();
+      refreshFilterTagsChipCount();
+    });
+  }
+  function refreshFilterTagsChipCount() {
+    const n = filterTagSelection.size;
+    document.querySelectorAll('.s5-chip[data-chip="tags"]').forEach(chip => {
+      chip.classList.toggle('selected', n > 0);
+      const countEl = chip.querySelector('.s5-chip-count');
+      if (countEl) countEl.textContent = n;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTagFilterChips();
+    renderSublocationTagsField();
+  });
   function closeInfoSheet(event, id) {
     if (event.target.classList.contains('sheet-backdrop')) closeSheet(id);
   }
