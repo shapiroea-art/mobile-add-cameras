@@ -800,6 +800,34 @@
   .cs-copy-btn { padding: 10px; color: var(--text-subtle); background: none; border: none; border-radius: var(--r); cursor: pointer; display: inline-flex; flex: 0 0 auto; }
   .cs-copy-btn:hover { background: var(--surface-subtle); color: var(--text-default); }
 
+  /* Camera details (Edit/Info tabs) */
+  #sCamDetails { background: var(--surface); }
+  .cd-tabs { display: flex; gap: 24px; padding: 8px 24px 0; border-bottom: 1px solid var(--border); flex: 0 0 auto; background: var(--surface); }
+  .cd-tab { padding: 12px 0; height: 56px; display: inline-flex; align-items: center; font-size: 16px; font-weight: 500; color: var(--text-subtle); background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-family: var(--sans); line-height: 24px; margin-bottom: -1px; }
+  .cd-tab.active { color: var(--primary-border); border-bottom-color: var(--primary-border); }
+  .cd-content { flex: 1; overflow-y: auto; background: var(--surface); }
+  .cd-content::-webkit-scrollbar { width: 0; }
+  .cd-form { display: flex; flex-direction: column; gap: 16px; padding: 24px 16px; }
+  .cd-toggle-row { display: flex; align-items: center; gap: 8px; padding: 14px 10px; }
+  .cd-toggle-row .cd-toggle-label { font-size: 14px; font-weight: 400; color: var(--text-default); line-height: 24px; }
+  .cd-field { display: flex; flex-direction: column; gap: 8px; }
+  .cd-label { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .cd-select { display: flex; align-items: center; height: 48px; padding: 0; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); font-family: var(--sans); cursor: pointer; width: 100%; }
+  .cd-select:hover { border-color: var(--text-subtlest); }
+  .cd-select > .cd-select-value { flex: 1; min-width: 0; padding-left: 16px; font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cd-select > .cd-select-chev { padding: 14px; color: var(--text-subtle); flex: 0 0 auto; display: inline-flex; }
+  .cd-input-copy { display: flex; align-items: stretch; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); overflow: hidden; height: 48px; }
+  .cd-input-copy:focus-within { border-color: var(--primary); }
+  .cd-input-copy input { flex: 1; min-width: 0; padding: 0 16px; border: none; outline: none; font-family: var(--sans); font-size: 16px; color: var(--text-default); background: var(--surface); }
+  .cd-input-copy input::placeholder { color: var(--text-subtlest); }
+  .cd-input-copy .cd-copy-suffix { display: inline-flex; align-items: center; padding: 0 16px; background: #FCFCFD; border: none; border-left: 1px solid var(--border-input); color: var(--text-subtle); cursor: pointer; }
+  .cd-input-copy .cd-copy-suffix:hover { color: var(--text-default); }
+  .cd-textarea { width: 100%; height: 124px; padding: 8px 16px; border: 1px solid var(--border-input); border-radius: var(--r); background: var(--surface); font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--text-default); resize: none; box-sizing: border-box; outline: none; }
+  .cd-textarea:focus { border-color: var(--primary); }
+  .cd-divider { height: 1px; background: var(--border); margin: 0; }
+  .cd-delete-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid #DC2626; border-radius: var(--r); background: var(--surface); color: #DC2626; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .cd-delete-btn:hover { background: #FEF2F2; }
+
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
   .core-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
@@ -1590,7 +1618,7 @@
 
             <div class="cs-content">
               <div class="cs-card cs-card-list">
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCamDetails()">
                   <span class="cs-row-label">Details</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -1651,6 +1679,110 @@
                   </button>
                 </div>
               </div>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCamDetails: Camera details (Edit/Info) ========== -->
+          <div class="panel" id="sCamDetails">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCamDetails()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Details</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-tabs">
+              <button class="cd-tab active" type="button" onclick="pickCdTab(this)">Edit</button>
+              <button class="cd-tab" type="button" onclick="pickCdTab(this)">Info</button>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-form">
+                <div class="cd-toggle-row">
+                  <button class="toggle-sw" type="button" onclick="this.classList.toggle('on')" aria-label="Disable camera"></button>
+                  <span class="cd-toggle-label">Disable camera</span>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Camera type</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">Standard</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Analytic training model</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">Customized</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="cdCamName">Camera name</label>
+                  <div class="cd-input-copy">
+                    <input type="text" id="cdCamName" value="Vilar entry">
+                    <button type="button" class="cd-copy-suffix" onclick="copyCamField('Camera name', document.getElementById('cdCamName').value)" aria-label="Copy camera name">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="cdCamDesc">Description</label>
+                  <div class="cd-input-copy">
+                    <input type="text" id="cdCamDesc" placeholder="">
+                    <button type="button" class="cd-copy-suffix" onclick="copyCamField('Description', document.getElementById('cdCamDesc').value)" aria-label="Copy description">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">Analytic mode</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">Enabled</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label">SD card</label>
+                  <button type="button" class="cd-select">
+                    <span class="cd-select-value">Enabled</span>
+                    <span class="cd-select-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </button>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="cdMetadata">Metadata</label>
+                  <textarea id="cdMetadata" class="cd-textarea"></textarea>
+                </div>
+
+                <div class="cd-field">
+                  <label class="cd-label" for="cdIntegrationId">Integration ID</label>
+                  <div class="cd-input-copy">
+                    <input type="text" id="cdIntegrationId" placeholder="">
+                    <button type="button" class="cd-copy-suffix" onclick="copyCamField('Integration ID', document.getElementById('cdIntegrationId').value)" aria-label="Copy integration ID">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="cd-divider"></div>
+
+                <button type="button" class="cd-delete-btn">Delete camera</button>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary btn-full" onclick="closeCamDetails()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3212,6 +3344,18 @@
   function closeCamSettings() {
     document.getElementById('sCamSettings').classList.remove('active');
     document.getElementById('sCamera').classList.add('active');
+  }
+  function openCamDetails() {
+    document.getElementById('sCamSettings').classList.remove('active');
+    document.getElementById('sCamDetails').classList.add('active');
+  }
+  function closeCamDetails() {
+    document.getElementById('sCamDetails').classList.remove('active');
+    document.getElementById('sCamSettings').classList.add('active');
+  }
+  function pickCdTab(btn) {
+    btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
   }
   function pickCamTab(btn) {
     btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
