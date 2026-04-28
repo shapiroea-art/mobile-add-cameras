@@ -769,6 +769,31 @@
   .s5-dev-row .dev-ico { color: var(--success); flex: 0 0 auto; display: inline-flex; }
   .s5-dev-row .dev-name { font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+  /* Camera settings screen */
+  #sCamSettings { background: var(--surface-subtle); }
+  .cs-content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; background: var(--surface-subtle); }
+  .cs-content::-webkit-scrollbar { width: 0; }
+  .cs-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  .cs-card.cs-card-list { padding: 8px 0; }
+  .cs-card.cs-card-pad { padding: 16px; }
+  .cs-row { display: flex; align-items: center; height: 52px; padding-left: 16px; padding-right: 4px; border-bottom: 1px solid var(--border); cursor: pointer; background: none; border-left: none; border-right: none; border-top: none; width: 100%; font-family: var(--sans); text-align: left; }
+  .cs-row:last-child { border-bottom: none; }
+  .cs-row:hover { background: var(--surface-subtle); }
+  .cs-row .cs-row-label { flex: 1; font-size: 16px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .cs-row .cs-row-chev { color: var(--text-subtlest); padding: 10px; display: inline-flex; flex: 0 0 auto; }
+  .cs-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .cs-meta .cs-meta-item { display: inline-flex; align-items: center; gap: 8px; }
+  .cs-meta .cs-meta-ico { color: var(--text-default); display: inline-flex; flex: 0 0 auto; }
+  .cs-meta .cs-meta-text { font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; }
+  .cs-meta .cs-meta-dot { color: var(--text-subtlest); font-size: 14px; font-weight: 500; line-height: 24px; }
+  .cs-info-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .cs-info-row:last-child { border-bottom: none; }
+  .cs-info-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .cs-info-label { font-size: 14px; font-weight: 500; color: var(--text-default); line-height: 24px; }
+  .cs-info-value { font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cs-copy-btn { padding: 10px; color: var(--text-subtle); background: none; border: none; border-radius: var(--r); cursor: pointer; display: inline-flex; flex: 0 0 auto; }
+  .cs-copy-btn:hover { background: var(--surface-subtle); color: var(--text-default); }
+
   /* Add-core flow */
   #sAddCore { background: var(--surface-gray200); }
   .core-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 24px; }
@@ -1437,7 +1462,7 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
               <div class="cam-title" id="camTitle">Main entrance</div>
-              <button class="btn-icon btn-edit" onclick="openEditCamFromScreen()" aria-label="Edit camera">
+              <button class="btn-icon btn-edit" onclick="openCamSettings()" aria-label="Camera settings">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
               </button>
             </div>
@@ -1495,6 +1520,86 @@
               </div>
             </div>
             <div style="flex:1;"></div>
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCamSettings: Camera settings ========== -->
+          <div class="panel" id="sCamSettings">
+            <div class="topbar">
+              <div class="tb-left">
+                <button class="btn-icon" onclick="closeCamSettings()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Camera settings</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cs-content">
+              <div class="cs-card cs-card-list">
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Details</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Streams</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Storage</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Issues</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+                <button class="cs-row" type="button">
+                  <span class="cs-row-label">Location</span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+              </div>
+
+              <div class="cs-card cs-card-pad">
+                <div class="cs-meta">
+                  <span class="cs-meta-item">
+                    <span class="cs-meta-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="6.5" y="2.5" width="3" height="3" stroke="currentColor" stroke-width="1.4"/><rect x="10.5" y="2.5" width="3" height="3" stroke="currentColor" stroke-width="1.4"/><path d="M5 5.5h10v3.25a4 4 0 01-4 4H9a4 4 0 01-4-4V5.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M10 12.75v4.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+                    <span class="cs-meta-text">Local</span>
+                  </span>
+                  <span class="cs-meta-dot">•</span>
+                  <span class="cs-meta-item">
+                    <span class="cs-meta-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4.5" y="2.5" width="11" height="15" stroke="currentColor" stroke-width="1.4"/><circle cx="12.5" cy="10" r="0.9" fill="currentColor"/></svg></span>
+                    <span class="cs-meta-text">Door</span>
+                  </span>
+                  <span class="cs-meta-dot">•</span>
+                  <span class="cs-meta-item">
+                    <span class="cs-meta-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 7.5h3l4-3v11l-4-3H3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M13 7c1.2 1.5 1.2 4.5 0 6M15.5 5c2 2.5 2 7.5 0 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></span>
+                    <span class="cs-meta-text">Push to talk</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="cs-card cs-card-pad">
+                <div class="cs-info-row">
+                  <div class="cs-info-body">
+                    <div class="cs-info-label">MAC address</div>
+                    <div class="cs-info-value">e4:f1:4c:63:85:39</div>
+                  </div>
+                  <button class="cs-copy-btn" type="button" aria-label="Copy MAC address">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+                <div class="cs-info-row">
+                  <div class="cs-info-body">
+                    <div class="cs-info-label">Camera ID</div>
+                    <div class="cs-info-value">67ebb6bd1b7b80525ed4d55d</div>
+                  </div>
+                  <button class="cs-copy-btn" type="button" aria-label="Copy Camera ID">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div class="home-indicator"></div>
           </div>
 
@@ -3009,6 +3114,14 @@
     document.getElementById('sCamera').classList.remove('active');
     document.getElementById('s0').classList.add('active');
   }
+  function openCamSettings() {
+    document.getElementById('sCamera').classList.remove('active');
+    document.getElementById('sCamSettings').classList.add('active');
+  }
+  function closeCamSettings() {
+    document.getElementById('sCamSettings').classList.remove('active');
+    document.getElementById('sCamera').classList.add('active');
+  }
   function pickCamTab(btn) {
     btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
     btn.classList.add('on');
@@ -3949,13 +4062,6 @@
     group.querySelectorAll('.type-radio-opt').forEach(o => o.classList.remove('on'));
     btn.classList.add('on');
   }
-  function openEditCamFromScreen() {
-    const name = document.getElementById('camTitle').textContent;
-    editingCamId = null;
-    document.getElementById('editCamTitle').textContent = `Edit ${name}`;
-    document.getElementById('editCamName').value = name;
-    openSheet('editCamSheet');
-  }
   function openEditCam(id) {
     const c = confCams.find(x => x.id === id);
     if (!c) return;
@@ -3973,12 +4079,7 @@
   }
   function saveEditCam() {
     const c = confCams.find(x => x.id === editingCamId);
-    if (!c) {
-      const newName = (document.getElementById('editCamName').value || '').trim();
-      if (newName) document.getElementById('camTitle').textContent = newName;
-      closeSheet('editCamSheet');
-      return;
-    }
+    if (!c) { closeSheet('editCamSheet'); return; }
     c.name = (document.getElementById('editCamName').value || c.name).trim();
     c.config.autoConfig = document.getElementById('editCamAuto').classList.contains('on');
     const getSel = (gid) => {
