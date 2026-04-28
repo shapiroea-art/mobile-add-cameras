@@ -1704,7 +1704,7 @@
             <div class="cd-content">
               <div class="cd-form">
                 <div class="cd-toggle-row">
-                  <button class="toggle-sw" type="button" onclick="this.classList.toggle('on')" aria-label="Disable camera"></button>
+                  <button class="toggle-sw" type="button" onclick="this.classList.toggle('on'); updateCdSaveBtn();" aria-label="Disable camera"></button>
                   <span class="cd-toggle-label">Disable camera</span>
                 </div>
 
@@ -1727,7 +1727,7 @@
                 <div class="cd-field">
                   <label class="cd-label" for="cdCamName">Camera name</label>
                   <div class="cd-input-copy">
-                    <input type="text" id="cdCamName" value="Vilar entry">
+                    <input type="text" id="cdCamName" value="Vilar entry" oninput="updateCdSaveBtn()">
                     <button type="button" class="cd-copy-suffix" onclick="copyCamField('Camera name', document.getElementById('cdCamName').value)" aria-label="Copy camera name">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
@@ -1737,7 +1737,7 @@
                 <div class="cd-field">
                   <label class="cd-label" for="cdCamDesc">Description</label>
                   <div class="cd-input-copy">
-                    <input type="text" id="cdCamDesc" placeholder="">
+                    <input type="text" id="cdCamDesc" placeholder="" oninput="updateCdSaveBtn()">
                     <button type="button" class="cd-copy-suffix" onclick="copyCamField('Description', document.getElementById('cdCamDesc').value)" aria-label="Copy description">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
@@ -1762,13 +1762,13 @@
 
                 <div class="cd-field">
                   <label class="cd-label" for="cdMetadata">Metadata</label>
-                  <textarea id="cdMetadata" class="cd-textarea"></textarea>
+                  <textarea id="cdMetadata" class="cd-textarea" oninput="updateCdSaveBtn()"></textarea>
                 </div>
 
                 <div class="cd-field">
                   <label class="cd-label" for="cdIntegrationId">Integration ID</label>
                   <div class="cd-input-copy">
-                    <input type="text" id="cdIntegrationId" placeholder="">
+                    <input type="text" id="cdIntegrationId" placeholder="" oninput="updateCdSaveBtn()">
                     <button type="button" class="cd-copy-suffix" onclick="copyCamField('Integration ID', document.getElementById('cdIntegrationId').value)" aria-label="Copy integration ID">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
@@ -1782,7 +1782,8 @@
             </div>
 
             <div class="action-bar">
-              <button class="btn btn-primary btn-full" onclick="closeCamDetails()">Save</button>
+              <button class="btn btn-secondary btn-full" onclick="closeCamDetails()">Cancel</button>
+              <button class="btn btn-primary btn-full disabled" id="cdSaveBtn" onclick="saveCamDetails()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3345,13 +3346,42 @@
     document.getElementById('sCamSettings').classList.remove('active');
     document.getElementById('sCamera').classList.add('active');
   }
+  let cdInitialState = null;
+  function captureCdState() {
+    return {
+      disabled: document.querySelector('#sCamDetails .toggle-sw').classList.contains('on'),
+      name: document.getElementById('cdCamName').value,
+      desc: document.getElementById('cdCamDesc').value,
+      metadata: document.getElementById('cdMetadata').value,
+      integrationId: document.getElementById('cdIntegrationId').value,
+    };
+  }
+  function isCdDirty() {
+    if (!cdInitialState) return false;
+    const cur = captureCdState();
+    return cur.disabled !== cdInitialState.disabled
+      || cur.name !== cdInitialState.name
+      || cur.desc !== cdInitialState.desc
+      || cur.metadata !== cdInitialState.metadata
+      || cur.integrationId !== cdInitialState.integrationId;
+  }
+  function updateCdSaveBtn() {
+    document.getElementById('cdSaveBtn').classList.toggle('disabled', !isCdDirty());
+  }
   function openCamDetails() {
     document.getElementById('sCamSettings').classList.remove('active');
     document.getElementById('sCamDetails').classList.add('active');
+    cdInitialState = captureCdState();
+    updateCdSaveBtn();
   }
   function closeCamDetails() {
     document.getElementById('sCamDetails').classList.remove('active');
     document.getElementById('sCamSettings').classList.add('active');
+  }
+  function saveCamDetails() {
+    if (document.getElementById('cdSaveBtn').classList.contains('disabled')) return;
+    cdInitialState = captureCdState();
+    closeCamDetails();
   }
   function pickCdTab(btn) {
     btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
