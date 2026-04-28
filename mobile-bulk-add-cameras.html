@@ -3613,6 +3613,8 @@
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.add('open');
+    const kb = document.getElementById('mobileKeyboard');
+    if (kb) kb.classList.remove('show');
   }
   function closeSheet(id) {
     const el = document.getElementById(id);
