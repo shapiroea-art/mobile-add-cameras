@@ -1120,6 +1120,17 @@
           <div class="fm-step" data-panel="sCamLocation" onclick="jumpToPanel('sCamLocation')"><span class="n">07</span><div><div class="lbl">Location</div><div class="sub">address · map</div></div></div>
         </div>
       </div>
+
+      <div class="fm-group collapsed">
+        <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
+          <span>Core</span>
+          <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="fm-group-body">
+          <div class="fm-step" data-panel="sCore" onclick="jumpToPanel('sCore')"><span class="n">01</span><div><div class="lbl">Core</div><div class="sub">details · network · cameras</div></div></div>
+          <div class="fm-step" data-panel="sCoreNetwork" onclick="jumpToPanel('sCoreNetwork')"><span class="n">02</span><div><div class="lbl">Network</div><div class="sub">DHCP · IPv4 · DNS</div></div></div>
+        </div>
+      </div>
     </div>
     <button class="reset" onclick="resetFlow()">
       <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6a4 4 0 104-4M2 2v3h3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3307,6 +3318,14 @@
       syncLocClear();
       document.getElementById('cdLocDropdown').classList.remove('show');
       target.dataset.typing = 'false';
+    } else if (panelId === 'sCore') {
+      document.getElementById('coreTitle').textContent = 'Core 1';
+    } else if (panelId === 'sCoreNetwork') {
+      target.dataset.tab = 'eth1';
+      target.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'eth1'));
+      document.getElementById('cnDhcp').classList.add('on');
+      cnInitialDhcp = true;
+      updateCnSaveBtn();
     }
     const numberedIdx = screens.indexOf(panelId);
     if (numberedIdx !== -1) current = numberedIdx;
