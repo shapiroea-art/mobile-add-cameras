@@ -892,6 +892,8 @@
   .cn-ip-display { gap: 10px; }
   .cn-ip-display .ip-octet { width: 25px; height: 24px; display: inline-flex; align-items: center; justify-content: center; }
   .cn-ip-display .ip-dot { color: var(--text-default); }
+  #sCoreNetwork[data-tab="eth2"] .cn-readonly { background: var(--surface); }
+  #sCoreNetwork[data-tab="eth2"] .cn-ip-display .ip-dot { color: var(--text-subtlest); }
   .cn-section-title { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; padding-top: 20px; margin: 0; }
 
   /* Core screen */
@@ -4389,7 +4391,13 @@
   function pickNetTab(btn) {
     btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('sCoreNetwork').dataset.tab = btn.dataset.tab || 'eth1';
+    const tab = btn.dataset.tab || 'eth1';
+    document.getElementById('sCoreNetwork').dataset.tab = tab;
+    const dhcp = document.getElementById('cnDhcp');
+    if (tab === 'eth2') dhcp.classList.remove('on');
+    else if (tab === 'eth1') dhcp.classList.add('on');
+    cnInitialDhcp = dhcp.classList.contains('on');
+    updateCnSaveBtn();
   }
 
   // ===== Camera issues =====
