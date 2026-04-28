@@ -894,6 +894,13 @@
   .cn-ip-display .ip-dot { color: var(--text-default); }
   #sCoreNetwork[data-tab="eth2"] .cn-readonly { background: var(--surface); }
   #sCoreNetwork[data-tab="eth2"] .cn-ip-display .ip-dot { color: var(--text-subtlest); }
+  .cn-pane-testing { display: none; padding: 12px 16px 24px; gap: 16px; }
+  #sCoreNetwork[data-tab="testing"] .cn-pane-form { display: none; }
+  #sCoreNetwork[data-tab="testing"] .cn-pane-testing { display: flex; }
+  #sCoreNetwork[data-tab="testing"] .action-bar { display: none; }
+  .cn-test-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--primary-border); border-radius: var(--r); background: var(--surface); color: var(--primary-border); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; }
+  .cn-test-btn:hover { background: var(--primary-soft); }
+  .cn-test-output { flex: 1; min-height: 200px; background: var(--surface-gray200); border: 1px solid var(--border-input); border-radius: var(--r); padding: 8px 16px; }
   .cn-section-title { font-size: 16px; font-weight: 500; color: var(--text-bold); line-height: 24px; padding-top: 20px; margin: 0; }
 
   /* Core screen */
@@ -2367,7 +2374,7 @@
             </div>
 
             <div class="cd-content">
-              <div class="cd-pane">
+              <div class="cd-pane cn-pane-form">
                 <div class="cn-checkbox-row">
                   <button class="cn-checkbox on" type="button" id="cnDhcp" onclick="this.classList.toggle('on'); updateCnSaveBtn();" aria-label="DHCP">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2436,6 +2443,13 @@
                     <span class="ip-octet"></span>
                   </div>
                 </div>
+              </div>
+
+              <div class="cd-pane cn-pane-testing">
+                <button type="button" class="cn-test-btn">Firewall check</button>
+                <button type="button" class="cn-test-btn">Speedtest connection</button>
+                <button type="button" class="cn-test-btn">Test local connection</button>
+                <div class="cn-test-output"></div>
               </div>
             </div>
 
