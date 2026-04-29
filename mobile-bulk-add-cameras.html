@@ -942,6 +942,53 @@
   .cd-loc-item strong { font-weight: 700; color: var(--text-default); }
   #sCamLocation[data-typing="true"] .cd-loc-map { visibility: hidden; }
 
+  /* Create location — address block (Amazon-style search + parsed fields) */
+  .cl-addr { display: flex; flex-direction: column; gap: 8px; position: relative; }
+  .cl-addr-label-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .cl-addr-label-row .auth-label { flex: 1; }
+  .cl-mode-link { background: none; border: none; padding: 0; color: var(--primary); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .cl-mode-link:hover { text-decoration: underline; }
+  .cl-search-input { display: flex; align-items: center; gap: 8px; padding: 8px 12px; min-height: 48px; border: 1px solid var(--input-border); border-radius: var(--r); background: var(--surface); }
+  .cl-search-input:focus-within { border-color: var(--primary); }
+  .cl-search-input .cl-search-ico { color: var(--text-subtle); flex: 0 0 auto; display: inline-flex; }
+  .cl-search-input input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-family: var(--sans); font-size: 16px; font-weight: 400; line-height: 24px; color: var(--text-bold); }
+  .cl-search-input input::placeholder { color: var(--text-subtlest); }
+  .cl-search-clear { display: none; padding: 4px; color: var(--text-subtle); background: none; border: none; cursor: pointer; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .cl-search-clear:hover { color: var(--text-default); }
+  .cl-addr.has-value .cl-search-clear { display: inline-flex; }
+  .cl-addr-dropdown { display: none; flex-direction: column; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); box-shadow: 0 4px 12px rgba(16,24,40,.06); max-height: 260px; overflow-y: auto; }
+  .cl-addr-dropdown.show { display: flex; }
+  .cl-addr-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid var(--border); }
+  .cl-addr-item:last-child { border-bottom: none; }
+  .cl-addr-item:hover { background: var(--surface-subtle); }
+  .cl-addr-item-ico { color: var(--text-subtle); flex: 0 0 auto; padding-top: 2px; }
+  .cl-addr-item-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .cl-addr-item-title { font-size: 16px; font-weight: 400; color: var(--text-default); line-height: 24px; }
+  .cl-addr-item-title strong { font-weight: 700; color: var(--text-bold); }
+  .cl-addr-item-sub { font-size: 14px; font-weight: 400; color: var(--text-subtle); line-height: 20px; }
+  .cl-addr-item-manual { color: var(--primary); font-weight: 500; }
+  .cl-addr-map { height: 160px; position: relative; border-radius: var(--r); overflow: hidden; background: #E8EEE6; }
+  .cl-addr-map img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cl-addr-map .cl-addr-pin { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; background: var(--primary-border); border: 3px solid #2748CC; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 2px 8px rgba(16,24,40,.18); }
+  .cl-tz-hint { font-size: 12px; font-weight: 400; color: var(--text-subtle); line-height: 20px; }
+
+  /* Address-mode visibility — driven by data-addr-mode on #sCreateLocation */
+  #sCreateLocation .cl-addr-search,
+  #sCreateLocation .cl-addr-map,
+  #sCreateLocation .cl-addr-manual-link,
+  #sCreateLocation .cl-addr-search-link,
+  #sCreateLocation .cl-addr-parsed,
+  #sCreateLocation .cl-tz-hint { display: none; }
+  #sCreateLocation[data-addr-mode="empty"]   .cl-addr-search { display: flex; }
+  #sCreateLocation[data-addr-mode="empty"]   .cl-addr-manual-link { display: inline-flex; }
+  #sCreateLocation[data-addr-mode="picked"]  .cl-addr-search { display: flex; }
+  #sCreateLocation[data-addr-mode="picked"]  .cl-addr-map { display: block; }
+  #sCreateLocation[data-addr-mode="picked"]  .cl-addr-parsed { display: flex; }
+  #sCreateLocation[data-addr-mode="picked"]  .cl-tz-hint { display: block; }
+  #sCreateLocation[data-addr-mode="manual"]  .cl-addr-search-link { display: inline-flex; }
+  #sCreateLocation[data-addr-mode="manual"]  .cl-addr-parsed { display: flex; }
+  #sCreateLocation[data-tz-derived="false"] .cl-tz-hint { display: none; }
+
   /* Camera issues screen */
   #sCamIssues { background: var(--surface); }
   .cd-issue-list { display: flex; flex-direction: column; }
@@ -1572,7 +1619,7 @@
           </div>
 
           <!-- ========== sCreateLocation: Create location — Details ========== -->
-          <div class="panel" id="sCreateLocation">
+          <div class="panel" id="sCreateLocation" data-addr-mode="empty" data-tz-derived="false">
             <div class="topbar">
               <div class="tb-left">
                 <button class="btn-icon" onclick="jumpToPanel('sDevices')" aria-label="Close">
@@ -1595,48 +1642,78 @@
                   <div class="input-field"><input type="text" id="clName"></div>
                 </div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clCountry">Country <span style="color:#dc2626;">*</span></label>
-                  <div class="input-field" style="cursor:pointer;">
-                    <input type="text" id="clCountry" placeholder="Search country" style="cursor:pointer;" readonly>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--text-default);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div class="cl-addr" id="clAddr">
+                  <div class="cl-addr-label-row">
+                    <span class="auth-label">Address <span style="color:#dc2626;">*</span></span>
+                    <button type="button" class="cl-mode-link cl-addr-search-link" onclick="clBackToSearch()">Search address instead</button>
                   </div>
-                </div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clState">State <span style="color:#dc2626;">*</span></label>
-                  <div class="input-field" style="cursor:pointer;">
-                    <input type="text" id="clState" placeholder="Search state" style="cursor:pointer;" readonly>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--text-default);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <div class="cl-addr-search">
+                    <div class="cl-search-input">
+                      <span class="cl-search-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                      <input type="text" id="clAddrSearch" placeholder="Search for an address" autocomplete="off" oninput="clOnAddrInput()" onfocus="clOnAddrFocus()" onblur="clOnAddrBlur()">
+                      <button type="button" class="cl-search-clear" onmousedown="event.preventDefault()" onclick="clClearAddress()" aria-label="Clear address">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="currentColor"/><path d="M4.5 4.5l5 5M9.5 4.5l-5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <div class="cl-addr-dropdown" id="clAddrDropdown"></div>
                   </div>
-                </div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clCity">City <span style="color:#dc2626;">*</span></label>
-                  <div class="input-field"><input type="text" id="clCity"></div>
-                </div>
+                  <div class="cl-addr-map">
+                    <img id="clAddrMapImg" src="https://staticmap.openstreetmap.de/staticmap.php?center=52.2297,21.0122&amp;zoom=14&amp;size=600x300&amp;maptype=mapnik" alt="Map">
+                    <div class="cl-addr-pin">
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 8.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+                    </div>
+                  </div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clStreet">Street address <span style="color:#dc2626;">*</span></label>
-                  <div class="input-field"><input type="text" id="clStreet"></div>
-                </div>
+                  <button type="button" class="cl-mode-link cl-addr-manual-link" onclick="clOpenManualMode()">Enter address manually</button>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clFloor">Floor, suite, etc.</label>
-                  <div class="input-field"><input type="text" id="clFloor"></div>
-                </div>
+                  <div class="cl-addr-parsed">
+                    <div class="auth-field">
+                      <label class="auth-label" for="clStreet">Street address <span style="color:#dc2626;">*</span></label>
+                      <div class="input-field"><input type="text" id="clStreet"></div>
+                    </div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clZip">Zip code</label>
-                  <div class="input-field"><input type="text" id="clZip" placeholder="00-000"></div>
+                    <div class="auth-field">
+                      <label class="auth-label" for="clFloor">Floor, suite, etc.</label>
+                      <div class="input-field"><input type="text" id="clFloor"></div>
+                    </div>
+
+                    <div class="auth-field">
+                      <label class="auth-label" for="clCity">City <span style="color:#dc2626;">*</span></label>
+                      <div class="input-field"><input type="text" id="clCity"></div>
+                    </div>
+
+                    <div class="auth-field">
+                      <label class="auth-label" for="clState">State <span style="color:#dc2626;">*</span></label>
+                      <div class="input-field" style="cursor:pointer;">
+                        <input type="text" id="clState" placeholder="Search state" style="cursor:pointer;" readonly>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--text-default);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                    </div>
+
+                    <div class="auth-field">
+                      <label class="auth-label" for="clZip">Zip code</label>
+                      <div class="input-field"><input type="text" id="clZip" placeholder="00-000"></div>
+                    </div>
+
+                    <div class="auth-field">
+                      <label class="auth-label" for="clCountry">Country <span style="color:#dc2626;">*</span></label>
+                      <div class="input-field" style="cursor:pointer;">
+                        <input type="text" id="clCountry" placeholder="Search country" style="cursor:pointer;" readonly>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--text-default);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="auth-field">
                   <label class="auth-label" for="clTimezone">Time Zone <span style="color:#dc2626;">*</span></label>
                   <div class="input-field" style="cursor:pointer;">
-                    <input type="text" id="clTimezone" value="Europe/Warsaw" style="cursor:pointer;" readonly>
+                    <input type="text" id="clTimezone" value="Europe/Warsaw" style="cursor:pointer;" readonly oninput="clOnTzEdit()">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--text-default);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </div>
+                  <div class="cl-tz-hint">Set from address</div>
                 </div>
 
                 <div class="auth-field">
@@ -4655,6 +4732,197 @@
     document.getElementById('cdLocDropdown').classList.remove('show');
     document.getElementById('sCamLocation').dataset.typing = 'false';
     input.focus();
+  }
+
+  // ===== Create location — address autofill =====
+  const CL_ADDR_SUGGESTIONS = [
+    {
+      key: 'warsaw_marszalkowska',
+      title: 'Marszałkowska 142',
+      sub: '00-061 Warsaw, Mazovia, Poland',
+      street: 'Marszałkowska 142',
+      floor: '',
+      city: 'Warsaw',
+      state: 'Mazovia',
+      zip: '00-061',
+      country: 'Poland',
+      tz: 'Europe/Warsaw',
+      lat: 52.2336,
+      lng: 21.0122
+    },
+    {
+      key: 'warsaw_chmielna',
+      title: 'Chmielna 73',
+      sub: '00-801 Warsaw, Mazovia, Poland',
+      street: 'Chmielna 73',
+      floor: '',
+      city: 'Warsaw',
+      state: 'Mazovia',
+      zip: '00-801',
+      country: 'Poland',
+      tz: 'Europe/Warsaw',
+      lat: 52.2289,
+      lng: 20.9985
+    },
+    {
+      key: 'krakow_florianska',
+      title: 'Floriańska 14',
+      sub: '31-019 Kraków, Lesser Poland, Poland',
+      street: 'Floriańska 14',
+      floor: '',
+      city: 'Kraków',
+      state: 'Lesser Poland',
+      zip: '31-019',
+      country: 'Poland',
+      tz: 'Europe/Warsaw',
+      lat: 50.0625,
+      lng: 19.9385
+    },
+    {
+      key: 'tlv_dizengoff',
+      title: 'Dizengoff St 50',
+      sub: '6433222 Tel Aviv-Yafo, Tel Aviv District, Israel',
+      street: 'Dizengoff St 50',
+      floor: '',
+      city: 'Tel Aviv-Yafo',
+      state: 'Tel Aviv District',
+      zip: '6433222',
+      country: 'Israel',
+      tz: 'Asia/Jerusalem',
+      lat: 32.0773,
+      lng: 34.7745
+    },
+    {
+      key: 'nyc_5thave',
+      title: '350 5th Ave',
+      sub: 'New York, NY 10118, United States',
+      street: '350 5th Ave',
+      floor: '',
+      city: 'New York',
+      state: 'New York',
+      zip: '10118',
+      country: 'United States',
+      tz: 'America/New_York',
+      lat: 40.7484,
+      lng: -73.9857
+    }
+  ];
+  let clAddrLastQuery = '';
+
+  function clSetAddrMode(mode) {
+    const panel = document.getElementById('sCreateLocation');
+    panel.dataset.addrMode = mode;
+  }
+  function clSyncSearchClear() {
+    const wrap = document.getElementById('clAddr');
+    const input = document.getElementById('clAddrSearch');
+    wrap.classList.toggle('has-value', input.value.length > 0);
+  }
+  function clOnAddrFocus() {
+    document.getElementById('mobileKeyboard').classList.add('show');
+  }
+  function clOnAddrBlur() {
+    setTimeout(() => {
+      const active = document.activeElement;
+      if (active && active.id === 'clAddrSearch') return;
+      document.getElementById('clAddrDropdown').classList.remove('show');
+      document.getElementById('mobileKeyboard').classList.remove('show');
+    }, 120);
+  }
+  function clOnAddrInput() {
+    const input = document.getElementById('clAddrSearch');
+    const dropdown = document.getElementById('clAddrDropdown');
+    const value = input.value.trim();
+    clAddrLastQuery = value;
+    clSyncSearchClear();
+    if (!value) {
+      dropdown.classList.remove('show');
+      dropdown.innerHTML = '';
+      return;
+    }
+    const lower = value.toLowerCase();
+    const matches = CL_ADDR_SUGGESTIONS.filter(s =>
+      (s.title + ' ' + s.sub).toLowerCase().includes(lower)
+    ).slice(0, 5);
+    let html = matches.map(s => {
+      const titleHtml = _clHighlight(s.title, lower);
+      const subHtml = _clHighlight(s.sub, lower);
+      return `<div class="cl-addr-item" onmousedown="event.preventDefault()" onclick="clPickAddress('${s.key}')">
+        <span class="cl-addr-item-ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 016 6c0 4.5-6 10-6 10S4 12.5 4 8a6 6 0 016-6z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        <div class="cl-addr-item-body">
+          <span class="cl-addr-item-title">${titleHtml}</span>
+          <span class="cl-addr-item-sub">${subHtml}</span>
+        </div>
+      </div>`;
+    }).join('');
+    if (!matches.length) {
+      html = `<div class="cl-addr-item">
+        <span class="cl-addr-item-ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        <div class="cl-addr-item-body">
+          <span class="cl-addr-item-title">No matches found</span>
+          <span class="cl-addr-item-sub">Try a different address or enter it manually.</span>
+        </div>
+      </div>`;
+    }
+    html += `<div class="cl-addr-item" onmousedown="event.preventDefault()" onclick="clOpenManualMode()">
+      <span class="cl-addr-item-ico" style="color:var(--primary);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+      <div class="cl-addr-item-body">
+        <span class="cl-addr-item-title cl-addr-item-manual">Enter address manually</span>
+      </div>
+    </div>`;
+    dropdown.innerHTML = html;
+    dropdown.classList.add('show');
+  }
+  function _clHighlight(text, lower) {
+    const idx = text.toLowerCase().indexOf(lower);
+    if (idx < 0) return _escHtml(text);
+    return _escHtml(text.substring(0, idx)) +
+      '<strong>' + _escHtml(text.substring(idx, idx + lower.length)) + '</strong>' +
+      _escHtml(text.substring(idx + lower.length));
+  }
+  function clPickAddress(key) {
+    const place = CL_ADDR_SUGGESTIONS.find(s => s.key === key);
+    if (!place) return;
+    document.getElementById('clAddrSearch').value = place.title + ', ' + place.sub;
+    document.getElementById('clStreet').value = place.street;
+    document.getElementById('clFloor').value = place.floor || '';
+    document.getElementById('clCity').value = place.city;
+    document.getElementById('clState').value = place.state;
+    document.getElementById('clZip').value = place.zip;
+    document.getElementById('clCountry').value = place.country;
+    document.getElementById('clTimezone').value = place.tz;
+    document.getElementById('clAddrMapImg').src =
+      'https://staticmap.openstreetmap.de/staticmap.php?center=' + place.lat + ',' + place.lng +
+      '&zoom=15&size=600x300&maptype=mapnik';
+    const panel = document.getElementById('sCreateLocation');
+    panel.dataset.tzDerived = 'true';
+    document.getElementById('clAddrDropdown').classList.remove('show');
+    document.getElementById('mobileKeyboard').classList.remove('show');
+    clSyncSearchClear();
+    clSetAddrMode('picked');
+  }
+  function clClearAddress() {
+    const input = document.getElementById('clAddrSearch');
+    input.value = '';
+    document.getElementById('clAddrDropdown').classList.remove('show');
+    clSyncSearchClear();
+    clSetAddrMode('empty');
+    input.focus();
+  }
+  function clOpenManualMode() {
+    document.getElementById('clAddrSearch').value = '';
+    document.getElementById('clAddrDropdown').classList.remove('show');
+    document.getElementById('mobileKeyboard').classList.remove('show');
+    clSyncSearchClear();
+    clSetAddrMode('manual');
+  }
+  function clBackToSearch() {
+    clSetAddrMode('empty');
+    setTimeout(() => document.getElementById('clAddrSearch').focus(), 50);
+  }
+  function clOnTzEdit() {
+    const panel = document.getElementById('sCreateLocation');
+    panel.dataset.tzDerived = 'false';
   }
 
   // ===== Core screen =====
