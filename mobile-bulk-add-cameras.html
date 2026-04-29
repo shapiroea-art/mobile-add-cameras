@@ -149,12 +149,12 @@
   .screens > .panel.exit-left { transform: translateX(-12px); }
 
   /* Topbar */
-  .topbar { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
-  .topbar .tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
-  .btn-icon { display: grid; place-items: center; padding: 16px; border-radius: var(--r); cursor: pointer; color: var(--color-text-bold); background: none; border: none; }
-  .btn-icon:hover { background: var(--color-elevation-surface-subtle); }
-  .topbar .tb-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--color-text-bold); letter-spacing: -0.005em; padding-right: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .topbar .tb-right { display: flex; align-items: center; justify-content: center; padding: 4px 8px 4px 0; }
+  .top-bar { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
+  .top-bar .tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+  .button-icon { display: grid; place-items: center; padding: 16px; border-radius: var(--r); cursor: pointer; color: var(--color-text-bold); background: none; border: none; }
+  .button-icon:hover { background: var(--color-elevation-surface-subtle); }
+  .top-bar .tb-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--color-text-bold); letter-spacing: -0.005em; padding-right: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .top-bar .tb-right { display: flex; align-items: center; justify-content: center; padding: 4px 8px 4px 0; }
 
   /* Stepper */
   .stepper { background: var(--color-elevation-surface-default); padding: 8px 16px 16px; flex: 0 0 auto; border-bottom: 1px solid var(--color-border-default); }
@@ -171,21 +171,21 @@
   .content::-webkit-scrollbar { width: 0; }
 
   /* Action bar */
-  .action-bar { background: var(--color-elevation-surface-default); border-top: 1px solid var(--color-border-default); padding: 12px 16px; display: flex; gap: 8px; flex: 0 0 auto; }
+  .bottom-action-bar { background: var(--color-elevation-surface-default); border-top: 1px solid var(--color-border-default); padding: 12px 16px; display: flex; gap: 8px; flex: 0 0 auto; }
 
   /* Buttons */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: var(--r); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; padding: 12px 20px; cursor: pointer; transition: background .12s ease, border-color .12s ease, transform .08s ease; }
-  .btn:active { transform: translateY(1px); }
-  .btn-primary { background: var(--color-background-button-primary-default); color: var(--color-text-inverse); border-color: var(--color-border-button-primary-default); }
-  .btn-primary:hover { background: var(--color-background-button-primary-hover); }
-  .btn-primary.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
-  .btn-secondary { background: var(--color-elevation-surface-default); color: var(--color-text-defsult); border-color: var(--color-border-input-default); }
-  .btn-secondary:hover { background: var(--color-elevation-surface-subtle); }
-  .btn-danger { background: var(--color-background-accent-red-default); color: var(--color-text-inverse); border-color: var(--color-background-accent-red-default); }
-  .btn-danger:hover { background: #D92D20; }
-  .btn-full { flex: 1; }
-  .btn-compact { height: 40px; flex: 0 0 auto; width: 100%; padding: 8px 16px; font-size: 14px; line-height: 24px; }
-  .btn-ghost { background: transparent; color: var(--color-background-button-primary-default); font-weight: 500; padding: 8px 10px; font-size: 14px; border: none; }
+  .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: var(--r); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; padding: 12px 20px; cursor: pointer; transition: background .12s ease, border-color .12s ease, transform .08s ease; }
+  .button:active { transform: translateY(1px); }
+  .button-primary { background: var(--color-background-button-primary-default); color: var(--color-text-inverse); border-color: var(--color-border-button-primary-default); }
+  .button-primary:hover { background: var(--color-background-button-primary-hover); }
+  .button-primary.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
+  .button-default { background: var(--color-elevation-surface-default); color: var(--color-text-defsult); border-color: var(--color-border-input-default); }
+  .button-default:hover { background: var(--color-elevation-surface-subtle); }
+  .button-caution { background: var(--color-background-accent-red-default); color: var(--color-text-inverse); border-color: var(--color-background-accent-red-default); }
+  .button-caution:hover { background: #D92D20; }
+  .button-full { flex: 1; }
+  .button-md { height: 40px; flex: 0 0 auto; width: 100%; padding: 8px 16px; font-size: 14px; line-height: 24px; }
+  .button-tertiary-color { background: transparent; color: var(--color-background-button-primary-default); font-weight: 500; padding: 8px 10px; font-size: 14px; border: none; }
 
   /* Input */
   .input-wrap { display: flex; flex-direction: column; gap: 8px; }
@@ -344,21 +344,21 @@
   .card-delete { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; display: none; align-items: center; justify-content: center; color: var(--color-text-subtle); background: none; border: none; border-radius: var(--r); cursor: pointer; }
   .card-delete:hover { color: var(--color-background-accent-red-default); background: var(--color-elevation-surface-subtle); }
   #s3CredsList.multi .card-delete { display: inline-flex; }
-  .auth-field { display: flex; flex-direction: column; gap: 8px; }
-  .auth-field-narrow { width: 100px; flex: 0 0 100px; }
-  .auth-label { font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
-  .auth-label-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .auth-label-row .auth-label { flex: 1; }
+  .input-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .input-wrap-narrow { width: 100px; flex: 0 0 100px; }
+  .input-label { font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
+  .input-label-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .input-label-row .input-label { flex: 1; }
   .auth-eye { color: var(--color-text-defsult); padding: 0; display: flex; align-items: center; }
   .auth-info { color: var(--color-text-subtle); display: block; }
   .more-creds { display: flex; flex-direction: column; gap: 24px; }
   .more-creds[hidden] { display: none; }
   .row-split { display: flex; gap: 8px; align-items: flex-end; }
   .tcp-stack { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
-  .tcp-stack .auth-label { text-align: center; width: 100%; }
+  .tcp-stack .input-label { text-align: center; width: 100%; }
   .tcp-check-wrap { display: flex; align-items: center; justify-content: center; padding: 14px; height: 48px; }
-  .link-btn { display: inline-flex; gap: 8px; align-items: center; padding: 12px 0; font-size: 16px; font-weight: 500; color: var(--color-border-button-primary-default); align-self: flex-start; background: none; border: none; cursor: pointer; }
-  .link-btn:hover { color: var(--color-background-button-primary-default); }
+  .link-button { display: inline-flex; gap: 8px; align-items: center; padding: 12px 0; font-size: 16px; font-weight: 500; color: var(--color-border-button-primary-default); align-self: flex-start; background: none; border: none; cursor: pointer; }
+  .link-button:hover { color: var(--color-background-button-primary-default); }
 
   /* Config rows */
   .cfg { background: var(--color-elevation-surface-default); border: 1px solid var(--color-border-default); border-radius: var(--r); overflow: hidden; }
@@ -375,10 +375,10 @@
   .expanded-body .row .v { color: var(--color-text-defsult); line-height: 1.5; }
   .expanded-body .row .v code { font-size: 12px; color: var(--color-background-accent-amber-default); background: var(--color-background-accent-amber-subtle); padding: 1px 5px; border-radius: var(--r); font-family: var(--sans); font-weight: 500; }
 
-  .retry-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--color-background-accent-amber-default); padding: 6px 10px; border: 1px solid var(--color-background-accent-amber-default); border-radius: var(--r); background: var(--color-elevation-surface-default); cursor: pointer; font-weight: 500; white-space: nowrap; }
-  .retry-btn:hover { background: var(--color-background-accent-amber-subtle); }
-  .retry-btn.err { color: var(--color-background-accent-red-default); border-color: var(--color-background-accent-red-default); }
-  .retry-btn.err:hover { background: var(--color-background-accent-red-subtle); }
+  .retry-button { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--color-background-accent-amber-default); padding: 6px 10px; border: 1px solid var(--color-background-accent-amber-default); border-radius: var(--r); background: var(--color-elevation-surface-default); cursor: pointer; font-weight: 500; white-space: nowrap; }
+  .retry-button:hover { background: var(--color-background-accent-amber-subtle); }
+  .retry-button.err { color: var(--color-background-accent-red-default); border-color: var(--color-background-accent-red-default); }
+  .retry-button.err:hover { background: var(--color-background-accent-red-subtle); }
 
   /* Summary card (review) */
   .summary { background: var(--color-background-accent-primary-subtlest); border: 1px solid var(--color-background-button-primary-default); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 14px; }
@@ -447,10 +447,10 @@
   .search-input:focus-within { border-color: var(--color-background-button-primary-default); }
   .search-input input { flex: 1; border: none; outline: none; background: transparent; font: 400 16px/24px var(--sans); color: var(--color-text-defsult); min-width: 0; }
   .search-input input::placeholder { color: var(--color-text-subtlest); }
-  .filter-btn { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--color-border-input-default); border-radius: 8px; background: var(--color-elevation-surface-default); cursor: pointer; color: var(--color-text-defsult); position: relative; flex: 0 0 auto; transition: border-color .12s ease, color .12s ease; }
-  .filter-btn:hover { border-color: var(--color-text-subtlest); }
-  .filter-btn.has-filters { border-color: var(--color-background-button-primary-default); color: var(--color-background-button-primary-default); }
-  .filter-btn.has-filters::after { content: ''; position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: var(--color-background-button-primary-default); border: 2px solid var(--color-elevation-surface-default); border-radius: 50%; }
+  .filter-button { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--color-border-input-default); border-radius: 8px; background: var(--color-elevation-surface-default); cursor: pointer; color: var(--color-text-defsult); position: relative; flex: 0 0 auto; transition: border-color .12s ease, color .12s ease; }
+  .filter-button:hover { border-color: var(--color-text-subtlest); }
+  .filter-button.has-filters { border-color: var(--color-background-button-primary-default); color: var(--color-background-button-primary-default); }
+  .filter-button.has-filters::after { content: ''; position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: var(--color-background-button-primary-default); border: 2px solid var(--color-elevation-surface-default); border-radius: 50%; }
 
   /* Table header */
   .table-header { display: flex; align-items: center; background: var(--color-elevation-surface-subtle); border-bottom: 1px solid var(--color-border-default); height: 44px; flex: 0 0 auto; padding-right: 8px; }
@@ -462,8 +462,8 @@
   .th-col.sortable:hover { color: var(--color-text-defsult); }
   .th-col.sortable .sort-arrow { display: inline-flex; color: var(--color-text-subtlest); }
   .th-col.sortable.active .sort-arrow { color: var(--color-text-defsult); }
-  .expand-all-btn { display: inline-flex; gap: 8px; align-items: center; padding: 8px 16px; border-radius: var(--r); color: var(--color-text-defsult); font-family: var(--sans); font-size: 12px; font-weight: 500; line-height: 20px; background: transparent; border: none; flex: 0 0 auto; cursor: pointer; transition: background .12s ease; }
-  .expand-all-btn:hover { background: var(--color-background-accent-gray200-default); }
+  .expand-all-button { display: inline-flex; gap: 8px; align-items: center; padding: 8px 16px; border-radius: var(--r); color: var(--color-text-defsult); font-family: var(--sans); font-size: 12px; font-weight: 500; line-height: 20px; background: transparent; border: none; flex: 0 0 auto; cursor: pointer; transition: background .12s ease; }
+  .expand-all-button:hover { background: var(--color-background-accent-gray200-default); }
 
   /* Camera list (Figma 5:100370) — all rows white per user */
   .cam-list-fig { display: flex; flex-direction: column; background: var(--color-elevation-surface-default); }
@@ -483,9 +483,9 @@
   .cam-conn-dot.limited { background: var(--color-background-accent-red-default); }
 
   /* Chevron-in-circle (subtle grey) */
-  .chev-btn { width: 32px; height: 32px; border: none; background: transparent; display: grid; place-items: center; cursor: pointer; color: var(--color-text-subtlest); transition: transform .25s ease, color .12s ease; flex: 0 0 auto; margin-left: 8px; padding: 0; }
-  .chev-btn:hover { color: var(--color-text-defsult); }
-  .cam-row-fig.expanded .chev-btn { transform: rotate(180deg); }
+  .chev-button { width: 32px; height: 32px; border: none; background: transparent; display: grid; place-items: center; cursor: pointer; color: var(--color-text-subtlest); transition: transform .25s ease, color .12s ease; flex: 0 0 auto; margin-left: 8px; padding: 0; }
+  .chev-button:hover { color: var(--color-text-defsult); }
+  .cam-row-fig.expanded .chev-button { transform: rotate(180deg); }
 
   /* Expanded details — subtle grey background */
   .cam-details { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
@@ -595,8 +595,8 @@
   .conf-details { background: var(--color-background-accent-gray200-default); border-top: 1px solid var(--color-border-default); padding: 12px 8px 36px; display: none; flex-direction: column; gap: 16px; }
   .conf-row.expanded .conf-details { display: flex; }
   .conf-hint { padding: 0 8px; font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
-  .edit-cam-btn { align-self: stretch; display: inline-flex; gap: 8px; align-items: center; justify-content: center; padding: 8px 16px; height: 40px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-text-defsult); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
-  .edit-cam-btn:hover { background: var(--color-elevation-surface-subtle); }
+  .edit-cam-button { align-self: stretch; display: inline-flex; gap: 8px; align-items: center; justify-content: center; padding: 8px 16px; height: 40px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-text-defsult); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .edit-cam-button:hover { background: var(--color-elevation-surface-subtle); }
   .opt-list { display: flex; flex-direction: column; gap: 2px; }
   .opt-row { display: flex; align-items: center; gap: 8px; min-height: 32px; }
   .opt-row .opt-label { flex: 1; display: inline-flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
@@ -658,11 +658,11 @@
   .type-radio-opt .tr-name { flex: 1; min-width: 0; }
 
   /* ===== S5 Added (location page) ===== */
-  .s5-topbar { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
-  .s5-topbar .s5-tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
-  .s5-topbar .s5-title { font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .s5-top-bar { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
+  .s5-top-bar .s5-tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+  .s5-top-bar .s5-title { font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .s5-filters { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
-  .s5-filters .btn-icon[aria-label="Search"].used { background: var(--color-elevation-surface-subtle); border-radius: 16px; color: var(--color-background-button-primary-default); }
+  .s5-filters .button-icon[aria-label="Search"].used { background: var(--color-elevation-surface-subtle); border-radius: 16px; color: var(--color-background-button-primary-default); }
   .s5-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border: 1px solid var(--color-border-input-default); border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--color-text-defsult); background: var(--color-elevation-surface-default); cursor: pointer; line-height: 24px; font-family: var(--sans); }
   .s5-chip .s5-chip-count { display: none; }
   .s5-chip.selected { border-color: var(--color-border-button-primary-default); color: var(--color-border-button-primary-default); }
@@ -670,7 +670,7 @@
   .s5-chip.selected .s5-chip-count { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px; background: #F4F6FE; color: var(--color-border-button-primary-default); font-size: 10px; font-weight: 500; line-height: 16px; border-radius: 400px; }
   .s5-search-row { background: var(--color-elevation-surface-default); display: none; align-items: center; padding: 6px 16px; flex: 0 0 auto; }
   .panel.search-on .s5-search-row { display: flex; }
-  .panel.search-on .s5-filters > .btn-icon[aria-label="Search"] { display: none; }
+  .panel.search-on .s5-filters > .button-icon[aria-label="Search"] { display: none; }
   .panel.search-on .s5-filters { padding: 6px 16px 12px; border-bottom: 1px solid var(--color-border-default); }
   .s5-search-pill { flex: 1; min-width: 0; height: 44px; background: var(--color-background-accent-gray200-default); border-radius: 16px; display: flex; align-items: center; }
   .s5-search-pill .s5-search-icon { padding: 10px; display: inline-flex; color: var(--color-text-subtle); flex: 0 0 auto; }
@@ -698,7 +698,7 @@
   .tag-chip.selected { border-color: var(--color-border-button-primary-default); color: var(--color-border-button-primary-default); }
   .tag-chip.selected .tc-icon { color: var(--color-border-button-primary-default); }
   .tags-sheet .ts-foot { border-top: 1px solid var(--color-border-default); padding: 12px 16px; display: flex; gap: 8px; }
-  .tags-sheet .ts-foot .btn { flex: 1; }
+  .tags-sheet .ts-foot .button { flex: 1; }
   /* Status filter sheet (shares ts-handle/ts-title/ts-foot patterns) */
   .status-sheet { padding: 0; }
   .status-sheet .ts-handle { padding: 10px 0; display: flex; justify-content: center; }
@@ -706,7 +706,7 @@
   .status-sheet .ts-title { padding: 16px; font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; }
   .status-sheet .ts-list { display: flex; flex-direction: column; padding: 8px 0 16px; }
   .status-sheet .ts-foot { border-top: 1px solid var(--color-border-default); padding: 12px 16px; display: flex; gap: 8px; }
-  .status-sheet .ts-foot .btn { flex: 1; }
+  .status-sheet .ts-foot .button { flex: 1; }
   .cb-row { display: flex; gap: 4px; height: 48px; align-items: center; padding-right: 16px; cursor: pointer; }
   .cb-box { padding: 14px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
   .cb-square { width: 20px; height: 20px; border: 1px solid var(--color-border-input-default); background: var(--color-elevation-surface-default); border-radius: 4px; display: flex; align-items: center; justify-content: center; }
@@ -721,7 +721,7 @@
   .type-sheet .ts-title { padding: 16px; font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; }
   .type-sheet .ts-list { display: flex; flex-direction: column; padding: 8px 0 16px; }
   .type-sheet .ts-foot { border-top: 1px solid var(--color-border-default); padding: 12px 16px; display: flex; gap: 8px; }
-  .type-sheet .ts-foot .btn { flex: 1; }
+  .type-sheet .ts-foot .button { flex: 1; }
   .type-sheet .cb-divider { padding: 8px 16px; }
   .type-sheet .cb-divider hr { border: none; border-top: 1px solid var(--color-border-default); margin: 0; }
   .type-sheet .cb-row .cb-icon { display: inline-flex; flex: 0 0 auto; color: var(--color-text-defsult); }
@@ -735,7 +735,7 @@
   .addsub-sheet .ts-title { padding: 16px; font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; }
   .addsub-sheet .ts-body { display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 24px; }
   .addsub-sheet .ts-foot { border-top: 1px solid var(--color-border-default); padding: 12px 16px; display: flex; gap: 8px; }
-  .addsub-sheet .ts-foot .btn { flex: 1; }
+  .addsub-sheet .ts-foot .button { flex: 1; }
   .addsub-sheet textarea { width: 100%; height: 124px; resize: none; padding: 8px 16px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-text-defsult); font-family: var(--sans); font-size: 16px; line-height: 24px; outline: none; box-sizing: border-box; }
   .addsub-sheet textarea:focus { border-color: var(--color-background-button-primary-default); }
   .addsub-sheet textarea::placeholder { color: var(--color-text-subtlest); }
@@ -761,7 +761,7 @@
   .manage-tags-sheet .ts-handle::after { content:''; width: 44px; height: 6px; background: var(--color-text-subtlest); border-radius: 100px; }
   .manage-tags-sheet .ts-title { padding: 16px; font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; }
   .manage-tags-sheet .ts-foot { border-top: 1px solid var(--color-border-default); padding: 12px 16px; display: flex; gap: 8px; }
-  .manage-tags-sheet .ts-foot .btn { flex: 1; }
+  .manage-tags-sheet .ts-foot .button { flex: 1; }
   .manage-tags-list { display: flex; flex-direction: column; padding: 8px 8px 16px; max-height: 420px; overflow-y: auto; }
   .mt-row { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 4px; }
   .mt-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; border: none; cursor: pointer; flex: 0 0 auto; }
@@ -785,11 +785,11 @@
   .s5-dev-row { display: flex; align-items: center; gap: 12px; padding: 4px 16px; border-bottom: 1px solid var(--color-border-default); background: var(--color-elevation-surface-default); cursor: pointer; }
   /* Camera detail screen */
   #sCamera { background: var(--color-elevation-surface-default); }
-  .cam-topbar { background: var(--color-elevation-surface-default); display: flex; align-items: center; padding: 4px 4px 4px 0; flex: 0 0 auto; }
-  .cam-topbar .btn-icon { padding: 16px; }
-  .cam-topbar .btn-icon.btn-edit { padding: 14px; color: var(--color-text-subtle); }
-  .cam-topbar .btn-icon.btn-edit:hover { color: var(--color-text-defsult); }
-  .cam-topbar .cam-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--color-text-bold); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cam-top-bar { background: var(--color-elevation-surface-default); display: flex; align-items: center; padding: 4px 4px 4px 0; flex: 0 0 auto; }
+  .cam-top-bar .button-icon { padding: 16px; }
+  .cam-top-bar .button-icon.button-edit { padding: 14px; color: var(--color-text-subtle); }
+  .cam-top-bar .button-icon.button-edit:hover { color: var(--color-text-defsult); }
+  .cam-top-bar .cam-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--color-text-bold); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cam-tabs { padding: 0 8px 0; flex: 0 0 auto; }
   .cam-tabs-group { display: flex; padding: 2px; background: var(--color-background-accent-gray200-default); border-radius: var(--r); gap: 2px; }
   .cam-tabs-group .seg-opt { flex: 1; height: 32px; padding: 0 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--color-text-subtle); background: none; border: none; cursor: pointer; border-radius: 3px; font-family: var(--sans); line-height: 24px; }
@@ -832,8 +832,8 @@
   .cs-info-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
   .cs-info-label { font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
   .cs-info-value { font-size: 16px; font-weight: 400; color: var(--color-text-defsult); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .cs-copy-btn { padding: 10px; color: var(--color-text-subtle); background: none; border: none; border-radius: var(--r); cursor: pointer; display: inline-flex; flex: 0 0 auto; }
-  .cs-copy-btn:hover { background: var(--color-elevation-surface-subtle); color: var(--color-text-defsult); }
+  .cs-copy-button { padding: 10px; color: var(--color-text-subtle); background: none; border: none; border-radius: var(--r); cursor: pointer; display: inline-flex; flex: 0 0 auto; }
+  .cs-copy-button:hover { background: var(--color-elevation-surface-subtle); color: var(--color-text-defsult); }
 
   /* Camera details (Edit/Info tabs) */
   #sCamDetails { background: var(--color-elevation-surface-default); }
@@ -866,16 +866,16 @@
   .cd-input-copy input::placeholder { color: var(--color-text-subtlest); }
   .cd-input-copy .cd-copy-suffix { display: inline-flex; align-items: center; padding: 0 16px; background: #FCFCFD; border: none; border-left: 1px solid var(--color-border-input-default); color: var(--color-text-subtle); cursor: pointer; }
   .cd-input-copy .cd-copy-suffix:hover { color: var(--color-text-defsult); }
-  .cd-textarea { width: 100%; height: 124px; padding: 8px 16px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--color-text-defsult); resize: none; box-sizing: border-box; outline: none; }
-  .cd-textarea:focus { border-color: var(--color-background-button-primary-default); }
+  .textarea { width: 100%; height: 124px; padding: 8px 16px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--color-text-defsult); resize: none; box-sizing: border-box; outline: none; }
+  .textarea:focus { border-color: var(--color-background-button-primary-default); }
   .cd-divider { height: 1px; background: var(--color-border-default); margin: 0; }
-  .cd-delete-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid #DC2626; border-radius: var(--r); background: var(--color-elevation-surface-default); color: #DC2626; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
-  .cd-delete-btn:hover { background: #FEF2F2; }
+  .cd-delete-button { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid #DC2626; border-radius: var(--r); background: var(--color-elevation-surface-default); color: #DC2626; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .cd-delete-button:hover { background: #FEF2F2; }
   .cd-label-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .cd-link-action { display: inline-flex; align-items: center; gap: 8px; background: none; border: none; padding: 0; color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
   .cd-link-action:hover { color: var(--color-background-button-primary-default); }
-  .cd-test-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--color-border-button-primary-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
-  .cd-test-btn:hover { background: var(--color-background-accent-primary-subtlest); }
+  .cd-test-button { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--color-border-button-primary-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .cd-test-button:hover { background: var(--color-background-accent-primary-subtlest); }
   .cd-stream-preview { border: 1px dashed var(--color-border-default); border-radius: var(--r); height: 200px; background: var(--color-elevation-surface-subtle); display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--color-text-defsult); font-size: 14px; font-weight: 500; line-height: 24px; }
   .cd-stream-preview .cd-stream-ico { display: inline-flex; }
   .cd-stream-preview-image { display: none; height: 200px; width: 100%; border: 1px solid var(--color-border-default); border-radius: var(--r); overflow: hidden; }
@@ -942,8 +942,8 @@
   #sCoreNetwork[data-tab="testing"] .cn-action-form { display: none; }
   #sCoreNetwork[data-tab="testing"] .cn-action-testing { display: flex; }
   .cn-action-testing { display: none; }
-  .cn-test-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--color-border-button-primary-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; flex: 0 0 auto; }
-  .cn-test-btn:hover { background: var(--color-background-accent-primary-subtlest); }
+  .cn-test-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--color-border-button-primary-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; flex: 0 0 auto; }
+  .cn-test-button:hover { background: var(--color-background-accent-primary-subtlest); }
   .cn-test-output { flex: 1; min-height: 0; background: var(--color-background-accent-gray200-default); border: 1px solid var(--color-border-input-default); border-radius: var(--r); padding: 8px 16px; overflow-y: auto; font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--color-text-defsult); white-space: pre-wrap; word-wrap: break-word; }
   .cn-test-output::-webkit-scrollbar { width: 0; }
   .cn-section-title { font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; padding-top: 20px; margin: 0; }
@@ -957,8 +957,8 @@
   .cs-info-label-row .cs-info-link { background: none; border: none; padding: 0; color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; flex: 0 0 auto; }
   .cs-info-label-row .cs-info-link:hover { color: var(--color-background-button-primary-default); text-decoration: underline; }
   .cs-info-value-subtle { color: var(--color-text-subtle); }
-  .core-restart-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--color-border-button-primary-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; }
-  .core-restart-btn:hover { background: var(--color-background-accent-primary-subtlest); }
+  .core-restart-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--color-border-button-primary-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; }
+  .core-restart-button:hover { background: var(--color-background-accent-primary-subtlest); }
 
   /* Camera location screen */
   #sCamLocation { background: var(--color-elevation-surface-default); }
@@ -979,7 +979,7 @@
   /* Create location — address block (Amazon-style search + parsed fields) */
   .cl-addr { display: flex; flex-direction: column; gap: 8px; position: relative; }
   .cl-addr-label-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .cl-addr-label-row .auth-label { flex: 1; }
+  .cl-addr-label-row .input-label { flex: 1; }
   .cl-mode-link { background: none; border: none; padding: 0; color: var(--color-background-button-primary-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
   .cl-mode-link:hover { text-decoration: underline; }
   .cl-addr-search { flex-direction: column; gap: 8px; }
@@ -1014,7 +1014,7 @@
   #sCreateLocation[data-addr-mode="manual"]  .cl-addr-search-link { display: inline-flex; }
   #sCreateLocation[data-addr-mode="manual"]  .cl-addr-parsed { display: flex; }
   #sCreateLocation[data-tz-derived="false"] .cl-tz-hint { display: none; }
-  #sCreateLocation[data-typing="true"] .cd-pane > .auth-field,
+  #sCreateLocation[data-typing="true"] .cd-pane > .input-wrap,
   #sCreateLocation[data-typing="true"] .cd-pane > .cd-divider,
   #sCreateLocation[data-typing="true"] .cl-addr-map,
   #sCreateLocation[data-typing="true"] .cl-addr-manual-link,
@@ -1065,9 +1065,9 @@
   .core-card .cc-id-section { display: flex; flex-direction: column; gap: 8px; }
   .core-card .input-field.locked { background: var(--color-elevation-surface-subtle); border-color: var(--color-border-default); }
   .core-card .input-field input:disabled { color: var(--color-text-defsult); -webkit-text-fill-color: var(--color-text-defsult); cursor: default; }
-  .core-card .auth-field.locked .auth-label { color: var(--color-text-subtle); }
-  .core-card .cc-primary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 16px; border-radius: var(--r); border: 1px solid var(--color-border-button-primary-default); background: var(--color-background-button-primary-default); color: var(--color-text-inverse); font-size: 16px; font-weight: 500; cursor: pointer; }
-  .core-card .cc-primary-btn:hover { background: var(--color-background-button-primary-hover); }
+  .core-card .input-wrap.locked .input-label { color: var(--color-text-subtle); }
+  .core-card .cc-primary-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 16px; border-radius: var(--r); border: 1px solid var(--color-border-button-primary-default); background: var(--color-background-button-primary-default); color: var(--color-text-inverse); font-size: 16px; font-weight: 500; cursor: pointer; }
+  .core-card .cc-primary-button:hover { background: var(--color-background-button-primary-hover); }
   .core-card .cc-secondary-link { display: inline-flex; align-items: center; justify-content: center; padding: 8px 0; font-size: 14px; font-weight: 500; color: var(--color-border-button-primary-default); background: none; border: none; cursor: pointer; align-self: center; }
   .core-card .cc-secondary-link:hover { color: var(--color-background-button-primary-default); text-decoration: underline; }
   .core-card .cc-manual-row { display: flex; gap: 8px; }
@@ -1123,8 +1123,8 @@
   .undo-toast { position: absolute; left: 16px; right: 16px; bottom: 118px; background: var(--color-text-bold); color: var(--color-text-inverse); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: var(--shadow-2xl); font-size: 14px; line-height: 20px; z-index: 15; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .18s ease, transform .18s ease; }
   .undo-toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
   .undo-toast .ut-label { flex: 1; min-width: 0; }
-  .undo-toast .ut-btn { background: none; border: none; color: #A5B4FC; font-weight: 500; cursor: pointer; padding: 0; font-size: 14px; line-height: 20px; flex: 0 0 auto; }
-  .undo-toast .ut-btn:hover { text-decoration: underline; color: var(--color-text-inverse); }
+  .undo-toast .ut-button { background: none; border: none; color: #A5B4FC; font-weight: 500; cursor: pointer; padding: 0; font-size: 14px; line-height: 20px; flex: 0 0 auto; }
+  .undo-toast .ut-button:hover { text-decoration: underline; color: var(--color-text-inverse); }
 
   /* Copy toast */
   .copy-toast { position: absolute; left: 16px; right: 16px; bottom: 24px; background: var(--color-text-bold); color: var(--color-text-inverse); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); font-size: 14px; line-height: 20px; z-index: 30; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .18s ease, transform .18s ease; }
@@ -1281,8 +1281,8 @@
               <div class="ts-title">Tags</div>
               <div class="ts-chips" id="tagsFilterChips"></div>
               <div class="ts-foot">
-                <button class="btn btn-secondary" onclick="clearTagFilters()">Clear All</button>
-                <button class="btn btn-primary" onclick="applyTagFilters()">Apply Filters</button>
+                <button class="button button-default" onclick="clearTagFilters()">Clear All</button>
+                <button class="button button-primary" onclick="applyTagFilters()">Apply Filters</button>
               </div>
             </div>
           </div>
@@ -1315,8 +1315,8 @@
                 </div>
               </div>
               <div class="ts-foot">
-                <button class="btn btn-secondary" onclick="clearStatusFilters()">Clear All</button>
-                <button class="btn btn-primary" onclick="applyStatusFilters()">Apply Filters</button>
+                <button class="button button-default" onclick="clearStatusFilters()">Clear All</button>
+                <button class="button button-primary" onclick="applyStatusFilters()">Apply Filters</button>
               </div>
             </div>
           </div>
@@ -1383,8 +1383,8 @@
                 </div>
               </div>
               <div class="ts-foot">
-                <button class="btn btn-secondary" onclick="clearTypeFilters()">Clear All</button>
-                <button class="btn btn-primary" onclick="applyTypeFilters()">Apply Filters</button>
+                <button class="button button-default" onclick="clearTypeFilters()">Clear All</button>
+                <button class="button button-primary" onclick="applyTypeFilters()">Apply Filters</button>
               </div>
             </div>
           </div>
@@ -1395,21 +1395,21 @@
               <div class="ts-handle"></div>
               <div class="ts-title">Add sublocation</div>
               <div class="ts-body">
-                <div class="auth-field">
-                  <label class="auth-label" for="addSubName">Name</label>
+                <div class="input-wrap">
+                  <label class="input-label" for="addSubName">Name</label>
                   <div class="input-field"><input type="text" id="addSubName"></div>
                 </div>
-                <div class="auth-field">
-                  <label class="auth-label" for="addSubNotes">Notes</label>
+                <div class="input-wrap">
+                  <label class="input-label" for="addSubNotes">Notes</label>
                   <textarea id="addSubNotes"></textarea>
                 </div>
-                <div class="auth-field">
-                  <label class="auth-label">Tags</label>
+                <div class="input-wrap">
+                  <label class="input-label">Tags</label>
                   <div class="sub-tags-field" id="subTagsField"></div>
                 </div>
               </div>
               <div class="ts-foot">
-                <button class="btn btn-primary" onclick="submitAddSublocation()">Add</button>
+                <button class="button button-primary" onclick="submitAddSublocation()">Add</button>
               </div>
             </div>
           </div>
@@ -1421,8 +1421,8 @@
               <div class="ts-title">Tags</div>
               <div class="ts-chips" id="tagPickerChips"></div>
               <div class="ts-foot">
-                <button class="btn btn-secondary" onclick="openManageTagsSheet()">Manage tags</button>
-                <button class="btn btn-primary" onclick="commitTagPicker()">Done</button>
+                <button class="button button-default" onclick="openManageTagsSheet()">Manage tags</button>
+                <button class="button button-primary" onclick="commitTagPicker()">Done</button>
               </div>
             </div>
           </div>
@@ -1433,18 +1433,18 @@
               <div class="ts-handle"></div>
               <div class="ts-title">New tag</div>
               <div class="ts-body">
-                <div class="auth-field">
-                  <label class="auth-label" for="newTagName">Name</label>
+                <div class="input-wrap">
+                  <label class="input-label" for="newTagName">Name</label>
                   <div class="input-field"><input type="text" id="newTagName" placeholder="e.g. Outdoor cameras" oninput="onNewTagNameInput()"></div>
                 </div>
-                <div class="auth-field">
-                  <label class="auth-label">Color</label>
+                <div class="input-wrap">
+                  <label class="input-label">Color</label>
                   <div class="tag-color-row" id="newTagColorRow"></div>
                 </div>
               </div>
               <div class="ts-foot">
-                <button class="btn btn-secondary" onclick="cancelNewTagSheet()">Cancel</button>
-                <button class="btn btn-primary disabled" id="newTagAddBtn" onclick="commitNewTag()">Add</button>
+                <button class="button button-default" onclick="cancelNewTagSheet()">Cancel</button>
+                <button class="button button-primary disabled" id="newTagAddBtn" onclick="commitNewTag()">Add</button>
               </div>
             </div>
           </div>
@@ -1456,7 +1456,7 @@
               <div class="ts-title">Manage tags</div>
               <div class="manage-tags-list" id="manageTagsList"></div>
               <div class="ts-foot">
-                <button class="btn btn-primary" onclick="closeManageTagsSheet()">Done</button>
+                <button class="button button-primary" onclick="closeManageTagsSheet()">Done</button>
               </div>
             </div>
           </div>
@@ -1551,24 +1551,24 @@
                   <div class="input-field"><input type="text" id="ipRangeTo" inputmode="decimal" placeholder="192.168.100.255" oninput="onIpRangeChange()"></div>
                 </div>
               </div>
-              <button class="btn btn-primary btn-full" onclick="closeFilterSheet()" style="margin-top: 4px;">Done</button>
+              <button class="button button-primary button-full" onclick="closeFilterSheet()" style="margin-top: 4px;">Done</button>
             </div>
           </div>
 
           <!-- ========== sDevices: Devices top level (entry) ========== -->
           <div class="panel active" id="sDevices">
-            <div class="s5-topbar">
+            <div class="s5-top-bar">
               <div class="s5-tb-left">
-                <button class="btn-icon" aria-label="Menu">
+                <button class="button-icon" aria-label="Menu">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
                 </button>
                 <div class="s5-title">Devices</div>
               </div>
               <div style="display:flex; align-items:center;">
-                <button class="btn-icon" aria-label="Add location" style="padding:14px;" onclick="jumpToPanel('sCreateLocation')">
+                <button class="button-icon" aria-label="Add location" style="padding:14px;" onclick="jumpToPanel('sCreateLocation')">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.8 1.3C4.65 1.3 1.55 3.65 1.55 7.45C1.55 12.55 7.8 18.5 7.8 18.5S14.05 12.55 14.05 7.45C14.05 3.65 10.95 1.3 7.8 1.3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/><circle cx="7.8" cy="7.45" r="2.15" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M16.66 14.56V19.04M14.42 16.80H18.90" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </button>
-                <button class="btn-icon" aria-label="Notifications" style="padding:14px;">
+                <button class="button-icon" aria-label="Notifications" style="padding:14px;">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5a5 5 0 00-5 5v3L3.5 13h13L15 10.5v-3a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M8 15.5a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
                 </button>
               </div>
@@ -1588,7 +1588,7 @@
             </div>
 
             <div class="s5-filters">
-              <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
+              <button class="button-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
@@ -1652,9 +1652,9 @@
 
           <!-- ========== sCreateLocation: Create location — Details ========== -->
           <div class="panel" id="sCreateLocation" data-addr-mode="empty" data-tz-derived="false">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="jumpToPanel('sDevices')" aria-label="Close">
+                <button class="button-icon" onclick="jumpToPanel('sDevices')" aria-label="Close">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
                 </button>
                 <div class="tb-title">Create location</div>
@@ -1669,8 +1669,8 @@
 
             <div class="cd-content">
               <div class="cd-pane">
-                <div class="auth-field">
-                  <label class="auth-label" for="clName">Name <span style="color:#dc2626;">*</span></label>
+                <div class="input-wrap">
+                  <label class="input-label" for="clName">Name <span style="color:#dc2626;">*</span></label>
                   <div class="input-field"><input type="text" id="clName"></div>
                 </div>
 
@@ -1678,7 +1678,7 @@
 
                 <div class="cl-addr" id="clAddr">
                   <div class="cl-addr-label-row">
-                    <span class="auth-label">Address <span style="color:#dc2626;">*</span></span>
+                    <span class="input-label">Address <span style="color:#dc2626;">*</span></span>
                     <button type="button" class="cl-mode-link cl-addr-search-link" onclick="clBackToSearch()">Search address instead</button>
                   </div>
 
@@ -1703,36 +1703,36 @@
                   <button type="button" class="cl-mode-link cl-addr-manual-link" onclick="clOpenManualMode()">Enter address manually</button>
 
                   <div class="cl-addr-parsed">
-                    <div class="auth-field">
-                      <label class="auth-label" for="clStreet">Street address <span style="color:#dc2626;">*</span></label>
+                    <div class="input-wrap">
+                      <label class="input-label" for="clStreet">Street address <span style="color:#dc2626;">*</span></label>
                       <div class="input-field"><input type="text" id="clStreet"></div>
                     </div>
 
-                    <div class="auth-field">
-                      <label class="auth-label" for="clFloor">Floor, suite, etc.</label>
+                    <div class="input-wrap">
+                      <label class="input-label" for="clFloor">Floor, suite, etc.</label>
                       <div class="input-field"><input type="text" id="clFloor"></div>
                     </div>
 
-                    <div class="auth-field">
-                      <label class="auth-label" for="clCity">City <span style="color:#dc2626;">*</span></label>
+                    <div class="input-wrap">
+                      <label class="input-label" for="clCity">City <span style="color:#dc2626;">*</span></label>
                       <div class="input-field"><input type="text" id="clCity"></div>
                     </div>
 
-                    <div class="auth-field">
-                      <label class="auth-label" for="clState">State <span style="color:#dc2626;">*</span></label>
+                    <div class="input-wrap">
+                      <label class="input-label" for="clState">State <span style="color:#dc2626;">*</span></label>
                       <div class="input-field" style="cursor:pointer;">
                         <input type="text" id="clState" placeholder="Search state" style="cursor:pointer;" readonly>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       </div>
                     </div>
 
-                    <div class="auth-field">
-                      <label class="auth-label" for="clZip">Zip code</label>
+                    <div class="input-wrap">
+                      <label class="input-label" for="clZip">Zip code</label>
                       <div class="input-field"><input type="text" id="clZip" placeholder="00-000"></div>
                     </div>
 
-                    <div class="auth-field">
-                      <label class="auth-label" for="clCountry">Country <span style="color:#dc2626;">*</span></label>
+                    <div class="input-wrap">
+                      <label class="input-label" for="clCountry">Country <span style="color:#dc2626;">*</span></label>
                       <div class="input-field" style="cursor:pointer;">
                         <input type="text" id="clCountry" placeholder="Search country" style="cursor:pointer;" readonly>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1741,8 +1741,8 @@
                   </div>
                 </div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clTimezone">Time Zone <span style="color:#dc2626;">*</span></label>
+                <div class="input-wrap">
+                  <label class="input-label" for="clTimezone">Time Zone <span style="color:#dc2626;">*</span></label>
                   <div class="input-field" style="cursor:pointer;">
                     <input type="text" id="clTimezone" value="Europe/Warsaw" style="cursor:pointer;" readonly oninput="clOnTzEdit()">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1752,21 +1752,21 @@
 
                 <div class="cd-divider"></div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clContact">Contact name</label>
+                <div class="input-wrap">
+                  <label class="input-label" for="clContact">Contact name</label>
                   <div class="input-field"><input type="text" id="clContact" placeholder="Contact name"></div>
                 </div>
 
-                <div class="auth-field">
-                  <label class="auth-label" for="clPhone">Phone number</label>
+                <div class="input-wrap">
+                  <label class="input-label" for="clPhone">Phone number</label>
                   <div class="input-field"><input type="tel" id="clPhone" placeholder="000-000-000"></div>
                 </div>
               </div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="jumpToPanel('sDevices')">Back</button>
-              <button class="btn btn-primary btn-full">Next</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="jumpToPanel('sDevices')">Back</button>
+              <button class="button button-primary button-full">Next</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1774,14 +1774,14 @@
 
           <!-- ========== S0: Location landing ========== -->
           <div class="panel" id="s0">
-            <div class="s5-topbar">
+            <div class="s5-top-bar">
               <div class="s5-tb-left">
-                <button class="btn-icon" onclick="returnToDevices()" aria-label="Back">
+                <button class="button-icon" onclick="returnToDevices()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="s5-title">Administrative Center 1</div>
               </div>
-              <button class="btn-icon" aria-label="More" onclick="openLocationMenu()" style="padding:14px;">
+              <button class="button-icon" aria-label="More" onclick="openLocationMenu()" style="padding:14px;">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="4" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="16" cy="10" r="1.6" fill="currentColor"/></svg>
               </button>
             </div>
@@ -1800,7 +1800,7 @@
             </div>
 
             <div class="s5-filters">
-              <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
+              <button class="button-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
@@ -1904,12 +1904,12 @@
 
           <!-- ========== sCamera: Camera live view ========== -->
           <div class="panel" id="sCamera">
-            <div class="cam-topbar">
-              <button class="btn-icon" onclick="closeCameraScreen()" aria-label="Back">
+            <div class="cam-top-bar">
+              <button class="button-icon" onclick="closeCameraScreen()" aria-label="Back">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
               <div class="cam-title" id="camTitle">Main entrance</div>
-              <button class="btn-icon btn-edit" onclick="openCamSettings()" aria-label="Camera settings">
+              <button class="button-icon button-edit" onclick="openCamSettings()" aria-label="Camera settings">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
               </button>
             </div>
@@ -1972,9 +1972,9 @@
 
           <!-- ========== sCamSettings: Camera settings ========== -->
           <div class="panel" id="sCamSettings">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCamSettings()" aria-label="Back">
+                <button class="button-icon" onclick="closeCamSettings()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Camera settings</div>
@@ -2031,7 +2031,7 @@
                     <div class="cs-info-label">MAC address</div>
                     <div class="cs-info-value">e4:f1:4c:63:85:39</div>
                   </div>
-                  <button class="cs-copy-btn" type="button" onclick="copyCamField('MAC address', 'e4:f1:4c:63:85:39')" aria-label="Copy MAC address">
+                  <button class="cs-copy-button" type="button" onclick="copyCamField('MAC address', 'e4:f1:4c:63:85:39')" aria-label="Copy MAC address">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
@@ -2040,7 +2040,7 @@
                     <div class="cs-info-label">Camera ID</div>
                     <div class="cs-info-value">67ebb6bd1b7b80525ed4d55d</div>
                   </div>
-                  <button class="cs-copy-btn" type="button" onclick="copyCamField('Camera ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy Camera ID">
+                  <button class="cs-copy-button" type="button" onclick="copyCamField('Camera ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy Camera ID">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
@@ -2052,9 +2052,9 @@
 
           <!-- ========== sCamDetails: Camera details (Edit/Info) ========== -->
           <div class="panel" id="sCamDetails" data-tab="edit">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCamDetails()" aria-label="Back">
+                <button class="button-icon" onclick="closeCamDetails()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Details</div>
@@ -2128,7 +2128,7 @@
 
                 <div class="cd-field">
                   <label class="cd-label" for="cdMetadata">Metadata</label>
-                  <textarea id="cdMetadata" class="cd-textarea" oninput="updateCdSaveBtn()"></textarea>
+                  <textarea id="cdMetadata" class="textarea" oninput="updateCdSaveBtn()"></textarea>
                 </div>
 
                 <div class="cd-field">
@@ -2148,7 +2148,7 @@
 
                 <div class="cd-divider"></div>
 
-                <button type="button" class="cd-delete-btn">Delete camera</button>
+                <button type="button" class="cd-delete-button">Delete camera</button>
               </div>
 
               <div class="cd-pane cd-pane-info">
@@ -2158,7 +2158,7 @@
                       <div class="cd-info-label">Manufacturer</div>
                       <div class="cd-info-value">Sony</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Manufacturer', 'Sony')" aria-label="Copy manufacturer">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('Manufacturer', 'Sony')" aria-label="Copy manufacturer">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2167,7 +2167,7 @@
                       <div class="cd-info-label">Model</div>
                       <div class="cd-info-value">DE-1025</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Model', 'DE-1025')" aria-label="Copy model">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('Model', 'DE-1025')" aria-label="Copy model">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2176,7 +2176,7 @@
                       <div class="cd-info-label">Hardware ID</div>
                       <div class="cd-info-value">67ebb6bd1b7b80525ed4d55d</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Hardware ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy hardware ID">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('Hardware ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy hardware ID">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2185,7 +2185,7 @@
                       <div class="cd-info-label">Serial</div>
                       <div class="cd-info-value">67ebb6bd1b7b80525ed4d55d</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Serial', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy serial">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('Serial', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy serial">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2194,7 +2194,7 @@
                       <div class="cd-info-label">MAC address</div>
                       <div class="cd-info-value">e4:f1:4c:63:85:39</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('MAC address', 'e4:f1:4c:63:85:39')" aria-label="Copy MAC address">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('MAC address', 'e4:f1:4c:63:85:39')" aria-label="Copy MAC address">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2203,7 +2203,7 @@
                       <div class="cd-info-label">Camera ID</div>
                       <div class="cd-info-value">67ebb6bd1b7b80525ed4d55d</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Camera ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy camera ID">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('Camera ID', '67ebb6bd1b7b80525ed4d55d')" aria-label="Copy camera ID">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2212,7 +2212,7 @@
                       <div class="cd-info-label">Entity counter</div>
                       <div class="cd-info-value">1003407</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Entity counter', '1003407')" aria-label="Copy entity counter">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('Entity counter', '1003407')" aria-label="Copy entity counter">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2221,7 +2221,7 @@
                       <div class="cd-info-label">Installation date</div>
                       <div class="cd-info-value">04/01/2025</div>
                     </div>
-                    <button class="cs-copy-btn" type="button" onclick="copyCamField('Installation date', '04/01/2025')" aria-label="Copy installation date">
+                    <button class="cs-copy-button" type="button" onclick="copyCamField('Installation date', '04/01/2025')" aria-label="Copy installation date">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                     </button>
                   </div>
@@ -2229,12 +2229,12 @@
               </div>
             </div>
 
-            <div class="action-bar cd-action-edit">
-              <button class="btn btn-secondary btn-full" onclick="closeCamDetails()">Close</button>
-              <button class="btn btn-primary btn-full disabled" id="cdSaveBtn" onclick="saveCamDetails()">Save</button>
+            <div class="bottom-action-bar cd-action-edit">
+              <button class="button button-default button-full" onclick="closeCamDetails()">Close</button>
+              <button class="button button-primary button-full disabled" id="cdSaveBtn" onclick="saveCamDetails()">Save</button>
             </div>
-            <div class="action-bar cd-action-info">
-              <button class="btn btn-primary btn-full" onclick="closeCamDetails()">Close</button>
+            <div class="bottom-action-bar cd-action-info">
+              <button class="button button-primary button-full" onclick="closeCamDetails()">Close</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2242,9 +2242,9 @@
 
           <!-- ========== sCamStreams: Camera streams (Mainstream/Substream) ========== -->
           <div class="panel" id="sCamStreams" data-tab="mainstream">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCamStreams()" aria-label="Back">
+                <button class="button-icon" onclick="closeCamStreams()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Streams</div>
@@ -2299,7 +2299,7 @@
                 </div>
 
                 <div class="cd-test-row">
-                  <button type="button" class="cd-test-btn" onclick="runStreamTest()">Test</button>
+                  <button type="button" class="cd-test-button" onclick="runStreamTest()">Test</button>
                   <div class="cd-test-msg">
                     <span class="cd-test-msg-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     <span>Camera test successful</span>
@@ -2324,9 +2324,9 @@
               </div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="closeCamStreams()">Close</button>
-              <button class="btn btn-primary btn-full disabled" id="csSaveBtn" onclick="saveCamStreams()">Save</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="closeCamStreams()">Close</button>
+              <button class="button button-primary button-full disabled" id="csSaveBtn" onclick="saveCamStreams()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2334,9 +2334,9 @@
 
           <!-- ========== sCamStorage: Camera storage ========== -->
           <div class="panel" id="sCamStorage">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCamStorage()" aria-label="Back">
+                <button class="button-icon" onclick="closeCamStorage()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Storage</div>
@@ -2474,9 +2474,9 @@
               </div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="closeCamStorage()">Close</button>
-              <button class="btn btn-primary btn-full disabled" id="csgSaveBtn" onclick="saveCamStorage()">Save</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="closeCamStorage()">Close</button>
+              <button class="button button-primary button-full disabled" id="csgSaveBtn" onclick="saveCamStorage()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2484,9 +2484,9 @@
 
           <!-- ========== sCamLocation: Camera location ========== -->
           <div class="panel" id="sCamLocation">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCamLocation()" aria-label="Back">
+                <button class="button-icon" onclick="closeCamLocation()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Location</div>
@@ -2515,9 +2515,9 @@
               <div class="cd-loc-dropdown" id="cdLocDropdown"></div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="closeCamLocation()">Cancel</button>
-              <button class="btn btn-primary btn-full" onclick="saveCamLocation()">Save</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="closeCamLocation()">Cancel</button>
+              <button class="button button-primary button-full" onclick="saveCamLocation()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2525,9 +2525,9 @@
 
           <!-- ========== sCore: Core screen ========== -->
           <div class="panel" id="sCore">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCoreScreen()" aria-label="Back">
+                <button class="button-icon" onclick="closeCoreScreen()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <span class="core-tb-icon"><svg width="21" height="21" viewBox="0 0 21 21" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.68605 1.46512C2.01175 1.46512 1.46512 2.01175 1.46512 2.68605V14.1628H19.5349V2.68605C19.5349 2.01175 18.9883 1.46512 18.314 1.46512H2.68605ZM19.5349 15.6279H1.46512V18.314C1.46512 18.9883 2.01175 19.5349 2.68605 19.5349H18.314C18.9883 19.5349 19.5349 18.9883 19.5349 18.314V15.6279ZM0 2.68605C0 1.20258 1.20258 0 2.68605 0H18.314C19.7974 0 21 1.20258 21 2.68605V18.314C21 19.7974 19.7974 21 18.314 21H2.68605C1.20258 21 0 19.7974 0 18.314V2.68605Z" fill="currentColor"/></svg></span>
@@ -2566,7 +2566,7 @@
                     <div class="cs-info-label">Core ID</div>
                     <div class="cs-info-value cs-info-value-subtle">651e6958984ba62cf7828443</div>
                   </div>
-                  <button class="cs-copy-btn" type="button" onclick="copyCamField('Core ID', '651e6958984ba62cf7828443')" aria-label="Copy core ID">
+                  <button class="cs-copy-button" type="button" onclick="copyCamField('Core ID', '651e6958984ba62cf7828443')" aria-label="Copy core ID">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
@@ -2581,7 +2581,7 @@
                 </div>
               </div>
 
-              <button type="button" class="core-restart-btn">Restart core</button>
+              <button type="button" class="core-restart-button">Restart core</button>
             </div>
 
             <div class="cd-success-bar" id="coreSoftwareSuccess">
@@ -2594,9 +2594,9 @@
 
           <!-- ========== sCoreDetails: Core > Details ========== -->
           <div class="panel" id="sCoreDetails">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCoreDetails()" aria-label="Back">
+                <button class="button-icon" onclick="closeCoreDetails()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Details</div>
@@ -2625,13 +2625,13 @@
 
                 <div class="cd-divider"></div>
 
-                <button type="button" class="cd-delete-btn">Remove core</button>
+                <button type="button" class="cd-delete-button">Remove core</button>
               </div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="closeCoreDetails()">Close</button>
-              <button class="btn btn-primary btn-full disabled" id="cdCoreSaveBtn" onclick="saveCoreDetails()">Save</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="closeCoreDetails()">Close</button>
+              <button class="button button-primary button-full disabled" id="cdCoreSaveBtn" onclick="saveCoreDetails()">Save</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2639,15 +2639,15 @@
 
           <!-- ========== sCoreNetwork: Core > Network ========== -->
           <div class="panel" id="sCoreNetwork" data-tab="eth1">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCoreNetwork()" aria-label="Back">
+                <button class="button-icon" onclick="closeCoreNetwork()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Network</div>
               </div>
               <div class="tb-right">
-                <button class="btn-icon" aria-label="Refresh" style="padding: 14px; color: var(--color-text-subtle);">
+                <button class="button-icon" aria-label="Refresh" style="padding: 14px; color: var(--color-text-subtle);">
                   <svg width="17.5" height="17.5" viewBox="0 0 17.5 17.5" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M15.9619 0.0352665L16.6792 5.73939L11.0937 4.18305L11.3935 3.10702L15.3614 4.21263L14.8536 0.174639L15.9619 0.0352665Z" fill="currentColor"/>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M5.67588 0.557792C7.67901 -0.193883 9.88813 -0.185587 11.8856 0.581111C13.883 1.34781 15.5303 2.81977 16.516 4.71869L15.5246 5.23332C14.6647 3.57682 13.2277 2.29277 11.4853 1.62395C9.74284 0.955125 7.81574 0.947888 6.06832 1.6036C4.32091 2.25932 2.8743 3.53254 2.002 5.18254C1.1297 6.83255 0.892166 8.74497 1.33431 10.5582C1.77646 12.3715 2.86764 13.9599 4.40154 15.0232C5.93545 16.0865 7.80577 16.5509 9.65888 16.3287C11.512 16.1064 13.2195 15.2129 14.4585 13.8171C15.6975 12.4213 16.3821 10.6199 16.383 8.75351L17.5 8.75403C17.499 10.8935 16.7142 12.9586 15.2938 14.5586C13.8735 16.1587 11.9162 17.183 9.79189 17.4377C7.66759 17.6925 5.52356 17.1601 3.76518 15.9412C2.0068 14.7224 0.755939 12.9015 0.249089 10.8229C-0.257761 8.74423 0.0145319 6.55194 1.01449 4.66048C2.01444 2.76901 3.67275 1.30947 5.67588 0.557792Z" fill="currentColor"/>
@@ -2735,19 +2735,19 @@
               </div>
 
               <div class="cd-pane cn-pane-testing">
-                <button type="button" class="cn-test-btn" onclick="runNetworkTest()">Firewall check</button>
-                <button type="button" class="cn-test-btn" onclick="runNetworkTest()">Speedtest connection</button>
-                <button type="button" class="cn-test-btn" onclick="runNetworkTest()">Test local connection</button>
+                <button type="button" class="cn-test-button" onclick="runNetworkTest()">Firewall check</button>
+                <button type="button" class="cn-test-button" onclick="runNetworkTest()">Speedtest connection</button>
+                <button type="button" class="cn-test-button" onclick="runNetworkTest()">Test local connection</button>
                 <div class="cn-test-output" id="cnTestOutput"></div>
               </div>
             </div>
 
-            <div class="action-bar cn-action-form">
-              <button class="btn btn-secondary btn-full" onclick="closeCoreNetwork()">Close</button>
-              <button class="btn btn-primary btn-full disabled" id="cnSaveBtn" onclick="saveCoreNetwork()">Save</button>
+            <div class="bottom-action-bar cn-action-form">
+              <button class="button button-default button-full" onclick="closeCoreNetwork()">Close</button>
+              <button class="button button-primary button-full disabled" id="cnSaveBtn" onclick="saveCoreNetwork()">Save</button>
             </div>
-            <div class="action-bar cn-action-testing">
-              <button class="btn btn-primary btn-full" onclick="closeCoreNetwork()">Done</button>
+            <div class="bottom-action-bar cn-action-testing">
+              <button class="button button-primary button-full" onclick="closeCoreNetwork()">Done</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2755,9 +2755,9 @@
 
           <!-- ========== sCoreIssues: Core issues ========== -->
           <div class="panel" id="sCoreIssues">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCoreIssues()" aria-label="Back">
+                <button class="button-icon" onclick="closeCoreIssues()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Issues</div>
@@ -2773,14 +2773,14 @@
                       <div class="cd-issue-title">Out of spec</div>
                       <div class="cd-issue-desc">description</div>
                     </div>
-                    <button type="button" class="cd-test-btn">Reset core</button>
+                    <button type="button" class="cd-test-button">Reset core</button>
                   </div>
                   <div class="cd-issue-row" id="coreIssueUpdate">
                     <div class="cd-issue-body">
                       <div class="cd-issue-title">Need software update</div>
                       <div class="cd-issue-desc">Current version: 1.2.3. Next version 1.2.4 from 01 Aug</div>
                     </div>
-                    <button type="button" class="cd-test-btn" onclick="runCoreUpdate()">Update</button>
+                    <button type="button" class="cd-test-button" onclick="runCoreUpdate()">Update</button>
                   </div>
                 </div>
               </div>
@@ -2796,9 +2796,9 @@
 
           <!-- ========== sCoreDhcp: Core > DHCP Server ========== -->
           <div class="panel" id="sCoreDhcp">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCoreDhcp()" aria-label="Back">
+                <button class="button-icon" onclick="closeCoreDhcp()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">DHCP Server</div>
@@ -2860,8 +2860,8 @@
               </div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-primary btn-full disabled" id="dhcpEnableBtn">Enable</button>
+            <div class="bottom-action-bar">
+              <button class="button button-primary button-full disabled" id="dhcpEnableBtn">Enable</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2869,9 +2869,9 @@
 
           <!-- ========== sCamIssues: Camera issues ========== -->
           <div class="panel" id="sCamIssues">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeCamIssues()" aria-label="Back">
+                <button class="button-icon" onclick="closeCamIssues()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Issues</div>
@@ -2887,21 +2887,21 @@
                       <div class="cd-issue-title">Image quality issues</div>
                       <div class="cd-issue-desc">Current version: 1.2.3. Next version 1.2.4 from 01 Aug</div>
                     </div>
-                    <button type="button" class="cd-test-btn">Action</button>
+                    <button type="button" class="cd-test-button">Action</button>
                   </div>
                   <div class="cd-issue-row">
                     <div class="cd-issue-body">
                       <div class="cd-issue-title">Out of spec</div>
                       <div class="cd-issue-desc">description</div>
                     </div>
-                    <button type="button" class="cd-test-btn">Action</button>
+                    <button type="button" class="cd-test-button">Action</button>
                   </div>
                   <div class="cd-issue-row">
                     <div class="cd-issue-body">
                       <div class="cd-issue-title">Need software update</div>
                       <div class="cd-issue-desc">Current version: 1.2.3. Next version 1.2.4 from 01 Aug</div>
                     </div>
-                    <button type="button" class="cd-test-btn">Update</button>
+                    <button type="button" class="cd-test-button">Update</button>
                   </div>
                 </div>
               </div>
@@ -2912,9 +2912,9 @@
 
           <!-- ========== sAddCore: Add core list ========== -->
           <div class="panel" id="sAddCore">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="cancelCoreFlow()" aria-label="Back">
+                <button class="button-icon" onclick="cancelCoreFlow()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Add core</div>
@@ -2924,8 +2924,8 @@
 
             <div class="content" id="coreDraftsList"></div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="cancelCoreFlow()">Done</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="cancelCoreFlow()">Done</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -2933,9 +2933,9 @@
 
           <!-- ========== sBarcodeScan: barcode scanner ========== -->
           <div class="panel" id="sBarcodeScan">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="cancelBarcodeScan()" aria-label="Back">
+                <button class="button-icon" onclick="cancelBarcodeScan()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Scan core barcode</div>
@@ -2965,9 +2965,9 @@
 
           <!-- ========== S1: Core ========== -->
           <div class="panel" id="s1">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="returnToS0()" aria-label="Close">
+                <button class="button-icon" onclick="returnToS0()" aria-label="Close">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
                 </button>
                 <div class="tb-title">Add cameras</div>
@@ -3030,9 +3030,9 @@
               </div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="resetFlow()">Back</button>
-              <button class="btn btn-primary btn-full disabled" id="s1Next" onclick="go(1)">Next: Scan</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="resetFlow()">Back</button>
+              <button class="button button-primary button-full disabled" id="s1Next" onclick="go(1)">Next: Scan</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3040,15 +3040,15 @@
 
           <!-- ========== S2: Detection ========== -->
           <div class="panel" id="s2">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="go(0)" aria-label="Back">
+                <button class="button-icon" onclick="go(0)" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Add cameras</div>
               </div>
               <div class="tb-right">
-                <button class="btn-icon" onclick="openMethodSheet()" aria-label="More">
+                <button class="button-icon" onclick="openMethodSheet()" aria-label="More">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg>
                 </button>
               </div>
@@ -3075,7 +3075,7 @@
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#667085" stroke-width="1.6"/><path d="M14 14l3 3" stroke="#667085" stroke-width="1.6" stroke-linecap="round"/></svg>
                 <input placeholder="Search" id="camSearch" oninput="renderCamList()" />
               </div>
-              <button class="filter-btn" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
+              <button class="filter-button" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
               </button>
             </div>
@@ -3095,7 +3095,7 @@
                 </div>
                 <div class="th-col">Mac</div>
               </div>
-              <button class="expand-all-btn" id="expandAllBtn" onclick="toggleExpandAll()">
+              <button class="expand-all-button" id="expandAllBtn" onclick="toggleExpandAll()">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 6l3-3 3 3M5 10l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span id="expandAllLbl">Expand all</span>
               </button>
@@ -3126,9 +3126,9 @@
               <span class="sb-load">65% core load</span>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="go(0)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(2)">Next: Sign in</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="go(0)">Back</button>
+              <button class="button button-primary button-full" onclick="go(2)">Next: Sign in</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3136,9 +3136,9 @@
 
           <!-- ========== S3: Authenticate ========== -->
           <div class="panel" id="s3">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="go(1)" aria-label="Back">
+                <button class="button-icon" onclick="go(1)" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Add cameras</div>
@@ -3156,13 +3156,13 @@
                 <button class="card-delete" onclick="deleteCredSet(this)" aria-label="Delete credential set">
                   <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                <div class="auth-field">
-                  <label class="auth-label">Username</label>
+                <div class="input-wrap">
+                  <label class="input-label">Username</label>
                   <div class="input-field"><input type="text"></div>
                 </div>
-                <div class="auth-field">
-                  <div class="auth-label-row">
-                    <label class="auth-label">Password</label>
+                <div class="input-wrap">
+                  <div class="input-label-row">
+                    <label class="input-label">Password</label>
                     <button class="auth-eye" onclick="togglePw3(this)" aria-label="Show password">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M1.5 10S4.5 4.5 10 4.5 18.5 10 18.5 10 15.5 15.5 10 15.5 1.5 10 1.5 10z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
                     </button>
@@ -3172,12 +3172,12 @@
 
                 <div class="more-creds" hidden>
                   <div class="row-split">
-                    <div class="auth-field auth-field-narrow">
-                      <label class="auth-label">RTSP port</label>
+                    <div class="input-wrap input-wrap-narrow">
+                      <label class="input-label">RTSP port</label>
                       <div class="input-field"><input type="text" value="554"></div>
                     </div>
                     <div class="tcp-stack">
-                      <label class="auth-label">TCP</label>
+                      <label class="input-label">TCP</label>
                       <div class="tcp-check-wrap">
                         <div class="cb ck" onclick="toggleTcp(this)">
                           <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3185,13 +3185,13 @@
                       </div>
                     </div>
                   </div>
-                  <div class="auth-field">
-                    <label class="auth-label">RTSP path</label>
+                  <div class="input-wrap">
+                    <label class="input-label">RTSP path</label>
                     <div class="input-field"><input type="text" placeholder="Path: /"></div>
                   </div>
-                  <div class="auth-field">
-                    <div class="auth-label-row">
-                      <label class="auth-label">Substream RTSP path</label>
+                  <div class="input-wrap">
+                    <div class="input-label-row">
+                      <label class="input-label">Substream RTSP path</label>
                       <span class="auth-info" aria-label="Info">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
                       </span>
@@ -3200,21 +3200,21 @@
                   </div>
                 </div>
 
-                <button class="link-btn" onclick="toggleMoreCreds(this)">
+                <button class="link-button" onclick="toggleMoreCreds(this)">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                   <span>Advanced options</span>
                 </button>
               </div>
 
-              <button class="btn btn-secondary btn-compact" onclick="addCredSet()">
+              <button class="button button-default button-md" onclick="addCredSet()">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                 Add another credential set
               </button>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="go(1)">Back</button>
-              <button class="btn btn-primary btn-full" onclick="go(3)">Next: Configure</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="go(1)">Back</button>
+              <button class="button button-primary button-full" onclick="go(3)">Next: Configure</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3222,9 +3222,9 @@
 
           <!-- ========== S4: Configuration ========== -->
           <div class="panel" id="s4">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="go(2)" aria-label="Back">
+                <button class="button-icon" onclick="go(2)" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Add cameras</div>
@@ -3243,7 +3243,7 @@
               <div class="th-cols" style="padding-left: 16px;">
                 <div class="th-col">Cameras</div>
               </div>
-              <button class="expand-all-btn" id="confExpandAllBtn" onclick="toggleExpandAllConf()">
+              <button class="expand-all-button" id="confExpandAllBtn" onclick="toggleExpandAllConf()">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 6l3-3 3 3M5 10l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span id="confExpandAllLbl">Expand all</span>
               </button>
@@ -3262,9 +3262,9 @@
               </button>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="go(2)">Back</button>
-              <button class="btn btn-primary btn-full" id="s4NextBtn" onclick="go(4)">Add 12 cameras</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="go(2)">Back</button>
+              <button class="button button-primary button-full" id="s4NextBtn" onclick="go(4)">Add 12 cameras</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3293,7 +3293,7 @@
                   </div>
                 </div>
                 <div class="info-sheet-foot">
-                  <button class="btn btn-secondary btn-full" onclick="closeSheet('mainstreamSheet')">Close</button>
+                  <button class="button button-default button-full" onclick="closeSheet('mainstreamSheet')">Close</button>
                 </div>
               </div>
             </div>
@@ -3321,7 +3321,7 @@
                   </div>
                 </div>
                 <div class="info-sheet-foot">
-                  <button class="btn btn-secondary btn-full" onclick="closeSheet('substreamSheet')">Close</button>
+                  <button class="button button-default button-full" onclick="closeSheet('substreamSheet')">Close</button>
                 </div>
               </div>
             </div>
@@ -3336,7 +3336,7 @@
                 </div>
                 <div class="pv-body" id="previewBody"></div>
                 <div class="info-sheet-foot">
-                  <button class="btn btn-secondary btn-full" onclick="closeSheet('previewSheet')">Close</button>
+                  <button class="button button-default button-full" onclick="closeSheet('previewSheet')">Close</button>
                 </div>
               </div>
             </div>
@@ -3349,8 +3349,8 @@
                   <p id="confirmDeleteDesc" style="font-size:14px; color:var(--color-text-defsult); line-height:22px; margin:0;">This camera won't be added to your site.</p>
                 </div>
                 <div class="info-sheet-foot" style="display:flex; gap:8px;">
-                  <button class="btn btn-secondary btn-full" onclick="closeSheet('confirmDeleteSheet')">Cancel</button>
-                  <button class="btn btn-danger btn-full" onclick="confirmDeleteCam()">Remove</button>
+                  <button class="button button-default button-full" onclick="closeSheet('confirmDeleteSheet')">Cancel</button>
+                  <button class="button button-caution button-full" onclick="confirmDeleteCam()">Remove</button>
                 </div>
               </div>
             </div>
@@ -3370,8 +3370,8 @@
                   </div>
                 </div>
                 <div class="info-sheet-foot" style="display:flex; gap:8px;">
-                  <button class="btn btn-secondary btn-full" onclick="closeSheet('addCredsSheet')">Cancel</button>
-                  <button class="btn btn-primary btn-full" onclick="submitAddCreds()">Connect</button>
+                  <button class="button button-default button-full" onclick="closeSheet('addCredsSheet')">Cancel</button>
+                  <button class="button button-primary button-full" onclick="submitAddCreds()">Connect</button>
                 </div>
               </div>
             </div>
@@ -3419,8 +3419,8 @@
                   </div>
                 </div>
                 <div class="info-sheet-foot" style="display:flex; gap:8px;">
-                  <button class="btn btn-secondary btn-full" onclick="closeSheet('editCamSheet')">Cancel</button>
-                  <button class="btn btn-primary btn-full" onclick="saveEditCam()">Save</button>
+                  <button class="button button-default button-full" onclick="closeSheet('editCamSheet')">Cancel</button>
+                  <button class="button button-primary button-full" onclick="saveEditCam()">Save</button>
                 </div>
               </div>
             </div>
@@ -3428,9 +3428,9 @@
 
           <!-- ========== S4-Keep: criteria subscreen ========== -->
           <div class="panel" id="s4Keep">
-            <div class="topbar">
+            <div class="top-bar">
               <div class="tb-left">
-                <button class="btn-icon" onclick="closeKeepCriteria()" aria-label="Back">
+                <button class="button-icon" onclick="closeKeepCriteria()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Keep cameras matching…</div>
@@ -3491,9 +3491,9 @@
               <div class="kc-preview-line2 noop" id="kcPreviewLine2">Pick criteria to narrow the list.</div>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-secondary btn-full" onclick="closeKeepCriteria()">Cancel</button>
-              <button class="btn btn-primary btn-full disabled" id="kcApplyBtn" onclick="applyKeepCriteria()">Keep all</button>
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="closeKeepCriteria()">Cancel</button>
+              <button class="button button-primary button-full disabled" id="kcApplyBtn" onclick="applyKeepCriteria()">Keep all</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -3501,14 +3501,14 @@
 
           <!-- ========== S5: Added (location landing) ========== -->
           <div class="panel" id="s5">
-            <div class="s5-topbar">
+            <div class="s5-top-bar">
               <div class="s5-tb-left">
-                <button class="btn-icon" onclick="resetFlow()" aria-label="Back">
+                <button class="button-icon" onclick="resetFlow()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="s5-title">Administrative Center 1</div>
               </div>
-              <button class="btn-icon" aria-label="More" style="padding:14px;">
+              <button class="button-icon" aria-label="More" style="padding:14px;">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="4" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="16" cy="10" r="1.6" fill="currentColor"/></svg>
               </button>
             </div>
@@ -3527,7 +3527,7 @@
             </div>
 
             <div class="s5-filters">
-              <button class="btn-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
+              <button class="button-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
@@ -3611,7 +3611,7 @@
 
           <div class="undo-toast" id="undoToast">
             <span class="ut-label" id="undoToastLabel">Removed</span>
-            <button class="ut-btn" onclick="clickUndo()">Undo</button>
+            <button class="ut-button" onclick="clickUndo()">Undo</button>
           </div>
 
           <div class="copy-toast" id="copyToast">
@@ -3649,8 +3649,8 @@
     });
   }
 
-  function toggleFmGroup(btn) {
-    const group = btn.closest('.fm-group');
+  function toggleFmGroup(button) {
+    const group = button.closest('.fm-group');
     if (!group) return;
     group.classList.toggle('collapsed');
   }
@@ -4007,7 +4007,7 @@
               ${c.brand}
             </div>
           </div>
-          <button class="chev-btn" data-role="chev" aria-label="Details">
+          <button class="chev-button" data-role="chev" aria-label="Details">
             <svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
@@ -4075,11 +4075,11 @@
     renderCamList();
   }
   function updateFilterBtn() {
-    const btn = document.getElementById('filterBtn');
-    if (!btn) return;
+    const button = document.getElementById('filterBtn');
+    if (!button) return;
     const ipRangeActive = !!(ipRange.from || ipRange.to);
     const deviceFilterActive = camFilter !== 'all';
-    btn.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0 || ipRangeActive || deviceFilterActive);
+    button.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0 || ipRangeActive || deviceFilterActive);
   }
   function clearIpRangeInputs() {
     ipRange.from = '';
@@ -4106,16 +4106,16 @@
   }
 
   // ===== Auth (S3) helpers =====
-  function togglePw3(btn) {
-    const field = btn.closest('.auth-field');
+  function togglePw3(button) {
+    const field = button.closest('.input-wrap');
     const inp = field.querySelector('input');
     inp.type = inp.type === 'password' ? 'text' : 'password';
   }
   function toggleTcp(el) { el.classList.toggle('ck'); }
-  function toggleMoreCreds(btn) {
-    const card = btn.closest('.auth-card');
+  function toggleMoreCreds(button) {
+    const card = button.closest('.auth-card');
     const more = card.querySelector('.more-creds');
-    const label = btn.querySelector('span');
+    const label = button.querySelector('span');
     const open = more.hasAttribute('hidden');
     if (open) { more.removeAttribute('hidden'); label.textContent = 'Hide advanced options'; }
     else { more.setAttribute('hidden', ''); label.textContent = 'Advanced options'; }
@@ -4132,15 +4132,15 @@
     clone.querySelectorAll('input').forEach(i => { i.value = i.defaultValue || ''; });
     const more = clone.querySelector('.more-creds');
     if (more) more.setAttribute('hidden', '');
-    const lbl = clone.querySelector('.link-btn span');
+    const lbl = clone.querySelector('.link-button span');
     if (lbl) lbl.textContent = 'Advanced options';
-    list.insertBefore(clone, list.querySelector('.btn-secondary'));
+    list.insertBefore(clone, list.querySelector('.button-default'));
     refreshCredMulti();
   }
-  function deleteCredSet(btn) {
+  function deleteCredSet(button) {
     const list = document.getElementById('s3CredsList');
     if (list.querySelectorAll('.auth-card').length <= 1) return;
-    const card = btn.closest('.auth-card');
+    const card = button.closest('.auth-card');
     const nextSibling = card.nextSibling;
     const parent = card.parentNode;
     parent.removeChild(card);
@@ -4273,7 +4273,7 @@
         <div class="mg-item"><span class="mg-text">IP: ${c.ip}</span></div>
         <div class="mg-item"><span class="mg-text">Mac: ${c.mac}</span></div>
       </div>
-      <button class="edit-cam-btn" onclick="event.stopPropagation(); openEditCam(${c.id})">
+      <button class="edit-cam-button" onclick="event.stopPropagation(); openEditCam(${c.id})">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
         Edit camera
       </button>
@@ -4533,10 +4533,10 @@
     updateCdSaveBtn();
     showCopyToast('Changes saved');
   }
-  function pickCdTab(btn) {
-    btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('sCamDetails').dataset.tab = btn.dataset.tab || 'edit';
+  function pickCdTab(button) {
+    button.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('sCamDetails').dataset.tab = button.dataset.tab || 'edit';
   }
 
   // ===== Camera streams =====
@@ -4611,16 +4611,16 @@
     updateCsSaveBtn();
     showCopyToast('Changes saved');
   }
-  function pickStreamTab(btn) {
-    btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('sCamStreams').dataset.tab = btn.dataset.tab || 'mainstream';
+  function pickStreamTab(button) {
+    button.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('sCamStreams').dataset.tab = button.dataset.tab || 'mainstream';
   }
-  function toggleCsPass(btn) {
+  function toggleCsPass(button) {
     const input = document.getElementById('csPass');
     const isHidden = input.type === 'password';
     input.type = isHidden ? 'text' : 'password';
-    btn.querySelector('span').textContent = isHidden ? 'Hide password' : 'Show password';
+    button.querySelector('span').textContent = isHidden ? 'Hide password' : 'Show password';
   }
 
   // ===== Camera storage =====
@@ -5087,10 +5087,10 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     updateCnSaveBtn();
     showCopyToast('Changes saved');
   }
-  function pickNetTab(btn) {
-    btn.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    const tab = btn.dataset.tab || 'eth1';
+  function pickNetTab(button) {
+    button.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+    button.classList.add('active');
+    const tab = button.dataset.tab || 'eth1';
     document.getElementById('sCoreNetwork').dataset.tab = tab;
     const dhcp = document.getElementById('cnDhcp');
     if (tab === 'eth2') dhcp.classList.remove('on');
@@ -5108,12 +5108,12 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     document.getElementById('sCamIssues').classList.remove('active');
     document.getElementById('sCamSettings').classList.add('active');
   }
-  function pickCamTab(btn) {
-    btn.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
-    btn.classList.add('on');
+  function pickCamTab(button) {
+    button.parentElement.querySelectorAll('.seg-opt').forEach(o => o.classList.remove('on'));
+    button.classList.add('on');
   }
-  function openDevicesSearch(btn) {
-    const panel = btn.closest('.panel');
+  function openDevicesSearch(button) {
+    const panel = button.closest('.panel');
     if (!panel) return;
     panel.classList.add('search-on');
     const pill = panel.querySelector('.s5-search-pill');
@@ -5121,12 +5121,12 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     if (pill && input) pill.classList.toggle('has-value', !!input.value);
     if (input) setTimeout(() => input.focus(), 0);
   }
-  function closeDevicesSearch(btn) {
-    const panel = btn.closest('.panel');
+  function closeDevicesSearch(button) {
+    const panel = button.closest('.panel');
     if (!panel) return;
     panel.classList.remove('search-on');
     const input = panel.querySelector('.s5-search-pill input');
-    const searchBtn = panel.querySelector('.s5-filters .btn-icon[aria-label="Search"]');
+    const searchBtn = panel.querySelector('.s5-filters .button-icon[aria-label="Search"]');
     if (searchBtn) searchBtn.classList.toggle('used', !!(input && input.value.trim()));
   }
   function toggleTypeOption(row) {
@@ -5160,8 +5160,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const pill = input.closest('.s5-search-pill');
     if (pill) pill.classList.toggle('has-value', !!input.value);
   }
-  function clearSearchInput(btn) {
-    const pill = btn.closest('.s5-search-pill');
+  function clearSearchInput(button) {
+    const pill = button.closest('.s5-search-pill');
     if (!pill) return;
     const input = pill.querySelector('input');
     if (input) {
@@ -5232,7 +5232,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     list.classList.toggle('multi', coreDrafts.length > 1);
     coreDrafts.forEach(d => list.appendChild(buildCoreCard(d)));
     const addBtn = document.createElement('button');
-    addBtn.className = 'btn btn-secondary btn-compact';
+    addBtn.className = 'button button-default button-md';
     addBtn.setAttribute('onclick', 'addAnotherCoreDraft()');
     addBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Add another core';
     list.appendChild(addBtn);
@@ -5246,8 +5246,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       <button class="card-delete" onclick="removeCoreDraft(${d.id})" aria-label="Remove core">
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="auth-field${locked ? ' locked' : ''}">
-        <label class="auth-label">Core name</label>
+      <div class="input-wrap${locked ? ' locked' : ''}">
+        <label class="input-label">Core name</label>
         <div class="input-field${locked ? ' locked' : ''}" id="coreNameField-${d.id}">
           <input type="text" id="coreNameInput-${d.id}" value="${_escHtml(d.name)}" oninput="onCoreNameInput(${d.id}, this.value)" onfocus="onCoreNameFocus(${d.id})" onblur="onCoreNameBlur(${d.id})" ${locked ? 'disabled' : ''}>
           ${locked ? '' : `<button type="button" class="input-clear" onmousedown="event.preventDefault()" onclick="clearCoreName(${d.id})" aria-label="Clear">
@@ -5255,8 +5255,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
           </button>`}
         </div>
       </div>
-      <div class="auth-field${locked ? ' locked' : ''}">
-        <label class="auth-label">Core ID</label>
+      <div class="input-wrap${locked ? ' locked' : ''}">
+        <label class="input-label">Core ID</label>
       </div>
     `;
     card.lastElementChild.appendChild(buildCoreIdSection(d));
@@ -5312,7 +5312,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     // idle
     wrap.innerHTML = `
       <div class="cc-id-actions">
-        <button class="cc-primary-btn" onclick="startScanForDraft(${d.id})">
+        <button class="cc-primary-button" onclick="startScanForDraft(${d.id})">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 7v6M8 7v6M11 7v6M14 7v6" stroke="currentColor" stroke-width="1.5"/></svg>
           Scan barcode
         </button>
@@ -5367,8 +5367,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     if (!d) return;
     const input = document.getElementById(`ccManual-${id}`);
     d.coreId = (input?.value || '').trim();
-    const btn = document.getElementById(`ccManualConfirm-${id}`);
-    if (btn) btn.classList.toggle('disabled', !d.coreId);
+    const button = document.getElementById(`ccManualConfirm-${id}`);
+    if (button) button.classList.toggle('disabled', !d.coreId);
   }
   function confirmManualId(id) {
     const d = coreDrafts.find(x => x.id === id);
@@ -5530,8 +5530,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   function renderKeepPreview() {
     const line1 = document.getElementById('kcPreviewLine1');
     const line2 = document.getElementById('kcPreviewLine2');
-    const btn = document.getElementById('kcApplyBtn');
-    if (!line1 || !line2 || !btn) return;
+    const button = document.getElementById('kcApplyBtn');
+    if (!line1 || !line2 || !button) return;
     const matched = confCams.filter(camMatchesKeepCriteria);
     const removed = confCams.length - matched.length;
     const active = keepCriteriaActive();
@@ -5540,24 +5540,24 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       line1.textContent = `All ${confCams.length} match · 0 will be removed`;
       line2.className = 'kc-preview-line2 noop';
       line2.textContent = 'Pick criteria to narrow the list.';
-      btn.textContent = 'Keep all';
-      btn.classList.add('disabled');
+      button.textContent = 'Keep all';
+      button.classList.add('disabled');
       return;
     }
     if (matched.length === 0) {
       line1.textContent = `0 match · all ${confCams.length} would be removed`;
       line2.className = 'kc-preview-line2 empty';
       line2.textContent = 'No cameras match these criteria. Refine to continue.';
-      btn.textContent = 'Keep 0';
-      btn.classList.add('disabled');
+      button.textContent = 'Keep 0';
+      button.classList.add('disabled');
       return;
     }
     if (removed === 0) {
       line1.textContent = `All ${confCams.length} match · 0 will be removed`;
       line2.className = 'kc-preview-line2 noop';
       line2.textContent = 'All cameras already match. Nothing to remove.';
-      btn.textContent = 'Keep all';
-      btn.classList.add('disabled');
+      button.textContent = 'Keep all';
+      button.classList.add('disabled');
       return;
     }
     line1.textContent = `${matched.length} match · ${removed} will be removed`;
@@ -5568,8 +5568,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       line2.className = 'kc-preview-line2 over';
       line2.textContent = `Still over capacity · ${projected}% load after. Refine criteria to fit.`;
     }
-    btn.textContent = `Keep ${matched.length}, remove ${removed}`;
-    btn.classList.remove('disabled');
+    button.textContent = `Keep ${matched.length}, remove ${removed}`;
+    button.classList.remove('disabled');
   }
   function applyKeepCriteria() {
     const matched = confCams.filter(camMatchesKeepCriteria);
@@ -5930,10 +5930,10 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   }
   function onNewTagNameInput() { updateNewTagAddBtn(); }
   function updateNewTagAddBtn() {
-    const btn = document.getElementById('newTagAddBtn');
+    const button = document.getElementById('newTagAddBtn');
     const nameEl = document.getElementById('newTagName');
-    if (!btn || !nameEl) return;
-    btn.classList.toggle('disabled', !nameEl.value.trim());
+    if (!button || !nameEl) return;
+    button.classList.toggle('disabled', !nameEl.value.trim());
   }
   function commitNewTag() {
     const nameEl = document.getElementById('newTagName');
@@ -6071,15 +6071,15 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   function closeInfoSheet(event, id) {
     if (event.target.classList.contains('sheet-backdrop')) closeSheet(id);
   }
-  function pickSeg(btn) {
-    const group = btn.parentElement;
+  function pickSeg(button) {
+    const group = button.parentElement;
     group.querySelectorAll('.segmented-opt').forEach(o => o.classList.remove('on'));
-    btn.classList.add('on');
+    button.classList.add('on');
   }
-  function pickRadio(btn) {
-    const group = btn.parentElement;
+  function pickRadio(button) {
+    const group = button.parentElement;
     group.querySelectorAll('.type-radio-opt').forEach(o => o.classList.remove('on'));
-    btn.classList.add('on');
+    button.classList.add('on');
   }
   function openEditCam(id) {
     const c = confCams.find(x => x.id === id);
