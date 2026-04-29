@@ -951,10 +951,9 @@
   .cl-addr-search .input-field { gap: 12px; }
   .cl-addr-search .input-field.has-value .cd-loc-input-clear { display: inline-flex; }
   .cl-addr-search-ico { flex: 0 0 auto; display: inline-flex; color: var(--text-subtle); }
-  .cl-addr-dropdown { display: none; flex-direction: column; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); box-shadow: 0 4px 12px rgba(16,24,40,.06); max-height: 260px; overflow-y: auto; }
+  .cl-addr-dropdown { display: none; flex-direction: column; background: var(--surface); padding: 8px 0; }
   .cl-addr-dropdown.show { display: flex; }
-  .cl-addr-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid var(--border); }
-  .cl-addr-item:last-child { border-bottom: none; }
+  .cl-addr-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; cursor: pointer; }
   .cl-addr-item:hover { background: var(--surface-subtle); }
   .cl-addr-item-ico { color: var(--text-subtle); flex: 0 0 auto; padding-top: 2px; }
   .cl-addr-item-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
@@ -984,6 +983,11 @@
   #sCreateLocation[data-addr-mode="manual"]  .cl-addr-search-link { display: inline-flex; }
   #sCreateLocation[data-addr-mode="manual"]  .cl-addr-parsed { display: flex; }
   #sCreateLocation[data-tz-derived="false"] .cl-tz-hint { display: none; }
+  #sCreateLocation[data-typing="true"] .cd-pane > .auth-field,
+  #sCreateLocation[data-typing="true"] .cd-pane > .cd-divider,
+  #sCreateLocation[data-typing="true"] .cl-addr-map,
+  #sCreateLocation[data-typing="true"] .cl-addr-manual-link,
+  #sCreateLocation[data-typing="true"] .cl-addr-parsed { display: none; }
 
   /* Camera issues screen */
   #sCamIssues { background: var(--surface); }
@@ -4826,18 +4830,21 @@
       const active = document.activeElement;
       if (active && active.id === 'clAddrSearch') return;
       document.getElementById('clAddrDropdown').classList.remove('show');
+      document.getElementById('sCreateLocation').dataset.typing = 'false';
       document.getElementById('mobileKeyboard').classList.remove('show');
     }, 120);
   }
   function clOnAddrInput() {
     const input = document.getElementById('clAddrSearch');
     const dropdown = document.getElementById('clAddrDropdown');
+    const panel = document.getElementById('sCreateLocation');
     const value = input.value.trim();
     clAddrLastQuery = value;
     clSyncSearchClear();
     if (!value) {
       dropdown.classList.remove('show');
       dropdown.innerHTML = '';
+      panel.dataset.typing = 'false';
       return;
     }
     const lower = value.toLowerCase();
@@ -4872,6 +4879,7 @@
     </div>`;
     dropdown.innerHTML = html;
     dropdown.classList.add('show');
+    panel.dataset.typing = 'true';
   }
   function _clHighlight(text, lower) {
     const idx = text.toLowerCase().indexOf(lower);
@@ -4896,6 +4904,7 @@
       '&zoom=15&size=600x300&maptype=mapnik';
     const panel = document.getElementById('sCreateLocation');
     panel.dataset.tzDerived = 'true';
+    panel.dataset.typing = 'false';
     document.getElementById('clAddrDropdown').classList.remove('show');
     document.getElementById('mobileKeyboard').classList.remove('show');
     clSyncSearchClear();
@@ -4905,6 +4914,7 @@
     const input = document.getElementById('clAddrSearch');
     input.value = '';
     document.getElementById('clAddrDropdown').classList.remove('show');
+    document.getElementById('sCreateLocation').dataset.typing = 'false';
     clSyncSearchClear();
     clSetAddrMode('empty');
     input.focus();
@@ -4912,6 +4922,7 @@
   function clOpenManualMode() {
     document.getElementById('clAddrSearch').value = '';
     document.getElementById('clAddrDropdown').classList.remove('show');
+    document.getElementById('sCreateLocation').dataset.typing = 'false';
     document.getElementById('mobileKeyboard').classList.remove('show');
     clSyncSearchClear();
     clSetAddrMode('manual');
