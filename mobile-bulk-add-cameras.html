@@ -3761,6 +3761,14 @@
                     <span class="edit-field-label">Auto-config</span>
                     <button class="toggle-sw on" id="editCamAuto" onclick="this.classList.toggle('on')" aria-label="Auto-config"></button>
                   </div>
+                  <div class="edit-row">
+                    <span class="edit-field-label">Enable audio</span>
+                    <button class="toggle-sw" id="editCamAudio" onclick="this.classList.toggle('on')" aria-label="Enable audio"></button>
+                  </div>
+                  <div class="edit-row">
+                    <span class="edit-field-label">Enable smart storage</span>
+                    <button class="toggle-sw on" id="editCamSmart" onclick="this.classList.toggle('on')" aria-label="Enable smart storage"></button>
+                  </div>
                   <div class="edit-field">
                     <label class="edit-field-label">Type</label>
                     <div class="type-radio-list" id="editCamType">
@@ -4577,7 +4585,7 @@
     c.checked = false;
     c.expanded = false;
     c.load = s4Loads[i] ?? 10;
-    c.config = { autoConfig: true, type: 'Standard', retention: 30, storage: 'Substream' };
+    c.config = { autoConfig: true, type: 'Standard', retention: 30, storage: 'Substream', audio: false, smartStorage: true };
   });
   let editingCamId = null;
   let pendingDeleteCamId = null;
@@ -4641,12 +4649,10 @@
   }
 
   function expandedBodyHTML(c) {
-    const retention = c.config.retention;
-    const storage = c.config.storage;
     const mainstreamWarn = c.statusLevel !== 'online';
     const mainstreamRow = mainstreamWarn
       ? `<div class="opt-row"><span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span><button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button></div>`
-      : `<div class="opt-row"><span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Mainstream is optimized</span></div>`;
+      : `<div class="opt-row"><span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Mainstream is optimized</span><button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button></div>`;
     return `<div class="conf-details">
       <div class="opt-list">
         ${mainstreamRow}
@@ -4656,14 +4662,8 @@
         </div>
       </div>
       <div class="meta-grid">
-        <div class="mg-item"><span class="mg-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8l2 2 5-5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>${c.config.autoConfig ? 'Auto-config enabled' : 'Auto-config disabled'}</div>
-        <div class="mg-item"><span class="mg-text">Audio stream disabled</span></div>
-        <div class="mg-item"><span class="mg-text">Storage: ${storage}</span></div>
-        <div class="mg-item"><span class="mg-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8l2 2 5-5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Smart storage enabled</div>
-        <div class="mg-item"><span class="mg-text">${retention} retention days</span></div>
         <div class="mg-item"><span class="mg-text">Model: ${c.model}</span></div>
-        <div class="mg-item"><span class="mg-text">IP: ${c.ip}</span></div>
-        <div class="mg-item"><span class="mg-text">Mac: ${c.mac}</span></div>
+        <div class="mg-item"><span class="mg-text">IP: ${c.ip} <span class="dot" style="color:var(--color-text-subtlest);">•</span> Mac: ${c.mac}</span></div>
       </div>
       <button class="edit-cam-button" onclick="event.stopPropagation(); openEditCam(${c.id})">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
@@ -6632,6 +6632,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     document.getElementById('editCamTitle').textContent = `Edit ${c.name}`;
     document.getElementById('editCamName').value = c.name;
     document.getElementById('editCamAuto').classList.toggle('on', !!c.config.autoConfig);
+    document.getElementById('editCamAudio').classList.toggle('on', !!c.config.audio);
+    document.getElementById('editCamSmart').classList.toggle('on', !!c.config.smartStorage);
     const set = (groupId, val) => {
       document.querySelectorAll(`#${groupId} [data-val]`).forEach(o => o.classList.toggle('on', o.dataset.val === String(val)));
     };
@@ -6645,6 +6647,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     if (!c) { closeSheet('editCamSheet'); return; }
     c.name = (document.getElementById('editCamName').value || c.name).trim();
     c.config.autoConfig = document.getElementById('editCamAuto').classList.contains('on');
+    c.config.audio = document.getElementById('editCamAudio').classList.contains('on');
+    c.config.smartStorage = document.getElementById('editCamSmart').classList.contains('on');
     const getSel = (gid) => {
       const on = document.querySelector(`#${gid} [data-val].on`);
       return on ? on.dataset.val : null;
