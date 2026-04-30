@@ -996,10 +996,16 @@
   #sCreateLocationStep2 .cd-pane { padding: 16px; gap: 16px; }
   .cd-block { background: var(--color-elevation-surface-default); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 16px; }
   #sCreateLocation .cd-block { border: 1px solid var(--color-border-default); }
-  .cl-cores-head { display: flex; flex-direction: column; gap: 4px; }
-  .cl-cores-title { font-family: var(--sans); font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
-  .cl-cores-desc { font-family: var(--sans); font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; }
-  .cl-add-core-btn { gap: 8px; }
+
+  /* sAddCore — context switching for standalone vs Create-location step 3 */
+  #sAddCore[data-context="standalone"] .ac-top-back-cl,
+  #sAddCore[data-context="standalone"] .ac-title-cl,
+  #sAddCore[data-context="standalone"] .ac-stepper-cl,
+  #sAddCore[data-context="standalone"] .ac-subtitle-cl,
+  #sAddCore[data-context="standalone"] .ac-bar-cl { display: none; }
+  #sAddCore[data-context="createLocation"] .ac-top-back-standalone,
+  #sAddCore[data-context="createLocation"] .ac-title-standalone,
+  #sAddCore[data-context="createLocation"] .ac-bar-standalone { display: none; }
 
   /* Address-mode visibility — driven by data-addr-mode on #sCreateLocation */
   #sCreateLocation[data-addr-mode="empty"]  .cl-addr-link,
@@ -1869,7 +1875,7 @@
 
             <div class="bottom-action-bar">
               <button class="button button-default button-full" onclick="jumpToPanel('sCreateLocation')">Back</button>
-              <button class="button button-primary button-full" onclick="jumpToPanel('sCreateLocationStep3')">Next</button>
+              <button class="button button-primary button-full" onclick="enterAddCoreFromCreateLocation()">Next</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1897,46 +1903,6 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <!-- ========== sCreateLocationStep3: Add cores (optional) ========== -->
-          <div class="panel" id="sCreateLocationStep3">
-            <div class="top-bar">
-              <div class="tb-left">
-                <button class="button-icon" onclick="jumpToPanel('sDevices')" aria-label="Close">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-                </button>
-                <div class="tb-title">Create location</div>
-              </div>
-              <div class="tb-right"></div>
-            </div>
-
-            <div class="stepper">
-              <div class="sp-label">3 of 3</div>
-              <div class="sp-bar"><div class="sp-fill" style="width: 100%;"></div></div>
-            </div>
-
-            <div class="cd-content">
-              <div class="cd-pane">
-                <div class="cd-block cl-cores-block">
-                  <div class="cl-cores-head">
-                    <div class="cl-cores-title">Add cores</div>
-                    <div class="cl-cores-desc">Adding a core is optional. You can add or assign cores to this location later from Devices.</div>
-                  </div>
-                  <button type="button" class="button button-default button-full cl-add-core-btn">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-                    Add core
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="bottom-action-bar">
-              <button class="button button-default button-full" onclick="jumpToPanel('sCreateLocationStep2')">Back</button>
-              <button class="button button-primary button-full" onclick="jumpToPanel('sDevices')">Create location</button>
-            </div>
-
-            <div class="home-indicator"></div>
           </div>
 
           <!-- ========== S0: Location landing ========== -->
@@ -3078,21 +3044,36 @@
           </div>
 
           <!-- ========== sAddCore: Add core list ========== -->
-          <div class="panel" id="sAddCore">
+          <div class="panel" id="sAddCore" data-context="standalone">
             <div class="top-bar">
               <div class="tb-left">
-                <button class="button-icon" onclick="cancelCoreFlow()" aria-label="Back">
+                <button class="button-icon ac-top-back-standalone" onclick="cancelCoreFlow()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                <div class="tb-title">Add core</div>
+                <button class="button-icon ac-top-back-cl" onclick="jumpToPanel('sDevices')" aria-label="Close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <div class="tb-title ac-title-standalone">Add core</div>
+                <div class="tb-title ac-title-cl">Create location</div>
               </div>
               <div class="tb-right"></div>
+            </div>
+
+            <div class="stepper ac-stepper-cl">
+              <div class="sp-label">3 of 3</div>
+              <div class="sp-bar"><div class="sp-fill" style="width: 100%;"></div></div>
+            </div>
+
+            <div class="subtitle-row ac-subtitle-cl">
+              Adding a core is optional. You can add or assign cores to this location later from Devices.
             </div>
 
             <div class="content" id="coreDraftsList"></div>
 
             <div class="bottom-action-bar">
-              <button class="button button-default button-full" onclick="cancelCoreFlow()">Done</button>
+              <button class="button button-default button-full ac-bar-standalone" onclick="cancelCoreFlow()">Done</button>
+              <button class="button button-default button-full ac-bar-cl" onclick="jumpToPanel('sCreateLocationStep2')">Back</button>
+              <button class="button button-primary button-full ac-bar-cl" onclick="finishCreateLocationFromAddCore()">Create location</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -5392,8 +5373,25 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     nextCoreSuffix = 1;
     sessionCoresAdded = 0;
     addAnotherCoreDraft();
+    document.getElementById('sAddCore').dataset.context = 'standalone';
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sAddCore').classList.add('active');
+  }
+  function enterAddCoreFromCreateLocation() {
+    clearCoreConnectTimers();
+    coreDrafts = [];
+    nextCoreSuffix = 1;
+    sessionCoresAdded = 0;
+    addAnotherCoreDraft();
+    document.getElementById('sAddCore').dataset.context = 'createLocation';
+    jumpToPanel('sAddCore');
+  }
+  function finishCreateLocationFromAddCore() {
+    clearCoreConnectTimers();
+    coreDrafts = [];
+    sessionCoresAdded = 0;
+    document.getElementById('sAddCore').dataset.context = 'standalone';
+    jumpToPanel('sDevices');
   }
   function cancelCoreFlow() {
     clearCoreConnectTimers();
