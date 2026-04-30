@@ -1445,6 +1445,10 @@
                   <label class="input-label" for="editSubNotes">Notes</label>
                   <textarea id="editSubNotes"></textarea>
                 </div>
+                <div class="input-wrap">
+                  <label class="input-label">Tags</label>
+                  <div class="sub-tags-field" id="editSubTagsField"></div>
+                </div>
                 <div class="cd-divider"></div>
                 <button type="button" class="button button-danger button-md el-delete-btn">Delete sublocation</button>
               </div>
@@ -4841,6 +4845,8 @@
     const notesInput = document.getElementById('editSubNotes');
     if (nameInput) nameInput.value = title;
     if (notesInput) notesInput.value = '';
+    editSubDraftTags = new Set();
+    renderEditSubTagsField();
     openSheet('editSublocationSheet');
   }
   function addSublocationFromSublocationMenu() {
@@ -6354,6 +6360,26 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     renderSublocationTagsField();
   }
 
+  let editSubDraftTags = new Set();
+  function renderEditSubTagsField() {
+    const field = document.getElementById('editSubTagsField');
+    if (!field) return;
+    const chips = tagLibrary
+      .filter(t => editSubDraftTags.has(t.id))
+      .map(t => `<button type="button" class="sub-tag-pill" onclick="openTagPicker('editSublocation')">
+        <span class="stp-dot" style="background:${t.color};"></span>
+        <span>${_escHtml(t.name)}</span>
+        <span class="stp-x" onclick="event.stopPropagation(); removeEditSubTag('${t.id}')" aria-label="Remove">${ICON_X_SMALL}</span>
+      </button>`)
+      .join('');
+    const addPill = `<button type="button" class="sub-tag-add" onclick="openTagPicker('editSublocation')">${ICON_PLUS}<span>Add tag</span></button>`;
+    field.innerHTML = chips + addPill;
+  }
+  function removeEditSubTag(id) {
+    editSubDraftTags.delete(id);
+    renderEditSubTagsField();
+  }
+
   function renderCdDetailsTagsField() {
     const field = document.getElementById('cdDetailsTagsField');
     if (!field) return;
@@ -6379,6 +6405,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     tagPickerOwner = owner || 'sublocation';
     if (tagPickerOwner === 'camDetails') {
       pickerSnapshot = new Set(cdDetailsDraftTags);
+    } else if (tagPickerOwner === 'editSublocation') {
+      pickerSnapshot = new Set(editSubDraftTags);
     } else {
       pickerSnapshot = new Set(sublocationDraftTags);
     }
@@ -6414,6 +6442,10 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       renderCdDetailsTagsField();
       closeSheet('tagPickerSheet');
       updateCdSaveBtn();
+    } else if (tagPickerOwner === 'editSublocation') {
+      editSubDraftTags = new Set(pickerSnapshot);
+      renderEditSubTagsField();
+      closeSheet('tagPickerSheet');
     } else {
       sublocationDraftTags = new Set(pickerSnapshot);
       renderSublocationTagsField();
