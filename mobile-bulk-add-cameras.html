@@ -1223,8 +1223,31 @@
         </button>
         <div class="fm-group-body">
           <div class="fm-step" data-panel="sDevices" onclick="jumpToPanel('sDevices')"><span class="n">·</span><div><div class="lbl">Devices</div><div class="sub">all locations</div></div></div>
-          <div class="fm-step" data-panel="sCreateLocation" onclick="jumpToPanel('sCreateLocation')"><span class="n">·</span><div><div class="lbl">Create location</div><div class="sub">details · address · time zone</div></div></div>
           <div class="fm-step" data-panel="s0" onclick="jumpToPanel('s0')"><span class="n">·</span><div><div class="lbl">Administrative Center 1</div><div class="sub">sublocations · devices</div></div></div>
+          <div class="fm-step" data-panel="sSublocation" onclick="fmJumpSublocation()"><span class="n">·</span><div><div class="lbl">Sublocation</div><div class="sub">devices only</div></div></div>
+        </div>
+      </div>
+
+      <div class="fm-group collapsed">
+        <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
+          <span>Create location</span>
+          <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="fm-group-body">
+          <div class="fm-step" data-panel="sCreateLocation" onclick="jumpToPanel('sCreateLocation')"><span class="n">01</span><div><div class="lbl">Details</div><div class="sub">name · address · contact</div></div></div>
+          <div class="fm-step" data-panel="sCreateLocationStep2" onclick="jumpToPanel('sCreateLocationStep2')"><span class="n">02</span><div><div class="lbl">Configuration</div><div class="sub">compliance · features</div></div></div>
+          <div class="fm-step" data-panel="sAddCore" onclick="fmJumpCreateLocStep3()"><span class="n">03</span><div><div class="lbl">Add core</div><div class="sub">optional</div></div></div>
+          <div class="fm-step" data-panel="sSearchAddress" onclick="jumpToPanel('sSearchAddress')"><span class="n">·</span><div><div class="lbl">Search address</div><div class="sub">suggestions · map</div></div></div>
+        </div>
+      </div>
+
+      <div class="fm-group collapsed">
+        <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
+          <span>Edit location</span>
+          <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="fm-group-body">
+          <div class="fm-step" data-panel="sEditLocation" onclick="openEditLocation()"><span class="n">·</span><div><div class="lbl">Edit location</div><div class="sub">details · configuration</div></div></div>
         </div>
       </div>
 
@@ -1243,11 +1266,21 @@
 
       <div class="fm-group collapsed">
         <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
+          <span>Edit sublocation</span>
+          <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="fm-group-body">
+          <div class="fm-step" onclick="fmJumpEditSublocation()"><span class="n">·</span><div><div class="lbl">Edit sublocation</div><div class="sub">name · notes · tags · delete</div></div></div>
+        </div>
+      </div>
+
+      <div class="fm-group collapsed">
+        <button class="fm-section" type="button" onclick="toggleFmGroup(this)">
           <span>Add core</span>
           <svg class="fm-section-chev" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="fm-group-body">
-          <div class="fm-step" data-panel="sAddCore" onclick="jumpToPanel('sAddCore')"><span class="n">01</span><div><div class="lbl">Add core</div><div class="sub">name · core ID</div></div></div>
+          <div class="fm-step" data-panel="sAddCore" onclick="fmJumpStandaloneAddCore()"><span class="n">01</span><div><div class="lbl">Add core</div><div class="sub">name · core ID</div></div></div>
           <div class="fm-step" data-panel="sBarcodeScan" onclick="jumpToPanel('sBarcodeScan')"><span class="n">02</span><div><div class="lbl">Scan barcode</div><div class="sub">viewfinder</div></div></div>
         </div>
       </div>
@@ -4058,6 +4091,26 @@
     const group = button.closest('.fm-group');
     if (!group) return;
     group.classList.toggle('collapsed');
+  }
+
+  function fmJumpSublocation() {
+    const t = document.getElementById('subTitle');
+    if (t && !t.textContent.trim()) t.textContent = 'Lobby';
+    jumpToPanel('sSublocation');
+  }
+  function fmJumpCreateLocStep3() {
+    document.getElementById('sAddCore').dataset.context = 'createLocation';
+    jumpToPanel('sAddCore');
+  }
+  function fmJumpStandaloneAddCore() {
+    document.getElementById('sAddCore').dataset.context = 'standalone';
+    jumpToPanel('sAddCore');
+  }
+  function fmJumpEditSublocation() {
+    const t = document.getElementById('subTitle');
+    if (t && !t.textContent.trim()) t.textContent = 'Lobby';
+    jumpToPanel('sSublocation');
+    setTimeout(() => editSublocationFromMenu(), 80);
   }
 
   function setActiveSubStep(step) {
