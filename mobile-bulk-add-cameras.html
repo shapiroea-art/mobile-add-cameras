@@ -988,7 +988,13 @@
   .cl-addr-empty-field input { flex: 1; min-width: 0; cursor: pointer; }
   .cl-addr-parsed { display: flex; flex-direction: column; gap: 16px; }
   .cl-tz-hint { font-size: 12px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; }
-  #sCreateLocation .cd-divider { margin: 8px 0; }
+
+  /* Create location — grey background + white blocks (Add-cameras style) */
+  #sCreateLocation .cd-content,
+  #sCreateLocationStep2 .cd-content { background: var(--color-background-accent-gray200-default); }
+  #sCreateLocation .cd-pane,
+  #sCreateLocationStep2 .cd-pane { padding: 16px; gap: 16px; }
+  .cd-block { background: var(--color-elevation-surface-default); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
   /* Address-mode visibility — driven by data-addr-mode on #sCreateLocation */
   #sCreateLocation[data-addr-mode="empty"]  .cl-addr-link,
@@ -1680,14 +1686,14 @@
 
             <div class="cd-content">
               <div class="cd-pane">
-                <div class="input-wrap">
-                  <label class="input-label" for="clName">Name <span style="color:#dc2626;">*</span></label>
-                  <div class="input-field"><input type="text" id="clName"></div>
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label" for="clName">Name <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field"><input type="text" id="clName"></div>
+                  </div>
                 </div>
 
-                <div class="cd-divider"></div>
-
-                <div class="cl-addr" id="clAddr">
+                <div class="cd-block cl-addr" id="clAddr">
                   <div class="input-wrap cl-addr-empty-trigger" onclick="openAddrSearch()">
                     <label class="input-label">Address <span style="color:#dc2626;">*</span></label>
                     <div class="input-field cl-addr-empty-field">
@@ -1743,16 +1749,16 @@
                   </div>
                 </div>
 
-                <div class="cd-divider"></div>
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label" for="clContact">Contact name</label>
+                    <div class="input-field"><input type="text" id="clContact" placeholder="Contact name"></div>
+                  </div>
 
-                <div class="input-wrap">
-                  <label class="input-label" for="clContact">Contact name</label>
-                  <div class="input-field"><input type="text" id="clContact" placeholder="Contact name"></div>
-                </div>
-
-                <div class="input-wrap">
-                  <label class="input-label" for="clPhone">Phone number</label>
-                  <div class="input-field"><input type="tel" id="clPhone" placeholder="000-000-000"></div>
+                  <div class="input-wrap">
+                    <label class="input-label" for="clPhone">Phone number</label>
+                    <div class="input-field"><input type="tel" id="clPhone" placeholder="000-000-000"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1825,28 +1831,32 @@
 
             <div class="cd-content">
               <div class="cd-pane">
-                <div class="input-wrap">
-                  <label class="input-label" for="clCompliance">Compliance and availability</label>
-                  <div class="input-field" style="cursor:pointer;" onclick="openSheet('complianceSheet')">
-                    <input type="text" id="clCompliance" value="Independent" style="cursor:pointer;" readonly>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="cl-tz-hint">Some security features are not available in different jurisdictions. Lumana provides assurance that its hardware and software products are in compliance with all relevant rules and regulations.</div>
-                </div>
-
-                <div class="cd-toggle-desc-row">
-                  <button class="toggle-sw green on" type="button" id="clFaceRecog" onclick="this.classList.toggle('on');" aria-label="Face recognition"></button>
-                  <div class="cd-toggle-text">
-                    <span class="cd-toggle-label">Face recognition</span>
-                    <span class="cd-toggle-desc">Identify and verify individuals by analyzing their facial features with stored data.</span>
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label" for="clCompliance">Compliance and availability</label>
+                    <div class="input-field" style="cursor:pointer;" onclick="openSheet('complianceSheet')">
+                      <input type="text" id="clCompliance" value="Independent" style="cursor:pointer;" readonly>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="cl-tz-hint">Some security features are not available in different jurisdictions. Lumana provides assurance that its hardware and software products are in compliance with all relevant rules and regulations.</div>
                   </div>
                 </div>
 
-                <div class="cd-toggle-desc-row">
-                  <button class="toggle-sw green on" type="button" id="clGenderInfo" onclick="this.classList.toggle('on');" aria-label="Gender information"></button>
-                  <div class="cd-toggle-text">
-                    <span class="cd-toggle-label">Gender information</span>
-                    <span class="cd-toggle-desc">Data related to an individual's self-identified or biologically assigned gender.</span>
+                <div class="cd-block">
+                  <div class="cd-toggle-desc-row">
+                    <button class="toggle-sw green on" type="button" id="clFaceRecog" onclick="this.classList.toggle('on');" aria-label="Face recognition"></button>
+                    <div class="cd-toggle-text">
+                      <span class="cd-toggle-label">Face recognition</span>
+                      <span class="cd-toggle-desc">Identify and verify individuals by analyzing their facial features with stored data.</span>
+                    </div>
+                  </div>
+
+                  <div class="cd-toggle-desc-row">
+                    <button class="toggle-sw green on" type="button" id="clGenderInfo" onclick="this.classList.toggle('on');" aria-label="Gender information"></button>
+                    <div class="cd-toggle-text">
+                      <span class="cd-toggle-label">Gender information</span>
+                      <span class="cd-toggle-desc">Data related to an individual's self-identified or biologically assigned gender.</span>
+                    </div>
                   </div>
                 </div>
               </div>
