@@ -1749,7 +1749,7 @@
 
             <div class="bottom-action-bar">
               <button class="button button-default button-full" onclick="jumpToPanel('sDevices')">Back</button>
-              <button class="button button-primary button-full">Next</button>
+              <button class="button button-primary button-full" onclick="jumpToPanel('sCreateLocationStep2')">Next</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -1794,6 +1794,60 @@
 
               <div class="home-indicator"></div>
             </div>
+          </div>
+
+          <!-- ========== sCreateLocationStep2: Compliance and availability ========== -->
+          <div class="panel" id="sCreateLocationStep2">
+            <div class="top-bar">
+              <div class="tb-left">
+                <button class="button-icon" onclick="jumpToPanel('sDevices')" aria-label="Close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <div class="tb-title">Create location</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="stepper">
+              <div class="sp-label">2 of 3</div>
+              <div class="sp-bar"><div class="sp-fill" style="width: 66.667%;"></div></div>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane">
+                <div class="input-wrap">
+                  <label class="input-label" for="clCompliance">Compliance and availability</label>
+                  <div class="input-field" style="cursor:pointer;">
+                    <input type="text" id="clCompliance" value="Independent" style="cursor:pointer;" readonly>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="cl-tz-hint">Some security features are not available in different jurisdictions. Lumana provides assurance that its hardware and software products are in compliance with all relevant rules and regulations.</div>
+                </div>
+
+                <div class="cd-toggle-desc-row">
+                  <button class="toggle-sw green on" type="button" id="clFaceRecog" onclick="this.classList.toggle('on');" aria-label="Face recognition"></button>
+                  <div class="cd-toggle-text">
+                    <span class="cd-toggle-label">Face recognition</span>
+                    <span class="cd-toggle-desc">Identify and verify individuals by analyzing their facial features with stored data.</span>
+                  </div>
+                </div>
+
+                <div class="cd-toggle-desc-row">
+                  <button class="toggle-sw green on" type="button" id="clGenderInfo" onclick="this.classList.toggle('on');" aria-label="Gender information"></button>
+                  <div class="cd-toggle-text">
+                    <span class="cd-toggle-label">Gender information</span>
+                    <span class="cd-toggle-desc">Data related to an individual's self-identified or biologically assigned gender.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="jumpToPanel('sCreateLocation')">Back</button>
+              <button class="button button-primary button-full">Next</button>
+            </div>
+
+            <div class="home-indicator"></div>
           </div>
 
           <!-- ========== S0: Location landing ========== -->
