@@ -4580,11 +4580,7 @@
     const nm = el ? el.querySelector('.name') : null;
     return nm ? nm.textContent.trim() : 'Core 3';
   }
-  function coreNum() {
-    const m = coreLabel().match(/(\d+)/);
-    return m ? m[1] : '3';
-  }
-  function camNameFor(idx) { return `Administrative Center 1-Core${coreNum()}-${idx}`; }
+  function camNameFor(idx) { return `Camera ${idx}`; }
 
   const confCams = [
     { id: 1,  ip: '10.0.12.34', brand: 'Axis',      brandModel: 'Axis M3045-V',              model: 'AXIS M3045-V',      type: 'Dome',         mac: '3c:23:32:44:37:c6', path: 'ok',       statusLevel: 'online'  },
