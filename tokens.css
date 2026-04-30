@@ -1,0 +1,140 @@
+/*
+  tokens.css — Lumana mobile design tokens
+  ----------------------------------------
+  Single source of truth for colors, typography, shadows, radii and
+  Flutter-app-style sizing. Names mirror the Lumana Flutter app's token
+  identifiers (kebab-cased CSS equivalents of Dart's camelCase, e.g.
+  `backgroundButtonPrimaryDefault` -> `--color-background-button-primary-default`).
+
+  References:
+  - Figma 01-Foundations 939:15 (color), 3:30 (shadow), 3:28 (typography)
+  - lumix-mobile-main: lib/theme/resources/app_colors_light.dart,
+    lib/src/core_ui/resources/app_typography.dart, .../shadows.dart
+*/
+
+:root {
+
+  /* ============================================================ */
+  /* COLOR — Text                                                  */
+  /* ============================================================ */
+  --color-text-bold:                              #101828;
+  --color-text-defsult:                           #344054; /* typo preserved to match Figma node naming */
+  --color-text-default:                           #344054; /* alias without the typo, prefer in new code */
+  --color-text-subtle:                            #667085;
+  --color-text-subtlest:                          #98A2B3;
+  --color-text-inverse:                           #FFFFFF;
+  --color-text-success-default:                   #22C55E;
+  --color-text-alert-default:                     #DC2626;
+
+  /* ============================================================ */
+  /* COLOR — Surfaces / Elevation                                  */
+  /* ============================================================ */
+  --color-elevation-surface-default:              #FFFFFF;
+  --color-elevation-surface-subtle:               #F9FAFB;
+  --color-elevation-surface-subtlest:             #FCFCFD;
+  --color-elevation-color-blanket:                rgba(16, 24, 40, 0.64); /* modal scrim */
+
+  /* ============================================================ */
+  /* COLOR — Backgrounds (accents + status)                        */
+  /* ============================================================ */
+  --color-background-accent-gray200-default:      #F2F4F7;
+
+  --color-background-button-primary-default:      #4367F6;
+  --color-background-button-primary-hover:        #748CED;
+  --color-background-button-primary-pressed:      #3456E0; /* Flutter "pressed" — same hex as primary border */
+
+  --color-background-accent-primary-subtlest:     #F4F6FE;
+  --color-background-accent-emerald-subtle:       #D1FAE5;
+  --color-background-accent-amber-default:        #F59E0B;
+  --color-background-accent-amber-subtle:         #FEF3C7;
+  --color-background-accent-red-default:          #EF4444;
+  --color-background-accent-red-hover:            #D92D20;
+  --color-background-accent-red-subtle:           #FEE2E2;
+
+  --color-background-information-default:         #EFF6FF;
+  --color-background-success-subtle:              #F0FDF4; /* from Flutter app_colors_light */
+  --color-background-error-subtle:                #FEF2F2; /* from Flutter app_colors_light */
+
+  /* ============================================================ */
+  /* COLOR — Borders                                               */
+  /* ============================================================ */
+  --color-border-default:                         #EAECF0;
+  --color-border-input-default:                   #D0D5DD;
+  --color-border-button-primary-default:          #3456E0;
+  --color-border-info:                            #3B82F6;
+  --color-border-success:                         #22C55E;
+  --color-border-alert:                           #DC2626;
+
+  /* ============================================================ */
+  /* COLOR — Iconography (POE badge etc.)                          */
+  /* ============================================================ */
+  --color-accent-poe-default:                     #1D6FD1;
+  --color-accent-poe-subtle:                      #E4EEFB;
+
+  /* ============================================================ */
+  /* SHADOW                                                        */
+  /* ============================================================ */
+  --shadow-xs:  0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  --shadow-sm:  0 1px 2px 0 rgba(16, 24, 40, 0.06), 0 1px 3px 0 rgba(16, 24, 40, 0.10);
+  --shadow-md:  0 2px 4px -2px rgba(15, 23, 42, 0.06), 0 4px 8px -2px rgba(15, 23, 42, 0.10);
+  --shadow-lg:  0 4px 6px -2px rgba(16, 24, 40, 0.03), 0 12px 16px -4px rgba(16, 24, 40, 0.08);
+  --shadow-xl:  0 8px 8px -4px rgba(16, 24, 40, 0.03), 0 20px 24px -4px rgba(16, 24, 40, 0.08);
+  --shadow-2xl: 0 24px 48px -12px rgba(16, 24, 40, 0.18);
+
+  /* ============================================================ */
+  /* TYPOGRAPHY — Family + scale                                   */
+  /* ============================================================ */
+  --sans: 'Satoshi', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --type-xs-size:    10px;  --type-xs-line:    16px;
+  --type-sm-size:    12px;  --type-sm-line:    20px;
+  --type-base-size:  14px;  --type-base-line:  24px;
+  --type-lg-size:    16px;  --type-lg-line:    24px;
+  --type-xl-size:    20px;  --type-xl-line:    28px;
+  --type-2xl-size:   24px;  --type-2xl-line:   32px;
+  --type-3xl-size:   32px;  --type-3xl-line:   40px;  /* Flutter text3XLRegular */
+  --type-3xlarge-size: 36px; --type-3xlarge-line: 44px; /* Flutter text3XLargeMedium */
+
+  --type-weight-regular: 400;
+  --type-weight-medium:  500;
+  --type-weight-bold:    700;
+
+  /* ============================================================ */
+  /* RADII                                                         */
+  /* ============================================================ */
+  --radius-sm:    4px;   /* buttons, inputs, cards (most common) */
+  --radius-md:    16px;  /* search bar, sheet top corners */
+  --radius-lg:    36px;  /* toggle outer track */
+  --radius-pill:  9999px;
+
+  /* Backwards-compatible alias used throughout the prototype */
+  --r: var(--radius-sm);
+
+  /* ============================================================ */
+  /* SIZING — Component-level (from Flutter audit)                 */
+  /* ============================================================ */
+  --button-padding-x: 20px;
+  --button-padding-y: 12px;
+  --icon-size:        16px;
+  --input-height:     48px;
+  --toggle-height:    36px;
+}
+
+/* ============================================================ */
+/* TYPOGRAPHY UTILITIES — apply via class on text nodes.         */
+/* Naming mirrors Flutter (textXxxRegular / textXxxMedium).       */
+/* ============================================================ */
+.text-xs-r       { font-family: var(--sans); font-size: var(--type-xs-size);       line-height: var(--type-xs-line);       font-weight: var(--type-weight-regular); }
+.text-xs-m       { font-family: var(--sans); font-size: var(--type-xs-size);       line-height: var(--type-xs-line);       font-weight: var(--type-weight-medium);  }
+.text-sm-r       { font-family: var(--sans); font-size: var(--type-sm-size);       line-height: var(--type-sm-line);       font-weight: var(--type-weight-regular); }
+.text-sm-m       { font-family: var(--sans); font-size: var(--type-sm-size);       line-height: var(--type-sm-line);       font-weight: var(--type-weight-medium);  }
+.text-base-r     { font-family: var(--sans); font-size: var(--type-base-size);     line-height: var(--type-base-line);     font-weight: var(--type-weight-regular); }
+.text-base-m     { font-family: var(--sans); font-size: var(--type-base-size);     line-height: var(--type-base-line);     font-weight: var(--type-weight-medium);  }
+.text-lg-r       { font-family: var(--sans); font-size: var(--type-lg-size);       line-height: var(--type-lg-line);       font-weight: var(--type-weight-regular); }
+.text-lg-m       { font-family: var(--sans); font-size: var(--type-lg-size);       line-height: var(--type-lg-line);       font-weight: var(--type-weight-medium);  }
+.text-xl-r       { font-family: var(--sans); font-size: var(--type-xl-size);       line-height: var(--type-xl-line);       font-weight: var(--type-weight-regular); }
+.text-xl-m       { font-family: var(--sans); font-size: var(--type-xl-size);       line-height: var(--type-xl-line);       font-weight: var(--type-weight-medium);  }
+.text-2xl-r      { font-family: var(--sans); font-size: var(--type-2xl-size);      line-height: var(--type-2xl-line);      font-weight: var(--type-weight-regular); }
+.text-2xl-m      { font-family: var(--sans); font-size: var(--type-2xl-size);      line-height: var(--type-2xl-line);      font-weight: var(--type-weight-medium);  }
+.text-3xl-r      { font-family: var(--sans); font-size: var(--type-3xl-size);      line-height: var(--type-3xl-line);      font-weight: var(--type-weight-regular); }
+.text-3xlarge-m  { font-family: var(--sans); font-size: var(--type-3xlarge-size);  line-height: var(--type-3xlarge-line);  font-weight: var(--type-weight-medium);  }

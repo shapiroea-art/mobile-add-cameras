@@ -6,74 +6,8 @@
 <title>Lumana · Mobile Bulk Add Cameras</title>
 <link rel="preconnect" href="https://api.fontshare.com">
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
 <style>
-  :root {
-    /* Color tokens — names mirror Figma 01-Foundations 939:15 verbatim (Light). */
-    /* Note: `defsult` typo is preserved to match Figma exactly. */
-    --color-text-bold:                              #101828;
-    --color-text-defsult:                           #344054;
-    --color-text-subtle:                            #667085;
-    --color-text-subtlest:                          #98A2B3;
-    --color-text-inverse:                           #FFFFFF;
-    --color-text-success-default:                   #22C55E;
-
-    --color-elevation-surface-default:              #FFFFFF;
-    --color-elevation-surface-subtle:               #F9FAFB;
-
-    --color-background-accent-gray200-default:      #F2F4F7;
-    --color-background-button-primary-default:      #4367F6;
-    --color-background-button-primary-hover:        #748CED;
-    --color-background-accent-primary-subtlest:     #F4F6FE;
-    --color-background-accent-emerald-subtle:       #D1FAE5;
-    --color-background-accent-amber-default:        #F59E0B;
-    --color-background-accent-amber-subtle:         #FEF3C7;
-    --color-background-accent-red-default:          #EF4444;
-    --color-background-accent-red-subtle:           #FEE2E2;
-    --color-background-information-default:         #EFF6FF;
-
-    --color-border-default:                         #EAECF0;
-    --color-border-input-default:                   #D0D5DD;
-    --color-border-button-primary-default:          #3456E0;
-    --color-border-info:                            #3B82F6;
-
-    /* Shadow tokens — names mirror Figma 01-Foundations 3:30. */
-    --shadow-xs:  0 1px 2px 0 rgba(16, 24, 40, 0.05);
-    --shadow-sm:  0 1px 2px 0 rgba(16, 24, 40, 0.06), 0 1px 3px 0 rgba(16, 24, 40, 0.10);
-    --shadow-md:  0 2px 4px -2px rgba(15, 23, 42, 0.06), 0 4px 8px -2px rgba(15, 23, 42, 0.10);
-    --shadow-lg:  0 4px 6px -2px rgba(16, 24, 40, 0.03), 0 12px 16px -4px rgba(16, 24, 40, 0.08);
-    --shadow-xl:  0 8px 8px -4px rgba(16, 24, 40, 0.03), 0 20px 24px -4px rgba(16, 24, 40, 0.08);
-    --shadow-2xl: 0 24px 48px -12px rgba(16, 24, 40, 0.18);
-
-    /* Typography family + scale — names mirror Figma 01-Foundations 3:28. */
-    /* All sizes ship in Regular (400) and Medium (500). */
-    --sans: 'Satoshi', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --type-xs-size:    10px;  --type-xs-line:    16px;   /* Text-xs */
-    --type-sm-size:    12px;  --type-sm-line:    20px;   /* Text-sm */
-    --type-base-size:  14px;  --type-base-line:  24px;   /* Text-base */
-    --type-lg-size:    16px;  --type-lg-line:    24px;   /* Text-lg */
-    --type-xl-size:    20px;  --type-xl-line:    28px;   /* Text-xl */
-    --type-2xl-size:   24px;  --type-2xl-line:   32px;   /* Text-2xl */
-    --type-weight-regular: 400;
-    --type-weight-medium:  500;
-
-    /* Radius (no radius tokens published yet in design system). */
-    --r: 4px;
-  }
-
-  /* Typography utilities — canonical Figma type scale. Apply via class on text nodes. */
-  .text-xs-r   { font-family: var(--sans); font-size: var(--type-xs-size);   line-height: var(--type-xs-line);   font-weight: var(--type-weight-regular); }
-  .text-xs-m   { font-family: var(--sans); font-size: var(--type-xs-size);   line-height: var(--type-xs-line);   font-weight: var(--type-weight-medium);  }
-  .text-sm-r   { font-family: var(--sans); font-size: var(--type-sm-size);   line-height: var(--type-sm-line);   font-weight: var(--type-weight-regular); }
-  .text-sm-m   { font-family: var(--sans); font-size: var(--type-sm-size);   line-height: var(--type-sm-line);   font-weight: var(--type-weight-medium);  }
-  .text-base-r { font-family: var(--sans); font-size: var(--type-base-size); line-height: var(--type-base-line); font-weight: var(--type-weight-regular); }
-  .text-base-m { font-family: var(--sans); font-size: var(--type-base-size); line-height: var(--type-base-line); font-weight: var(--type-weight-medium);  }
-  .text-lg-r   { font-family: var(--sans); font-size: var(--type-lg-size);   line-height: var(--type-lg-line);   font-weight: var(--type-weight-regular); }
-  .text-lg-m   { font-family: var(--sans); font-size: var(--type-lg-size);   line-height: var(--type-lg-line);   font-weight: var(--type-weight-medium);  }
-  .text-xl-r   { font-family: var(--sans); font-size: var(--type-xl-size);   line-height: var(--type-xl-line);   font-weight: var(--type-weight-regular); }
-  .text-xl-m   { font-family: var(--sans); font-size: var(--type-xl-size);   line-height: var(--type-xl-line);   font-weight: var(--type-weight-medium);  }
-  .text-2xl-r  { font-family: var(--sans); font-size: var(--type-2xl-size);  line-height: var(--type-2xl-line);  font-weight: var(--type-weight-regular); }
-  .text-2xl-m  { font-family: var(--sans); font-size: var(--type-2xl-size);  line-height: var(--type-2xl-line);  font-weight: var(--type-weight-medium);  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     background: var(--color-background-accent-gray200-default);
@@ -182,7 +116,7 @@
   .button-default { background: var(--color-elevation-surface-default); color: var(--color-text-defsult); border-color: var(--color-border-input-default); }
   .button-default:hover { background: var(--color-elevation-surface-subtle); }
   .button-caution { background: var(--color-background-accent-red-default); color: var(--color-text-inverse); border-color: var(--color-background-accent-red-default); }
-  .button-caution:hover { background: #D92D20; }
+  .button-caution:hover { background: var(--color-background-accent-red-hover); }
   .button-full { flex: 1; }
   .button-md { height: 40px; flex: 0 0 auto; width: 100%; padding: 8px 16px; font-size: 14px; line-height: 24px; }
   .button-tertiary-color { background: transparent; color: var(--color-background-button-primary-default); font-weight: 500; padding: 8px 10px; font-size: 14px; border: none; }
@@ -296,7 +230,7 @@
 
   .badge { font-size: 10px; font-weight: 600; letter-spacing: .04em; padding: 3px 6px; border-radius: var(--r); text-transform: uppercase; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
   .badge.onvif { color: var(--color-background-button-primary-default); border-color: var(--color-background-button-primary-default); background: var(--color-background-accent-primary-subtlest); }
-  .badge.poe { color: #1D6FD1; border-color: #1D6FD1; background: #E4EEFB; }
+  .badge.poe { color: var(--color-accent-poe-default); border-color: var(--color-accent-poe-default); background: var(--color-accent-poe-subtle); }
   .badge.multi { color: var(--color-background-accent-amber-default); border-color: var(--color-background-accent-amber-default); background: var(--color-background-accent-amber-subtle); }
   .badge.added { color: var(--color-text-subtle); border-color: var(--color-border-input-default); background: var(--color-elevation-surface-subtle); }
   .badge.ok { color: var(--color-text-success-default); border-color: var(--color-text-success-default); background: var(--color-background-accent-emerald-subtle); }
@@ -541,7 +475,7 @@
   .sb-filter.show { display: inline-flex; }
   .sb-filter.active { background: var(--color-background-accent-red-default); color: var(--color-text-inverse); }
   .sb-filter:hover { background: var(--color-background-accent-red-subtle); }
-  .sb-filter.active:hover { background: #D92D20; }
+  .sb-filter.active:hover { background: var(--color-background-accent-red-hover); }
 
   /* Filter sheet groups */
   .sheet-title-row { display: flex; align-items: center; padding: 4px; margin-bottom: 8px; }
@@ -674,7 +608,7 @@
   .panel.search-on .s5-filters { padding: 6px 16px 12px; border-bottom: 1px solid var(--color-border-default); }
   .s5-search-pill { flex: 1; min-width: 0; height: 44px; background: var(--color-background-accent-gray200-default); border-radius: 16px; display: flex; align-items: center; }
   .s5-search-pill .s5-search-icon { padding: 10px; display: inline-flex; color: var(--color-text-subtle); flex: 0 0 auto; }
-  .s5-search-pill input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font: 400 14px/24px 'Satoshi', sans-serif; color: var(--color-text-defsult); padding: 10px 16px 10px 0; }
+  .s5-search-pill input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font: var(--type-weight-regular) var(--type-base-size)/var(--type-base-line) var(--sans); color: var(--color-text-defsult); padding: 10px 16px 10px 0; }
   .s5-search-pill input::placeholder { color: var(--color-text-subtle); }
   .s5-search-pill .s5-search-clear { padding: 10px; display: none; align-items: center; justify-content: center; color: var(--color-text-subtle); background: none; border: none; cursor: pointer; flex: 0 0 auto; }
   .s5-search-pill.has-value .s5-search-clear { display: inline-flex; }
@@ -766,7 +700,7 @@
   .mt-row { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 4px; }
   .mt-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; border: none; cursor: pointer; flex: 0 0 auto; }
   .mt-action.danger { background: var(--color-background-accent-red-default); color: var(--color-text-inverse); }
-  .mt-action.danger:hover { background: #D92D20; }
+  .mt-action.danger:hover { background: var(--color-background-accent-red-hover); }
   .mt-action.primary { background: var(--color-background-button-primary-default); color: var(--color-text-inverse); }
   .mt-action.primary:hover { background: var(--color-background-button-primary-hover); }
   .mt-chip { flex: 1; min-width: 0; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--color-border-input-default); border-radius: 40px; background: var(--color-elevation-surface-default); font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
@@ -797,7 +731,7 @@
   .cam-video { position: relative; width: 100%; height: 224px; background: var(--color-background-accent-gray200-default); overflow: hidden; flex: 0 0 auto; }
   .cam-video img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .cam-time-pill { position: absolute; left: 6px; bottom: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; background: rgba(16,24,40,.64); color: white; font-size: 14px; font-weight: 500; line-height: 24px; border-radius: 15px; }
-  .cam-time-pill .ok-mark { color: #22C55E; display: inline-flex; }
+  .cam-time-pill .ok-mark { color: var(--color-text-success-default); display: inline-flex; }
   .cam-actions { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 24px 0; flex: 0 0 auto; }
   .cam-actions-row { display: flex; gap: 16px; align-items: flex-start; }
   .cam-action { display: flex; flex-direction: column; gap: 4px; align-items: center; cursor: pointer; }
@@ -869,8 +803,8 @@
   .textarea { width: 100%; height: 124px; padding: 8px 16px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--color-text-defsult); resize: none; box-sizing: border-box; outline: none; }
   .textarea:focus { border-color: var(--color-background-button-primary-default); }
   .cd-divider { height: 1px; background: var(--color-border-default); margin: 0; }
-  .cd-delete-button { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid #DC2626; border-radius: var(--r); background: var(--color-elevation-surface-default); color: #DC2626; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
-  .cd-delete-button:hover { background: #FEF2F2; }
+  .cd-delete-button { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--color-text-alert-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-text-alert-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
+  .cd-delete-button:hover { background: var(--color-background-error-subtle); }
   .cd-label-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .cd-link-action { display: inline-flex; align-items: center; gap: 8px; background: none; border: none; padding: 0; color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; cursor: pointer; }
   .cd-link-action:hover { color: var(--color-background-button-primary-default); }
@@ -881,8 +815,8 @@
   .cd-stream-preview-image { display: none; height: 200px; width: 100%; border: 1px solid var(--color-border-default); border-radius: var(--r); overflow: hidden; }
   .cd-stream-preview-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .cd-test-row { display: flex; gap: 8px; align-items: stretch; }
-  .cd-test-msg { display: none; flex: 1; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid #22C55E; border-radius: var(--r); background: #F0FDF4; box-shadow: inset 3px 0 0 #22C55E; font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
-  .cd-test-msg .cd-test-msg-ico { color: #22C55E; display: inline-flex; flex: 0 0 auto; }
+  .cd-test-msg { display: none; flex: 1; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid var(--color-text-success-default); border-radius: var(--r); background: var(--color-background-success-subtle); box-shadow: inset 3px 0 0 var(--color-text-success-default); font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
+  .cd-test-msg .cd-test-msg-ico { color: var(--color-text-success-default); display: inline-flex; flex: 0 0 auto; }
   .cd-stream-info-list { display: none; flex-direction: column; }
   .cd-stream-info-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--color-border-default); gap: 12px; }
   .cd-stream-info-row .cd-stream-info-label { flex: 1; font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
@@ -900,7 +834,7 @@
   #sCamStorage { background: var(--color-elevation-surface-default); }
   .cd-section-title { font-size: 20px; font-weight: 500; color: var(--color-text-defsult); line-height: 28px; margin: 0; }
   .cd-section-divider { height: 1px; background: var(--color-border-default); margin: 0; }
-  .toggle-sw.green.on { background: #22C55E; }
+  .toggle-sw.green.on { background: var(--color-text-success-default); }
   .cd-toggle-desc-row { display: flex; align-items: flex-start; gap: 0; }
   .cd-toggle-desc-row .toggle-sw { margin: 14px 10px; flex: 0 0 auto; }
   .cd-toggle-desc-row .cd-toggle-text { display: flex; flex-direction: column; gap: 4px; padding-top: 12px; }
@@ -1006,7 +940,7 @@
 
   /* Danger / destructive button */
   .button-danger { color: var(--color-background-accent-red-default); border: 1px solid var(--color-background-accent-red-default); background: var(--color-elevation-surface-default); }
-  .button-danger:hover { background: #FEF3F2; }
+  .button-danger:hover { background: var(--color-background-error-subtle); }
   .el-delete-btn { width: auto; align-self: flex-start; height: 36px; padding: 6px 16px; }
 
   .subtitle-row.ac-subtitle-cl { font-weight: 400; color: var(--color-text-subtle); }
@@ -1076,8 +1010,8 @@
   .cd-issue-desc { font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 24px; }
 
   /* Info message bar (inline) */
-  .cd-info-bar { display: flex; align-items: flex-start; gap: 24px; padding: 16px; border-radius: var(--r); background: #EFF6FF; box-shadow: inset 3px 0 0 0 #3B82F6; }
-  .cd-info-bar .cib-ico { color: #3B82F6; flex: 0 0 auto; padding: 4px; display: inline-flex; }
+  .cd-info-bar { display: flex; align-items: flex-start; gap: 24px; padding: 16px; border-radius: var(--r); background: var(--color-background-information-default); box-shadow: inset 3px 0 0 0 var(--color-border-info); }
+  .cd-info-bar .cib-ico { color: var(--color-border-info); flex: 0 0 auto; padding: 4px; display: inline-flex; }
   .cd-info-bar .cib-label { flex: 1; min-width: 0; font-family: var(--sans); font-size: 14px; font-weight: 400; line-height: 24px; color: var(--color-text-bold); }
 
   /* Helper text under input */
@@ -1089,9 +1023,9 @@
   #sCoreDhcp .cn-ip-display .ip-dot { color: var(--color-text-subtlest); }
 
   /* Success message bar (shown after software update) */
-  .cd-success-bar { position: absolute; left: 16px; right: 16px; bottom: 50px; display: none; align-items: flex-start; gap: 24px; padding: 16px; border: 1px solid #22C55E; border-radius: var(--r); background: #F0FDF4; box-shadow: inset 3px 0 0 0 #22C55E; }
+  .cd-success-bar { position: absolute; left: 16px; right: 16px; bottom: 50px; display: none; align-items: flex-start; gap: 24px; padding: 16px; border: 1px solid var(--color-text-success-default); border-radius: var(--r); background: var(--color-background-success-subtle); box-shadow: inset 3px 0 0 0 var(--color-text-success-default); }
   .cd-success-bar.show { display: flex; }
-  .cd-success-bar .csb-ico { color: #22C55E; flex: 0 0 auto; padding: 4px; display: inline-flex; }
+  .cd-success-bar .csb-ico { color: var(--color-text-success-default); flex: 0 0 auto; padding: 4px; display: inline-flex; }
   .cd-success-bar .csb-label { flex: 1; min-width: 0; font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; color: var(--color-text-bold); }
 
   /* Add-core flow */
@@ -1127,8 +1061,8 @@
   .core-card .cc-error-actions { display: flex; gap: 16px; align-items: center; }
   .core-card .cc-error-actions button { padding: 0; background: none; border: none; font-size: 14px; font-weight: 500; color: var(--color-border-button-primary-default); cursor: pointer; }
   .core-card .cc-error-actions button:hover { color: var(--color-background-button-primary-default); text-decoration: underline; }
-  .core-card .cc-success-msg { background: #F0FDF4; border: 1px solid #22C55E; border-radius: var(--r); padding: 12px; display: flex; gap: 10px; align-items: flex-start; box-shadow: inset 3px 0 0 #22C55E; }
-  .core-card .cc-success-msg .cc-success-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; padding: 2px; }
+  .core-card .cc-success-msg { background: var(--color-background-success-subtle); border: 1px solid var(--color-text-success-default); border-radius: var(--r); padding: 12px; display: flex; gap: 10px; align-items: flex-start; box-shadow: inset 3px 0 0 var(--color-text-success-default); }
+  .core-card .cc-success-msg .cc-success-ico { color: var(--color-text-success-default); flex: 0 0 auto; display: inline-flex; padding: 2px; }
   .core-card .cc-success-msg .cc-success-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .core-card .cc-success-msg .cc-success-title { font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 20px; }
   .core-card .cc-success-msg .cc-success-action { align-self: flex-start; background: none; border: none; padding: 0; font-size: 14px; font-weight: 600; color: var(--color-background-button-primary-default); cursor: pointer; white-space: nowrap; }
@@ -1153,10 +1087,10 @@
   .scan-flashlight.on { background: var(--color-background-accent-amber-default); color: white; }
 
   /* Unified success banner (S0 cores-added · S5 cameras-added) */
-  .success-card { position: absolute; left: 16px; right: 16px; bottom: 24px; background: #F0FDF4; border: 1px solid #22C55E; border-radius: var(--r); padding: 16px; display: none; flex-direction: column; gap: 12px; box-shadow: inset 3px 0 0 0 #22C55E; z-index: 12; }
+  .success-card { position: absolute; left: 16px; right: 16px; bottom: 24px; background: var(--color-background-success-subtle); border: 1px solid var(--color-text-success-default); border-radius: var(--r); padding: 16px; display: none; flex-direction: column; gap: 12px; box-shadow: inset 3px 0 0 0 var(--color-text-success-default); z-index: 12; }
   .success-card.show { display: flex; }
   .success-card .sc-top { display: flex; gap: 12px; align-items: flex-start; }
-  .success-card .ok-ico { color: #22C55E; flex: 0 0 auto; display: inline-flex; padding: 4px; }
+  .success-card .ok-ico { color: var(--color-text-success-default); flex: 0 0 auto; display: inline-flex; padding: 4px; }
   .success-card .ok-text { flex: 1; min-width: 0; font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
   .success-card .ok-action { align-self: flex-start; background: none; border: none; padding: 0; font-size: 14px; font-weight: 600; color: var(--color-background-button-primary-default); cursor: pointer; }
   .success-card .ok-action:hover { color: var(--color-background-button-primary-hover); text-decoration: underline; }
@@ -1171,7 +1105,7 @@
   /* Copy toast */
   .copy-toast { position: absolute; left: 16px; right: 16px; bottom: 24px; background: var(--color-text-bold); color: var(--color-text-inverse); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); font-size: 14px; line-height: 20px; z-index: 30; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .18s ease, transform .18s ease; }
   .copy-toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
-  .copy-toast .ct-ico { color: #22C55E; display: inline-flex; flex: 0 0 auto; }
+  .copy-toast .ct-ico { color: var(--color-text-success-default); display: inline-flex; flex: 0 0 auto; }
   .copy-toast .ct-label { flex: 1; min-width: 0; }
   .copy-toast .ct-close { background: none; border: none; color: var(--color-text-subtlest); padding: 0; cursor: pointer; display: inline-flex; flex: 0 0 auto; border-radius: 4px; }
   .copy-toast .ct-close:hover { color: var(--color-text-inverse); }
@@ -1773,14 +1707,14 @@
               <div class="cd-pane">
                 <div class="cd-block">
                   <div class="input-wrap">
-                    <label class="input-label" for="clName">Name <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label" for="clName">Name <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field"><input type="text" id="clName"></div>
                   </div>
                 </div>
 
                 <div class="cd-block cl-addr" id="clAddr">
                   <div class="input-wrap cl-addr-empty-trigger" onclick="openAddrSearch('create')">
-                    <label class="input-label">Address <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label">Address <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field cl-addr-empty-field">
                       <span class="cl-addr-empty-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
                       <input type="text" readonly placeholder="Search for an address" tabindex="-1">
@@ -1794,22 +1728,22 @@
 
                   <div class="cl-addr-parsed">
                     <div class="input-wrap">
-                      <label class="input-label" for="clCountry">Country <span style="color:#dc2626;">*</span></label>
+                      <label class="input-label" for="clCountry">Country <span style="color:var(--color-text-alert-default);">*</span></label>
                       <div class="input-field"><input type="text" id="clCountry" placeholder="Search country"></div>
                     </div>
 
                     <div class="input-wrap">
-                      <label class="input-label" for="clState">State <span style="color:#dc2626;">*</span></label>
+                      <label class="input-label" for="clState">State <span style="color:var(--color-text-alert-default);">*</span></label>
                       <div class="input-field"><input type="text" id="clState" placeholder="Search state"></div>
                     </div>
 
                     <div class="input-wrap">
-                      <label class="input-label" for="clCity">City <span style="color:#dc2626;">*</span></label>
+                      <label class="input-label" for="clCity">City <span style="color:var(--color-text-alert-default);">*</span></label>
                       <div class="input-field"><input type="text" id="clCity"></div>
                     </div>
 
                     <div class="input-wrap">
-                      <label class="input-label" for="clStreet">Street address <span style="color:#dc2626;">*</span></label>
+                      <label class="input-label" for="clStreet">Street address <span style="color:var(--color-text-alert-default);">*</span></label>
                       <div class="input-field"><input type="text" id="clStreet"></div>
                     </div>
 
@@ -1824,7 +1758,7 @@
                     </div>
 
                     <div class="input-wrap cl-tz-wrap">
-                      <label class="input-label" for="clTimezone">Time Zone <span style="color:#dc2626;">*</span></label>
+                      <label class="input-label" for="clTimezone">Time Zone <span style="color:var(--color-text-alert-default);">*</span></label>
                       <div class="input-field" style="cursor:pointer;">
                         <input type="text" id="clTimezone" style="cursor:pointer;" readonly oninput="clOnTzEdit()">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2001,7 +1935,7 @@
               <div class="cd-pane cd-pane-details">
                 <div class="cd-block">
                   <div class="input-wrap">
-                    <label class="input-label" for="elName">Name <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label" for="elName">Name <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field"><input type="text" id="elName" value="Administrative Center 1"></div>
                   </div>
                 </div>
@@ -2013,22 +1947,22 @@
                   </button>
 
                   <div class="input-wrap">
-                    <label class="input-label" for="elCountry">Country <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label" for="elCountry">Country <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field"><input type="text" id="elCountry" value="United States"></div>
                   </div>
 
                   <div class="input-wrap">
-                    <label class="input-label" for="elState">State <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label" for="elState">State <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field"><input type="text" id="elState" value="New York"></div>
                   </div>
 
                   <div class="input-wrap">
-                    <label class="input-label" for="elCity">City <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label" for="elCity">City <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field"><input type="text" id="elCity" value="New York"></div>
                   </div>
 
                   <div class="input-wrap">
-                    <label class="input-label" for="elStreet">Street address <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label" for="elStreet">Street address <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field"><input type="text" id="elStreet" value="350 5th Ave"></div>
                   </div>
 
@@ -2043,7 +1977,7 @@
                   </div>
 
                   <div class="input-wrap">
-                    <label class="input-label" for="elTimezone">Time Zone <span style="color:#dc2626;">*</span></label>
+                    <label class="input-label" for="elTimezone">Time Zone <span style="color:var(--color-text-alert-default);">*</span></label>
                     <div class="input-field" style="cursor:pointer;">
                       <input type="text" id="elTimezone" value="America/New_York" style="cursor:pointer;" readonly>
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
