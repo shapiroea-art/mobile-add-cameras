@@ -590,6 +590,10 @@
   .type-radio-opt.on .tr-radio { border-color: var(--color-background-button-primary-default); }
   .type-radio-opt.on .tr-radio::after { content:''; position: absolute; inset: 4px; border-radius: 50%; background: var(--color-background-button-primary-default); }
   .type-radio-opt .tr-name { flex: 1; min-width: 0; }
+  .edit-divider { height: 1px; background: var(--color-border-default); margin: 0; }
+  .edit-disclosure { width: 100%; padding: 0; border: none; background: none; cursor: pointer; font-family: var(--sans); }
+  .edit-disclosure-val { display: inline-flex; align-items: center; gap: 6px; font-size: 16px; color: var(--color-text-defsult); line-height: 24px; }
+  .edit-disclosure-val svg { color: var(--color-text-subtle); }
 
   /* ===== S5 Added (location page) ===== */
   .s5-top-bar { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
@@ -3755,52 +3759,69 @@
                 <div class="edit-sheet-body">
                   <div class="edit-field">
                     <label class="edit-field-label">Camera name</label>
-                    <div class="input-field"><input type="text" id="editCamName"></div>
+                    <div class="input-field"><input type="text" id="editCamName" oninput="updateEditCamSaveBtn()"></div>
                   </div>
+                  <div class="edit-divider"></div>
                   <div class="edit-row">
-                    <span class="edit-field-label">Auto-config</span>
-                    <button class="toggle-sw on" id="editCamAuto" onclick="this.classList.toggle('on')" aria-label="Auto-config"></button>
+                    <span class="edit-field-label">Camera auto-config</span>
+                    <button class="toggle-sw on" id="editCamAuto" onclick="this.classList.toggle('on'); updateEditCamSaveBtn();" aria-label="Camera auto-config"></button>
                   </div>
-                  <div class="edit-row">
-                    <span class="edit-field-label">Enable audio</span>
-                    <button class="toggle-sw" id="editCamAudio" onclick="this.classList.toggle('on')" aria-label="Enable audio"></button>
-                  </div>
-                  <div class="edit-row">
-                    <span class="edit-field-label">Enable smart storage</span>
-                    <button class="toggle-sw on" id="editCamSmart" onclick="this.classList.toggle('on')" aria-label="Enable smart storage"></button>
-                  </div>
+                  <button class="edit-row edit-disclosure" id="editCamTypeRow" data-val="Standard" onclick="openEditCamTypePicker()">
+                    <span class="edit-field-label">Type</span>
+                    <span class="edit-disclosure-val">
+                      <span id="editCamTypeVal">Standard</span>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                  </button>
                   <div class="edit-field">
-                    <label class="edit-field-label">Type</label>
-                    <div class="type-radio-list" id="editCamType">
-                      <button class="type-radio-opt on" data-val="Standard" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Standard</span></button>
-                      <button class="type-radio-opt" data-val="PTZ" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">PTZ</span></button>
-                      <button class="type-radio-opt" data-val="FishEye ceiling mounted" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">FishEye ceiling mounted</span></button>
-                      <button class="type-radio-opt" data-val="FishEye wall mounted" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">FishEye wall mounted</span></button>
-                      <button class="type-radio-opt" data-val="Thermal" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Thermal</span></button>
-                      <button class="type-radio-opt" data-val="Thermal - PTZ" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Thermal - PTZ</span></button>
-                      <button class="type-radio-opt" data-val="Ceiling (Top down)" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Ceiling (Top down)</span></button>
-                      <button class="type-radio-opt" data-val="Mobile" onclick="pickRadio(this)"><span class="tr-radio"></span><span class="tr-name">Mobile</span></button>
+                    <label class="edit-field-label">Storage stream</label>
+                    <div class="segmented" id="editCamStorage">
+                      <button class="segmented-opt on" data-val="Substream" onclick="pickSeg(this); updateEditCamSaveBtn();">Substream</button>
+                      <button class="segmented-opt" data-val="Mainstream" onclick="pickSeg(this); updateEditCamSaveBtn();">Mainstream</button>
                     </div>
                   </div>
                   <div class="edit-field">
                     <label class="edit-field-label">Retention</label>
                     <div class="segmented" id="editCamRetention">
-                      <button class="segmented-opt on" data-val="30" onclick="pickSeg(this)">30 days</button>
-                      <button class="segmented-opt" data-val="60" onclick="pickSeg(this)">60 days</button>
-                      <button class="segmented-opt" data-val="90" onclick="pickSeg(this)">90 days</button>
+                      <button class="segmented-opt on" data-val="30" onclick="pickSeg(this); updateEditCamSaveBtn();">30 days</button>
+                      <button class="segmented-opt" data-val="60" onclick="pickSeg(this); updateEditCamSaveBtn();">60 days</button>
+                      <button class="segmented-opt" data-val="90" onclick="pickSeg(this); updateEditCamSaveBtn();">90 days</button>
                     </div>
                   </div>
-                  <div class="edit-field">
-                    <label class="edit-field-label">Storage stream</label>
-                    <div class="segmented" id="editCamStorage">
-                      <button class="segmented-opt on" data-val="Substream" onclick="pickSeg(this)">Substream</button>
-                      <button class="segmented-opt" data-val="Mainstream" onclick="pickSeg(this)">Mainstream</button>
-                    </div>
+                  <div class="edit-row">
+                    <span class="edit-field-label">Enable smart storage</span>
+                    <button class="toggle-sw on" id="editCamSmart" onclick="this.classList.toggle('on'); updateEditCamSaveBtn();" aria-label="Enable smart storage"></button>
+                  </div>
+                  <div class="edit-row">
+                    <span class="edit-field-label">Enable audio</span>
+                    <button class="toggle-sw" id="editCamAudio" onclick="this.classList.toggle('on'); updateEditCamSaveBtn();" aria-label="Enable audio"></button>
                   </div>
                 </div>
                 <div class="info-sheet-foot" style="display:flex; gap:8px;">
                   <button class="button button-default button-full" onclick="closeSheet('editCamSheet')">Cancel</button>
-                  <button class="button button-primary button-full" onclick="saveEditCam()">Save</button>
+                  <button class="button button-primary button-full disabled" id="editCamSaveBtn" onclick="saveEditCam()">Save</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="editCamTypeSheet" onclick="if(event.target.id==='editCamTypeSheet') closeSheet('editCamTypeSheet')">
+              <div class="sheet edit-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title">Camera type</div>
+                <div class="edit-sheet-body">
+                  <div class="type-radio-list" id="editCamTypePickerList">
+                    <button class="type-radio-opt" data-val="Standard" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">Standard</span></button>
+                    <button class="type-radio-opt" data-val="PTZ" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">PTZ</span></button>
+                    <button class="type-radio-opt" data-val="FishEye ceiling mounted" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">FishEye ceiling mounted</span></button>
+                    <button class="type-radio-opt" data-val="FishEye wall mounted" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">FishEye wall mounted</span></button>
+                    <button class="type-radio-opt" data-val="Thermal" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">Thermal</span></button>
+                    <button class="type-radio-opt" data-val="Thermal - PTZ" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">Thermal - PTZ</span></button>
+                    <button class="type-radio-opt" data-val="Ceiling (Top down)" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">Ceiling (Top down)</span></button>
+                    <button class="type-radio-opt" data-val="Mobile" onclick="pickEditCamType(this)"><span class="tr-radio"></span><span class="tr-name">Mobile</span></button>
+                  </div>
+                </div>
+                <div class="info-sheet-foot">
+                  <button class="button button-default button-full" onclick="closeSheet('editCamTypeSheet')">Cancel</button>
                 </div>
               </div>
             </div>
@@ -6620,10 +6641,29 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     group.querySelectorAll('.segmented-opt').forEach(o => o.classList.remove('on'));
     button.classList.add('on');
   }
-  function pickRadio(button) {
-    const group = button.parentElement;
-    group.querySelectorAll('.type-radio-opt').forEach(o => o.classList.remove('on'));
-    button.classList.add('on');
+  let editCamInitial = null;
+  function captureEditCamState() {
+    const getSel = (gid) => {
+      const on = document.querySelector(`#${gid} [data-val].on`);
+      return on ? on.dataset.val : '';
+    };
+    return {
+      name: (document.getElementById('editCamName').value || '').trim(),
+      auto: document.getElementById('editCamAuto').classList.contains('on'),
+      audio: document.getElementById('editCamAudio').classList.contains('on'),
+      smart: document.getElementById('editCamSmart').classList.contains('on'),
+      type: document.getElementById('editCamTypeRow').dataset.val || '',
+      retention: getSel('editCamRetention'),
+      storage: getSel('editCamStorage'),
+    };
+  }
+  function isEditCamDirty() {
+    if (!editCamInitial) return false;
+    const cur = captureEditCamState();
+    return Object.keys(cur).some(k => cur[k] !== editCamInitial[k]);
+  }
+  function updateEditCamSaveBtn() {
+    document.getElementById('editCamSaveBtn').classList.toggle('disabled', !isEditCamDirty());
   }
   function openEditCam(id) {
     const c = confCams.find(x => x.id === id);
@@ -6634,15 +6674,34 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     document.getElementById('editCamAuto').classList.toggle('on', !!c.config.autoConfig);
     document.getElementById('editCamAudio').classList.toggle('on', !!c.config.audio);
     document.getElementById('editCamSmart').classList.toggle('on', !!c.config.smartStorage);
+    const typeRow = document.getElementById('editCamTypeRow');
+    typeRow.dataset.val = c.config.type;
+    document.getElementById('editCamTypeVal').textContent = c.config.type;
     const set = (groupId, val) => {
       document.querySelectorAll(`#${groupId} [data-val]`).forEach(o => o.classList.toggle('on', o.dataset.val === String(val)));
     };
-    set('editCamType', c.config.type);
     set('editCamRetention', c.config.retention);
     set('editCamStorage', c.config.storage);
+    editCamInitial = captureEditCamState();
+    updateEditCamSaveBtn();
     openSheet('editCamSheet');
   }
+  function openEditCamTypePicker() {
+    const cur = document.getElementById('editCamTypeRow').dataset.val || '';
+    document.querySelectorAll('#editCamTypePickerList .type-radio-opt').forEach(o => {
+      o.classList.toggle('on', o.dataset.val === cur);
+    });
+    openSheet('editCamTypeSheet');
+  }
+  function pickEditCamType(button) {
+    const val = button.dataset.val;
+    document.getElementById('editCamTypeRow').dataset.val = val;
+    document.getElementById('editCamTypeVal').textContent = val;
+    closeSheet('editCamTypeSheet');
+    updateEditCamSaveBtn();
+  }
   function saveEditCam() {
+    if (document.getElementById('editCamSaveBtn').classList.contains('disabled')) return;
     const c = confCams.find(x => x.id === editingCamId);
     if (!c) { closeSheet('editCamSheet'); return; }
     c.name = (document.getElementById('editCamName').value || c.name).trim();
@@ -6653,7 +6712,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       const on = document.querySelector(`#${gid} [data-val].on`);
       return on ? on.dataset.val : null;
     };
-    c.config.type = getSel('editCamType') || c.config.type;
+    c.config.type = document.getElementById('editCamTypeRow').dataset.val || c.config.type;
     const ret = getSel('editCamRetention');
     c.config.retention = ret ? parseInt(ret, 10) : c.config.retention;
     c.config.storage = getSel('editCamStorage') || c.config.storage;
