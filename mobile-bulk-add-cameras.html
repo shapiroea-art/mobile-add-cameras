@@ -5971,11 +5971,14 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     clearCoreConnectTimers();
     coreDrafts = [];
     sessionCoresAdded = 0;
-    document.getElementById('sAddCore').classList.remove('active');
-    document.getElementById('s1').classList.add('active');
     if (targetRowId && document.getElementById(targetRowId)) {
       selectCore(targetRowId);
     }
+    document.getElementById('sAddCore').classList.remove('active');
+    document.getElementById('s2').classList.add('active');
+    current = screens.indexOf('s2');
+    updateChrome();
+    startScan();
   }
   function toggleScanFlashlight() {
     document.getElementById('scanFlashlight').classList.toggle('on');
