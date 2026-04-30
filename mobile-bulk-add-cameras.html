@@ -982,12 +982,18 @@
   .cl-mode-link:hover { text-decoration: underline; }
   .cl-addr-link { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; }
   .cl-addr-link svg { flex: 0 0 auto; }
+  .cl-addr-empty-trigger { cursor: pointer; }
+  .cl-addr-empty-field { cursor: pointer; gap: 12px; }
+  .cl-addr-empty-ico { flex: 0 0 auto; display: inline-flex; color: var(--color-text-subtle); }
+  .cl-addr-empty-field input { flex: 1; min-width: 0; cursor: pointer; }
   .cl-addr-parsed { display: flex; flex-direction: column; gap: 16px; }
   .cl-tz-hint { font-size: 12px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; }
   #sCreateLocation .cd-divider { margin: 8px 0; }
 
   /* Address-mode visibility — driven by data-addr-mode on #sCreateLocation */
-  #sCreateLocation[data-addr-mode="empty"] .cl-addr-parsed { display: none; }
+  #sCreateLocation[data-addr-mode="empty"]  .cl-addr-link,
+  #sCreateLocation[data-addr-mode="empty"]  .cl-addr-parsed { display: none; }
+  #sCreateLocation[data-addr-mode="picked"] .cl-addr-empty-trigger { display: none; }
   #sCreateLocation[data-tz-derived="false"] .cl-tz-hint { display: none; }
 
   /* Search address bottom-sheet panel */
@@ -1672,6 +1678,14 @@
                 <div class="cd-divider"></div>
 
                 <div class="cl-addr" id="clAddr">
+                  <div class="input-wrap cl-addr-empty-trigger" onclick="openAddrSearch()">
+                    <label class="input-label">Address <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field cl-addr-empty-field">
+                      <span class="cl-addr-empty-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                      <input type="text" readonly placeholder="Search for an address" tabindex="-1">
+                    </div>
+                  </div>
+
                   <button type="button" class="cl-mode-link cl-addr-link" onclick="openAddrSearch()">
                     <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                     Search for an address
