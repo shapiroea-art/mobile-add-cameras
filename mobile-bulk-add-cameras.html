@@ -1431,6 +1431,29 @@
             </div>
           </div>
 
+          <!-- Bottom sheet: Edit sublocation (Figma 5:145037) -->
+          <div class="sheet-backdrop" id="editSublocationSheet" onclick="if(event.target.id==='editSublocationSheet') closeSheet('editSublocationSheet')">
+            <div class="sheet addsub-sheet">
+              <div class="ts-handle"></div>
+              <div class="ts-title">Edit sublocation</div>
+              <div class="ts-body">
+                <div class="input-wrap">
+                  <label class="input-label" for="editSubName">Name</label>
+                  <div class="input-field"><input type="text" id="editSubName"></div>
+                </div>
+                <div class="input-wrap">
+                  <label class="input-label" for="editSubNotes">Notes</label>
+                  <textarea id="editSubNotes"></textarea>
+                </div>
+                <div class="cd-divider"></div>
+                <button type="button" class="button button-danger button-md el-delete-btn">Delete sublocation</button>
+              </div>
+              <div class="ts-foot">
+                <button class="button button-primary" onclick="closeSheet('editSublocationSheet')">Save</button>
+              </div>
+            </div>
+          </div>
+
           <!-- Bottom sheet: Add sublocation -->
           <div class="sheet-backdrop" id="addSublocationSheet" onclick="if(event.target.id==='addSublocationSheet') { closeSheet('addSublocationSheet'); clearActiveSubStep(); }">
             <div class="sheet addsub-sheet">
@@ -4813,7 +4836,12 @@
   function closeSublocationMenu() { document.getElementById('sublocationMenuSheet').classList.remove('open'); }
   function editSublocationFromMenu() {
     closeSublocationMenu();
-    openEditLocation();
+    const title = document.getElementById('subTitle')?.textContent || '';
+    const nameInput = document.getElementById('editSubName');
+    const notesInput = document.getElementById('editSubNotes');
+    if (nameInput) nameInput.value = title;
+    if (notesInput) notesInput.value = '';
+    openSheet('editSublocationSheet');
   }
   function addSublocationFromSublocationMenu() {
     closeSublocationMenu();
