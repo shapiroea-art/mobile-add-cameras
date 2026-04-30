@@ -4849,6 +4849,7 @@
     }
   ];
   let _addrPickedKey = null;
+  let _addrFreeText = false;
 
   function clOnTzEdit() {
     document.getElementById('sCreateLocation').dataset.tzDerived = 'false';
@@ -4868,6 +4869,7 @@
     document.getElementById('addrSearchInput').value = '';
     document.getElementById('addrSearchSuggestions').innerHTML = '';
     _addrPickedKey = null;
+    _addrFreeText = false;
     document.getElementById('addrSearchSelectBtn').disabled = true;
     jumpToPanel('sSearchAddress');
     setTimeout(() => document.getElementById('addrSearchInput').focus(), 80);
@@ -4877,35 +4879,41 @@
     const input = document.getElementById('addrSearchInput');
     const list = document.getElementById('addrSearchSuggestions');
     const panel = document.getElementById('sSearchAddress');
+    const btn = document.getElementById('addrSearchSelectBtn');
     const value = input.value.trim();
     if (!value) {
       panel.dataset.searchState = 'empty';
       list.innerHTML = '';
       _addrPickedKey = null;
-      document.getElementById('addrSearchSelectBtn').disabled = true;
+      _addrFreeText = false;
+      btn.disabled = true;
       return;
     }
     const lower = value.toLowerCase();
     const matches = CL_ADDR_SUGGESTIONS.filter(s =>
       (s.title + ' ' + s.sub).toLowerCase().includes(lower)
     ).slice(0, 6);
-    let html = matches.map(s => {
-      const fullText = s.title + ', ' + s.sub;
-      return `<div class="addr-search-item" onmousedown="event.preventDefault()" onclick="addrSearchPickSuggestion('${s.key}')">${_addrHighlight(fullText, lower)}</div>`;
-    }).join('');
-    if (!matches.length) {
-      html = `<div class="addr-search-empty">No matches found</div>`;
+    if (matches.length) {
+      list.innerHTML = matches.map(s => {
+        const fullText = s.title + ', ' + s.sub;
+        return `<div class="addr-search-item" onmousedown="event.preventDefault()" onclick="addrSearchPickSuggestion('${s.key}')">${_addrHighlight(fullText, lower)}</div>`;
+      }).join('');
+      _addrFreeText = false;
+      btn.disabled = true;
+    } else {
+      list.innerHTML = `<div class="addr-search-empty">No matches found. Tap Select to use what you typed.</div>`;
+      _addrFreeText = true;
+      btn.disabled = false;
     }
-    list.innerHTML = html;
     panel.dataset.searchState = 'typing';
     _addrPickedKey = null;
-    document.getElementById('addrSearchSelectBtn').disabled = true;
   }
 
   function addrSearchPickSuggestion(key) {
     const place = CL_ADDR_SUGGESTIONS.find(s => s.key === key);
     if (!place) return;
     _addrPickedKey = key;
+    _addrFreeText = false;
     document.getElementById('addrSearchInput').value = place.title + ', ' + place.sub;
     document.getElementById('addrSearchInput').blur();
     document.getElementById('addrSearchMapImg').src =
@@ -4920,6 +4928,7 @@
     document.getElementById('addrSearchSuggestions').innerHTML = '';
     document.getElementById('sSearchAddress').dataset.searchState = 'empty';
     _addrPickedKey = null;
+    _addrFreeText = false;
     document.getElementById('addrSearchSelectBtn').disabled = true;
     document.getElementById('addrSearchInput').focus();
   }
@@ -4929,20 +4938,36 @@
   }
 
   function addrSearchSelect() {
-    if (!_addrPickedKey) return;
-    const place = CL_ADDR_SUGGESTIONS.find(s => s.key === _addrPickedKey);
-    if (!place) return;
-    document.getElementById('clCountry').value  = place.country;
-    document.getElementById('clState').value    = place.state;
-    document.getElementById('clCity').value     = place.city;
-    document.getElementById('clStreet').value   = place.street;
-    document.getElementById('clFloor').value    = place.floor || '';
-    document.getElementById('clZip').value      = place.zip;
-    document.getElementById('clTimezone').value = place.tz;
     const cl = document.getElementById('sCreateLocation');
-    cl.dataset.addrMode  = 'picked';
-    cl.dataset.tzDerived = 'true';
-    jumpToPanel('sCreateLocation');
+    if (_addrPickedKey) {
+      const place = CL_ADDR_SUGGESTIONS.find(s => s.key === _addrPickedKey);
+      if (!place) return;
+      document.getElementById('clCountry').value  = place.country;
+      document.getElementById('clState').value    = place.state;
+      document.getElementById('clCity').value     = place.city;
+      document.getElementById('clStreet').value   = place.street;
+      document.getElementById('clFloor').value    = place.floor || '';
+      document.getElementById('clZip').value      = place.zip;
+      document.getElementById('clTimezone').value = place.tz;
+      cl.dataset.addrMode  = 'picked';
+      cl.dataset.tzDerived = 'true';
+      jumpToPanel('sCreateLocation');
+      return;
+    }
+    if (_addrFreeText) {
+      const v = document.getElementById('addrSearchInput').value.trim();
+      if (!v) return;
+      document.getElementById('clCountry').value  = '';
+      document.getElementById('clState').value    = '';
+      document.getElementById('clCity').value     = '';
+      document.getElementById('clStreet').value   = v;
+      document.getElementById('clFloor').value    = '';
+      document.getElementById('clZip').value      = '';
+      document.getElementById('clTimezone').value = '';
+      cl.dataset.addrMode  = 'picked';
+      cl.dataset.tzDerived = 'false';
+      jumpToPanel('sCreateLocation');
+    }
   }
 
   // ===== Core screen =====
