@@ -996,6 +996,17 @@
   #sCreateLocationStep2 .cd-pane { padding: 16px; gap: 16px; }
   .cd-block { background: var(--color-elevation-surface-default); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 16px; }
   #sCreateLocation .cd-block { border: 1px solid var(--color-border-default); }
+  #sEditLocation .cd-block { border: 1px solid var(--color-border-default); }
+
+  /* Edit location — grey background, tabbed */
+  #sEditLocation .cd-content { background: var(--color-background-accent-gray200-default); }
+  #sEditLocation .cd-pane { padding: 16px; gap: 16px; }
+  #sEditLocation[data-tab="details"] .cd-pane-config { display: none; }
+  #sEditLocation[data-tab="config"] .cd-pane-details { display: none; }
+
+  /* Danger / destructive button */
+  .button-danger { color: var(--color-background-accent-red-default); border: 1px solid var(--color-background-accent-red-default); background: var(--color-elevation-surface-default); }
+  .button-danger:hover { background: #FEF3F2; }
 
   .subtitle-row.ac-subtitle-cl { font-weight: 400; color: var(--color-text-subtle); }
 
@@ -1707,7 +1718,7 @@
                 </div>
 
                 <div class="cd-block cl-addr" id="clAddr">
-                  <div class="input-wrap cl-addr-empty-trigger" onclick="openAddrSearch()">
+                  <div class="input-wrap cl-addr-empty-trigger" onclick="openAddrSearch('create')">
                     <label class="input-label">Address <span style="color:#dc2626;">*</span></label>
                     <div class="input-field cl-addr-empty-field">
                       <span class="cl-addr-empty-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
@@ -1715,7 +1726,7 @@
                     </div>
                   </div>
 
-                  <button type="button" class="cl-mode-link cl-addr-link" onclick="openAddrSearch()">
+                  <button type="button" class="cl-mode-link cl-addr-link" onclick="openAddrSearch('create')">
                     <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                     Change address
                   </button>
@@ -1847,7 +1858,7 @@
                 <div class="cd-block">
                   <div class="input-wrap">
                     <label class="input-label" for="clCompliance">Compliance and availability</label>
-                    <div class="input-field" style="cursor:pointer;" onclick="openSheet('complianceSheet')">
+                    <div class="input-field" style="cursor:pointer;" onclick="openComplianceSheet('create')">
                       <input type="text" id="clCompliance" value="Independent" style="cursor:pointer;" readonly>
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
@@ -1881,30 +1892,157 @@
             </div>
 
             <div class="home-indicator"></div>
+          </div>
 
-            <div class="sheet-backdrop" id="complianceSheet" onclick="if(event.target.id==='complianceSheet') closeSheet('complianceSheet')">
-              <div class="sheet dd-sheet">
-                <div class="sheet-handle dd-sheet-handle"></div>
-                <div class="dd-list">
-                  <div class="dd-item selected" onclick="pickCompliance(this, 'Independent')">
-                    <span class="dd-label">Independent</span>
-                    <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <!-- Compliance bottom sheet — top-level so it's reachable from both Create and Edit panels -->
+          <div class="sheet-backdrop" id="complianceSheet" onclick="if(event.target.id==='complianceSheet') closeSheet('complianceSheet')">
+            <div class="sheet dd-sheet">
+              <div class="sheet-handle dd-sheet-handle"></div>
+              <div class="dd-list">
+                <div class="dd-item selected" onclick="pickCompliance(this, 'Independent')">
+                  <span class="dd-label">Independent</span>
+                  <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="dd-item" onclick="pickCompliance(this, 'Illinois')">
+                  <span class="dd-label">Illinois</span>
+                  <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="dd-item" onclick="pickCompliance(this, 'Portland')">
+                  <span class="dd-label">Portland</span>
+                  <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="dd-item" onclick="pickCompliance(this, 'Texas')">
+                  <span class="dd-label">Texas</span>
+                  <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========== sEditLocation: Edit location (Details / Configuration) ========== -->
+          <div class="panel" id="sEditLocation" data-tab="details">
+            <div class="top-bar">
+              <div class="tb-left">
+                <button class="button-icon" onclick="jumpToPanel('s0')" aria-label="Close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <div class="tb-title">Edit location</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cd-tabs">
+              <button class="cd-tab active" type="button" onclick="pickEditLocTab(this)" data-tab="details">Details</button>
+              <button class="cd-tab" type="button" onclick="pickEditLocTab(this)" data-tab="config">Configuration</button>
+            </div>
+
+            <div class="cd-content">
+              <div class="cd-pane cd-pane-details">
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label" for="elName">Name <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field"><input type="text" id="elName" value="Administrative Center 1"></div>
                   </div>
-                  <div class="dd-item" onclick="pickCompliance(this, 'Illinois')">
-                    <span class="dd-label">Illinois</span>
-                    <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+
+                <div class="cd-block">
+                  <button type="button" class="cl-mode-link cl-addr-link" onclick="openAddrSearch('edit')">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                    Change address
+                  </button>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elCountry">Country <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field"><input type="text" id="elCountry" value="United States"></div>
                   </div>
-                  <div class="dd-item" onclick="pickCompliance(this, 'Portland')">
-                    <span class="dd-label">Portland</span>
-                    <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elState">State <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field"><input type="text" id="elState" value="New York"></div>
                   </div>
-                  <div class="dd-item" onclick="pickCompliance(this, 'Texas')">
-                    <span class="dd-label">Texas</span>
-                    <svg class="dd-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elCity">City <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field"><input type="text" id="elCity" value="New York"></div>
+                  </div>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elStreet">Street address <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field"><input type="text" id="elStreet" value="350 5th Ave"></div>
+                  </div>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elFloor">Floor, suite, etc.</label>
+                    <div class="input-field"><input type="text" id="elFloor" value=""></div>
+                  </div>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elZip">Zip code</label>
+                    <div class="input-field"><input type="text" id="elZip" value="10118"></div>
+                  </div>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elTimezone">Time Zone <span style="color:#dc2626;">*</span></label>
+                    <div class="input-field" style="cursor:pointer;">
+                      <input type="text" id="elTimezone" value="America/New_York" style="cursor:pointer;" readonly>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label" for="elContact">Contact name</label>
+                    <div class="input-field"><input type="text" id="elContact" placeholder="Contact name"></div>
+                  </div>
+
+                  <div class="input-wrap">
+                    <label class="input-label" for="elPhone">Phone number</label>
+                    <div class="input-field"><input type="tel" id="elPhone" placeholder="000-000-000"></div>
+                  </div>
+                </div>
+
+                <button type="button" class="button button-danger button-full">Delete location</button>
+              </div>
+
+              <div class="cd-pane cd-pane-config">
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label" for="elCompliance">Compliance and availability</label>
+                    <div class="input-field" style="cursor:pointer;" onclick="openComplianceSheet('edit')">
+                      <input type="text" id="elCompliance" value="Independent" style="cursor:pointer;" readonly>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--color-text-defsult);"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="cl-tz-hint">Some security features are not available in different jurisdictions. Lumana provides assurance that its hardware and software products are in compliance with all relevant rules and regulations.</div>
+                  </div>
+                </div>
+
+                <div class="cd-block">
+                  <div class="cd-toggle-desc-row">
+                    <button class="toggle-sw green on" type="button" id="elFaceRecog" onclick="this.classList.toggle('on');" aria-label="Face recognition"></button>
+                    <div class="cd-toggle-text">
+                      <span class="cd-toggle-label">Face recognition</span>
+                      <span class="cd-toggle-desc">Identify and verify individuals by analyzing their facial features with stored data.</span>
+                    </div>
+                  </div>
+
+                  <div class="cd-toggle-desc-row">
+                    <button class="toggle-sw green on" type="button" id="elGenderInfo" onclick="this.classList.toggle('on');" aria-label="Gender information"></button>
+                    <div class="cd-toggle-text">
+                      <span class="cd-toggle-label">Gender information</span>
+                      <span class="cd-toggle-desc">Data related to an individual's self-identified or biologically assigned gender.</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div class="bottom-action-bar">
+              <button class="button button-default button-full" onclick="jumpToPanel('s0')">Close</button>
+              <button class="button button-primary button-full" onclick="jumpToPanel('s0')">Save</button>
+            </div>
+
+            <div class="home-indicator"></div>
           </div>
 
           <!-- ========== S0: Location landing ========== -->
@@ -2007,7 +2145,7 @@
             <div class="sheet-backdrop" id="locationMenuSheet" onclick="if(event.target.id==='locationMenuSheet') closeLocationMenu()">
               <div class="sheet location-menu-sheet">
                 <div class="sheet-handle"></div>
-                <div class="loc-menu-item" onclick="closeLocationMenu()">
+                <div class="loc-menu-item" onclick="openEditLocation()">
                   <span class="lmi-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></span>
                   <span class="lmi-text">Edit location</span>
                 </div>
@@ -4577,6 +4715,18 @@
   // ===== S0 location menu =====
   function openLocationMenu() { document.getElementById('locationMenuSheet').classList.add('open'); }
   function closeLocationMenu() { document.getElementById('locationMenuSheet').classList.remove('open'); }
+  function openEditLocation() {
+    closeLocationMenu();
+    const panel = document.getElementById('sEditLocation');
+    panel.dataset.tab = 'details';
+    panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'details'));
+    jumpToPanel('sEditLocation');
+  }
+  function pickEditLocTab(button) {
+    button.parentElement.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('sEditLocation').dataset.tab = button.dataset.tab || 'details';
+  }
   function openAddSublocation() {
     closeLocationMenu();
     const name = document.getElementById('addSubName');
@@ -4976,13 +5126,33 @@
   ];
   let _addrPickedKey = null;
   let _addrFreeText = false;
+  let _addrSearchTarget = 'create';
+
+  const _ADDR_PREFIX_BY_TARGET = { create: 'cl', edit: 'el' };
+  function _addrFieldId(name) { return _ADDR_PREFIX_BY_TARGET[_addrSearchTarget] + name; }
+  function _addrReturnPanel() { return _addrSearchTarget === 'edit' ? 'sEditLocation' : 'sCreateLocation'; }
 
   function clOnTzEdit() {
     document.getElementById('sCreateLocation').dataset.tzDerived = 'false';
   }
 
+  function openComplianceSheet(target) {
+    const t = target === 'edit' ? 'edit' : 'create';
+    const sheet = document.getElementById('complianceSheet');
+    sheet.dataset.target = t;
+    const inputId = t === 'edit' ? 'elCompliance' : 'clCompliance';
+    const current = document.getElementById(inputId).value;
+    sheet.querySelectorAll('.dd-item').forEach(it => {
+      const label = it.querySelector('.dd-label')?.textContent.trim();
+      it.classList.toggle('selected', label === current);
+    });
+    openSheet('complianceSheet');
+  }
   function pickCompliance(el, value) {
-    document.getElementById('clCompliance').value = value;
+    const sheet = document.getElementById('complianceSheet');
+    const target = sheet.dataset.target === 'edit' ? 'edit' : 'create';
+    const inputId = target === 'edit' ? 'elCompliance' : 'clCompliance';
+    document.getElementById(inputId).value = value;
     el.parentElement.querySelectorAll('.dd-item').forEach(it => it.classList.remove('selected'));
     el.classList.add('selected');
     closeSheet('complianceSheet');
@@ -4996,7 +5166,8 @@
       _escHtml(text.substring(idx + lower.length));
   }
 
-  function openAddrSearch() {
+  function openAddrSearch(target) {
+    _addrSearchTarget = target === 'edit' ? 'edit' : 'create';
     const panel = document.getElementById('sSearchAddress');
     panel.dataset.searchState = 'empty';
     document.getElementById('addrSearchInput').value = '';
@@ -5067,39 +5238,44 @@
   }
 
   function addrSearchBack() {
-    jumpToPanel('sCreateLocation');
+    jumpToPanel(_addrReturnPanel());
   }
 
   function addrSearchSelect() {
+    const returnPanel = _addrReturnPanel();
     const cl = document.getElementById('sCreateLocation');
     if (_addrPickedKey) {
       const place = CL_ADDR_SUGGESTIONS.find(s => s.key === _addrPickedKey);
       if (!place) return;
-      document.getElementById('clCountry').value  = place.country;
-      document.getElementById('clState').value    = place.state;
-      document.getElementById('clCity').value     = place.city;
-      document.getElementById('clStreet').value   = place.street;
-      document.getElementById('clFloor').value    = place.floor || '';
-      document.getElementById('clZip').value      = place.zip;
-      document.getElementById('clTimezone').value = place.tz;
-      cl.dataset.addrMode  = 'picked';
-      cl.dataset.tzDerived = 'true';
-      jumpToPanel('sCreateLocation');
+      document.getElementById(_addrFieldId('Country')).value  = place.country;
+      document.getElementById(_addrFieldId('State')).value    = place.state;
+      document.getElementById(_addrFieldId('City')).value     = place.city;
+      document.getElementById(_addrFieldId('Street')).value   = place.street;
+      document.getElementById(_addrFieldId('Floor')).value    = place.floor || '';
+      document.getElementById(_addrFieldId('Zip')).value      = place.zip;
+      document.getElementById(_addrFieldId('Timezone')).value = place.tz;
+      if (_addrSearchTarget === 'create') {
+        cl.dataset.addrMode  = 'picked';
+        cl.dataset.tzDerived = 'true';
+      }
+      jumpToPanel(returnPanel);
       return;
     }
     if (_addrFreeText) {
       const v = document.getElementById('addrSearchInput').value.trim();
       if (!v) return;
-      document.getElementById('clCountry').value  = '';
-      document.getElementById('clState').value    = '';
-      document.getElementById('clCity').value     = '';
-      document.getElementById('clStreet').value   = v;
-      document.getElementById('clFloor').value    = '';
-      document.getElementById('clZip').value      = '';
-      document.getElementById('clTimezone').value = '';
-      cl.dataset.addrMode  = 'picked';
-      cl.dataset.tzDerived = 'false';
-      jumpToPanel('sCreateLocation');
+      document.getElementById(_addrFieldId('Country')).value  = '';
+      document.getElementById(_addrFieldId('State')).value    = '';
+      document.getElementById(_addrFieldId('City')).value     = '';
+      document.getElementById(_addrFieldId('Street')).value   = v;
+      document.getElementById(_addrFieldId('Floor')).value    = '';
+      document.getElementById(_addrFieldId('Zip')).value      = '';
+      document.getElementById(_addrFieldId('Timezone')).value = '';
+      if (_addrSearchTarget === 'create') {
+        cl.dataset.addrMode  = 'picked';
+        cl.dataset.tzDerived = 'false';
+      }
+      jumpToPanel(returnPanel);
     }
   }
 
