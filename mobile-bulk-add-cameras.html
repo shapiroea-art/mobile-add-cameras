@@ -4583,14 +4583,12 @@
   }
   function openAddByIpSheet() {
     closeMethodSheet();
+    const start = document.getElementById('addIpStart');
     document.getElementById('addIpStart').value = ipRange.from || '';
     document.getElementById('addIpEnd').value = ipRange.to || '';
     document.getElementById('addIpPort').value = ipRange.port || '554';
     openSheet('addByIpSheet');
-    setTimeout(() => {
-      const start = document.getElementById('addIpStart');
-      if (start) { start.focus(); start.select(); }
-    }, 320);
+    if (start) { start.focus(); start.select(); }
   }
   function handleAddIpKey(e, nextId) {
     if (e.key !== 'Enter') return;
