@@ -53,7 +53,7 @@ Latest iteration of `mobile-bulk-add-cameras.html`, pushed to `github.com/shapir
 
 - **Devices + Administrative Center 1 lists.** Filter chips are now `Status · Type · Tags` (Location chip removed; Tags added at the end).
 - **Search-active mode** on Devices, AC1 (entry), and AC1 (post-add success). Tapping the magnifier swaps the chips row for a full-width pill input on `#F2F4F7` with placeholder "Search device or location"; chevron-up collapses it. Pattern from Figma node `5:6765`. Visual only — input doesn't filter rows yet.
-- **Add-core seed name** is now `Administrative Center 1-CoreN` (was `Main office-CoreN`); auto-generated camera names follow the same prefix.
+- **Add-core seed name** is now `CoreN` (e.g. `Core1`, `Core2`); was `Administrative Center 1-CoreN`. Auto-generated cameras follow the `Camera N` convention.
 - **S1 core picker rows** wrap and grow vertically when names are too long for one line, instead of overflowing.
 - **Step 2 renamed** from "Discover" to "Detection" (stepper label + file menu).
 - **Detection screen restructure.** Round scan-progress indicator moved to the left of "Select cameras to authenticate" in the title row. The Unregistered / Registered / Unknown chips moved into the Filter bottom sheet under a new "Devices" group at the top. The previous chips row and its separator are gone. Device chips are radio-style: tapping the active chip clears it back to All; the filter button shows its has-filters dot when a device filter is active.
