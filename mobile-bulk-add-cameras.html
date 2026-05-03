@@ -494,7 +494,8 @@
   .fg-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--color-text-subtle); text-transform: uppercase; padding: 0 0 8px; }
   .fg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
   /* Masked IP address input (Figma node 3919:14537) */
-  .ip-input { display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 48px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); transition: border-color .12s ease; flex: 1; min-width: 0; }
+  .ip-input { display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 48px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); transition: border-color .12s ease; box-sizing: border-box; }
+  .add-ip-row .ip-input { flex: 1; min-width: 0; }
   .ip-input:focus-within { border-color: var(--color-border-button-primary-default); }
   .ip-input .ip-octet { width: 28px; text-align: center; padding: 0; border: none; outline: none; background: transparent; font-family: var(--sans); font-size: 14px; font-weight: 400; line-height: 24px; color: var(--color-text-defsult); }
   .ip-input .ip-octet::placeholder { color: var(--color-text-subtlest); }
