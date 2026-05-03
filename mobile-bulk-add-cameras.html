@@ -1360,10 +1360,6 @@
                   <span class="cb-badge">1</span>
                 </div>
               </div>
-              <div class="ts-foot">
-                <button class="button button-default" onclick="clearStatusFilters()">Clear All</button>
-                <button class="button button-primary" onclick="applyStatusFilters()">Apply Filters</button>
-              </div>
             </div>
           </div>
 
@@ -1403,10 +1399,6 @@
                   <span class="cb-label">Doors</span>
                   <span class="cb-badge">4</span>
                 </div>
-              </div>
-              <div class="ts-foot">
-                <button class="button button-default" onclick="clearTypeFilters()">Clear All</button>
-                <button class="button button-primary" onclick="applyTypeFilters()">Apply Filters</button>
               </div>
             </div>
           </div>
@@ -5653,32 +5645,30 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const searchBtn = panel.querySelector('.s5-filters .button-icon[aria-label="Search"]');
     if (searchBtn) searchBtn.classList.toggle('used', !!(input && input.value.trim()));
   }
+  function updateFilterChipFromList(chipKey, listId, dataAttr) {
+    const checked = document.querySelectorAll(`#${listId} .cb-row[data-${dataAttr}]:not([data-${dataAttr}="all"]).checked`).length;
+    document.querySelectorAll(`.s5-chip[data-chip="${chipKey}"]`).forEach(chip => {
+      chip.classList.toggle('selected', checked > 0);
+      const countEl = chip.querySelector('.s5-chip-count');
+      if (countEl) countEl.textContent = checked;
+    });
+  }
   function toggleTypeOption(row) {
     row.classList.toggle('checked');
     syncTypeAll();
+    updateFilterChipFromList('type', 'typeFilterList', 'type');
   }
   function toggleTypeAll(row) {
     const willCheck = !row.classList.contains('checked');
     row.classList.toggle('checked', willCheck);
     document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"])').forEach(r => r.classList.toggle('checked', willCheck));
+    updateFilterChipFromList('type', 'typeFilterList', 'type');
   }
   function syncTypeAll() {
     const items = document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"])');
     const checked = document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"]).checked');
     const all = document.querySelector('#typeFilterList .cb-row[data-type="all"]');
     if (all) all.classList.toggle('checked', items.length > 0 && checked.length === items.length);
-  }
-  function clearTypeFilters() {
-    document.querySelectorAll('#typeFilterList .cb-row.checked').forEach(r => r.classList.remove('checked'));
-  }
-  function applyTypeFilters() {
-    const n = document.querySelectorAll('#typeFilterList .cb-row[data-type]:not([data-type="all"]).checked').length;
-    document.querySelectorAll('.s5-chip[data-chip="type"]').forEach(chip => {
-      chip.classList.toggle('selected', n > 0);
-      const countEl = chip.querySelector('.s5-chip-count');
-      if (countEl) countEl.textContent = n;
-    });
-    closeSheet('typeFilterSheet');
   }
   function onSearchInput(input) {
     const pill = input.closest('.s5-search-pill');
@@ -5694,18 +5684,9 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       input.focus();
     }
   }
-  function toggleStatusOption(row) { row.classList.toggle('checked'); }
-  function clearStatusFilters() {
-    document.querySelectorAll('#statusFilterList .cb-row.checked').forEach(r => r.classList.remove('checked'));
-  }
-  function applyStatusFilters() {
-    const n = document.querySelectorAll('#statusFilterList .cb-row.checked').length;
-    document.querySelectorAll('.s5-chip[data-chip="status"]').forEach(chip => {
-      chip.classList.toggle('selected', n > 0);
-      const countEl = chip.querySelector('.s5-chip-count');
-      if (countEl) countEl.textContent = n;
-    });
-    closeSheet('statusFilterSheet');
+  function toggleStatusOption(row) {
+    row.classList.toggle('checked');
+    updateFilterChipFromList('status', 'statusFilterList', 'status');
   }
 
   // ===== Add-core flow =====
