@@ -1527,7 +1527,7 @@
               <div class="sheet-handle"></div>
               <div class="sheet-title">Other ways to add</div>
               <div class="sheet-list">
-                <div class="sheet-row" onclick="closeMethodSheet()">
+                <div class="sheet-row" onclick="openAddByIpSheet()">
                   <div class="sr-icon">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="7" width="14" height="6" rx="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="7" cy="10" r="1" fill="currentColor"/><circle cx="10" cy="10" r="1" fill="currentColor"/><circle cx="13" cy="10" r="1" fill="currentColor"/></svg>
                   </div>
@@ -1557,6 +1557,34 @@
                   </div>
                   <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom sheet: Add by IP range -->
+          <div class="sheet-backdrop" id="addByIpSheet" onclick="if(event.target.id==='addByIpSheet') closeSheet('addByIpSheet')">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-title">Add by IP range</div>
+              <div class="fg-group" style="padding: 6px 0 14px;">
+                <div style="display: flex; gap: 8px;">
+                  <div class="input-wrap" style="flex: 1; min-width: 0;">
+                    <label class="input-label" for="addIpStart">Start IP</label>
+                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpStart" placeholder="192.168.1.1" inputmode="decimal" style="font-size: 14px;"></div>
+                  </div>
+                  <div class="input-wrap" style="flex: 1; min-width: 0;">
+                    <label class="input-label" for="addIpEnd">End IP</label>
+                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpEnd" placeholder="192.168.1.255" inputmode="decimal" style="font-size: 14px;"></div>
+                  </div>
+                  <div class="input-wrap" style="width: 76px; flex: 0 0 auto;">
+                    <label class="input-label" for="addIpPort">Port</label>
+                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpPort" placeholder="554" inputmode="numeric" style="font-size: 14px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="button button-default button-full" onclick="closeSheet('addByIpSheet')">Cancel</button>
+                <button class="button button-primary button-full" onclick="commitAddByIpRange()">Scan</button>
               </div>
             </div>
           </div>
@@ -1608,9 +1636,10 @@
               <div class="fg-group">
                 <div class="fg-label">IP range</div>
                 <div class="fg-range">
-                  <div class="input-field"><input type="text" id="ipRangeFrom" inputmode="decimal" placeholder="192.168.100.1" oninput="onIpRangeChange()"></div>
+                  <div class="input-field"><input type="text" id="ipRangeFrom" inputmode="decimal" placeholder="192.168.1.1" oninput="onIpRangeChange()"></div>
                   <span class="fg-range-sep">–</span>
-                  <div class="input-field"><input type="text" id="ipRangeTo" inputmode="decimal" placeholder="192.168.100.255" oninput="onIpRangeChange()"></div>
+                  <div class="input-field"><input type="text" id="ipRangeTo" inputmode="decimal" placeholder="192.168.1.255" oninput="onIpRangeChange()"></div>
+                  <div class="input-field" style="flex: 0 0 70px; padding: 0 10px;"><input type="text" id="ipRangePort" inputmode="numeric" placeholder="554" oninput="onIpRangeChange()"></div>
                 </div>
               </div>
               <button class="button button-primary button-full" onclick="closeFilterSheet()" style="margin-top: 4px;">Done</button>
@@ -4286,7 +4315,7 @@
   let camFilter = 'all';
   const brandFilters = new Set();
   const connFilters = new Set();
-  const ipRange = { from: '', to: '' };
+  const ipRange = { from: '', to: '', port: '' };
   const expandedIps = new Set();
   let infoMsgDismissed = false;
   let ipSort = 'none'; // 'none' | 'asc' | 'desc' — default unsorted (discovery order)
@@ -4534,21 +4563,50 @@
   function updateFilterBtn() {
     const button = document.getElementById('filterBtn');
     if (!button) return;
-    const ipRangeActive = !!(ipRange.from || ipRange.to);
+    const ipRangeActive = !!(ipRange.from || ipRange.to || ipRange.port);
     const deviceFilterActive = camFilter !== 'all';
     button.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0 || ipRangeActive || deviceFilterActive);
   }
   function clearIpRangeInputs() {
     ipRange.from = '';
     ipRange.to = '';
+    ipRange.port = '';
     const f = document.getElementById('ipRangeFrom');
     const t = document.getElementById('ipRangeTo');
+    const p = document.getElementById('ipRangePort');
     if (f) f.value = '';
     if (t) t.value = '';
+    if (p) p.value = '';
   }
   function onIpRangeChange() {
     ipRange.from = (document.getElementById('ipRangeFrom')?.value || '').trim();
     ipRange.to = (document.getElementById('ipRangeTo')?.value || '').trim();
+    ipRange.port = (document.getElementById('ipRangePort')?.value || '').trim();
+    updateFilterBtn();
+    renderCamList();
+  }
+  function openAddByIpSheet() {
+    closeMethodSheet();
+    document.getElementById('addIpStart').value = ipRange.from || '';
+    document.getElementById('addIpEnd').value = ipRange.to || '';
+    document.getElementById('addIpPort').value = ipRange.port || '';
+    openSheet('addByIpSheet');
+  }
+  function commitAddByIpRange() {
+    const start = (document.getElementById('addIpStart').value || '').trim();
+    const end = (document.getElementById('addIpEnd').value || '').trim();
+    const port = (document.getElementById('addIpPort').value || '').trim();
+    closeSheet('addByIpSheet');
+    startScan();
+    ipRange.from = start;
+    ipRange.to = end;
+    ipRange.port = port;
+    const f = document.getElementById('ipRangeFrom');
+    const t = document.getElementById('ipRangeTo');
+    const p = document.getElementById('ipRangePort');
+    if (f) f.value = start;
+    if (t) t.value = end;
+    if (p) p.value = port;
     updateFilterBtn();
     renderCamList();
   }
