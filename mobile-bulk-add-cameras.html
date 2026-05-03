@@ -3792,7 +3792,7 @@
                   <div class="input-wrap">
                     <label class="input-label">NVR brand</label>
                     <div class="input-field" style="cursor: pointer;" id="nvrBrandRow" data-val="Uniview" onclick="openNvrBrandPicker()">
-                      <input type="text" id="nvrBrandVal" value="Uniview" style="cursor: pointer;" readonly>
+                      <span id="nvrBrandVal" style="flex: 1; font-size: 16px; color: var(--color-text-defsult); line-height: 24px;">Uniview</span>
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                   </div>
@@ -3849,7 +3849,7 @@
                     <div class="input-wrap">
                       <label class="input-label">Channels</label>
                       <div class="input-field" style="cursor: pointer;" id="nvrChannelsRow" data-val="32" onclick="openNvrChannelsPicker()">
-                        <input type="text" id="nvrChannelsVal" value="32" style="cursor: pointer;" readonly>
+                        <span id="nvrChannelsVal" style="flex: 1; font-size: 16px; color: var(--color-text-defsult); line-height: 24px;">32</span>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       </div>
                     </div>
@@ -7349,7 +7349,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   function pickNvrBrand(button) {
     const val = button.dataset.val;
     document.getElementById('nvrBrandRow').dataset.val = val;
-    document.getElementById('nvrBrandVal').value = val;
+    document.getElementById('nvrBrandVal').textContent = val;
     closeSheet('nvrBrandSheet');
   }
   function openNvrChannelsPicker() {
@@ -7360,7 +7360,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   function pickNvrChannels(button) {
     const val = button.dataset.val;
     document.getElementById('nvrChannelsRow').dataset.val = val;
-    document.getElementById('nvrChannelsVal').value = val;
+    document.getElementById('nvrChannelsVal').textContent = val;
     closeSheet('nvrChannelsSheet');
   }
   function toggleNvrSub(row) {
