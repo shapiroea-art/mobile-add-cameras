@@ -569,6 +569,7 @@
   .opt-ok .opt-ok-label { flex: 1; }
   .opt-ok .opt-chev { color: var(--color-text-subtle); flex: 0 0 auto; display: inline-flex; }
   .cam-meta-line { font-family: var(--sans); font-size: 13px; font-weight: 500; line-height: 20px; color: var(--color-text-defsult); padding: 0 12px; }
+  .cam-meta-line .meta-sep { padding: 0 6px; color: var(--color-text-subtle); }
   .edit-cam-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; margin-left: 4px; background: transparent; border: none; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; color: var(--color-background-button-primary-default); cursor: pointer; border-radius: var(--r); }
   .edit-cam-link:hover { background: var(--color-background-accent-primary-subtlest); }
 
@@ -4713,7 +4714,7 @@
           <span class="opt-chev">${CHEV}</span>
         </button>
       </div>
-      <div class="cam-meta-line">${c.model} · ${c.ip} · ${c.mac}</div>
+      <div class="cam-meta-line"><span>${c.model}</span><span class="meta-sep">·</span><span>${c.ip}</span><span class="meta-sep">·</span><span>${c.mac}</span></div>
       <button class="edit-cam-link" type="button" onclick="event.stopPropagation(); openEditCam(${c.id})">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
         Edit camera
