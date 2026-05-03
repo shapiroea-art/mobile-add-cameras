@@ -501,6 +501,12 @@
   .nvr-cb-row { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 4px 0; user-select: none; }
   .nvr-cb-row span { font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; font-family: var(--sans); }
   .nvr-cb-row .cb svg path { stroke: white; }
+  /* Trigger-anchored dropdown */
+  .sheet-backdrop.as-popover .dropdown-list { display: flex; flex-direction: column; padding: 4px; }
+  .dropdown-opt { padding: 8px 12px; min-height: 36px; border: none; background: none; font-family: var(--sans); font-size: 14px; line-height: 24px; color: var(--color-text-defsult); text-align: left; cursor: pointer; border-radius: var(--r); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .dropdown-opt:hover { background: var(--color-elevation-surface-subtle); }
+  .dropdown-opt.on { color: var(--color-background-button-primary-default); font-weight: 500; }
+  .dropdown-opt.on::after { content: ''; width: 14px; height: 14px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'><path d='M3 7.5l3 3 5-6' stroke='%234367F6' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: center; }
 
   /* Masked IP address input (Figma node 3919:14537) */
   .ip-input { display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 48px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); transition: border-color .12s ease; box-sizing: border-box; }
@@ -3874,6 +3880,30 @@
             </div>
 
             <div class="home-indicator"></div>
+
+            <div class="sheet-backdrop as-popover" id="nvrBrandSheet" onclick="if(event.target.id==='nvrBrandSheet') closeSheet('nvrBrandSheet')">
+              <div class="sheet">
+                <div class="dropdown-list" id="nvrBrandPickerList">
+                  <button class="dropdown-opt" data-val="Dahua" onclick="pickNvrBrand(this)">Dahua</button>
+                  <button class="dropdown-opt" data-val="Hikvision" onclick="pickNvrBrand(this)">Hikvision</button>
+                  <button class="dropdown-opt" data-val="Provision" onclick="pickNvrBrand(this)">Provision</button>
+                  <button class="dropdown-opt on" data-val="Uniview" onclick="pickNvrBrand(this)">Uniview</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop as-popover" id="nvrChannelsSheet" onclick="if(event.target.id==='nvrChannelsSheet') closeSheet('nvrChannelsSheet')">
+              <div class="sheet">
+                <div class="dropdown-list" id="nvrChannelsPickerList">
+                  <button class="dropdown-opt" data-val="4" onclick="pickNvrChannels(this)">4</button>
+                  <button class="dropdown-opt" data-val="8" onclick="pickNvrChannels(this)">8</button>
+                  <button class="dropdown-opt" data-val="16" onclick="pickNvrChannels(this)">16</button>
+                  <button class="dropdown-opt on" data-val="32" onclick="pickNvrChannels(this)">32</button>
+                  <button class="dropdown-opt" data-val="128" onclick="pickNvrChannels(this)">128</button>
+                  <button class="dropdown-opt" data-val="256" onclick="pickNvrChannels(this)">256</button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- ========== S4: Configuration ========== -->
@@ -4106,43 +4136,6 @@
               </div>
             </div>
 
-            <div class="sheet-backdrop" id="nvrBrandSheet" onclick="if(event.target.id==='nvrBrandSheet') closeSheet('nvrBrandSheet')">
-              <div class="sheet edit-sheet">
-                <div class="sheet-handle"></div>
-                <div class="info-sheet-title">NVR brand</div>
-                <div class="edit-sheet-body">
-                  <div class="type-radio-list" id="nvrBrandPickerList">
-                    <button class="type-radio-opt" data-val="Dahua" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Dahua</span></button>
-                    <button class="type-radio-opt" data-val="Hikvision" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Hikvision</span></button>
-                    <button class="type-radio-opt" data-val="Provision" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Provision</span></button>
-                    <button class="type-radio-opt on" data-val="Uniview" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Uniview</span></button>
-                  </div>
-                </div>
-                <div class="info-sheet-foot">
-                  <button class="button button-default button-full" onclick="closeSheet('nvrBrandSheet')">Cancel</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="sheet-backdrop" id="nvrChannelsSheet" onclick="if(event.target.id==='nvrChannelsSheet') closeSheet('nvrChannelsSheet')">
-              <div class="sheet edit-sheet">
-                <div class="sheet-handle"></div>
-                <div class="info-sheet-title">Channels</div>
-                <div class="edit-sheet-body">
-                  <div class="type-radio-list" id="nvrChannelsPickerList">
-                    <button class="type-radio-opt" data-val="4" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">4</span></button>
-                    <button class="type-radio-opt" data-val="8" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">8</span></button>
-                    <button class="type-radio-opt" data-val="16" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">16</span></button>
-                    <button class="type-radio-opt on" data-val="32" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">32</span></button>
-                    <button class="type-radio-opt" data-val="128" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">128</span></button>
-                    <button class="type-radio-opt" data-val="256" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">256</span></button>
-                  </div>
-                </div>
-                <div class="info-sheet-foot">
-                  <button class="button button-default button-full" onclick="closeSheet('nvrChannelsSheet')">Cancel</button>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- ========== S4-Keep: criteria subscreen -->
@@ -7341,10 +7334,25 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     updateEditCamSaveBtn();
     openSheet('editCamSheet');
   }
+  function openTriggerDropdown(triggerEl, sheetId) {
+    const sheet = document.getElementById(sheetId);
+    if (!sheet) return;
+    const popover = sheet.querySelector('.sheet');
+    const panel = triggerEl.closest('.panel');
+    if (!popover || !panel) return;
+    const trigRect = triggerEl.getBoundingClientRect();
+    const panelRect = panel.getBoundingClientRect();
+    popover.style.top = (trigRect.bottom - panelRect.top + 4) + 'px';
+    popover.style.left = (trigRect.left - panelRect.left) + 'px';
+    popover.style.right = 'auto';
+    popover.style.width = trigRect.width + 'px';
+    sheet.classList.add('open');
+  }
   function openNvrBrandPicker() {
-    const cur = document.getElementById('nvrBrandRow').dataset.val || '';
-    document.querySelectorAll('#nvrBrandPickerList .type-radio-opt').forEach(o => o.classList.toggle('on', o.dataset.val === cur));
-    openSheet('nvrBrandSheet');
+    const row = document.getElementById('nvrBrandRow');
+    const cur = row.dataset.val || '';
+    document.querySelectorAll('#nvrBrandPickerList .dropdown-opt').forEach(o => o.classList.toggle('on', o.dataset.val === cur));
+    openTriggerDropdown(row, 'nvrBrandSheet');
   }
   function pickNvrBrand(button) {
     const val = button.dataset.val;
@@ -7353,9 +7361,10 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     closeSheet('nvrBrandSheet');
   }
   function openNvrChannelsPicker() {
-    const cur = document.getElementById('nvrChannelsRow').dataset.val || '';
-    document.querySelectorAll('#nvrChannelsPickerList .type-radio-opt').forEach(o => o.classList.toggle('on', o.dataset.val === cur));
-    openSheet('nvrChannelsSheet');
+    const row = document.getElementById('nvrChannelsRow');
+    const cur = row.dataset.val || '';
+    document.querySelectorAll('#nvrChannelsPickerList .dropdown-opt').forEach(o => o.classList.toggle('on', o.dataset.val === cur));
+    openTriggerDropdown(row, 'nvrChannelsSheet');
   }
   function pickNvrChannels(button) {
     const val = button.dataset.val;
