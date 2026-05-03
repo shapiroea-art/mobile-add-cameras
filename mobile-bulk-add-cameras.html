@@ -564,12 +564,11 @@
   .opt-warn .opt-warn-ico { color: var(--color-background-accent-amber-default); flex: 0 0 auto; display: inline-flex; }
   .opt-warn .opt-warn-label { flex: 1; }
   .opt-warn .opt-chev { color: var(--color-text-subtle); flex: 0 0 auto; display: inline-flex; }
-  .opt-ok { display: flex; align-items: center; gap: 8px; width: 100%; padding: 4px 12px; background: transparent; border: none; font-family: var(--sans); font-size: 13px; font-weight: 400; line-height: 20px; color: var(--color-text-subtle); cursor: pointer; text-align: left; }
+  .opt-ok { display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 12px; background: rgba(18, 183, 106, 0.10); border: none; border-radius: 6px; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; color: var(--color-text-bold); cursor: pointer; text-align: left; }
   .opt-ok .opt-ok-ico { color: var(--color-text-success-default); flex: 0 0 auto; display: inline-flex; }
   .opt-ok .opt-ok-label { flex: 1; }
-  .opt-ok .opt-chev { color: var(--color-text-subtlest); flex: 0 0 auto; display: inline-flex; }
-  .cam-meta-stack { display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
-  .cam-meta-line { font-family: var(--sans); font-size: 13px; font-weight: 400; line-height: 20px; color: var(--color-text-subtle); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .opt-ok .opt-chev { color: var(--color-text-subtle); flex: 0 0 auto; display: inline-flex; }
+  .cam-meta-line { font-family: var(--sans); font-size: 13px; font-weight: 500; line-height: 20px; color: var(--color-text-defsult); padding: 0 12px; }
   .edit-cam-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; margin-left: 4px; background: transparent; border: none; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; color: var(--color-background-button-primary-default); cursor: pointer; border-radius: var(--r); }
   .edit-cam-link:hover { background: var(--color-background-accent-primary-subtlest); }
 
@@ -4700,7 +4699,7 @@
   }
 
   function expandedBodyHTML(c) {
-    const CHEV = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5l3.5 3.5 3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const CHEV = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l3.5 3.5L5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     return `<div class="conf-details">
       <div class="opt-stack">
         <button class="opt-warn" type="button" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">
@@ -4709,15 +4708,12 @@
           <span class="opt-chev">${CHEV}</span>
         </button>
         <button class="opt-ok" type="button" onclick="event.stopPropagation(); openSheet('substreamSheet')">
-          <span class="opt-ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 3.5-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="opt-ok-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="opt-ok-label">Substream is optimized</span>
           <span class="opt-chev">${CHEV}</span>
         </button>
       </div>
-      <div class="cam-meta-stack">
-        <div class="cam-meta-line">Model: ${c.model}</div>
-        <div class="cam-meta-line">IP: ${c.ip} · Mac: ${c.mac}</div>
-      </div>
+      <div class="cam-meta-line">${c.model} · ${c.ip} · ${c.mac}</div>
       <button class="edit-cam-link" type="button" onclick="event.stopPropagation(); openEditCam(${c.id})">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
         Edit camera
