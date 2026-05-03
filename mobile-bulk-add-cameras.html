@@ -4686,10 +4686,7 @@
   }
 
   function expandedBodyHTML(c) {
-    const mainstreamWarn = c.statusLevel !== 'online';
-    const mainstreamRow = mainstreamWarn
-      ? `<div class="opt-row"><span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span><button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button></div>`
-      : `<div class="opt-row"><span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Mainstream is optimized</span><button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button></div>`;
+    const mainstreamRow = `<div class="opt-row"><span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span><button class="opt-show" onclick="event.stopPropagation(); openSheet('mainstreamSheet')">Show</button></div>`;
     return `<div class="conf-details">
       <div class="opt-list">
         ${mainstreamRow}
