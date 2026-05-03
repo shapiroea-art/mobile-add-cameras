@@ -493,6 +493,15 @@
   .fg-group { padding: 6px 4px 14px; }
   .fg-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--color-text-subtle); text-transform: uppercase; padding: 0 0 8px; }
   .fg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* S3 NVR-mode fields */
+  .nvr-fields, .nvr-adv-fields { display: none; }
+  #s3[data-nvr="true"] .nvr-fields,
+  #s3[data-nvr="true"] .nvr-adv-fields { display: flex; flex-direction: column; gap: 16px; }
+  #s3[data-nvr="true"] .cam-fields { display: none; }
+  .nvr-cb-row { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 4px 0; user-select: none; }
+  .nvr-cb-row span { font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; font-family: var(--sans); }
+  .nvr-cb-row .cb svg path { stroke: white; }
+
   /* Masked IP address input (Figma node 3919:14537) */
   .ip-input { display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 48px; border: 1px solid var(--color-border-input-default); border-radius: var(--r); background: var(--color-elevation-surface-default); transition: border-color .12s ease; box-sizing: border-box; }
   .add-ip-row .ip-input { flex: 1; min-width: 0; }
@@ -3779,33 +3788,71 @@
                   <div class="input-field"><input type="password"></div>
                 </div>
 
-                <div class="more-creds" hidden>
-                  <div class="row-split">
-                    <div class="input-wrap input-wrap-narrow">
-                      <label class="input-label">RTSP port</label>
-                      <div class="input-field"><input type="text" value="554"></div>
+                <div class="nvr-fields">
+                  <div class="input-wrap">
+                    <label class="input-label">NVR brand</label>
+                    <div class="input-field" style="cursor: pointer;" id="nvrBrandRow" data-val="Uniview" onclick="openNvrBrandPicker()">
+                      <input type="text" id="nvrBrandVal" value="Uniview" style="cursor: pointer;" readonly>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
-                    <div class="tcp-stack">
-                      <label class="input-label">TCP</label>
-                      <div class="tcp-check-wrap">
-                        <div class="cb ck" onclick="toggleTcp(this)">
-                          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="nvr-cb-row" onclick="toggleNvrSub(this)">
+                    <div class="cb ck">
+                      <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span>Substream</span>
+                  </div>
+                </div>
+
+                <div class="more-creds" hidden>
+                  <div class="cam-fields">
+                    <div class="row-split">
+                      <div class="input-wrap input-wrap-narrow">
+                        <label class="input-label">RTSP port</label>
+                        <div class="input-field"><input type="text" value="554"></div>
+                      </div>
+                      <div class="tcp-stack">
+                        <label class="input-label">TCP</label>
+                        <div class="tcp-check-wrap">
+                          <div class="cb ck" onclick="toggleTcp(this)">
+                            <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="input-wrap">
-                    <label class="input-label">RTSP path</label>
-                    <div class="input-field"><input type="text" placeholder="Path: /"></div>
-                  </div>
-                  <div class="input-wrap">
-                    <div class="input-label-row">
-                      <label class="input-label">Substream RTSP path</label>
-                      <span class="auth-info" aria-label="Info">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-                      </span>
+                    <div class="input-wrap">
+                      <label class="input-label">RTSP path</label>
+                      <div class="input-field"><input type="text" placeholder="Path: /"></div>
                     </div>
-                    <div class="input-field"><input type="text" placeholder="Path: /"></div>
+                    <div class="input-wrap">
+                      <div class="input-label-row">
+                        <label class="input-label">Substream RTSP path</label>
+                        <span class="auth-info" aria-label="Info">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                        </span>
+                      </div>
+                      <div class="input-field"><input type="text" placeholder="Path: /"></div>
+                    </div>
+                  </div>
+                  <div class="nvr-adv-fields">
+                    <div class="input-wrap">
+                      <label class="input-label">Port</label>
+                      <div class="input-field"><input type="text" placeholder="80"></div>
+                    </div>
+                    <div class="input-wrap">
+                      <label class="input-label">Protocol</label>
+                      <div class="segmented" id="nvrProtocol">
+                        <button class="segmented-opt on" data-val="TCP" onclick="pickSeg(this);">TCP</button>
+                        <button class="segmented-opt" data-val="UDP" onclick="pickSeg(this);">UDP</button>
+                      </div>
+                    </div>
+                    <div class="input-wrap">
+                      <label class="input-label">Channels</label>
+                      <div class="input-field" style="cursor: pointer;" id="nvrChannelsRow" data-val="32" onclick="openNvrChannelsPicker()">
+                        <input type="text" id="nvrChannelsVal" value="32" style="cursor: pointer;" readonly>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -4058,9 +4105,47 @@
                 </div>
               </div>
             </div>
+
+            <div class="sheet-backdrop" id="nvrBrandSheet" onclick="if(event.target.id==='nvrBrandSheet') closeSheet('nvrBrandSheet')">
+              <div class="sheet edit-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title">NVR brand</div>
+                <div class="edit-sheet-body">
+                  <div class="type-radio-list" id="nvrBrandPickerList">
+                    <button class="type-radio-opt" data-val="Dahua" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Dahua</span></button>
+                    <button class="type-radio-opt" data-val="Hikvision" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Hikvision</span></button>
+                    <button class="type-radio-opt" data-val="Provision" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Provision</span></button>
+                    <button class="type-radio-opt on" data-val="Uniview" onclick="pickNvrBrand(this)"><span class="tr-radio"></span><span class="tr-name">Uniview</span></button>
+                  </div>
+                </div>
+                <div class="info-sheet-foot">
+                  <button class="button button-default button-full" onclick="closeSheet('nvrBrandSheet')">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-backdrop" id="nvrChannelsSheet" onclick="if(event.target.id==='nvrChannelsSheet') closeSheet('nvrChannelsSheet')">
+              <div class="sheet edit-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title">Channels</div>
+                <div class="edit-sheet-body">
+                  <div class="type-radio-list" id="nvrChannelsPickerList">
+                    <button class="type-radio-opt" data-val="4" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">4</span></button>
+                    <button class="type-radio-opt" data-val="8" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">8</span></button>
+                    <button class="type-radio-opt" data-val="16" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">16</span></button>
+                    <button class="type-radio-opt on" data-val="32" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">32</span></button>
+                    <button class="type-radio-opt" data-val="128" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">128</span></button>
+                    <button class="type-radio-opt" data-val="256" onclick="pickNvrChannels(this)"><span class="tr-radio"></span><span class="tr-name">256</span></button>
+                  </div>
+                </div>
+                <div class="info-sheet-foot">
+                  <button class="button button-default button-full" onclick="closeSheet('nvrChannelsSheet')">Cancel</button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- ========== S4-Keep: criteria subscreen ========== -->
+          <!-- ========== S4-Keep: criteria subscreen -->
           <div class="panel" id="s4Keep">
             <div class="top-bar">
               <div class="tb-left">
@@ -4551,6 +4636,8 @@
     }
     const nvrBadge = document.getElementById('camSearchNvrBadge');
     if (nvrBadge) nvrBadge.style.display = 'none';
+    const s3 = document.getElementById('s3');
+    if (s3) s3.dataset.nvr = 'false';
     camFilter = 'all';
     document.querySelectorAll('#s2Chips .chip, #brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
     updateFilterBtn();
@@ -4993,6 +5080,8 @@
     }
     const badge = document.getElementById('camSearchNvrBadge');
     if (badge) badge.style.display = 'inline-flex';
+    const s3 = document.getElementById('s3');
+    if (s3) s3.dataset.nvr = 'true';
   }
   function onCamSearchInput(input) {
     const wrap = input.closest('.search-input');
@@ -5011,6 +5100,8 @@
   function removeSearchBadge() {
     const badge = document.getElementById('camSearchNvrBadge');
     if (badge) badge.style.display = 'none';
+    const s3 = document.getElementById('s3');
+    if (s3) s3.dataset.nvr = 'false';
   }
   function commitAddByIpRange() {
     const start = readIpComp(document.getElementById('addIpStart'));
@@ -7249,6 +7340,32 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     editCamInitial = captureEditCamState();
     updateEditCamSaveBtn();
     openSheet('editCamSheet');
+  }
+  function openNvrBrandPicker() {
+    const cur = document.getElementById('nvrBrandRow').dataset.val || '';
+    document.querySelectorAll('#nvrBrandPickerList .type-radio-opt').forEach(o => o.classList.toggle('on', o.dataset.val === cur));
+    openSheet('nvrBrandSheet');
+  }
+  function pickNvrBrand(button) {
+    const val = button.dataset.val;
+    document.getElementById('nvrBrandRow').dataset.val = val;
+    document.getElementById('nvrBrandVal').value = val;
+    closeSheet('nvrBrandSheet');
+  }
+  function openNvrChannelsPicker() {
+    const cur = document.getElementById('nvrChannelsRow').dataset.val || '';
+    document.querySelectorAll('#nvrChannelsPickerList .type-radio-opt').forEach(o => o.classList.toggle('on', o.dataset.val === cur));
+    openSheet('nvrChannelsSheet');
+  }
+  function pickNvrChannels(button) {
+    const val = button.dataset.val;
+    document.getElementById('nvrChannelsRow').dataset.val = val;
+    document.getElementById('nvrChannelsVal').value = val;
+    closeSheet('nvrChannelsSheet');
+  }
+  function toggleNvrSub(row) {
+    const cb = row.querySelector('.cb');
+    if (cb) cb.classList.toggle('ck');
   }
   function openEditCamTypePicker() {
     const cur = document.getElementById('editCamTypeRow').dataset.val || '';
