@@ -1566,25 +1566,21 @@
             <div class="sheet">
               <div class="sheet-handle"></div>
               <div class="sheet-title">Add by IP range</div>
-              <div class="fg-group" style="padding: 6px 0 14px;">
+              <div class="fg-group" style="padding: 6px 0 4px;">
                 <div style="display: flex; gap: 8px;">
                   <div class="input-wrap" style="flex: 1; min-width: 0;">
                     <label class="input-label" for="addIpStart">Start IP</label>
-                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpStart" placeholder="192.168.1.1" inputmode="decimal" style="font-size: 14px;"></div>
+                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpStart" placeholder="192.168.1.1" inputmode="decimal" enterkeyhint="next" onkeydown="handleAddIpKey(event, 'addIpEnd')" style="font-size: 14px;"></div>
                   </div>
                   <div class="input-wrap" style="flex: 1; min-width: 0;">
                     <label class="input-label" for="addIpEnd">End IP</label>
-                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpEnd" placeholder="192.168.1.255" inputmode="decimal" style="font-size: 14px;"></div>
+                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpEnd" placeholder="192.168.1.255" inputmode="decimal" enterkeyhint="next" onkeydown="handleAddIpKey(event, 'addIpPort')" style="font-size: 14px;"></div>
                   </div>
                   <div class="input-wrap" style="width: 76px; flex: 0 0 auto;">
                     <label class="input-label" for="addIpPort">Port</label>
-                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpPort" placeholder="554" inputmode="numeric" style="font-size: 14px;"></div>
+                    <div class="input-field" style="padding: 0 10px;"><input type="text" id="addIpPort" placeholder="554" inputmode="numeric" enterkeyhint="go" onkeydown="handleAddIpKey(event, null)" style="font-size: 14px;"></div>
                   </div>
                 </div>
-              </div>
-              <div style="display: flex; gap: 8px;">
-                <button class="button button-default button-full" onclick="closeSheet('addByIpSheet')">Cancel</button>
-                <button class="button button-primary button-full" onclick="commitAddByIpRange()">Scan</button>
               </div>
             </div>
           </div>
@@ -4589,8 +4585,22 @@
     closeMethodSheet();
     document.getElementById('addIpStart').value = ipRange.from || '';
     document.getElementById('addIpEnd').value = ipRange.to || '';
-    document.getElementById('addIpPort').value = ipRange.port || '';
+    document.getElementById('addIpPort').value = ipRange.port || '554';
     openSheet('addByIpSheet');
+    setTimeout(() => {
+      const start = document.getElementById('addIpStart');
+      if (start) { start.focus(); start.select(); }
+    }, 320);
+  }
+  function handleAddIpKey(e, nextId) {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    if (nextId) {
+      const next = document.getElementById(nextId);
+      if (next) { next.focus(); next.select(); }
+    } else {
+      commitAddByIpRange();
+    }
   }
   function commitAddByIpRange() {
     const start = (document.getElementById('addIpStart').value || '').trim();
