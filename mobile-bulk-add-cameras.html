@@ -115,6 +115,8 @@
   .button-primary.disabled { opacity: .32; cursor: not-allowed; pointer-events: none; }
   .button-default { background: var(--color-elevation-surface-default); color: var(--color-text-defsult); border-color: var(--color-border-input-default); }
   .button-default:hover { background: var(--color-elevation-surface-subtle); }
+  .button-secondary { background: var(--color-elevation-surface-default); color: var(--color-background-button-primary-default); border-color: var(--color-border-button-primary-default); }
+  .button-secondary:hover { background: var(--color-elevation-surface-subtle); }
   .button-caution { background: var(--color-background-accent-red-default); color: var(--color-text-inverse); border-color: var(--color-background-accent-red-default); }
   .button-caution:hover { background: var(--color-background-accent-red-hover); }
   .button-full { flex: 1; }
@@ -3317,7 +3319,7 @@
             <div class="content" id="coreDraftsList"></div>
 
             <div class="bottom-action-bar">
-              <button class="button button-default button-full ac-bar-standalone" onclick="cancelCoreFlow()">Done</button>
+              <button class="button button-secondary button-full ac-bar-standalone" onclick="cancelCoreFlow()">Done</button>
               <button class="button button-default button-full ac-bar-cl" onclick="jumpToPanel('sCreateLocationStep2')">Back</button>
               <button class="button button-primary button-full ac-bar-cl" onclick="finishCreateLocationFromAddCore()">Create location</button>
             </div>
