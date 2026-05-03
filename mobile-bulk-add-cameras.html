@@ -1787,6 +1787,13 @@
                     <div class="input-field"><input type="tel" id="clPhone" placeholder="000-000-000"></div>
                   </div>
                 </div>
+
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label">Tags</label>
+                    <div class="sub-tags-field" id="clTagsField"></div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -2002,6 +2009,13 @@
                   <div class="input-wrap">
                     <label class="input-label" for="elPhone">Phone number</label>
                     <div class="input-field"><input type="tel" id="elPhone" placeholder="000-000-000"></div>
+                  </div>
+                </div>
+
+                <div class="cd-block">
+                  <div class="input-wrap">
+                    <label class="input-label">Tags</label>
+                    <div class="sub-tags-field" id="elTagsField"></div>
                   </div>
                 </div>
 
@@ -4886,6 +4900,8 @@
     const panel = document.getElementById('sEditLocation');
     panel.dataset.tab = 'details';
     panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'details'));
+    editLocationDraftTags = new Set(['tag-entrance-1', 'tag-many-people']);
+    renderElTagsField();
     jumpToPanel('sEditLocation');
   }
   function pickEditLocTab(button) {
@@ -6312,6 +6328,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   let filterTagSelection = new Set();
   let sublocationDraftTags = new Set();
   let cdDetailsDraftTags = new Set();
+  let createLocationDraftTags = new Set();
+  let editLocationDraftTags = new Set();
   let tagPickerOwner = 'sublocation';
   let pickerSnapshot = new Set();
   let mtRenameId = null;
@@ -6391,6 +6409,43 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     renderEditSubTagsField();
   }
 
+  function renderClTagsField() {
+    const field = document.getElementById('clTagsField');
+    if (!field) return;
+    const chips = tagLibrary
+      .filter(t => createLocationDraftTags.has(t.id))
+      .map(t => `<button type="button" class="sub-tag-pill" onclick="openTagPicker('createLocation')">
+        <span class="stp-dot" style="background:${t.color};"></span>
+        <span>${_escHtml(t.name)}</span>
+        <span class="stp-x" onclick="event.stopPropagation(); removeClTag('${t.id}')" aria-label="Remove">${ICON_X_SMALL}</span>
+      </button>`)
+      .join('');
+    const addPill = `<button type="button" class="sub-tag-add" onclick="openTagPicker('createLocation')">${ICON_PLUS}<span>Add tag</span></button>`;
+    field.innerHTML = chips + addPill;
+  }
+  function removeClTag(id) {
+    createLocationDraftTags.delete(id);
+    renderClTagsField();
+  }
+  function renderElTagsField() {
+    const field = document.getElementById('elTagsField');
+    if (!field) return;
+    const chips = tagLibrary
+      .filter(t => editLocationDraftTags.has(t.id))
+      .map(t => `<button type="button" class="sub-tag-pill" onclick="openTagPicker('editLocation')">
+        <span class="stp-dot" style="background:${t.color};"></span>
+        <span>${_escHtml(t.name)}</span>
+        <span class="stp-x" onclick="event.stopPropagation(); removeElTag('${t.id}')" aria-label="Remove">${ICON_X_SMALL}</span>
+      </button>`)
+      .join('');
+    const addPill = `<button type="button" class="sub-tag-add" onclick="openTagPicker('editLocation')">${ICON_PLUS}<span>Add tag</span></button>`;
+    field.innerHTML = chips + addPill;
+  }
+  function removeElTag(id) {
+    editLocationDraftTags.delete(id);
+    renderElTagsField();
+  }
+
   function renderCdDetailsTagsField() {
     const field = document.getElementById('cdDetailsTagsField');
     if (!field) return;
@@ -6418,6 +6473,10 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       pickerSnapshot = new Set(cdDetailsDraftTags);
     } else if (tagPickerOwner === 'editSublocation') {
       pickerSnapshot = new Set(editSubDraftTags);
+    } else if (tagPickerOwner === 'createLocation') {
+      pickerSnapshot = new Set(createLocationDraftTags);
+    } else if (tagPickerOwner === 'editLocation') {
+      pickerSnapshot = new Set(editLocationDraftTags);
     } else {
       pickerSnapshot = new Set(sublocationDraftTags);
     }
@@ -6456,6 +6515,14 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     } else if (tagPickerOwner === 'editSublocation') {
       editSubDraftTags = new Set(pickerSnapshot);
       renderEditSubTagsField();
+      closeSheet('tagPickerSheet');
+    } else if (tagPickerOwner === 'createLocation') {
+      createLocationDraftTags = new Set(pickerSnapshot);
+      renderClTagsField();
+      closeSheet('tagPickerSheet');
+    } else if (tagPickerOwner === 'editLocation') {
+      editLocationDraftTags = new Set(pickerSnapshot);
+      renderElTagsField();
       closeSheet('tagPickerSheet');
     } else {
       sublocationDraftTags = new Set(pickerSnapshot);
@@ -6632,6 +6699,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   document.addEventListener('DOMContentLoaded', () => {
     renderTagFilterChips();
     renderSublocationTagsField();
+    renderClTagsField();
+    renderElTagsField();
   });
   function closeInfoSheet(event, id) {
     if (event.target.classList.contains('sheet-backdrop')) closeSheet(id);
