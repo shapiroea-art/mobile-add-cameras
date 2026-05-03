@@ -1128,12 +1128,15 @@
   .loc-menu-item .lmi-text { flex: 1; min-width: 0; font-size: 16px; font-weight: 400; color: var(--color-text-defsult); line-height: 24px; }
   .loc-menu-divider { height: 1px; background: var(--color-border-default); margin: 8px 16px; }
 
-  /* Popover variant — quick-pick router anchored near the trigger (used for Add menu) */
+  /* Popover variant — quick-pick anchored near its trigger (Add menu, Status/Type filters) */
   .sheet-backdrop.as-popover { background: transparent; align-items: flex-start; }
   .sheet-backdrop.as-popover .sheet {
+    position: absolute;
+    top: 60px;
+    right: 8px;
     width: 240px;
-    margin: 60px 8px 0 auto;
-    padding: 4px;
+    margin: 0;
+    padding: 0;
     border-radius: var(--r);
     border: 1px solid var(--color-border-default);
     box-shadow: 0 12px 32px rgba(16, 24, 40, 0.14);
@@ -1144,7 +1147,19 @@
   }
   .sheet-backdrop.as-popover.open .sheet { transform: translateY(0) scale(1); opacity: 1; }
   .sheet-backdrop.as-popover .sheet-handle { display: none; }
+  .sheet-backdrop.as-popover .location-menu-sheet { padding: 4px; }
   .sheet-backdrop.as-popover .loc-menu-item { padding: 10px 12px; min-height: 40px; border-radius: var(--r); }
+  /* Filter popover content (status/type) */
+  .sheet-backdrop.as-popover .ts-handle,
+  .sheet-backdrop.as-popover .ts-title { display: none; }
+  .sheet-backdrop.as-popover .ts-list { padding: 4px 0; }
+  .sheet-backdrop.as-popover .ts-foot { padding: 8px; gap: 6px; }
+  .sheet-backdrop.as-popover .ts-foot .button { font-size: 13px; padding: 8px 10px; }
+  .sheet-backdrop.as-popover .cb-row { height: 36px; padding-right: 12px; }
+  .sheet-backdrop.as-popover .cb-box { padding: 8px; }
+  .sheet-backdrop.as-popover .cb-label { font-size: 14px; }
+  .sheet-backdrop.as-popover .cb-row .cb-badge { font-size: 11px; padding: 1px 6px; }
+  .sheet-backdrop.as-popover .type-sheet .cb-divider { padding: 4px 8px; }
 
   @media (max-width: 900px) {
     .workspace { flex-direction: column; align-items: center; padding: 24px; gap: 24px; }
@@ -1319,7 +1334,7 @@
           </div>
 
           <!-- Bottom sheet: Status filter (shared by Devices + AC1) -->
-          <div class="sheet-backdrop" id="statusFilterSheet" onclick="if(event.target.id==='statusFilterSheet') closeSheet('statusFilterSheet')">
+          <div class="sheet-backdrop as-popover" id="statusFilterSheet" onclick="if(event.target.id==='statusFilterSheet') closeSheet('statusFilterSheet')">
             <div class="sheet status-sheet">
               <div class="ts-handle"></div>
               <div class="ts-title">Status</div>
@@ -1353,7 +1368,7 @@
           </div>
 
           <!-- Bottom sheet: Type filter (shared by Devices + AC1) -->
-          <div class="sheet-backdrop" id="typeFilterSheet" onclick="if(event.target.id==='typeFilterSheet') closeSheet('typeFilterSheet')">
+          <div class="sheet-backdrop as-popover" id="typeFilterSheet" onclick="if(event.target.id==='typeFilterSheet') closeSheet('typeFilterSheet')">
             <div class="sheet type-sheet">
               <div class="ts-handle"></div>
               <div class="ts-title">Type</div>
@@ -1387,30 +1402,6 @@
                   <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5.5" y="2.75" width="9" height="14.5" stroke="currentColor" stroke-width="1.5"/><circle cx="11.75" cy="10" r="0.9" fill="currentColor"/></svg></span>
                   <span class="cb-label">Doors</span>
                   <span class="cb-badge">4</span>
-                </div>
-                <div class="cb-row" data-type="speakers" onclick="toggleTypeOption(this)">
-                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 7.5h3l4-3v11l-4-3H3V7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M13.5 7.5a3.5 3.5 0 010 5M15.5 5a6 6 0 010 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></span>
-                  <span class="cb-label">Speakers</span>
-                  <span class="cb-badge">2</span>
-                </div>
-                <div class="cb-row" data-type="appletv" onclick="toggleTypeOption(this)">
-                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14 11c0-2 1.5-2.7 1.6-2.8-0.9-1.3-2.2-1.4-2.7-1.5-1.2-0.1-2.3 0.7-2.9 0.7-0.6 0-1.5-0.7-2.5-0.6-1.3 0-2.5 0.8-3.2 2-1.4 2.4-0.4 5.9 1 7.8 0.7 0.9 1.5 1.9 2.6 1.9 1 0 1.4-0.7 2.7-0.7 1.2 0 1.6 0.7 2.7 0.6 1.1 0 1.8-0.9 2.5-1.8 0.6-0.7 1-1.6 1.2-2.4-1.6-0.6-3-2.3-3-3.2zM12 5.4c0.5-0.7 0.9-1.6 0.8-2.4-0.7 0-1.6 0.5-2.1 1.1-0.5 0.5-0.9 1.4-0.8 2.3 0.8 0.1 1.6-0.4 2.1-1z" fill="currentColor"/></svg></span>
-                  <span class="cb-label">Apple TV</span>
-                  <span class="cb-badge">1</span>
-                </div>
-                <div class="cb-row" data-type="remoteio" onclick="toggleTypeOption(this)">
-                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 6h6M11.5 6h5.5M3 14h2.5M8 14h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10.25" cy="6" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="6.75" cy="14" r="2" stroke="currentColor" stroke-width="1.5"/></svg></span>
-                  <span class="cb-label">Remote IOs</span>
-                  <span class="cb-badge">2</span>
-                </div>
-                <div class="cb-row" data-type="storage" onclick="toggleTypeOption(this)">
-                  <span class="cb-box"><span class="cb-square"><svg class="cb-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-                  <span class="cb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2.5" y="11" width="15" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="14.5" cy="6.5" r="0.9" fill="currentColor"/><circle cx="14.5" cy="13.5" r="0.9" fill="currentColor"/></svg></span>
-                  <span class="cb-label">External storage</span>
-                  <span class="cb-badge">7</span>
                 </div>
               </div>
               <div class="ts-foot">
@@ -1649,8 +1640,8 @@
               <button class="button-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
-              <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="type" onclick="openSheet('typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
@@ -2098,8 +2089,8 @@
               <button class="button-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
-              <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="type" onclick="openSheet('typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
@@ -2228,8 +2219,8 @@
               <button class="button-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
-              <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="type" onclick="openSheet('typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
@@ -3949,8 +3940,8 @@
               <button class="button-icon" aria-label="Search" style="padding:10px;" onclick="openDevicesSearch(this)">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
-              <button class="s5-chip" data-chip="status" onclick="openSheet('statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="type" onclick="openSheet('typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
@@ -6305,6 +6296,24 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.remove('open');
+  }
+  function openFilterPopover(chipEl, sheetId) {
+    const sheet = document.getElementById(sheetId);
+    if (!sheet) return;
+    const popover = sheet.querySelector('.sheet');
+    const screens = chipEl.closest('.screens');
+    if (!popover || !screens) return;
+    const chipRect = chipEl.getBoundingClientRect();
+    const screensRect = screens.getBoundingClientRect();
+    const popW = 240;
+    const top = chipRect.bottom - screensRect.top + 4;
+    const chipCenter = chipRect.left + chipRect.width / 2 - screensRect.left;
+    let left = chipCenter - popW / 2;
+    left = Math.max(8, Math.min(left, screensRect.width - popW - 8));
+    popover.style.top = top + 'px';
+    popover.style.left = left + 'px';
+    popover.style.right = 'auto';
+    sheet.classList.add('open');
   }
   // ===== Tag library (single source of truth) =====
   let tagLibrary = [
