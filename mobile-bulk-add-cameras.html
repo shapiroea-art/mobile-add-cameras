@@ -1160,6 +1160,10 @@
   .sheet-backdrop.as-popover .cb-label { font-size: 14px; }
   .sheet-backdrop.as-popover .cb-row .cb-badge { font-size: 11px; padding: 1px 6px; }
   .sheet-backdrop.as-popover .type-sheet .cb-divider { padding: 4px 8px; }
+  /* Tag-filter popover content */
+  .sheet-backdrop.as-popover .ts-chips { padding: 8px; gap: 6px; max-height: 280px; overflow-y: auto; }
+  .sheet-backdrop.as-popover .tag-chip { height: 28px; padding: 2px 10px; font-size: 13px; gap: 6px; }
+  .sheet-backdrop.as-popover .tag-chip .tc-dot { width: 8px; height: 8px; }
 
   @media (max-width: 900px) {
     .workspace { flex-direction: column; align-items: center; padding: 24px; gap: 24px; }
@@ -1321,15 +1325,11 @@
         <div class="screens">
 
           <!-- Bottom sheet: Tags filter (shared by Devices + AC1) -->
-          <div class="sheet-backdrop" id="tagsFilterSheet" onclick="if(event.target.id==='tagsFilterSheet') closeSheet('tagsFilterSheet')">
+          <div class="sheet-backdrop as-popover" id="tagsFilterSheet" onclick="if(event.target.id==='tagsFilterSheet') closeSheet('tagsFilterSheet')">
             <div class="sheet tags-sheet">
               <div class="ts-handle"></div>
               <div class="ts-title">Tags</div>
               <div class="ts-chips" id="tagsFilterChips"></div>
-              <div class="ts-foot">
-                <button class="button button-default" onclick="clearTagFilters()">Clear All</button>
-                <button class="button button-primary" onclick="applyTagFilters()">Apply Filters</button>
-              </div>
             </div>
           </div>
 
@@ -1634,7 +1634,7 @@
               </button>
               <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openFilterPopover(this, 'tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-body">
@@ -2083,7 +2083,7 @@
               </button>
               <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openFilterPopover(this, 'tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-body">
@@ -2213,7 +2213,7 @@
               </button>
               <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openFilterPopover(this, 'tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-body">
@@ -3934,7 +3934,7 @@
               </button>
               <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
               <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="tags" onclick="openSheet('tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openFilterPopover(this, 'tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-body">
@@ -6340,19 +6340,12 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     if (filterTagSelection.has(id)) filterTagSelection.delete(id);
     else filterTagSelection.add(id);
     renderTagFilterChips();
-  }
-  function clearTagFilters() {
-    filterTagSelection.clear();
-    renderTagFilterChips();
-  }
-  function applyTagFilters() {
     const n = filterTagSelection.size;
     document.querySelectorAll('.s5-chip[data-chip="tags"]').forEach(chip => {
       chip.classList.toggle('selected', n > 0);
       const countEl = chip.querySelector('.s5-chip-count');
       if (countEl) countEl.textContent = n;
     });
-    closeSheet('tagsFilterSheet');
   }
 
   // ===== Add sublocation: Tags field =====
