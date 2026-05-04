@@ -101,6 +101,7 @@
   /* Subtitle row */
   .subtitle-row { background: var(--color-elevation-surface-default); padding: 16px; font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; flex: 0 0 auto; }
   .subtitle-row .sub { font-size: 13px; font-weight: 400; color: var(--color-text-subtle); margin-top: 4px; line-height: 18px; }
+  .subtitle-row .subtitle-text { font-size: 14px; font-weight: 500; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
   .subtitle-row .subtitle-actions { margin-left: auto; display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
   .subtitle-row .subtitle-icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border: none; background: transparent; cursor: pointer; color: var(--color-text-defsult); border-radius: var(--r); position: relative; padding: 0; }
   .subtitle-row .subtitle-icon-btn:hover { background: var(--color-elevation-surface-subtle); }
@@ -3787,7 +3788,7 @@
                 </svg>
                 <span class="pct" id="scanPct">0%</span>
               </div>
-              <span>Select cameras to authenticate</span>
+              <span class="subtitle-text">Select cameras to sign in</span>
               <div class="subtitle-actions">
                 <button type="button" class="subtitle-icon-btn" id="searchBtn" onclick="openSearchSheet()" aria-label="Search">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
