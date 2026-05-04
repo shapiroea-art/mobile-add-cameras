@@ -551,10 +551,13 @@
   .fg-range .input-field input { font-size: 14px; }
   .fg-range .fg-range-sep { color: var(--color-text-subtlest); font-size: 16px; line-height: 1; flex: 0 0 auto; }
   .fg-range-stack { display: flex; flex-direction: column; gap: 12px; }
-  .fg-range-stack .ip-range-row { display: flex; align-items: center; gap: 8px; }
-  .fg-range-stack .ip-range-label { flex: 0 0 36px; font-size: 14px; color: var(--color-text-subtle); line-height: 24px; }
-  .fg-range-stack .ip-input { flex: 1; min-width: 0; }
+  .fg-range-pair { display: flex; align-items: center; gap: 8px; }
+  .fg-range-pair .ip-input { flex: 1; min-width: 0; padding: 0 8px; gap: 2px; }
+  .fg-range-pair .ip-input .ip-prefix { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--color-text-subtle); text-transform: uppercase; padding-right: 6px; flex: 0 0 auto; line-height: 1; }
+  .fg-range-pair .ip-input .ip-octet { width: 22px; font-size: 12px; }
+  .fg-range-pair .ip-input .ip-sep { font-size: 12px; }
   .fg-range-stack .port-row { display: flex; align-items: center; gap: 8px; }
+  .fg-range-stack .port-row .port-label { font-size: 14px; color: var(--color-text-subtle); line-height: 24px; }
   .fg-range-stack .port-row .port-field { width: 100px; padding: 0 12px; }
   .fg-range-stack .port-row .port-field input { font-size: 14px; }
 
@@ -1824,9 +1827,9 @@
               <div class="fg-group">
                 <div class="fg-label">IP range</div>
                 <div class="fg-range-stack">
-                  <div class="ip-range-row">
-                    <span class="ip-range-label">From</span>
+                  <div class="fg-range-pair">
                     <div class="ip-input" id="ipRangeFromComp">
+                      <span class="ip-prefix">From</span>
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
                       <span class="ip-sep">.</span>
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
@@ -1835,10 +1838,8 @@
                       <span class="ip-sep">.</span>
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
                     </div>
-                  </div>
-                  <div class="ip-range-row">
-                    <span class="ip-range-label">To</span>
                     <div class="ip-input" id="ipRangeToComp">
+                      <span class="ip-prefix">To</span>
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
                       <span class="ip-sep">.</span>
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
@@ -1849,7 +1850,7 @@
                     </div>
                   </div>
                   <div class="port-row">
-                    <span class="ip-range-label">Port</span>
+                    <span class="port-label">Port</span>
                     <div class="input-field port-field"><input type="text" id="ipRangePort" inputmode="numeric" placeholder="554" oninput="onIpRangeChange()"></div>
                   </div>
                 </div>
