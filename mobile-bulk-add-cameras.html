@@ -5121,17 +5121,10 @@
   }
   function commitAddByIps() {
     syncAddIpsFromDom();
-    const ips = addIpsList.map(s => s.trim()).filter(Boolean);
     commitMethod('ip');
     closeSheet('addByIpsSheet');
     startScan();
-    const search = document.getElementById('camSearch');
-    if (search) {
-      search.value = ips.join(', ');
-      const wrap = search.closest('.search-input');
-      if (wrap) wrap.classList.toggle('has-value', !!search.value);
-      renderCamList();
-    }
+    renderCamList();
   }
   function openAddByNvrSheet() {
     closeMethodSheet();
