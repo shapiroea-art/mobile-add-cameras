@@ -5130,19 +5130,10 @@
     focusFirstOctet(document.getElementById('addNvrIp'));
   }
   function commitAddByNvr() {
-    const ip = readIpComp(document.getElementById('addNvrIp'));
     commitMethod('nvr');
     closeSheet('addByNvrSheet');
     startScan();
-    const search = document.getElementById('camSearch');
-    if (search) {
-      search.value = ip;
-      const wrap = search.closest('.search-input');
-      if (wrap) wrap.classList.toggle('has-value', !!ip);
-      renderCamList();
-    }
-    const tags = document.getElementById('camSearchTags');
-    if (tags) tags.classList.add('has-tags');
+    renderCamList();
     const s3 = document.getElementById('s3');
     if (s3) s3.dataset.nvr = 'true';
   }
