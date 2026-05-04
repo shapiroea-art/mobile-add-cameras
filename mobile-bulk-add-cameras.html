@@ -3789,7 +3789,7 @@
               </div>
               <span>Select cameras to authenticate</span>
               <div class="subtitle-actions">
-                <button type="button" class="subtitle-icon-btn" onclick="openSearchSheet()" aria-label="Search">
+                <button type="button" class="subtitle-icon-btn" id="searchBtn" onclick="openSearchSheet()" aria-label="Search">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                 </button>
                 <button type="button" class="subtitle-icon-btn" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
@@ -4776,6 +4776,7 @@
       const wrap = searchInp.closest('.search-input');
       if (wrap) wrap.classList.remove('has-value');
     }
+    updateSearchBtn();
     const nvrTags = document.getElementById('camSearchTags');
     if (nvrTags) nvrTags.classList.remove('has-tags');
     const s3 = document.getElementById('s3');
@@ -5208,9 +5209,16 @@
     const s3 = document.getElementById('s3');
     if (s3) s3.dataset.nvr = 'true';
   }
+  function updateSearchBtn() {
+    const btn = document.getElementById('searchBtn');
+    const inp = document.getElementById('camSearch');
+    if (!btn) return;
+    btn.classList.toggle('has-filters', !!(inp && inp.value));
+  }
   function onCamSearchInput(input) {
     const wrap = input.closest('.search-input');
     if (wrap) wrap.classList.toggle('has-value', !!input.value);
+    updateSearchBtn();
     renderCamList();
   }
   function clearCamSearch() {
@@ -5219,6 +5227,7 @@
     inp.value = '';
     const wrap = inp.closest('.search-input');
     if (wrap) wrap.classList.remove('has-value');
+    updateSearchBtn();
     inp.focus();
     renderCamList();
   }
