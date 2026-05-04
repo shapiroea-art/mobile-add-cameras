@@ -1789,6 +1789,37 @@
                 <div class="sheet-title">Filter</div>
               </div>
               <div class="fg-group">
+                <div class="fg-label">IP range</div>
+                <div class="fg-range-stack">
+                  <div class="fg-range-pair">
+                    <div class="ip-input" id="ipRangeFromComp">
+                      <span class="ip-prefix">From</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                    </div>
+                    <div class="ip-input" id="ipRangeToComp">
+                      <span class="ip-prefix">To</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                    </div>
+                  </div>
+                  <div class="port-row">
+                    <span class="port-label">Port</span>
+                    <div class="input-field port-field"><input type="text" id="ipRangePort" inputmode="numeric" placeholder="554" oninput="onIpRangeChange()"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="fg-group">
                 <div class="fg-label">Devices</div>
                 <div class="fg-chips" id="s2Chips">
                   <span class="chip with-icon" data-filter="unregistered">
@@ -1822,37 +1853,6 @@
                   <span class="chip with-icon" data-conn="good"><span class="cam-conn-dot good"></span>Good</span>
                   <span class="chip with-icon" data-conn="reasonable"><span class="cam-conn-dot reasonable"></span>Reasonable</span>
                   <span class="chip with-icon" data-conn="limited"><span class="cam-conn-dot limited"></span>Limited</span>
-                </div>
-              </div>
-              <div class="fg-group">
-                <div class="fg-label">IP range</div>
-                <div class="fg-range-stack">
-                  <div class="fg-range-pair">
-                    <div class="ip-input" id="ipRangeFromComp">
-                      <span class="ip-prefix">From</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                      <span class="ip-sep">.</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                      <span class="ip-sep">.</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                      <span class="ip-sep">.</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                    </div>
-                    <div class="ip-input" id="ipRangeToComp">
-                      <span class="ip-prefix">To</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                      <span class="ip-sep">.</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                      <span class="ip-sep">.</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                      <span class="ip-sep">.</span>
-                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
-                    </div>
-                  </div>
-                  <div class="port-row">
-                    <span class="port-label">Port</span>
-                    <div class="input-field port-field"><input type="text" id="ipRangePort" inputmode="numeric" placeholder="554" oninput="onIpRangeChange()"></div>
-                  </div>
                 </div>
               </div>
               <div class="sheet-action-bar">
