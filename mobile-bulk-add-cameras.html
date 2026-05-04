@@ -380,7 +380,10 @@
   .circle-progress .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: var(--color-text-bold); line-height: 1; font-family: var(--sans); letter-spacing: -0.01em; }
 
   /* Search + filter row */
-  .search-row { display: flex; gap: 8px; padding: 12px 16px; background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); flex: 0 0 auto; align-items: center; }
+  .search-block { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); flex: 0 0 auto; }
+  .search-row { display: flex; gap: 8px; padding: 12px 16px; align-items: center; }
+  .search-tags { display: none; flex-wrap: wrap; gap: 8px; padding: 0 16px 12px; align-items: center; }
+  .search-tags.has-tags { display: flex; }
   .search-input { flex: 1; display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 48px; border: 1px solid var(--color-border-input-default); border-radius: 8px; background: var(--color-elevation-surface-default); transition: border-color .12s ease; }
   .search-input:focus-within { border-color: var(--color-background-button-primary-default); }
   .search-input input { flex: 1; border: none; outline: none; background: transparent; font: 400 16px/24px var(--sans); color: var(--color-text-defsult); min-width: 0; }
@@ -3685,23 +3688,27 @@
               <span>Select cameras to authenticate</span>
             </div>
 
-            <div class="search-row">
-              <div class="search-input">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#667085" stroke-width="1.6"/><path d="M14 14l3 3" stroke="#667085" stroke-width="1.6" stroke-linecap="round"/></svg>
-                <input placeholder="Search" id="camSearch" oninput="onCamSearchInput(this)" />
-                <button type="button" class="search-clear" onclick="clearCamSearch()" aria-label="Clear">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <div class="search-block">
+              <div class="search-row">
+                <div class="search-input">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#667085" stroke-width="1.6"/><path d="M14 14l3 3" stroke="#667085" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  <input placeholder="Search" id="camSearch" oninput="onCamSearchInput(this)" />
+                  <button type="button" class="search-clear" onclick="clearCamSearch()" aria-label="Clear">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  </button>
+                </div>
+                <button class="filter-button" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </button>
-                <span class="search-badge" id="camSearchNvrBadge" style="display: none;">
+              </div>
+              <div class="search-tags" id="camSearchTags">
+                <span class="search-badge" id="camSearchNvrBadge">
                   <span>NVR</span>
                   <button type="button" onclick="removeSearchBadge()" aria-label="Remove NVR badge">
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                   </button>
                 </span>
               </div>
-              <button class="filter-button" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              </button>
             </div>
 
             <div class="table-header">
@@ -4627,8 +4634,8 @@
       const wrap = searchInp.closest('.search-input');
       if (wrap) wrap.classList.remove('has-value');
     }
-    const nvrBadge = document.getElementById('camSearchNvrBadge');
-    if (nvrBadge) nvrBadge.style.display = 'none';
+    const nvrTags = document.getElementById('camSearchTags');
+    if (nvrTags) nvrTags.classList.remove('has-tags');
     const s3 = document.getElementById('s3');
     if (s3) s3.dataset.nvr = 'false';
     camFilter = 'all';
@@ -5071,8 +5078,8 @@
       if (wrap) wrap.classList.toggle('has-value', !!ip);
       renderCamList();
     }
-    const badge = document.getElementById('camSearchNvrBadge');
-    if (badge) badge.style.display = 'inline-flex';
+    const tags = document.getElementById('camSearchTags');
+    if (tags) tags.classList.add('has-tags');
     const s3 = document.getElementById('s3');
     if (s3) s3.dataset.nvr = 'true';
   }
@@ -5091,8 +5098,8 @@
     renderCamList();
   }
   function removeSearchBadge() {
-    const badge = document.getElementById('camSearchNvrBadge');
-    if (badge) badge.style.display = 'none';
+    const tags = document.getElementById('camSearchTags');
+    if (tags) tags.classList.remove('has-tags');
     const s3 = document.getElementById('s3');
     if (s3) s3.dataset.nvr = 'false';
   }
