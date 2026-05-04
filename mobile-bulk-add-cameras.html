@@ -101,6 +101,11 @@
   /* Subtitle row */
   .subtitle-row { background: var(--color-elevation-surface-default); padding: 16px; font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; flex: 0 0 auto; }
   .subtitle-row .sub { font-size: 13px; font-weight: 400; color: var(--color-text-subtle); margin-top: 4px; line-height: 18px; }
+  .subtitle-row .subtitle-actions { margin-left: auto; display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
+  .subtitle-row .subtitle-icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border: none; background: transparent; cursor: pointer; color: var(--color-text-defsult); border-radius: var(--r); position: relative; padding: 0; }
+  .subtitle-row .subtitle-icon-btn:hover { background: var(--color-elevation-surface-subtle); }
+  .subtitle-row .subtitle-icon-btn.has-filters { color: var(--color-background-button-primary-default); }
+  .subtitle-row .subtitle-icon-btn.has-filters::after { content: ''; position: absolute; top: 4px; right: 4px; width: 10px; height: 10px; background: var(--color-background-button-primary-default); border: 2px solid var(--color-elevation-surface-default); border-radius: 50%; }
 
   .method-chips-row { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); padding: 10px 16px; flex: 0 0 auto; }
   .method-chips-row .chips { padding-bottom: 0; }
@@ -3721,9 +3726,17 @@
                 <span class="pct" id="scanPct">0%</span>
               </div>
               <span>Select cameras to authenticate</span>
+              <div class="subtitle-actions">
+                <button type="button" class="subtitle-icon-btn" onclick="toggleSearchBlock()" aria-label="Search">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </button>
+                <button type="button" class="subtitle-icon-btn" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </button>
+              </div>
             </div>
 
-            <div class="search-block">
+            <div class="search-block" id="searchBlock" hidden>
               <div class="search-row">
                 <div class="search-input">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#667085" stroke-width="1.6"/><path d="M14 14l3 3" stroke="#667085" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -3732,9 +3745,6 @@
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
                   </button>
                 </div>
-                <button class="filter-button" id="filterBtn" onclick="openFilterSheet()" aria-label="Filter">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                </button>
               </div>
               <div class="search-tags" id="camSearchTags">
                 <span class="search-badge" id="camSearchNvrBadge">
@@ -4618,6 +4628,25 @@
     if (!pendingMethod) return;
     pendingMethod = null;
     setActiveChipVisual(currentMethod);
+  }
+  function toggleSearchBlock() {
+    const block = document.getElementById('searchBlock');
+    if (!block) return;
+    const wasHidden = block.hasAttribute('hidden');
+    if (wasHidden) {
+      block.removeAttribute('hidden');
+      const inp = document.getElementById('camSearch');
+      if (inp) inp.focus();
+    } else {
+      block.setAttribute('hidden', '');
+      const inp = document.getElementById('camSearch');
+      if (inp && inp.value) {
+        inp.value = '';
+        const wrap = inp.closest('.search-input');
+        if (wrap) wrap.classList.remove('has-value');
+        renderCamList();
+      }
+    }
   }
 
   // ===== Scan (S2) =====
