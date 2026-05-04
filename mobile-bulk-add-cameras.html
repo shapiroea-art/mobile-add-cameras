@@ -4898,9 +4898,8 @@
   function updateFilterBtn() {
     const button = document.getElementById('filterBtn');
     if (!button) return;
-    const ipRangeActive = !!(ipRange.from || ipRange.to || ipRange.port);
     const deviceFilterActive = camFilter !== 'all';
-    button.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0 || ipRangeActive || deviceFilterActive);
+    button.classList.toggle('has-filters', brandFilters.size + connFilters.size > 0 || deviceFilterActive);
   }
   function clearIpRangeInputs() {
     ipRange.from = '';
