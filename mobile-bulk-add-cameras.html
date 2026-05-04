@@ -568,6 +568,7 @@
   .fg-range-stack { display: flex; flex-direction: column; gap: 12px; }
   .fg-range-pair { display: flex; align-items: center; gap: 6px; }
   .fg-range-pair .ip-range-label { font-size: 14px; color: var(--color-text-subtle); line-height: 24px; flex: 0 0 auto; }
+  .fg-range-pair .ip-range-dash { font-size: 14px; color: var(--color-text-subtle); line-height: 24px; flex: 0 0 auto; padding: 0 2px; }
   .fg-range-pair .ip-input { flex: 1; min-width: 0; padding: 0 8px; gap: 2px; }
   .fg-range-pair .ip-input .ip-octet { width: 20px; font-size: 12px; }
   .fg-range-pair .ip-input .ip-sep { font-size: 12px; }
@@ -1864,7 +1865,6 @@
                 <div class="fg-label">IP range</div>
                 <div class="fg-range-stack">
                   <div class="fg-range-pair">
-                    <span class="ip-range-label">From</span>
                     <div class="ip-input" id="ipRangeFromComp">
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
                       <span class="ip-sep">.</span>
@@ -1874,7 +1874,7 @@
                       <span class="ip-sep">.</span>
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
                     </div>
-                    <span class="ip-range-label">To</span>
+                    <span class="ip-range-dash" aria-hidden="true">–</span>
                     <div class="ip-input" id="ipRangeToComp">
                       <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
                       <span class="ip-sep">.</span>
