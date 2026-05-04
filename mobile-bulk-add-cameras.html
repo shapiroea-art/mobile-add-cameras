@@ -102,10 +102,8 @@
   .subtitle-row { background: var(--color-elevation-surface-default); padding: 16px; font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; flex: 0 0 auto; }
   .subtitle-row .sub { font-size: 13px; font-weight: 400; color: var(--color-text-subtle); margin-top: 4px; line-height: 18px; }
 
-  .alt-method-row { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; padding: 12px 16px; background: var(--color-elevation-surface-default); border: none; border-bottom: 1px solid var(--color-border-default); cursor: pointer; font-family: inherit; flex: 0 0 auto; }
-  .alt-method-row:hover { background: var(--color-elevation-surface-subtle); }
-  .alt-method-row .alt-method-label { font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
-  .alt-method-row svg { color: var(--color-text-subtlest); flex: 0 0 auto; }
+  .method-chips-row { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); padding: 10px 16px; flex: 0 0 auto; }
+  .method-chips-row .chips { padding-bottom: 0; }
 
   /* Content */
   .content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; background: var(--color-background-accent-gray200-default); }
@@ -3709,6 +3707,15 @@
               <div class="sp-bar"><div class="sp-fill" style="width: 50%;"></div></div>
             </div>
 
+            <div class="method-chips-row">
+              <div class="chips" id="methodChips">
+                <button type="button" class="chip active" data-method="scan" onclick="selectMethod('scan')">Scanning</button>
+                <button type="button" class="chip" data-method="iprange" onclick="selectMethod('iprange')">IP range</button>
+                <button type="button" class="chip" data-method="nvr" onclick="selectMethod('nvr')">NVR</button>
+                <button type="button" class="chip" data-method="ip" onclick="selectMethod('ip')">IP address</button>
+              </div>
+            </div>
+
             <div class="subtitle-row" style="display:flex; align-items:center; gap:12px; border-bottom: 1px solid var(--color-border-default); padding: 6px 16px;">
               <div class="circle-progress" id="scanCircle">
                 <svg viewBox="0 0 48 48">
@@ -3719,11 +3726,6 @@
               </div>
               <span>Select cameras to authenticate</span>
             </div>
-
-            <button type="button" class="alt-method-row" onclick="openMethodSheet()">
-              <span class="alt-method-label">Add by IP, IP range or NVR</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
 
             <div class="search-block">
               <div class="search-row">
@@ -4586,6 +4588,41 @@
   function openMethodSheet() { document.getElementById('methodSheet').classList.add('open'); }
   function closeMethodSheet() { document.getElementById('methodSheet').classList.remove('open'); }
 
+  // ===== Detection method chips =====
+  let currentMethod = 'scan';
+  let pendingMethod = null;
+  function setActiveChipVisual(method) {
+    document.querySelectorAll('#methodChips .chip').forEach(c =>
+      c.classList.toggle('active', c.dataset.method === method)
+    );
+  }
+  function openMethodSheetFor(method) {
+    if (method === 'iprange') openAddByIpSheet();
+    else if (method === 'nvr') openAddByNvrSheet();
+    else if (method === 'ip') openAddByIpsSheet();
+  }
+  function selectMethod(method) {
+    if (method === 'scan') {
+      pendingMethod = null;
+      currentMethod = 'scan';
+      setActiveChipVisual('scan');
+      return;
+    }
+    setActiveChipVisual(method);
+    pendingMethod = method;
+    openMethodSheetFor(method);
+  }
+  function commitMethod(method) {
+    pendingMethod = null;
+    currentMethod = method;
+    setActiveChipVisual(method);
+  }
+  function revertPendingMethod() {
+    if (!pendingMethod) return;
+    pendingMethod = null;
+    setActiveChipVisual(currentMethod);
+  }
+
   // ===== Scan (S2) =====
   const cams = [
     { ip: '192.168.100.152', mac: 'c4:79:05:09:02:54', brand: 'Uniview', connection: 'reasonable', status: 'unregistered', ping: { min: 12, max: 48, avg: 23, std: 5 } },
@@ -5086,6 +5123,7 @@
   function commitAddByIps() {
     syncAddIpsFromDom();
     const ips = addIpsList.map(s => s.trim()).filter(Boolean);
+    commitMethod('ip');
     closeSheet('addByIpsSheet');
     startScan();
     const search = document.getElementById('camSearch');
@@ -5104,6 +5142,7 @@
   }
   function commitAddByNvr() {
     const ip = readIpComp(document.getElementById('addNvrIp'));
+    commitMethod('nvr');
     closeSheet('addByNvrSheet');
     startScan();
     const search = document.getElementById('camSearch');
@@ -5142,6 +5181,7 @@
     const start = readIpComp(document.getElementById('addIpStart'));
     const end = readIpComp(document.getElementById('addIpEnd'));
     const port = (document.getElementById('addIpPort').value || '').trim();
+    commitMethod('iprange');
     closeSheet('addByIpSheet');
     startScan();
     ipRange.from = start;
@@ -6915,6 +6955,9 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.remove('open');
+    if (id === 'addByIpSheet' || id === 'addByIpsSheet' || id === 'addByNvrSheet') {
+      revertPendingMethod();
+    }
   }
   function openFilterPopover(chipEl, sheetId) {
     const sheet = document.getElementById(sheetId);
