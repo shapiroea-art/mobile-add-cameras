@@ -495,6 +495,12 @@
   .sheet-title-row .sheet-title { margin: 0; padding: 0; flex: 1; }
   .sheet-clear { font-size: 13px; font-weight: 500; color: var(--color-background-button-primary-default); padding: 6px 8px; cursor: pointer; background: none; border: none; }
   .sheet-clear:disabled { color: var(--color-text-subtlest); cursor: not-allowed; }
+  /* Filter sheet — Figma node 204:42610: 24/Medium title and Clear All / Apply Filters bottom action bar */
+  #filterSheet .sheet { padding-bottom: 0; }
+  #filterSheet .sheet-title-row { padding: 4px 4px 12px; margin-bottom: 4px; }
+  #filterSheet .sheet-title-row .sheet-title { font-size: 24px; font-weight: 500; line-height: 32px; color: var(--color-text-bold); }
+  .sheet-action-bar { display: flex; gap: 8px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); margin: 16px -16px 0; border-top: 1px solid var(--color-border-default); background: var(--color-elevation-surface-default); }
+  .sheet-action-bar .button { flex: 1; }
   .fg-group { padding: 6px 4px 14px; }
   .fg-label { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--color-text-subtle); text-transform: uppercase; padding: 0 0 8px; }
   .fg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -544,6 +550,13 @@
   .fg-range .input-field { flex: 1; min-width: 0; padding: 0 12px; }
   .fg-range .input-field input { font-size: 14px; }
   .fg-range .fg-range-sep { color: var(--color-text-subtlest); font-size: 16px; line-height: 1; flex: 0 0 auto; }
+  .fg-range-stack { display: flex; flex-direction: column; gap: 12px; }
+  .fg-range-stack .ip-range-row { display: flex; align-items: center; gap: 8px; }
+  .fg-range-stack .ip-range-label { flex: 0 0 36px; font-size: 14px; color: var(--color-text-subtle); line-height: 24px; }
+  .fg-range-stack .ip-input { flex: 1; min-width: 0; }
+  .fg-range-stack .port-row { display: flex; align-items: center; gap: 8px; }
+  .fg-range-stack .port-row .port-field { width: 100px; padding: 0 12px; }
+  .fg-range-stack .port-row .port-field input { font-size: 14px; }
 
   /* ===== S4 Configuration (rebuilt) ===== */
   .conf-list { flex: 1; overflow-y: auto; background: var(--color-elevation-surface-default); }
@@ -1771,7 +1784,6 @@
               <div class="sheet-handle"></div>
               <div class="sheet-title-row">
                 <div class="sheet-title">Filter</div>
-                <button class="sheet-clear" id="sheetClear" onclick="clearFilters()">Clear all</button>
               </div>
               <div class="fg-group">
                 <div class="fg-label">Devices</div>
@@ -1811,14 +1823,41 @@
               </div>
               <div class="fg-group">
                 <div class="fg-label">IP range</div>
-                <div class="fg-range">
-                  <div class="input-field"><input type="text" id="ipRangeFrom" inputmode="decimal" placeholder="192.168.1.1" oninput="onIpRangeChange()"></div>
-                  <span class="fg-range-sep">–</span>
-                  <div class="input-field"><input type="text" id="ipRangeTo" inputmode="decimal" placeholder="192.168.1.255" oninput="onIpRangeChange()"></div>
-                  <div class="input-field" style="flex: 0 0 70px; padding: 0 10px;"><input type="text" id="ipRangePort" inputmode="numeric" placeholder="554" oninput="onIpRangeChange()"></div>
+                <div class="fg-range-stack">
+                  <div class="ip-range-row">
+                    <span class="ip-range-label">From</span>
+                    <div class="ip-input" id="ipRangeFromComp">
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="0" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                    </div>
+                  </div>
+                  <div class="ip-range-row">
+                    <span class="ip-range-label">To</span>
+                    <div class="ip-input" id="ipRangeToComp">
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                      <span class="ip-sep">.</span>
+                      <input type="text" class="ip-octet" maxlength="3" inputmode="numeric" placeholder="255" oninput="ipOctetInput(event); onIpRangeChange()" onkeydown="ipOctetKeyDown(event)">
+                    </div>
+                  </div>
+                  <div class="port-row">
+                    <span class="ip-range-label">Port</span>
+                    <div class="input-field port-field"><input type="text" id="ipRangePort" inputmode="numeric" placeholder="554" oninput="onIpRangeChange()"></div>
+                  </div>
                 </div>
               </div>
-              <button class="button button-primary button-full" onclick="closeFilterSheet()" style="margin-top: 4px;">Done</button>
+              <div class="sheet-action-bar">
+                <button class="button button-default" id="sheetClear" onclick="clearFilters()">Clear All</button>
+                <button class="button button-primary" onclick="closeFilterSheet()">Apply Filters</button>
+              </div>
             </div>
           </div>
 
@@ -4829,16 +4868,14 @@
     ipRange.from = '';
     ipRange.to = '';
     ipRange.port = '';
-    const f = document.getElementById('ipRangeFrom');
-    const t = document.getElementById('ipRangeTo');
+    setIpComp(document.getElementById('ipRangeFromComp'), '');
+    setIpComp(document.getElementById('ipRangeToComp'), '');
     const p = document.getElementById('ipRangePort');
-    if (f) f.value = '';
-    if (t) t.value = '';
     if (p) p.value = '';
   }
   function onIpRangeChange() {
-    ipRange.from = (document.getElementById('ipRangeFrom')?.value || '').trim();
-    ipRange.to = (document.getElementById('ipRangeTo')?.value || '').trim();
+    ipRange.from = readIpComp(document.getElementById('ipRangeFromComp'));
+    ipRange.to = readIpComp(document.getElementById('ipRangeToComp'));
     ipRange.port = (document.getElementById('ipRangePort')?.value || '').trim();
     updateFilterBtn();
     renderCamList();
@@ -5109,11 +5146,9 @@
     ipRange.from = start;
     ipRange.to = end;
     ipRange.port = port;
-    const f = document.getElementById('ipRangeFrom');
-    const t = document.getElementById('ipRangeTo');
+    setIpComp(document.getElementById('ipRangeFromComp'), start);
+    setIpComp(document.getElementById('ipRangeToComp'), end);
     const p = document.getElementById('ipRangePort');
-    if (f) f.value = start;
-    if (t) t.value = end;
     if (p) p.value = port;
     updateFilterBtn();
     renderCamList();
