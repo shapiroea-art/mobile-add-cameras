@@ -5390,7 +5390,7 @@
     const nm = el ? el.querySelector('.name') : null;
     return nm ? nm.textContent.trim() : 'Core 3';
   }
-  function camNameFor(idx) { return `Camera ${idx}`; }
+  function camNameFor(idx) { return `${currentMethod === 'nvr' ? 'Channel' : 'Camera'} ${idx}`; }
 
   const confCams = [
     { id: 1,  ip: '10.0.12.34', brand: 'Axis',      brandModel: 'Axis M3045-V',              model: 'AXIS M3045-V',      type: 'Dome',         mac: '3c:23:32:44:37:c6', path: 'ok',       statusLevel: 'online'  },
