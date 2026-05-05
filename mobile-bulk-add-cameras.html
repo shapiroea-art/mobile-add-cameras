@@ -6329,9 +6329,7 @@
     const meta = document.getElementById('coreSoftwareRowMeta');
     if (!meta) return;
     meta.dataset.state = state;
-    const text = state === 'up-to-date'
-      ? document.getElementById('coreLatestVersion').textContent
-      : 'Update available';
+    const text = state === 'up-to-date' ? 'The latest version' : 'Update available';
     meta.querySelector('.cs-row-meta-text').textContent = text;
   }
   function openCoreSoftware() {
