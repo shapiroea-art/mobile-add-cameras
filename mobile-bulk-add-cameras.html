@@ -4666,6 +4666,7 @@
   }
   function confirmDetectionMethod() {
     if (detectionMethod === 'scan') {
+      currentMethod = 'scan';
       startScan();
     } else if (detectionMethod === 'iprange') {
       openAddByIpSheet();
@@ -4859,9 +4860,10 @@
     updateSearchBtn();
     const nvrTags = document.getElementById('camSearchTags');
     if (nvrTags) nvrTags.classList.remove('has-tags');
+    const isNvr = currentMethod === 'nvr';
     const s3 = document.getElementById('s3');
-    if (s3) s3.dataset.nvr = 'false';
-    if (s2) s2.dataset.nvr = 'false';
+    if (s3) s3.dataset.nvr = isNvr ? 'true' : 'false';
+    if (s2) s2.dataset.nvr = isNvr ? 'true' : 'false';
     camFilter = 'all';
     document.querySelectorAll('#s2Chips .chip, #brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
     updateFilterBtn();
@@ -5274,10 +5276,6 @@
     closeSheet('addByNvrSheet');
     startScan();
     renderCamList();
-    const s3 = document.getElementById('s3');
-    if (s3) s3.dataset.nvr = 'true';
-    const s2 = document.getElementById('s2');
-    if (s2) s2.dataset.nvr = 'true';
   }
   function updateSearchBtn() {
     const btn = document.getElementById('searchBtn');
