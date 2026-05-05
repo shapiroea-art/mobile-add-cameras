@@ -880,6 +880,9 @@
   .cs-row:hover { background: var(--color-elevation-surface-subtle); }
   .cs-row .cs-row-label { flex: 1; font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; }
   .cs-row .cs-row-chev { color: var(--color-text-subtlest); padding: 10px; display: inline-flex; flex: 0 0 auto; }
+  .cs-row .cs-row-meta { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; }
+  .cs-row .cs-row-meta-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-background-accent-amber-default); flex: 0 0 auto; display: inline-block; }
+  .cs-row .cs-row-meta[data-state="up-to-date"] .cs-row-meta-dot { display: none; }
   .cs-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .cs-meta .cs-meta-item { display: inline-flex; align-items: center; gap: 8px; }
   .cs-meta .cs-meta-ico { color: var(--color-text-defsult); display: inline-flex; flex: 0 0 auto; }
@@ -1027,6 +1030,9 @@
   .core-update-progress .cup-row { display: flex; align-items: baseline; gap: 8px; }
   .core-update-progress .cup-key { font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; flex: 0 0 auto; }
   .core-update-progress .cup-val { font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 20px; }
+  .badge-latest { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 400px; background: var(--color-background-accent-emerald-subtle); color: var(--color-text-success-default); font-family: var(--sans); font-size: 12px; font-weight: 500; line-height: 18px; flex: 0 0 auto; }
+  #sCoreSoftwareContent[data-state="update-available"] [data-software-state="up-to-date"] { display: none; }
+  #sCoreSoftwareContent[data-state="up-to-date"] [data-software-state="update-available"] { display: none; }
 
   /* Camera location screen */
   #sCamLocation { background: var(--color-elevation-surface-default); }
@@ -3278,6 +3284,14 @@
                   <span class="cs-row-label">DHCP Server</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
+                <button class="cs-row" type="button" onclick="openCoreSoftware()">
+                  <span class="cs-row-label">Software</span>
+                  <span class="cs-row-meta" id="coreSoftwareRowMeta" data-state="update-available">
+                    <span class="cs-row-meta-dot"></span>
+                    <span class="cs-row-meta-text">Update available</span>
+                  </span>
+                  <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
               </div>
 
               <div class="cs-card cs-card-pad">
@@ -3290,20 +3304,50 @@
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
-                <div class="cs-info-row">
+              </div>
+
+              <button type="button" class="core-restart-button">Restart core</button>
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCoreSoftware: Core > Software ========== -->
+          <div class="panel" id="sCoreSoftware">
+            <div class="top-bar">
+              <div class="tb-left">
+                <button class="button-icon" onclick="closeCoreSoftware()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Software</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cs-content" id="sCoreSoftwareContent" data-state="update-available">
+              <div class="cs-card cs-card-pad">
+                <div class="cs-info-row" data-software-state="update-available">
                   <div class="cs-info-body">
                     <div class="cs-info-label">Software version</div>
                     <div class="cs-info-value cs-info-value-subtle" id="coreSoftwareVersion">v2.1.416.0</div>
                   </div>
                 </div>
-                <div class="cs-info-row">
+                <div class="cs-info-row" data-software-state="update-available">
                   <div class="cs-info-body">
                     <div class="cs-info-label">Latest software version</div>
                     <div class="cs-info-value cs-info-value-subtle" id="coreLatestVersion">v1.7.130.16</div>
                   </div>
                 </div>
 
-                <button type="button" class="button button-primary core-update-button" id="coreSoftwareUpdateBtn" onclick="runCoreSoftwareUpdate()">Update to latest version</button>
+                <div class="cs-info-row cs-info-row-uptodate" data-software-state="up-to-date">
+                  <div class="cs-info-body">
+                    <div class="cs-info-label">Software version</div>
+                    <div class="cs-info-value cs-info-value-subtle" id="coreSoftwareVersionUtd">v1.7.130.16</div>
+                  </div>
+                  <span class="badge-latest">Latest</span>
+                </div>
+
+                <button type="button" class="button button-primary core-update-button" id="coreSoftwareUpdateBtn" data-software-state="update-available" onclick="runCoreSoftwareUpdate()">Update to latest version</button>
 
                 <div class="core-update-progress" id="coreUpdateProgress">
                   <div class="cup-head">
@@ -3315,8 +3359,6 @@
                   <div class="cup-row"><span class="cup-key">Progress:</span><span class="cup-val" id="cupProgress">0%</span></div>
                 </div>
               </div>
-
-              <button type="button" class="core-restart-button">Restart core</button>
             </div>
 
             <div class="cd-success-bar" id="coreSoftwareSuccess">
@@ -6270,8 +6312,11 @@
   }
 
   // ===== Core screen =====
+  let _coreSoftwareState = 'update-available';
   function openCoreScreen(name) {
     if (name) document.getElementById('coreTitle').textContent = name;
+    _coreSoftwareState = 'update-available';
+    setCoreSoftwareRowMeta('update-available');
     resetCoreSoftwareUpdate();
     document.getElementById('s0').classList.remove('active');
     document.getElementById('sCore').classList.add('active');
@@ -6279,6 +6324,25 @@
   function closeCoreScreen() {
     document.getElementById('sCore').classList.remove('active');
     document.getElementById('s0').classList.add('active');
+  }
+  function setCoreSoftwareRowMeta(state) {
+    const meta = document.getElementById('coreSoftwareRowMeta');
+    if (!meta) return;
+    meta.dataset.state = state;
+    const text = state === 'up-to-date'
+      ? document.getElementById('coreLatestVersion').textContent
+      : 'Update available';
+    meta.querySelector('.cs-row-meta-text').textContent = text;
+  }
+  function openCoreSoftware() {
+    document.getElementById('sCoreSoftwareContent').dataset.state = _coreSoftwareState;
+    if (_coreSoftwareState === 'update-available') resetCoreSoftwareUpdate();
+    document.getElementById('sCore').classList.remove('active');
+    document.getElementById('sCoreSoftware').classList.add('active');
+  }
+  function closeCoreSoftware() {
+    document.getElementById('sCoreSoftware').classList.remove('active');
+    document.getElementById('sCore').classList.add('active');
   }
   let _coreUpdateTimers = [];
   function _clearCoreUpdateTimers() {
@@ -6289,6 +6353,7 @@
     const btn = document.getElementById('coreSoftwareUpdateBtn');
     const prog = document.getElementById('coreUpdateProgress');
     const versionEl = document.getElementById('coreSoftwareVersion');
+    const versionUtdEl = document.getElementById('coreSoftwareVersionUtd');
     const statusEl = document.getElementById('cupStatus');
     const progressEl = document.getElementById('cupProgress');
     const target = document.getElementById('coreLatestVersion').textContent;
@@ -6300,17 +6365,17 @@
     progressEl.textContent = '0%';
 
     const phases = [
-      { until: 60, status: 'Downloading file from HTTP URL', durMs: 3000 },
-      { until: 95, status: 'Installing update',              durMs: 3000 },
+      { until: 60,  status: 'Downloading file from HTTP URL', durMs: 3000 },
+      { until: 95,  status: 'Installing update',              durMs: 3000 },
       { until: 100, status: 'Restarting core',                durMs: 1500 }
     ];
-    let pct = 0;
     let phaseStart = 0;
     phases.forEach((phase, idx) => {
-      const steps = phase.until - (idx === 0 ? 0 : phases[idx-1].until);
+      const prevUntil = idx === 0 ? 0 : phases[idx-1].until;
+      const steps = phase.until - prevUntil;
       const stepMs = phase.durMs / steps;
       for (let i = 1; i <= steps; i++) {
-        const targetPct = (idx === 0 ? 0 : phases[idx-1].until) + i;
+        const targetPct = prevUntil + i;
         const delay = phaseStart + i * stepMs;
         _coreUpdateTimers.push(setTimeout(() => {
           progressEl.textContent = targetPct + '%';
@@ -6323,6 +6388,10 @@
     _coreUpdateTimers.push(setTimeout(() => {
       prog.classList.remove('show');
       versionEl.textContent = target;
+      versionUtdEl.textContent = target;
+      _coreSoftwareState = 'up-to-date';
+      document.getElementById('sCoreSoftwareContent').dataset.state = 'up-to-date';
+      setCoreSoftwareRowMeta('up-to-date');
       const sb = document.getElementById('coreSoftwareSuccess');
       document.getElementById('coreSoftwareSuccessLabel').textContent = 'Software has been updated to version ' + target;
       sb.classList.add('show');
