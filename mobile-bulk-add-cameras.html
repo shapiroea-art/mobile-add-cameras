@@ -180,7 +180,8 @@
   #s2[data-substep="scan"] .picker-only { display: none !important; }
   #s2[data-nvr="true"] .subtitle-text,
   #s2[data-nvr="true"] .th-cb-wrap,
-  #s2[data-nvr="true"] .cam-cb-wrap { display: none !important; }
+  #s2[data-nvr="true"] .cam-cb-wrap,
+  #s2[data-nvr="true"] .cam-details-title { display: none !important; }
   #s2[data-nvr="true"] .table-header,
   #s2[data-nvr="true"] .cam-row-inner { padding-left: 16px; }
 
@@ -4944,13 +4945,14 @@
     list.innerHTML = '';
     let visible = filterCams();
     const s2 = document.getElementById('s2');
-    if (s2 && s2.dataset.nvr === 'true') visible = visible.slice(0, 1);
+    const isNvr = s2 && s2.dataset.nvr === 'true';
+    if (isNvr) visible = visible.slice(0, 1);
     updateExpandAllLabel();
     visible.forEach(c => {
       const row = document.createElement('div');
       row.className = 'cam-row-fig';
       if (c.checked) row.classList.add('selected');
-      const exp = expandedIps.has(c.ip);
+      const exp = isNvr || expandedIps.has(c.ip);
       if (exp) row.classList.add('expanded');
       row.innerHTML = `
         <div class="cam-row-inner">
