@@ -169,6 +169,17 @@
 
   .core-list { display: flex; flex-direction: column; gap: 8px; }
 
+  /* Detection method picker (S2 picker substep) */
+  .method-picker { display: flex; flex-direction: column; gap: 16px; padding: 16px; flex: 1; overflow-y: auto; }
+  .method-picker .mp-intro { font-size: 14px; color: var(--color-text-subtle); line-height: 22px; }
+  .method-picker .mp-list { display: flex; flex-direction: column; gap: 8px; }
+  .method-picker .radio-row { border: 1px solid var(--color-border-default); align-items: flex-start; }
+  .method-picker .radio-row.selected { border-color: var(--color-background-button-primary-default); background: var(--color-background-information-default); }
+  .method-picker .mp-name { font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
+  .method-picker .mp-desc { font-size: 14px; color: var(--color-text-subtle); line-height: 20px; margin-top: 2px; }
+  #s2[data-substep="picker"] .scan-only { display: none !important; }
+  #s2[data-substep="scan"] .picker-only { display: none !important; }
+
   /* Network context chip */
   .netchip { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--color-elevation-surface-default); border: 1px solid var(--color-border-default); border-radius: var(--r); }
   .netchip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-text-success-default); box-shadow: 0 0 0 3px var(--color-background-accent-emerald-subtle); flex: 0 0 auto; }
@@ -3749,17 +3760,17 @@
 
             <div class="bottom-action-bar">
               <button class="button button-default button-full" onclick="resetFlow()">Back</button>
-              <button class="button button-primary button-full disabled" id="s1Next" onclick="go(1)">Next: Scan</button>
+              <button class="button button-primary button-full disabled" id="s1Next" onclick="go(1)">Next: Detection</button>
             </div>
 
             <div class="home-indicator"></div>
           </div>
 
           <!-- ========== S2: Detection ========== -->
-          <div class="panel" id="s2">
+          <div class="panel" id="s2" data-substep="picker">
             <div class="top-bar">
               <div class="tb-left">
-                <button class="button-icon" onclick="go(0)" aria-label="Back">
+                <button class="button-icon" onclick="s2BackPress()" aria-label="Back">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="tb-title">Add cameras</div>
@@ -3771,16 +3782,41 @@
               <div class="sp-bar"><div class="sp-fill" style="width: 50%;"></div></div>
             </div>
 
-            <div class="method-chips-row">
-              <div class="chips" id="methodChips">
-                <button type="button" class="chip active" data-method="scan" onclick="selectMethod('scan')">Scanning</button>
-                <button type="button" class="chip" data-method="iprange" onclick="selectMethod('iprange')">IP range</button>
-                <button type="button" class="chip" data-method="nvr" onclick="selectMethod('nvr')">NVR</button>
-                <button type="button" class="chip" data-method="ip" onclick="selectMethod('ip')">IP address</button>
+            <div class="method-picker picker-only" id="methodPicker">
+              <div class="mp-intro">Choose how to find cameras to add.</div>
+              <div class="mp-list">
+                <div class="radio-row selected" data-method="scan" onclick="selectDetectionMethod('scan')">
+                  <div class="radio-wrap"><div class="radio"></div></div>
+                  <div class="radio-body">
+                    <div class="mp-name">Scan network</div>
+                    <div class="mp-desc">Find ONVIF cameras on this network</div>
+                  </div>
+                </div>
+                <div class="radio-row" data-method="iprange" onclick="selectDetectionMethod('iprange')">
+                  <div class="radio-wrap"><div class="radio"></div></div>
+                  <div class="radio-body">
+                    <div class="mp-name">Scan IP range</div>
+                    <div class="mp-desc">Find cameras within a specific IP range</div>
+                  </div>
+                </div>
+                <div class="radio-row" data-method="nvr" onclick="selectDetectionMethod('nvr')">
+                  <div class="radio-wrap"><div class="radio"></div></div>
+                  <div class="radio-body">
+                    <div class="mp-name">Add through NVR</div>
+                    <div class="mp-desc">Connect to an NVR and import its cameras</div>
+                  </div>
+                </div>
+                <div class="radio-row" data-method="ip" onclick="selectDetectionMethod('ip')">
+                  <div class="radio-wrap"><div class="radio"></div></div>
+                  <div class="radio-body">
+                    <div class="mp-name">Add by IP address</div>
+                    <div class="mp-desc">Add a single camera by its IP</div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="subtitle-row" style="display:flex; align-items:center; gap:12px; border-bottom: 1px solid var(--color-border-default); padding: 6px 16px;">
+            <div class="subtitle-row scan-only" style="display:flex; align-items:center; gap:12px; border-bottom: 1px solid var(--color-border-default); padding: 6px 16px;">
               <div class="circle-progress" id="scanCircle">
                 <svg viewBox="0 0 48 48">
                   <circle class="bg" cx="24" cy="24" r="20"/>
@@ -3799,7 +3835,7 @@
               </div>
             </div>
 
-            <div class="search-tags" id="camSearchTags" hidden>
+            <div class="search-tags scan-only" id="camSearchTags" hidden>
               <span class="search-badge" id="camSearchNvrBadge">
                 <span>NVR</span>
                 <button type="button" onclick="removeSearchBadge()" aria-label="Remove NVR badge">
@@ -3808,7 +3844,7 @@
               </span>
             </div>
 
-            <div class="table-header">
+            <div class="table-header scan-only">
               <div class="th-cb-wrap">
                 <div class="cb tri" id="triMaster" onclick="toggleAll()">
                   <svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" rx="1"/></svg>
@@ -3829,11 +3865,11 @@
               </button>
             </div>
 
-            <div style="flex:1; overflow-y:auto; background: var(--color-elevation-surface-default);">
+            <div class="scan-only" style="flex:1; overflow-y:auto; background: var(--color-elevation-surface-default);">
               <div class="cam-list-fig" id="camList"></div>
             </div>
 
-            <div class="sel-block" id="selBlock">
+            <div class="sel-block scan-only" id="selBlock">
               <span class="sb-icon">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
               </span>
@@ -3841,8 +3877,13 @@
               <span class="sb-load">65% core load</span>
             </div>
 
-            <div class="bottom-action-bar">
+            <div class="bottom-action-bar picker-only">
               <button class="button button-default button-full" onclick="go(0)">Back</button>
+              <button class="button button-primary button-full" onclick="confirmDetectionMethod()">Next: Detect cameras</button>
+            </div>
+
+            <div class="bottom-action-bar scan-only">
+              <button class="button button-default button-full" onclick="backToPicker()">Back</button>
               <button class="button button-primary button-full" onclick="go(2)">Next: Sign in</button>
             </div>
 
@@ -4566,7 +4607,7 @@
     }
     const numberedIdx = screens.indexOf(panelId);
     if (numberedIdx !== -1) current = numberedIdx;
-    if (panelId === 's2') startScan();
+    if (panelId === 's2') enterDetectionPicker();
     if (panelId === 's4') startConfigAnimation();
     if (panelId === 's5') renderS5();
     if (panelId === 'sBarcodeScan') {
@@ -4593,9 +4634,51 @@
     next.classList.add('active');
     current = i;
     updateChrome();
-    if (i === 1) startScan();
+    if (i === 1) enterDetectionPicker();
     if (i === 3) startConfigAnimation();
     if (i === 4) renderS5();
+  }
+
+  function enterDetectionPicker() {
+    clearScanTimers();
+    detectionMethod = 'scan';
+    const s2 = document.getElementById('s2');
+    if (s2) s2.dataset.substep = 'picker';
+    document.querySelectorAll('#methodPicker .radio-row').forEach(r =>
+      r.classList.toggle('selected', r.dataset.method === 'scan')
+    );
+  }
+
+  let detectionMethod = 'scan';
+  function selectDetectionMethod(method) {
+    detectionMethod = method;
+    document.querySelectorAll('#methodPicker .radio-row').forEach(r =>
+      r.classList.toggle('selected', r.dataset.method === method)
+    );
+  }
+  function confirmDetectionMethod() {
+    if (detectionMethod === 'scan') {
+      startScan();
+    } else if (detectionMethod === 'iprange') {
+      openAddByIpSheet();
+    } else if (detectionMethod === 'nvr') {
+      openAddByNvrSheet();
+    } else if (detectionMethod === 'ip') {
+      openAddByIpsSheet();
+    }
+  }
+  function backToPicker() {
+    clearScanTimers();
+    const s2 = document.getElementById('s2');
+    if (s2) s2.dataset.substep = 'picker';
+  }
+  function s2BackPress() {
+    const s2 = document.getElementById('s2');
+    if (s2 && s2.dataset.substep === 'scan') {
+      backToPicker();
+    } else {
+      go(0);
+    }
   }
 
   function resetFlow() {
@@ -4748,6 +4831,8 @@
 
   function startScan() {
     clearScanTimers();
+    const s2 = document.getElementById('s2');
+    if (s2) s2.dataset.substep = 'scan';
     // Reset state
     cams.forEach(c => { c.checked = false; c.discovered = false; });
     expandedIps.clear();
@@ -6695,7 +6780,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     document.getElementById('s2').classList.add('active');
     current = screens.indexOf('s2');
     updateChrome();
-    startScan();
+    enterDetectionPicker();
   }
   function toggleScanFlashlight() {
     document.getElementById('scanFlashlight').classList.toggle('on');
