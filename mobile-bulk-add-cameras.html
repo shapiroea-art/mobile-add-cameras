@@ -4938,7 +4938,9 @@
     const list = document.getElementById('camList');
     if (!list) return;
     list.innerHTML = '';
-    const visible = filterCams();
+    let visible = filterCams();
+    const s2 = document.getElementById('s2');
+    if (s2 && s2.dataset.nvr === 'true') visible = visible.slice(0, 1);
     updateExpandAllLabel();
     visible.forEach(c => {
       const row = document.createElement('div');
