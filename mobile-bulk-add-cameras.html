@@ -1017,6 +1017,16 @@
   .cs-info-value-subtle { color: var(--color-text-subtle); }
   .core-restart-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--color-border-button-primary-default); border-radius: var(--r); background: var(--color-elevation-surface-default); color: var(--color-border-button-primary-default); font-family: var(--sans); font-size: 16px; font-weight: 500; line-height: 24px; cursor: pointer; width: 100%; }
   .core-restart-button:hover { background: var(--color-background-accent-primary-subtlest); }
+  .core-update-button { width: 100%; margin-top: 12px; }
+  .core-update-button[hidden] { display: none; }
+  .core-update-progress { display: none; flex-direction: column; gap: 8px; margin-top: 12px; padding: 12px; border: 1px solid var(--color-border-default); border-radius: var(--r); background: var(--color-elevation-surface-subtle); }
+  .core-update-progress.show { display: flex; }
+  .core-update-progress .cup-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .core-update-progress .cup-title { font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
+  .core-update-progress .cup-spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--color-border-default); border-top-color: var(--color-border-button-primary-default); animation: spin .8s linear infinite; flex: 0 0 auto; }
+  .core-update-progress .cup-row { display: flex; align-items: baseline; gap: 8px; }
+  .core-update-progress .cup-key { font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; flex: 0 0 auto; }
+  .core-update-progress .cup-val { font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 20px; }
 
   /* Camera location screen */
   #sCamLocation { background: var(--color-elevation-surface-default); }
@@ -3282,12 +3292,27 @@
                 </div>
                 <div class="cs-info-row">
                   <div class="cs-info-body">
-                    <div class="cs-info-label-row">
-                      <span class="cs-info-label">Software version</span>
-                      <button type="button" class="cs-info-link" id="coreSoftwareUpdateBtn" onclick="runCoreSoftwareUpdate()">Update</button>
-                    </div>
-                    <div class="cs-info-value cs-info-value-subtle" id="coreSoftwareVersion">v2.1.416.0_release_or_5.1.2</div>
+                    <div class="cs-info-label">Software version</div>
+                    <div class="cs-info-value cs-info-value-subtle" id="coreSoftwareVersion">v2.1.416.0</div>
                   </div>
+                </div>
+                <div class="cs-info-row">
+                  <div class="cs-info-body">
+                    <div class="cs-info-label">Latest software version</div>
+                    <div class="cs-info-value cs-info-value-subtle" id="coreLatestVersion">v1.7.130.16</div>
+                  </div>
+                </div>
+
+                <button type="button" class="button button-primary core-update-button" id="coreSoftwareUpdateBtn" onclick="runCoreSoftwareUpdate()">Update to latest version</button>
+
+                <div class="core-update-progress" id="coreUpdateProgress">
+                  <div class="cup-head">
+                    <span class="cup-title">Update progress</span>
+                    <span class="cup-spinner" aria-hidden="true"></span>
+                  </div>
+                  <div class="cup-row"><span class="cup-key">Target version:</span><span class="cup-val" id="cupTarget">v1.7.130.16</span></div>
+                  <div class="cup-row"><span class="cup-key">Status:</span><span class="cup-val" id="cupStatus">Downloading file from HTTP URL</span></div>
+                  <div class="cup-row"><span class="cup-key">Progress:</span><span class="cup-val" id="cupProgress">0%</span></div>
                 </div>
               </div>
 
@@ -3296,7 +3321,7 @@
 
             <div class="cd-success-bar" id="coreSoftwareSuccess">
               <span class="csb-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="csb-label">Software has been updated to version 1.5.89</span>
+              <span class="csb-label" id="coreSoftwareSuccessLabel">Software has been updated to version v1.7.130.16</span>
             </div>
 
             <div class="home-indicator"></div>
@@ -6255,14 +6280,61 @@
     document.getElementById('sCore').classList.remove('active');
     document.getElementById('s0').classList.add('active');
   }
+  let _coreUpdateTimers = [];
+  function _clearCoreUpdateTimers() {
+    _coreUpdateTimers.forEach(t => clearTimeout(t));
+    _coreUpdateTimers = [];
+  }
   function runCoreSoftwareUpdate() {
-    document.getElementById('coreSoftwareUpdateBtn').style.display = 'none';
-    document.getElementById('coreSoftwareVersion').textContent = 'v1.5.89';
-    document.getElementById('coreSoftwareSuccess').classList.add('show');
+    const btn = document.getElementById('coreSoftwareUpdateBtn');
+    const prog = document.getElementById('coreUpdateProgress');
+    const versionEl = document.getElementById('coreSoftwareVersion');
+    const statusEl = document.getElementById('cupStatus');
+    const progressEl = document.getElementById('cupProgress');
+    const target = document.getElementById('coreLatestVersion').textContent;
+    document.getElementById('cupTarget').textContent = target;
+
+    btn.style.display = 'none';
+    prog.classList.add('show');
+    statusEl.textContent = 'Downloading file from HTTP URL';
+    progressEl.textContent = '0%';
+
+    const phases = [
+      { until: 60, status: 'Downloading file from HTTP URL', durMs: 3000 },
+      { until: 95, status: 'Installing update',              durMs: 3000 },
+      { until: 100, status: 'Restarting core',                durMs: 1500 }
+    ];
+    let pct = 0;
+    let phaseStart = 0;
+    phases.forEach((phase, idx) => {
+      const steps = phase.until - (idx === 0 ? 0 : phases[idx-1].until);
+      const stepMs = phase.durMs / steps;
+      for (let i = 1; i <= steps; i++) {
+        const targetPct = (idx === 0 ? 0 : phases[idx-1].until) + i;
+        const delay = phaseStart + i * stepMs;
+        _coreUpdateTimers.push(setTimeout(() => {
+          progressEl.textContent = targetPct + '%';
+          statusEl.textContent = phase.status;
+        }, delay));
+      }
+      phaseStart += phase.durMs;
+    });
+
+    _coreUpdateTimers.push(setTimeout(() => {
+      prog.classList.remove('show');
+      versionEl.textContent = target;
+      const sb = document.getElementById('coreSoftwareSuccess');
+      document.getElementById('coreSoftwareSuccessLabel').textContent = 'Software has been updated to version ' + target;
+      sb.classList.add('show');
+    }, phaseStart + 200));
   }
   function resetCoreSoftwareUpdate() {
+    _clearCoreUpdateTimers();
     document.getElementById('coreSoftwareUpdateBtn').style.display = '';
-    document.getElementById('coreSoftwareVersion').textContent = 'v2.1.416.0_release_or_5.1.2';
+    document.getElementById('coreUpdateProgress').classList.remove('show');
+    document.getElementById('coreSoftwareVersion').textContent = 'v2.1.416.0';
+    document.getElementById('cupStatus').textContent = 'Downloading file from HTTP URL';
+    document.getElementById('cupProgress').textContent = '0%';
     document.getElementById('coreSoftwareSuccess').classList.remove('show');
   }
 
