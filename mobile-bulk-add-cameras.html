@@ -1026,10 +1026,13 @@
   .core-update-progress.show { display: flex; }
   .core-update-progress .cup-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .core-update-progress .cup-title { font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
-  .core-update-progress .cup-spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--color-border-default); border-top-color: var(--color-border-button-primary-default); animation: spin .8s linear infinite; flex: 0 0 auto; }
   .core-update-progress .cup-row { display: flex; align-items: baseline; gap: 8px; }
   .core-update-progress .cup-key { font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; flex: 0 0 auto; }
   .core-update-progress .cup-val { font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 20px; }
+  .core-update-progress .cup-stepper { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: 4px; }
+  .core-update-progress .cup-stepper-label { font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--color-text-subtle); line-height: 24px; }
+  .core-update-progress .cup-stepper-track { height: 6px; border-radius: 32px; background: var(--color-elevation-surface-subtle); overflow: hidden; }
+  .core-update-progress .cup-stepper-fill { height: 6px; background: var(--color-background-button-primary-default); width: 0%; transition: width .12s linear; }
   .badge-latest { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 400px; background: var(--color-background-accent-emerald-subtle); color: var(--color-text-success-default); font-family: var(--sans); font-size: 12px; font-weight: 500; line-height: 18px; flex: 0 0 auto; }
   #sCoreSoftwareContent[data-state="update-available"] [data-software-state="up-to-date"] { display: none; }
   #sCoreSoftwareContent[data-state="up-to-date"] [data-software-state="update-available"] { display: none; }
@@ -3352,11 +3355,13 @@
                 <div class="core-update-progress" id="coreUpdateProgress">
                   <div class="cup-head">
                     <span class="cup-title">Update progress</span>
-                    <span class="cup-spinner" aria-hidden="true"></span>
                   </div>
                   <div class="cup-row"><span class="cup-key">Target version:</span><span class="cup-val" id="cupTarget">v1.7.130.16</span></div>
                   <div class="cup-row"><span class="cup-key">Status:</span><span class="cup-val" id="cupStatus">Downloading file from HTTP URL</span></div>
-                  <div class="cup-row"><span class="cup-key">Progress:</span><span class="cup-val" id="cupProgress">0%</span></div>
+                  <div class="cup-stepper">
+                    <div class="cup-stepper-label" id="cupProgressLabel">0%</div>
+                    <div class="cup-stepper-track"><div class="cup-stepper-fill" id="cupProgressFill"></div></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -6353,14 +6358,16 @@
     const versionEl = document.getElementById('coreSoftwareVersion');
     const versionUtdEl = document.getElementById('coreSoftwareVersionUtd');
     const statusEl = document.getElementById('cupStatus');
-    const progressEl = document.getElementById('cupProgress');
+    const progressLabel = document.getElementById('cupProgressLabel');
+    const progressFill = document.getElementById('cupProgressFill');
     const target = document.getElementById('coreLatestVersion').textContent;
     document.getElementById('cupTarget').textContent = target;
 
     btn.style.display = 'none';
     prog.classList.add('show');
     statusEl.textContent = 'Downloading file from HTTP URL';
-    progressEl.textContent = '0%';
+    progressLabel.textContent = '0%';
+    progressFill.style.width = '0%';
 
     const phases = [
       { until: 60,  status: 'Downloading file from HTTP URL', durMs: 3000 },
@@ -6376,7 +6383,8 @@
         const targetPct = prevUntil + i;
         const delay = phaseStart + i * stepMs;
         _coreUpdateTimers.push(setTimeout(() => {
-          progressEl.textContent = targetPct + '%';
+          progressLabel.textContent = targetPct + '%';
+          progressFill.style.width = targetPct + '%';
           statusEl.textContent = phase.status;
         }, delay));
       }
@@ -6401,7 +6409,8 @@
     document.getElementById('coreUpdateProgress').classList.remove('show');
     document.getElementById('coreSoftwareVersion').textContent = 'v2.1.416.0';
     document.getElementById('cupStatus').textContent = 'Downloading file from HTTP URL';
-    document.getElementById('cupProgress').textContent = '0%';
+    document.getElementById('cupProgressLabel').textContent = '0%';
+    document.getElementById('cupProgressFill').style.width = '0%';
     document.getElementById('coreSoftwareSuccess').classList.remove('show');
   }
 
