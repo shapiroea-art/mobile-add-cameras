@@ -1072,6 +1072,37 @@
   .cc-chip-row .cc-stat-chip .cc-drop-ico { display: inline-flex; align-items: center; }
   .cc-chip-row .cc-stat-chip.ok .cc-drop-ico { color: var(--color-text-success-default); }
 
+  /* Auto-configure cameras panel */
+  #sCoreCamerasAutoconf { background: var(--color-elevation-surface-default); }
+  #sCoreCamerasAutoconf .ac-body { flex: 1; overflow-y: auto; }
+  #sCoreCamerasAutoconf .ac-body::-webkit-scrollbar { width: 0; }
+  #sCoreCamerasAutoconf[data-state="in-progress"] .ac-results { display: none; }
+  #sCoreCamerasAutoconf[data-state="results"] .ac-progress { display: none; }
+  #sCoreCamerasAutoconf[data-state="in-progress"] .ac-done-btn { opacity: .5; pointer-events: none; }
+  .ac-progress { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 96px 24px; text-align: center; }
+  .ac-progress .ac-spinner { width: 40px; height: 40px; border: 3px solid var(--color-border-input-default); border-top-color: var(--color-background-button-primary-default); border-radius: 50%; animation: spin 0.9s linear infinite; }
+  .ac-progress .ac-prog-title { font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
+  .ac-progress .ac-prog-counter { font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; }
+
+  .ac-tiles { display: flex; gap: 12px; padding: 16px; }
+  .ac-tile { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 12px 14px; background: var(--color-elevation-surface-default); border: 1px solid var(--color-border-default); border-radius: var(--r); }
+  .ac-tile .ac-tile-ico { display: inline-flex; flex: 0 0 auto; }
+  .ac-tile.success .ac-tile-ico { color: var(--color-text-success-default); }
+  .ac-tile.fail .ac-tile-ico { color: var(--color-background-accent-red-default); }
+  .ac-tile .ac-tile-text { display: flex; flex-direction: column; min-width: 0; }
+  .ac-tile .ac-tile-count { font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 22px; }
+  .ac-tile.fail .ac-tile-count { color: var(--color-background-accent-red-default); }
+  .ac-tile .ac-tile-label { font-size: 12px; font-weight: 400; color: var(--color-text-subtle); line-height: 18px; }
+
+  .ac-list-header { background: var(--color-elevation-surface-subtle); border-top: 1px solid var(--color-border-default); border-bottom: 1px solid var(--color-border-default); padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .ac-list-header .ac-list-col { font-size: 12px; font-weight: 500; color: var(--color-text-subtle); line-height: 20px; }
+  .ac-list { display: flex; flex-direction: column; }
+  .ac-list-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; min-height: 52px; border-bottom: 1px solid var(--color-border-default); }
+  .ac-list-row .ac-row-name { font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ac-list-row .ac-row-status { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; line-height: 20px; flex: 0 0 auto; }
+  .ac-list-row .ac-row-status.ok { color: var(--color-text-success-default); }
+  .ac-list-row .ac-row-status.err { color: var(--color-background-accent-red-default); }
+
   /* Camera location screen */
   #sCamLocation { background: var(--color-elevation-surface-default); }
   .cd-loc-content { flex: 1; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px; background: var(--color-elevation-surface-default); position: relative; overflow: hidden; }
@@ -3425,7 +3456,7 @@
               <div class="cc-stat-row1">
                 <span class="cc-stat-icon"><svg width="20" height="20" viewBox="0 0 21 21" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.68605 1.46512C2.01175 1.46512 1.46512 2.01175 1.46512 2.68605V14.1628H19.5349V2.68605C19.5349 2.01175 18.9883 1.46512 18.314 1.46512H2.68605ZM19.5349 15.6279H1.46512V18.314C1.46512 18.9883 2.01175 19.5349 2.68605 19.5349H18.314C18.9883 19.5349 19.5349 18.9883 19.5349 18.314V15.6279ZM0 2.68605C0 1.20258 1.20258 0 2.68605 0H18.314C19.7974 0 21 1.20258 21 2.68605V18.314C21 19.7974 19.7974 21 18.314 21H2.68605C1.20258 21 0 19.7974 0 18.314V2.68605Z" fill="currentColor"/></svg></span>
                 <div class="cc-stat-name" id="ccStatName">Core 1</div>
-                <button class="cc-autoconf-link" type="button" onclick="openAutoconfSheet()">Auto-configure</button>
+                <button class="cc-autoconf-link" type="button" onclick="openAutoconfPanel()">Auto-configure</button>
               </div>
               <div class="cc-stat-row2" id="ccStatChips">
                 <span class="cc-stat-chip"><span class="cc-chip-label">Eth1</span><span class="cc-chip-value">1000 Mbps</span></span>
@@ -3447,20 +3478,58 @@
             <div class="conf-list" id="ccList"></div>
 
             <div class="home-indicator"></div>
+          </div>
 
-            <div class="sheet-backdrop" id="autoconfSheet" onclick="closeInfoSheet(event, 'autoconfSheet')">
-              <div class="sheet edit-sheet">
-                <div class="sheet-handle"></div>
-                <div class="info-sheet-title">Auto-configure cameras?</div>
-                <div class="edit-sheet-body">
-                  <p style="font-size:14px; color:var(--color-text-defsult); line-height:22px; margin:0;">Apply optimized stream settings to all cameras on this core. Existing custom settings will be replaced.</p>
+          <!-- ========== sCoreCamerasAutoconf: Core > Cameras > Auto-configure ========== -->
+          <div class="panel" id="sCoreCamerasAutoconf" data-state="in-progress">
+            <div class="top-bar">
+              <div class="tb-left">
+                <button class="button-icon" onclick="closeAutoconfPanel()" aria-label="Close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <div class="tb-title">Auto-configure cameras</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="ac-body">
+              <div class="ac-progress">
+                <div class="ac-spinner" aria-label="Loading"></div>
+                <div class="ac-prog-title" id="acProgTitle">Auto-configuring 4 cameras</div>
+                <div class="ac-prog-counter"><span id="acProgDone">0</span> of <span id="acProgTotal">4</span></div>
+              </div>
+
+              <div class="ac-results">
+                <div class="ac-tiles">
+                  <div class="ac-tile success">
+                    <span class="ac-tile-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <div class="ac-tile-text">
+                      <span class="ac-tile-count" id="acSuccessCount">0</span>
+                      <span class="ac-tile-label">Successful</span>
+                    </div>
+                  </div>
+                  <div class="ac-tile fail">
+                    <span class="ac-tile-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" fill="currentColor"/><path d="M10 5.5v4.5M10 13v.01" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg></span>
+                    <div class="ac-tile-text">
+                      <span class="ac-tile-count" id="acFailCount">0</span>
+                      <span class="ac-tile-label">Failed</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="info-sheet-foot" style="display:flex; gap:8px;">
-                  <button class="button button-default button-full" onclick="closeSheet('autoconfSheet')">Cancel</button>
-                  <button class="button button-primary button-full" onclick="runAutoconfigure()">Run</button>
+
+                <div class="ac-list-header">
+                  <span class="ac-list-col">Camera</span>
+                  <span class="ac-list-col">Status</span>
                 </div>
+                <div class="ac-list" id="acList"></div>
               </div>
             </div>
+
+            <div class="bottom-action-bar">
+              <button class="button button-primary button-full ac-done-btn" onclick="closeAutoconfPanel()">Done</button>
+            </div>
+
+            <div class="home-indicator"></div>
           </div>
 
           <!-- ========== sCoreDetails: Core > Details ========== -->
@@ -6801,10 +6870,66 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     panel.classList.add('active');
   }
 
-  function openAutoconfSheet() { openSheet('autoconfSheet'); }
-  function runAutoconfigure() {
-    closeSheet('autoconfSheet');
-    showCopyToast('Auto-configure started');
+  // ===== Auto-configure cameras =====
+  let acTimers = [];
+  let acFailRule = (c) => c.id === 5; // Camera 5 fails (matches its 15% drop seed)
+
+  function clearAcTimers() {
+    acTimers.forEach(t => clearTimeout(t));
+    acTimers = [];
+  }
+
+  function openAutoconfPanel() {
+    const panel = document.getElementById('sCoreCamerasAutoconf');
+    panel.dataset.state = 'in-progress';
+    const total = coreCams.length;
+    document.getElementById('acProgTitle').textContent = `Auto-configuring ${total} ${total === 1 ? 'camera' : 'cameras'}`;
+    document.getElementById('acProgTotal').textContent = String(total);
+    document.getElementById('acProgDone').textContent = '0';
+    document.getElementById('sCoreCameras').classList.remove('active');
+    panel.classList.add('active');
+
+    clearAcTimers();
+    let done = 0;
+    coreCams.forEach((_, i) => {
+      const delay = 700 + i * 800 + Math.random() * 300;
+      acTimers.push(setTimeout(() => {
+        done += 1;
+        const el = document.getElementById('acProgDone');
+        if (el) el.textContent = String(done);
+        if (done === total) {
+          acTimers.push(setTimeout(showAutoconfResults, 350));
+        }
+      }, delay));
+    });
+  }
+
+  function showAutoconfResults() {
+    const panel = document.getElementById('sCoreCamerasAutoconf');
+    const results = coreCams.map(c => ({ id: c.id, name: c.name, ok: !acFailRule(c) }));
+    const successN = results.filter(r => r.ok).length;
+    const failN = results.length - successN;
+    document.getElementById('acSuccessCount').textContent = String(successN);
+    document.getElementById('acFailCount').textContent = String(failN);
+    const list = document.getElementById('acList');
+    list.innerHTML = results.map(r => `
+      <div class="ac-list-row">
+        <span class="ac-row-name">${r.name}</span>
+        <span class="ac-row-status ${r.ok ? 'ok' : 'err'}">
+          ${r.ok
+            ? '<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" fill="currentColor"/><path d="M10 5.5v4.5M10 13v.01" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg>'}
+          ${r.ok ? 'Successful' : 'Failed'}
+        </span>
+      </div>
+    `).join('');
+    panel.dataset.state = 'results';
+  }
+
+  function closeAutoconfPanel() {
+    clearAcTimers();
+    document.getElementById('sCoreCamerasAutoconf').classList.remove('active');
+    document.getElementById('sCoreCameras').classList.add('active');
   }
   function saveCoreNetwork() {
     if (document.getElementById('cnSaveBtn').classList.contains('disabled')) return;
