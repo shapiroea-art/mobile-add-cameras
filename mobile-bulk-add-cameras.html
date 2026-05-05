@@ -1037,6 +1037,45 @@
   #sCoreSoftwareContent[data-state="update-available"] [data-software-state="up-to-date"] { display: none; }
   #sCoreSoftwareContent[data-state="up-to-date"] [data-software-state="update-available"] { display: none; }
 
+  /* Core cameras screen */
+  #sCoreCameras { background: var(--color-elevation-surface-default); }
+  .cc-stat-header { background: var(--color-elevation-surface-subtle); border-bottom: 1px solid var(--color-border-default); padding: 10px 16px 12px; display: flex; flex-direction: column; gap: 8px; flex: 0 0 auto; }
+  .cc-stat-row1 { display: flex; align-items: center; gap: 8px; min-height: 28px; }
+  .cc-stat-row1 .cc-stat-icon { display: inline-flex; align-items: center; color: var(--color-text-subtlest); flex: 0 0 auto; }
+  .cc-stat-row1 .cc-stat-name { flex: 1; min-width: 0; font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cc-stat-row1 .cc-autoconf-link { background: none; border: none; padding: 4px 0; font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 24px; color: var(--color-background-button-primary-default); cursor: pointer; flex: 0 0 auto; }
+  .cc-stat-row1 .cc-autoconf-link:hover { color: var(--color-border-button-primary-default); text-decoration: underline; }
+  .cc-stat-row2 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .cc-stat-chip { display: inline-flex; align-items: baseline; gap: 4px; padding: 4px 10px; background: var(--color-background-accent-gray200-default); border-radius: 999px; font-family: var(--sans); font-size: 12px; line-height: 18px; flex: 0 0 auto; }
+  .cc-stat-chip .cc-chip-label { color: var(--color-text-subtle); font-weight: 500; }
+  .cc-stat-chip .cc-chip-value { color: var(--color-text-bold); font-weight: 500; }
+  .cc-stat-chip.warn { background: var(--color-background-accent-amber-subtle); }
+  .cc-stat-chip.warn .cc-chip-label, .cc-stat-chip.warn .cc-chip-value { color: var(--color-background-accent-amber-default); }
+  .cc-stat-chip.danger { background: var(--color-background-accent-red-subtle); }
+  .cc-stat-chip.danger .cc-chip-label, .cc-stat-chip.danger .cc-chip-value { color: var(--color-background-accent-red-default); }
+
+  #sCoreCameras .conf-list { background: var(--color-elevation-surface-default); }
+  #sCoreCameras .conf-row-inner { min-height: 88px; align-items: flex-start; padding: 10px 8px; }
+  #sCoreCameras .conf-row-inner .conf-thumb,
+  #sCoreCameras .conf-row-inner .conf-thumb-off { margin-left: 8px; }
+  #sCoreCameras .conf-body { gap: 4px; padding-top: 2px; }
+  #sCoreCameras .conf-chev { align-self: center; }
+  .cc-meta-line { font-size: 12px; font-weight: 400; color: var(--color-text-subtle); line-height: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cc-load-line { font-size: 12px; font-weight: 400; color: var(--color-text-subtle); line-height: 18px; }
+  .cc-load-line.warn { color: var(--color-background-accent-amber-default); }
+  .cc-load-line.danger { color: var(--color-background-accent-red-default); }
+
+  .cc-details { padding: 16px 16px 20px; display: flex; flex-direction: column; gap: 16px; }
+  .cc-stream-block { display: flex; flex-direction: column; gap: 4px; }
+  .cc-stream-title { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-subtlest); line-height: 18px; padding-bottom: 4px; }
+  .cc-stream-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 28px; }
+  .cc-stream-row .cc-row-label { font-size: 12px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; flex: 0 0 auto; }
+  .cc-stream-row .cc-row-value { font-size: 14px; font-weight: 400; color: var(--color-text-defsult); line-height: 20px; text-align: right; display: inline-flex; align-items: center; gap: 6px; }
+  .cc-stream-row .cc-row-value .cc-drop-ico { display: inline-flex; }
+  .cc-stream-row .cc-row-value.ok .cc-drop-ico { color: var(--color-text-success-default); }
+  .cc-stream-row .cc-row-value.err .cc-drop-ico { color: var(--color-background-accent-red-default); }
+  .cc-stream-row .cc-row-value.err { color: var(--color-background-accent-red-default); }
+
   /* Camera location screen */
   #sCamLocation { background: var(--color-elevation-surface-default); }
   .cd-loc-content { flex: 1; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px; background: var(--color-elevation-surface-default); position: relative; overflow: hidden; }
@@ -3275,7 +3314,7 @@
                   <span class="cs-row-label">Network</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
-                <button class="cs-row" type="button">
+                <button class="cs-row" type="button" onclick="openCoreCameras()">
                   <span class="cs-row-label">Cameras</span>
                   <span class="cs-row-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </button>
@@ -3372,6 +3411,60 @@
             </div>
 
             <div class="home-indicator"></div>
+          </div>
+
+          <!-- ========== sCoreCameras: Core > Cameras ========== -->
+          <div class="panel" id="sCoreCameras">
+            <div class="top-bar">
+              <div class="tb-left">
+                <button class="button-icon" onclick="closeCoreCameras()" aria-label="Back">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="tb-title">Cameras</div>
+              </div>
+              <div class="tb-right"></div>
+            </div>
+
+            <div class="cc-stat-header">
+              <div class="cc-stat-row1">
+                <span class="cc-stat-icon"><svg width="20" height="20" viewBox="0 0 21 21" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.68605 1.46512C2.01175 1.46512 1.46512 2.01175 1.46512 2.68605V14.1628H19.5349V2.68605C19.5349 2.01175 18.9883 1.46512 18.314 1.46512H2.68605ZM19.5349 15.6279H1.46512V18.314C1.46512 18.9883 2.01175 19.5349 2.68605 19.5349H18.314C18.9883 19.5349 19.5349 18.9883 19.5349 18.314V15.6279ZM0 2.68605C0 1.20258 1.20258 0 2.68605 0H18.314C19.7974 0 21 1.20258 21 2.68605V18.314C21 19.7974 19.7974 21 18.314 21H2.68605C1.20258 21 0 19.7974 0 18.314V2.68605Z" fill="currentColor"/></svg></span>
+                <div class="cc-stat-name" id="ccStatName">Core 1</div>
+                <button class="cc-autoconf-link" type="button" onclick="openAutoconfSheet()">Auto-configure</button>
+              </div>
+              <div class="cc-stat-row2" id="ccStatChips">
+                <span class="cc-stat-chip"><span class="cc-chip-label">Eth1</span><span class="cc-chip-value">1000 Mbps</span></span>
+                <span class="cc-stat-chip"><span class="cc-chip-label">Eth2</span><span class="cc-chip-value">1000 Mbps</span></span>
+                <span class="cc-stat-chip"><span class="cc-chip-label">Load</span><span class="cc-chip-value">98%</span></span>
+              </div>
+            </div>
+
+            <div class="table-header">
+              <div class="th-cols" style="padding-left: 16px;">
+                <div class="th-col">Cameras</div>
+              </div>
+              <button class="expand-all-button" id="ccExpandAllBtn" onclick="toggleExpandAllCoreCams()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 6l3-3 3 3M5 10l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="ccExpandAllLbl">Expand all</span>
+              </button>
+            </div>
+
+            <div class="conf-list" id="ccList"></div>
+
+            <div class="home-indicator"></div>
+
+            <div class="sheet-backdrop" id="autoconfSheet" onclick="closeInfoSheet(event, 'autoconfSheet')">
+              <div class="sheet edit-sheet">
+                <div class="sheet-handle"></div>
+                <div class="info-sheet-title">Auto-configure cameras?</div>
+                <div class="edit-sheet-body">
+                  <p style="font-size:14px; color:var(--color-text-defsult); line-height:22px; margin:0;">Apply optimized stream settings to all cameras on this core. Existing custom settings will be replaced.</p>
+                </div>
+                <div class="info-sheet-foot" style="display:flex; gap:8px;">
+                  <button class="button button-default button-full" onclick="closeSheet('autoconfSheet')">Cancel</button>
+                  <button class="button button-primary button-full" onclick="runAutoconfigure()">Run</button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- ========== sCoreDetails: Core > Details ========== -->
@@ -6547,6 +6640,148 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     document.getElementById('sCoreDhcp').classList.remove('active');
     document.getElementById('sCore').classList.add('active');
   }
+
+  // ===== Core > Cameras =====
+  const coreCams = [
+    { id: 1,  name: 'Camera 1',  thumb: 'https://picsum.photos/seed/cam1/160/120',
+      load: 11,
+      main: { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 0 },
+      sub:  { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 0 },
+      expanded: false },
+    { id: 5,  name: 'Camera 5',  thumb: 'https://picsum.photos/seed/cam5/160/120',
+      load: 66,
+      main: { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 15 },
+      sub:  { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 15 },
+      expanded: false },
+    { id: 8,  name: 'Camera 8',  thumb: 'https://picsum.photos/seed/cam8/160/120',
+      load: 20,
+      main: { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 0 },
+      sub:  { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 0 },
+      expanded: false },
+    { id: 17, name: 'Camera 17', thumb: 'https://picsum.photos/seed/cam17/160/120',
+      load: 11,
+      main: { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 0 },
+      sub:  { res: '2048×1536', fps: 15, codec: 'H265', bitrate: '3.2 mbps', drop: 0 },
+      expanded: false },
+  ];
+  let ccEditCamId = null;
+
+  function openCoreCameras() {
+    document.getElementById('sCore').classList.remove('active');
+    document.getElementById('sCoreCameras').classList.add('active');
+    const stat = document.getElementById('ccStatName');
+    if (stat) stat.textContent = document.getElementById('coreTitle').textContent || 'Core 1';
+    renderCoreCamsList();
+  }
+  function closeCoreCameras() {
+    document.getElementById('sCoreCameras').classList.remove('active');
+    document.getElementById('sCore').classList.add('active');
+  }
+
+  function loadChipClass(load) {
+    if (load > 100) return 'danger';
+    if (load > 80) return 'warn';
+    return '';
+  }
+  function loadLineClass(load) {
+    if (load > 100) return 'danger';
+    if (load > 80) return 'warn';
+    return '';
+  }
+
+  function ccDropValueHTML(drop) {
+    if (drop === 0) {
+      return `<span class="cc-row-value ok"><span class="cc-drop-ico"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>0%</span>`;
+    }
+    return `<span class="cc-row-value err"><span class="cc-drop-ico"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M8 4.5v3.5M8 10v.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>${drop}%</span>`;
+  }
+
+  function ccStreamBlockHTML(title, s) {
+    return `<div class="cc-stream-block">
+      <div class="cc-stream-title">${title}</div>
+      <div class="cc-stream-row"><span class="cc-row-label">Resolution</span><span class="cc-row-value">${s.res}</span></div>
+      <div class="cc-stream-row"><span class="cc-row-label">FPS (Hz)</span><span class="cc-row-value">${s.fps}</span></div>
+      <div class="cc-stream-row"><span class="cc-row-label">Codec</span><span class="cc-row-value">${s.codec}</span></div>
+      <div class="cc-stream-row"><span class="cc-row-label">Bitrate (mbps)</span><span class="cc-row-value">${s.bitrate}</span></div>
+      <div class="cc-stream-row"><span class="cc-row-label">Drop</span>${ccDropValueHTML(s.drop)}</div>
+    </div>`;
+  }
+
+  function ccExpandedBodyHTML(c) {
+    return `<div class="conf-details cc-details">
+      ${ccStreamBlockHTML('Main stream', c.main)}
+      ${ccStreamBlockHTML('Sub stream', c.sub)}
+      <button class="edit-cam-link" type="button" onclick="event.stopPropagation(); openEditCoreCam(${c.id})">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
+        Edit camera
+      </button>
+    </div>`;
+  }
+
+  function renderCoreCamsList() {
+    const list = document.getElementById('ccList');
+    if (!list) return;
+    list.innerHTML = '';
+    coreCams.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'conf-row';
+      if (c.expanded) row.classList.add('expanded');
+      row.id = `ccRow-${c.id}`;
+      row.innerHTML = `
+        <div class="conf-row-inner" data-role="row" data-id="${c.id}">
+          <img class="conf-thumb" src="${c.thumb}" alt="">
+          <div class="conf-body">
+            <div class="conf-name-row"><span class="conf-name">${c.name}</span></div>
+            <div class="cc-meta-line">MS ${c.main.res} · SS ${c.sub.res}</div>
+            <div class="cc-load-line ${loadLineClass(c.load)}">Load ${c.load}%</div>
+          </div>
+          <button class="conf-chev" data-role="chev" aria-label="Expand">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        ${ccExpandedBodyHTML(c)}
+      `;
+      row.addEventListener('click', () => toggleExpandCoreCam(c.id));
+      list.appendChild(row);
+    });
+    updateCcExpandAllLabel();
+  }
+  function toggleExpandCoreCam(id) {
+    const c = coreCams.find(x => x.id === id);
+    if (!c) return;
+    c.expanded = !c.expanded;
+    renderCoreCamsList();
+  }
+  function toggleExpandAllCoreCams() {
+    const allExpanded = coreCams.every(c => c.expanded);
+    coreCams.forEach(c => { c.expanded = !allExpanded; });
+    renderCoreCamsList();
+  }
+  function updateCcExpandAllLabel() {
+    const lbl = document.getElementById('ccExpandAllLbl');
+    if (!lbl) return;
+    const allExpanded = coreCams.length > 0 && coreCams.every(c => c.expanded);
+    lbl.textContent = allExpanded ? 'Collapse all' : 'Expand all';
+  }
+
+  function openEditCoreCam(id) {
+    const c = coreCams.find(x => x.id === id);
+    if (!c) return;
+    ccEditCamId = id;
+    const sheet = document.getElementById('editCamSheet');
+    sheet.dataset.context = 'core';
+    document.getElementById('editCamTitle').textContent = `Edit ${c.name}`;
+    document.getElementById('editCamName').value = c.name;
+    editCamInitial = captureEditCamState();
+    updateEditCamSaveBtn();
+    openSheet('editCamSheet');
+  }
+
+  function openAutoconfSheet() { openSheet('autoconfSheet'); }
+  function runAutoconfigure() {
+    closeSheet('autoconfSheet');
+    showCopyToast('Auto-configure started');
+  }
   function saveCoreNetwork() {
     if (document.getElementById('cnSaveBtn').classList.contains('disabled')) return;
     cnInitialDhcp = captureCnState().dhcp;
@@ -7672,6 +7907,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const c = confCams.find(x => x.id === id);
     if (!c) return;
     editingCamId = id;
+    document.getElementById('editCamSheet').dataset.context = 'configure';
     document.getElementById('editCamTitle').textContent = `Edit ${c.name}`;
     document.getElementById('editCamName').value = c.name;
     document.getElementById('editCamAuto').classList.toggle('on', !!c.config.autoConfig);
@@ -7747,6 +7983,17 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   }
   function saveEditCam() {
     if (document.getElementById('editCamSaveBtn').classList.contains('disabled')) return;
+    const sheet = document.getElementById('editCamSheet');
+    const ctx = sheet.dataset.context || 'configure';
+    if (ctx === 'core') {
+      const c = coreCams.find(x => x.id === ccEditCamId);
+      if (!c) { closeSheet('editCamSheet'); sheet.dataset.context = 'configure'; return; }
+      c.name = (document.getElementById('editCamName').value || c.name).trim();
+      closeSheet('editCamSheet');
+      sheet.dataset.context = 'configure';
+      renderCoreCamsList();
+      return;
+    }
     const c = confCams.find(x => x.id === editingCamId);
     if (!c) { closeSheet('editCamSheet'); return; }
     c.name = (document.getElementById('editCamName').value || c.name).trim();
