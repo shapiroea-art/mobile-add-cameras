@@ -3833,19 +3833,6 @@
               <div class="cam-list-fig" id="camList"></div>
             </div>
 
-            <div class="info-msg" id="s2InfoMsg">
-              <span class="im-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 7.5v3.5M8 5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              </span>
-              <div class="im-body">
-                <div class="im-title">Scanning network</div>
-                <div class="im-desc">You can leave this screen — scanning continues in background.</div>
-              </div>
-              <button class="im-close" onclick="dismissInfoMsg()" aria-label="Dismiss">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-              </button>
-            </div>
-
             <div class="sel-block" id="selBlock">
               <span class="sb-icon">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
@@ -4713,7 +4700,6 @@
   const connFilters = new Set();
   const ipRange = { from: '', to: '', port: '' };
   const expandedIps = new Set();
-  let infoMsgDismissed = false;
   let ipSort = 'none'; // 'none' | 'asc' | 'desc' — default unsorted (discovery order)
 
   function ipToNumber(ip) { return ip.split('.').reduce((acc, p) => acc * 256 + parseInt(p, 10), 0); }
@@ -4786,11 +4772,6 @@
     document.querySelectorAll('#s2Chips .chip, #brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
     updateFilterBtn();
 
-    // Show info message at bottom
-    infoMsgDismissed = false;
-    const infoMsg = document.getElementById('s2InfoMsg');
-    if (infoMsg) infoMsg.classList.remove('hidden');
-
     // Circle animation
     const arc = document.getElementById('scanArc');
     const pct = document.getElementById('scanPct');
@@ -4822,10 +4803,6 @@
         updateChipCounts();
       }, t));
     });
-    // Hide info message when scan completes
-    scanTimers.push(setTimeout(() => {
-      if (!infoMsgDismissed && infoMsg) infoMsg.classList.add('hidden');
-    }, dur + 200));
   }
 
   function updateChipCounts() {
@@ -4841,12 +4818,6 @@
       const num = chip.querySelector('.num');
       if (num) num.textContent = n;
     });
-  }
-
-  function dismissInfoMsg() {
-    infoMsgDismissed = true;
-    const msg = document.getElementById('s2InfoMsg');
-    if (msg) msg.classList.add('hidden');
   }
 
   function filterCams() {
