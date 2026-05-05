@@ -1087,10 +1087,7 @@
   .ac-tile .ac-tile-ico { display: inline-flex; flex: 0 0 auto; }
   .ac-tile.success .ac-tile-ico { color: var(--color-text-success-default); }
   .ac-tile.fail .ac-tile-ico { color: var(--color-background-accent-red-default); }
-  .ac-tile .ac-tile-text { display: flex; flex-direction: column; min-width: 0; }
-  .ac-tile .ac-tile-count { font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 22px; }
-  .ac-tile.fail .ac-tile-count { color: var(--color-background-accent-red-default); }
-  .ac-tile .ac-tile-label { font-size: 12px; font-weight: 400; color: var(--color-text-subtle); line-height: 18px; }
+  .ac-tile .ac-tile-text { font-size: 14px; font-weight: 500; color: var(--color-text-bold); line-height: 22px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .ac-list-header { background: var(--color-elevation-surface-subtle); border-top: 1px solid var(--color-border-default); border-bottom: 1px solid var(--color-border-default); padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; }
   .ac-list-header .ac-list-col { font-size: 12px; font-weight: 500; color: var(--color-text-subtle); line-height: 20px; }
@@ -3500,17 +3497,11 @@
                 <div class="ac-tiles">
                   <div class="ac-tile success">
                     <span class="ac-tile-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    <div class="ac-tile-text">
-                      <span class="ac-tile-count" id="acSuccessCount">0</span>
-                      <span class="ac-tile-label">Successful</span>
-                    </div>
+                    <div class="ac-tile-text"><span id="acSuccessCount">0</span> Successful</div>
                   </div>
                   <div class="ac-tile fail">
                     <span class="ac-tile-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" fill="currentColor"/><path d="M10 5.5v4.5M10 13v.01" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg></span>
-                    <div class="ac-tile-text">
-                      <span class="ac-tile-count" id="acFailCount">0</span>
-                      <span class="ac-tile-label">Failed</span>
-                    </div>
+                    <div class="ac-tile-text"><span id="acFailCount">0</span> Failed</div>
                   </div>
                 </div>
 
