@@ -3551,6 +3551,11 @@
                   </div>
                 </div>
 
+                <div class="cd-field">
+                  <label class="cd-label">Tags</label>
+                  <div class="sub-tags-field" id="cdCoreTagsField"></div>
+                </div>
+
                 <div class="cd-divider"></div>
 
                 <button type="button" class="cd-delete-button">Remove core</button>
@@ -6584,16 +6589,41 @@
 
   // ===== Core > Details =====
   let cdCoreNameInitial = '';
+  let coreDetailsDraftTags = new Set();
+  let coreDetailsTagsInitial = '';
+  function tagsKey(set) { return Array.from(set).sort().join(','); }
   function isCoreDetailsDirty() {
-    return document.getElementById('cdCoreName').value !== cdCoreNameInitial;
+    if (document.getElementById('cdCoreName').value !== cdCoreNameInitial) return true;
+    return tagsKey(coreDetailsDraftTags) !== coreDetailsTagsInitial;
   }
   function updateCoreDetailsSaveBtn() {
     document.getElementById('cdCoreSaveBtn').classList.toggle('disabled', !isCoreDetailsDirty());
+  }
+  function renderCoreDetailsTagsField() {
+    const field = document.getElementById('cdCoreTagsField');
+    if (!field) return;
+    const chips = tagLibrary
+      .filter(t => coreDetailsDraftTags.has(t.id))
+      .map(t => `<button type="button" class="sub-tag-pill" onclick="openTagPicker('coreDetails')">
+        <span class="stp-dot" style="background:${t.color};"></span>
+        <span>${_escHtml(t.name)}</span>
+        <span class="stp-x" onclick="event.stopPropagation(); removeCoreDetailsTag('${t.id}')" aria-label="Remove">${ICON_X_SMALL}</span>
+      </button>`)
+      .join('');
+    const addPill = `<button type="button" class="sub-tag-add" onclick="openTagPicker('coreDetails')">${ICON_PLUS}<span>Add tag</span></button>`;
+    field.innerHTML = chips + addPill;
+  }
+  function removeCoreDetailsTag(id) {
+    coreDetailsDraftTags.delete(id);
+    renderCoreDetailsTagsField();
+    updateCoreDetailsSaveBtn();
   }
   function openCoreDetails() {
     document.getElementById('sCore').classList.remove('active');
     document.getElementById('sCoreDetails').classList.add('active');
     cdCoreNameInitial = document.getElementById('cdCoreName').value;
+    coreDetailsTagsInitial = tagsKey(coreDetailsDraftTags);
+    renderCoreDetailsTagsField();
     updateCoreDetailsSaveBtn();
   }
   function closeCoreDetails() {
@@ -6603,6 +6633,7 @@
   function saveCoreDetails() {
     if (document.getElementById('cdCoreSaveBtn').classList.contains('disabled')) return;
     cdCoreNameInitial = document.getElementById('cdCoreName').value;
+    coreDetailsTagsInitial = tagsKey(coreDetailsDraftTags);
     updateCoreDetailsSaveBtn();
     showCopyToast('Changes saved');
   }
@@ -7763,6 +7794,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     tagPickerOwner = owner || 'sublocation';
     if (tagPickerOwner === 'camDetails') {
       pickerSnapshot = new Set(cdDetailsDraftTags);
+    } else if (tagPickerOwner === 'coreDetails') {
+      pickerSnapshot = new Set(coreDetailsDraftTags);
     } else if (tagPickerOwner === 'editSublocation') {
       pickerSnapshot = new Set(editSubDraftTags);
     } else if (tagPickerOwner === 'createLocation') {
@@ -7804,6 +7837,11 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       renderCdDetailsTagsField();
       closeSheet('tagPickerSheet');
       updateCdSaveBtn();
+    } else if (tagPickerOwner === 'coreDetails') {
+      coreDetailsDraftTags = new Set(pickerSnapshot);
+      renderCoreDetailsTagsField();
+      closeSheet('tagPickerSheet');
+      updateCoreDetailsSaveBtn();
     } else if (tagPickerOwner === 'editSublocation') {
       editSubDraftTags = new Set(pickerSnapshot);
       renderEditSubTagsField();
