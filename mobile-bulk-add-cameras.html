@@ -5954,11 +5954,33 @@
     updateCdSaveBtn();
   }
   function closeCamDetails() {
-    document.getElementById('sCamDetails').classList.remove('active');
+    const panel = document.getElementById('sCamDetails');
+    const returnTo = panel.dataset.returnTo || 'sCamSettings';
+    panel.classList.remove('active');
+    if (returnTo === 'sCoreCameras') {
+      const c = coreCams.find(x => x.id === ccEditCamId);
+      if (c) {
+        const nameInput = document.getElementById('cdCamName');
+        if (nameInput && nameInput.value.trim()) c.name = nameInput.value.trim();
+      }
+      panel.dataset.returnTo = '';
+      ccEditCamId = null;
+      renderCoreCamsList();
+      document.getElementById('sCoreCameras').classList.add('active');
+      return;
+    }
     document.getElementById('sCamSettings').classList.add('active');
   }
   function saveCamDetails() {
     if (document.getElementById('cdSaveBtn').classList.contains('disabled')) return;
+    const panel = document.getElementById('sCamDetails');
+    if (panel.dataset.returnTo === 'sCoreCameras') {
+      const c = coreCams.find(x => x.id === ccEditCamId);
+      if (c) {
+        const nameInput = document.getElementById('cdCamName');
+        if (nameInput && nameInput.value.trim()) c.name = nameInput.value.trim();
+      }
+    }
     cdInitialState = captureCdState();
     updateCdSaveBtn();
     showCopyToast('Changes saved');
@@ -6709,8 +6731,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
 
   function ccExpandedBodyHTML(c) {
     return `<div class="conf-details cc-details">
-      ${ccStreamBlockHTML('Main stream', c.main)}
-      ${ccStreamBlockHTML('Sub stream', c.sub)}
+      ${ccStreamBlockHTML('Mainstream', c.main)}
+      ${ccStreamBlockHTML('Substream', c.sub)}
       <button class="edit-cam-link" type="button" onclick="event.stopPropagation(); openEditCoreCam(${c.id})">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
         Edit camera
@@ -6768,13 +6790,17 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const c = coreCams.find(x => x.id === id);
     if (!c) return;
     ccEditCamId = id;
-    const sheet = document.getElementById('editCamSheet');
-    sheet.dataset.context = 'core';
-    document.getElementById('editCamTitle').textContent = `Edit ${c.name}`;
-    document.getElementById('editCamName').value = c.name;
-    editCamInitial = captureEditCamState();
-    updateEditCamSaveBtn();
-    openSheet('editCamSheet');
+    const panel = document.getElementById('sCamDetails');
+    panel.dataset.returnTo = 'sCoreCameras';
+    panel.dataset.tab = 'edit';
+    panel.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'edit'));
+    const nameInput = document.getElementById('cdCamName');
+    if (nameInput) nameInput.value = c.name;
+    if (typeof renderCdDetailsTagsField === 'function') renderCdDetailsTagsField();
+    cdInitialState = captureCdState();
+    updateCdSaveBtn();
+    document.getElementById('sCoreCameras').classList.remove('active');
+    panel.classList.add('active');
   }
 
   function openAutoconfSheet() { openSheet('autoconfSheet'); }
