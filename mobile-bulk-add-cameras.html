@@ -171,7 +171,6 @@
 
   /* Detection method picker (S2 picker substep) */
   .method-picker { display: flex; flex-direction: column; gap: 16px; padding: 16px; flex: 1; overflow-y: auto; background: var(--color-background-accent-gray200-default); }
-  .method-picker .mp-intro { font-size: 14px; color: var(--color-text-subtle); line-height: 22px; }
   .method-picker .mp-list { display: flex; flex-direction: column; gap: 8px; }
   .method-picker .radio-row { border: 1px solid var(--color-border-default); align-items: flex-start; }
   .method-picker .radio-row.selected { border-color: var(--color-background-button-primary-default); background: var(--color-background-information-default); }
@@ -3787,8 +3786,9 @@
               <div class="sp-bar"><div class="sp-fill" style="width: 60%;"></div></div>
             </div>
 
+            <div class="subtitle-row picker-only">Choose how to find cameras to add</div>
+
             <div class="method-picker picker-only" id="methodPicker">
-              <div class="mp-intro">Choose how to find cameras to add.</div>
               <div class="mp-list">
                 <div class="radio-row selected" data-method="scan" onclick="selectDetectionMethod('scan')">
                   <div class="radio-wrap"><div class="radio"></div></div>
