@@ -1097,9 +1097,10 @@
   .ac-list { display: flex; flex-direction: column; }
   .ac-list-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; min-height: 52px; border-bottom: 1px solid var(--color-border-default); }
   .ac-list-row .ac-row-name { font-size: 16px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .ac-list-row .ac-row-status { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; line-height: 20px; flex: 0 0 auto; }
-  .ac-list-row .ac-row-status.ok { color: var(--color-text-success-default); }
-  .ac-list-row .ac-row-status.err { color: var(--color-background-accent-red-default); }
+  .ac-list-row .ac-row-status { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; line-height: 20px; flex: 0 0 auto; color: var(--color-text-defsult); }
+  .ac-list-row .ac-row-ico { display: inline-flex; align-items: center; flex: 0 0 auto; }
+  .ac-list-row .ac-row-ico.ok { color: var(--color-text-success-default); }
+  .ac-list-row .ac-row-ico.err { color: var(--color-background-accent-red-default); }
 
   /* Camera location screen */
   #sCamLocation { background: var(--color-elevation-surface-default); }
@@ -6895,10 +6896,12 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     list.innerHTML = results.map(r => `
       <div class="ac-list-row">
         <span class="ac-row-name">${r.name}</span>
-        <span class="ac-row-status ${r.ok ? 'ok' : 'err'}">
-          ${r.ok
-            ? '<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-            : '<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" fill="currentColor"/><path d="M10 5.5v4.5M10 13v.01" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg>'}
+        <span class="ac-row-status">
+          <span class="ac-row-ico ${r.ok ? 'ok' : 'err'}">
+            ${r.ok
+              ? '<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+              : '<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" fill="currentColor"/><path d="M10 5.5v4.5M10 13v.01" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg>'}
+          </span>
           ${r.ok ? 'Successful' : 'Failed'}
         </span>
       </div>
