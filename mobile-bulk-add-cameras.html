@@ -178,6 +178,9 @@
   .method-picker .mp-desc { font-size: 14px; color: var(--color-text-subtle); line-height: 20px; margin-top: 2px; }
   #s2[data-substep="picker"] .scan-only { display: none !important; }
   #s2[data-substep="scan"] .picker-only { display: none !important; }
+  #s2[data-nvr="true"] .subtitle-text,
+  #s2[data-nvr="true"] .th-cb-wrap,
+  #s2[data-nvr="true"] .cam-cb-wrap { display: none !important; }
 
   /* Network context chip */
   .netchip { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--color-elevation-surface-default); border: 1px solid var(--color-border-default); border-radius: var(--r); }
@@ -4858,6 +4861,7 @@
     if (nvrTags) nvrTags.classList.remove('has-tags');
     const s3 = document.getElementById('s3');
     if (s3) s3.dataset.nvr = 'false';
+    if (s2) s2.dataset.nvr = 'false';
     camFilter = 'all';
     document.querySelectorAll('#s2Chips .chip, #brandChips .chip, #connChips .chip').forEach(c => c.classList.remove('active'));
     updateFilterBtn();
@@ -5270,6 +5274,8 @@
     renderCamList();
     const s3 = document.getElementById('s3');
     if (s3) s3.dataset.nvr = 'true';
+    const s2 = document.getElementById('s2');
+    if (s2) s2.dataset.nvr = 'true';
   }
   function updateSearchBtn() {
     const btn = document.getElementById('searchBtn');
