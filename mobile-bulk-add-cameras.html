@@ -1079,10 +1079,8 @@
   #sCoreCamerasAutoconf[data-state="in-progress"] .ac-results { display: none; }
   #sCoreCamerasAutoconf[data-state="results"] .ac-progress { display: none; }
   #sCoreCamerasAutoconf[data-state="in-progress"] .ac-done-btn { opacity: .5; pointer-events: none; }
-  .ac-progress { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 96px 24px; text-align: center; }
-  .ac-progress .ac-spinner { width: 40px; height: 40px; border: 3px solid var(--color-border-input-default); border-top-color: var(--color-background-button-primary-default); border-radius: 50%; animation: spin 0.9s linear infinite; }
-  .ac-progress .ac-prog-title { font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
-  .ac-progress .ac-prog-counter { font-size: 14px; font-weight: 400; color: var(--color-text-subtle); line-height: 20px; }
+  .ac-progress { display: flex; align-items: center; justify-content: center; padding: 0 24px; min-height: 60vh; }
+  .ac-progress .ac-spinner { width: 64px; height: 64px; border: 4px solid var(--color-border-input-default); border-top-color: var(--color-background-button-primary-default); border-radius: 50%; animation: spin 0.9s linear infinite; }
 
   .ac-tiles { display: flex; gap: 12px; padding: 16px; }
   .ac-tile { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 12px 14px; background: var(--color-elevation-surface-default); border: 1px solid var(--color-border-default); border-radius: var(--r); }
@@ -3495,8 +3493,6 @@
             <div class="ac-body">
               <div class="ac-progress">
                 <div class="ac-spinner" aria-label="Loading"></div>
-                <div class="ac-prog-title" id="acProgTitle">Auto-configuring 4 cameras</div>
-                <div class="ac-prog-counter"><span id="acProgDone">0</span> of <span id="acProgTotal">4</span></div>
               </div>
 
               <div class="ac-results">
@@ -6882,26 +6878,10 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   function openAutoconfPanel() {
     const panel = document.getElementById('sCoreCamerasAutoconf');
     panel.dataset.state = 'in-progress';
-    const total = coreCams.length;
-    document.getElementById('acProgTitle').textContent = `Auto-configuring ${total} ${total === 1 ? 'camera' : 'cameras'}`;
-    document.getElementById('acProgTotal').textContent = String(total);
-    document.getElementById('acProgDone').textContent = '0';
     document.getElementById('sCoreCameras').classList.remove('active');
     panel.classList.add('active');
-
     clearAcTimers();
-    let done = 0;
-    coreCams.forEach((_, i) => {
-      const delay = 700 + i * 800 + Math.random() * 300;
-      acTimers.push(setTimeout(() => {
-        done += 1;
-        const el = document.getElementById('acProgDone');
-        if (el) el.textContent = String(done);
-        if (done === total) {
-          acTimers.push(setTimeout(showAutoconfResults, 350));
-        }
-      }, delay));
-    });
+    acTimers.push(setTimeout(showAutoconfResults, 2800));
   }
 
   function showAutoconfResults() {
