@@ -37,7 +37,7 @@ Pain points from competitor reviews to design against: case-sensitive verificati
 
 ## UX decisions (2026-04-20)
 
-Flow is **5 steps** (Core → Detection method → Selection → Sign in → Configure) + a post-commit status screen outside the stepper. (Step 2 was renamed from "Discover" to "Detection" on 2026-04-27, then split on 2026-05-05 into "Detection method" + "Selection" so the method picker is its own stepper step rather than a substep.)
+Flow is **5 steps** (Core → Detection method → Selection → Authentication → Configure) + a post-commit status screen outside the stepper. (Step 2 was renamed from "Discover" to "Detection" on 2026-04-27, then split on 2026-05-05 into "Detection method" + "Selection" so the method picker is its own stepper step rather than a substep.)
 
 **1. Method picker first, no auto-scan (revised 2026-05-05).** Step 2 opens on a method picker — radio rows for *Scan network · Scan IP range · Add through NVR · Add by IP address* with "Scan network" preselected — and only starts a scan when the user taps the bottom CTA "Next: Detect cameras." The earlier scan-first decision was reversed because some enterprise IT policies prohibit unsolicited network probing (ARP/WS-Discovery broadcasts can trip IDS rules), so initiating any scan without an explicit user action is a compliance violation in those orgs. Cost: one extra tap for the ~90% who just want to scan; benefit: every scan is user-initiated, and the other three methods are now visible up front instead of buried in a kebab. Back from the scan view returns to the picker; back from the picker returns to step 1.
 
