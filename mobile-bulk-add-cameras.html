@@ -1262,13 +1262,16 @@
   .core-card .cc-status { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; line-height: 20px; }
   .core-card .cc-status.connecting { color: var(--color-text-subtle); }
   .core-card .cc-status.connected { color: var(--color-text-success-default); }
-  .core-card .cc-status.error { color: var(--color-background-accent-red-default); }
   .core-card .cc-status .mini-spinner { width: 14px; height: 14px; border: 2px solid var(--color-border-input-default); border-top-color: var(--color-background-button-primary-default); border-radius: 50%; animation: spin 0.8s linear infinite; }
   .core-card .cc-id-value { font-size: 14px; color: var(--color-text-subtle); line-height: 20px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  .core-card .cc-error-msg { font-size: 14px; color: var(--color-text-defsult); line-height: 20px; }
-  .core-card .cc-error-actions { display: flex; gap: 16px; align-items: center; }
-  .core-card .cc-error-actions button { padding: 0; background: none; border: none; font-size: 14px; font-weight: 500; color: var(--color-border-button-primary-default); cursor: pointer; }
-  .core-card .cc-error-actions button:hover { color: var(--color-background-button-primary-default); text-decoration: underline; }
+  .core-card .cc-error-bar { background: var(--color-background-error-subtle); border: 1px solid var(--color-background-accent-red-default); border-radius: var(--r); padding: 16px; display: flex; gap: 8px; align-items: flex-start; box-shadow: inset 3px 0 0 var(--color-background-accent-red-default); }
+  .core-card .cc-error-bar .cc-error-ico { color: var(--color-background-accent-red-default); flex: 0 0 auto; display: inline-flex; padding: 4px; }
+  .core-card .cc-error-bar .cc-error-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .core-card .cc-error-bar .cc-error-title { font-size: 16px; font-weight: 500; color: var(--color-text-bold); line-height: 24px; }
+  .core-card .cc-error-bar .cc-error-desc { font-size: 14px; color: var(--color-text-defsult); line-height: 24px; }
+  .core-card .cc-error-bar .cc-error-actions { display: flex; gap: 16px; align-items: center; }
+  .core-card .cc-error-bar .cc-error-actions button { padding: 12px 0; background: none; border: none; font-size: 16px; font-weight: 500; line-height: 24px; color: var(--color-border-button-primary-default); cursor: pointer; }
+  .core-card .cc-error-bar .cc-error-actions button:hover { color: var(--color-background-button-primary-default); text-decoration: underline; }
   .core-card .cc-success-msg { background: var(--color-background-success-subtle); border: 1px solid var(--color-text-success-default); border-radius: var(--r); padding: 12px; display: flex; gap: 10px; align-items: flex-start; box-shadow: inset 3px 0 0 var(--color-text-success-default); }
   .core-card .cc-success-msg .cc-success-ico { color: var(--color-text-success-default); flex: 0 0 auto; display: inline-flex; padding: 2px; }
   .core-card .cc-success-msg .cc-success-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
@@ -7192,14 +7195,16 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     }
     if (d.status === 'error') {
       wrap.innerHTML = `
-        <div class="cc-status error">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M8 4.5v3.5M8 10v.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-          Couldn't connect to the core
-        </div>
-        <div class="cc-error-msg">Make sure it's on and online, then try again.</div>
-        <div class="cc-error-actions">
-          <button onclick="startScanForDraft(${d.id})">Scan barcode</button>
-          <button onclick="startManualForDraft(${d.id})">Edit ID</button>
+        <div class="cc-error-bar">
+          <span class="cc-error-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5v4M8 11v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <div class="cc-error-body">
+            <div class="cc-error-title">Couldn't connect to the core</div>
+            <div class="cc-error-desc">Make sure it's on and online, then try again.</div>
+            <div class="cc-error-actions">
+              <button onclick="startScanForDraft(${d.id})">Scan barcode</button>
+              <button onclick="startManualForDraft(${d.id})">Edit ID</button>
+            </div>
+          </div>
         </div>`;
       return wrap;
     }
