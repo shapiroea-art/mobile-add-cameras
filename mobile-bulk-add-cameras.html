@@ -1036,6 +1036,7 @@
   .core-update-progress .cup-stepper-track { height: 6px; border-radius: 32px; background: var(--color-elevation-surface-subtle); overflow: hidden; }
   .core-update-progress .cup-stepper-fill { height: 6px; background: var(--color-background-button-primary-default); width: 0%; transition: width .12s linear; }
   .badge-latest { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 400px; background: var(--color-background-accent-emerald-subtle); color: var(--color-text-success-default); font-family: var(--sans); font-size: 12px; font-weight: 500; line-height: 18px; flex: 0 0 auto; }
+  .badge-update-available { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 400px; background: var(--color-background-accent-amber-subtle); color: var(--color-background-accent-amber-default); font-family: var(--sans); font-size: 12px; font-weight: 500; line-height: 18px; flex: 0 0 auto; }
   #sCoreSoftwareContent[data-state="update-available"] [data-software-state="up-to-date"] { display: none; }
   #sCoreSoftwareContent[data-state="up-to-date"] [data-software-state="update-available"] { display: none; }
 
@@ -3398,6 +3399,7 @@
                     <div class="cs-info-label">Software version</div>
                     <div class="cs-info-value cs-info-value-subtle" id="coreSoftwareVersion">v2.1.416.0</div>
                   </div>
+                  <span class="badge-update-available">Update available</span>
                 </div>
                 <div class="cs-info-row" data-software-state="update-available">
                   <div class="cs-info-body">
