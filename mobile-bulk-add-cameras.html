@@ -646,14 +646,16 @@
   .conf-meta-placeholder { min-height: 24px; }
   .conf-meta-fail { font-size: 14px; color: var(--color-text-subtle); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  /* Preview sheet */
-  .preview-sheet { max-height: 88%; overflow-y: auto; padding: 8px 0 0; }
-  .preview-sheet .pv-media { width: 100%; aspect-ratio: 16 / 9; background: #0B1021; display: block; }
-  .preview-sheet .pv-media-off { width: 100%; aspect-ratio: 16 / 9; background: var(--color-elevation-surface-subtle); display: grid; place-items: center; color: var(--color-text-subtlest); }
-  .preview-sheet .pv-head { padding: 16px 16px 8px; display: flex; flex-direction: column; gap: 4px; }
-  .preview-sheet .pv-name { font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; }
-  .preview-sheet .pv-sub { font-size: 14px; color: var(--color-text-subtle); line-height: 20px; display: flex; align-items: center; gap: 6px; }
-  .preview-sheet .pv-body { padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 16px; }
+  /* Inline row preview (16:9 player in-place) */
+  .conf-row-preview, .conf-row-preview-off { margin: 8px; aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; cursor: pointer; }
+  .conf-row-preview { background: #0B1021; }
+  .conf-row-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .conf-row-preview-off { background: var(--color-elevation-surface-subtle); border: 1px solid var(--color-border-input-default); display: grid; place-items: center; color: var(--color-text-subtlest); }
+  .conf-row-preview-off .preview-spinner { width: 32px; height: 32px; border: 2.5px solid var(--color-border-input-default); border-top-color: var(--color-background-button-primary-default); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .conf-row.previewing .conf-thumb,
+  .conf-row.previewing .conf-thumb-off { display: none; }
+  .conf-row.previewing .conf-row-inner { min-height: 0; padding-top: 0; }
+  .conf-row.previewing .conf-details { display: none; }
 
   .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 14px; color: var(--color-text-defsult); line-height: 24px; }
   .meta-grid .mg-item { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -4370,21 +4372,6 @@
               </div>
             </div>
 
-            <div class="sheet-backdrop" id="previewSheet" onclick="closeInfoSheet(event, 'previewSheet')">
-              <div class="sheet preview-sheet">
-                <div class="sheet-handle"></div>
-                <div id="previewMedia"></div>
-                <div class="pv-head">
-                  <div class="pv-name" id="previewName"></div>
-                  <div class="pv-sub" id="previewSub"></div>
-                </div>
-                <div class="pv-body" id="previewBody"></div>
-                <div class="info-sheet-foot">
-                  <button class="button button-default button-full" onclick="closeSheet('previewSheet')">Close</button>
-                </div>
-              </div>
-            </div>
-
             <div class="sheet-backdrop" id="confirmDeleteSheet" onclick="closeInfoSheet(event, 'confirmDeleteSheet')">
               <div class="sheet edit-sheet">
                 <div class="sheet-handle"></div>
@@ -5670,6 +5657,27 @@
     return `<img class="conf-thumb" data-role="thumb" src="${thumbFor(c)}" alt="">`;
   }
 
+  let confPreviewId = null;
+  function rowPreviewHTML(c) {
+    if (c.state === 'authfail' || c.state === 'timeout') {
+      return `<div class="conf-row-preview-off" data-role="player"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M2 3l20 18M16 10v-.5A1.5 1.5 0 0014.5 8h-4.8M4 8v8a1.5 1.5 0 001.5 1.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+    }
+    if (c.state === 'connecting') {
+      return `<div class="conf-row-preview-off" data-role="player"><span class="preview-spinner" aria-label="Connecting"></span></div>`;
+    }
+    return `<div class="conf-row-preview" data-role="player"><img src="https://picsum.photos/seed/cam${c.id}/720/405" alt=""></div>`;
+  }
+  function togglePreviewCam(id) {
+    if (confPreviewId === id) {
+      confPreviewId = null;
+    } else {
+      confPreviewId = id;
+      const c = confCams.find(x => x.id === id);
+      if (c) c.expanded = false;
+    }
+    renderConfList();
+  }
+
   function failCardHTML(c) {
     if (c.state !== 'authfail' && c.state !== 'timeout') return '';
     const reason = c.state === 'timeout'
@@ -5724,9 +5732,11 @@
       const row = document.createElement('div');
       row.className = 'conf-row';
       if (c.checked) row.classList.add('selected');
-      if (c.expanded) row.classList.add('expanded');
+      if (c.expanded && confPreviewId !== c.id) row.classList.add('expanded');
+      if (confPreviewId === c.id) row.classList.add('previewing');
       row.id = `confRow-${c.id}`;
       row.innerHTML = `
+        ${confPreviewId === c.id ? rowPreviewHTML(c) : ''}
         <div class="conf-row-inner" data-role="row" data-id="${c.id}">
           <div class="conf-del-wrap" data-role="delete" aria-label="Remove camera" role="button">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -5745,10 +5755,16 @@
       `;
       row.addEventListener('click', (e) => {
         if (e.target.closest('[data-role="delete"]')) { requestDeleteCam(c.id); return; }
-        if (e.target.closest('[data-role="thumb"]')) { openPreview(c.id); return; }
-        if (e.target.closest('[data-role="chev"]')) { toggleExpandCam(c.id); return; }
+        if (e.target.closest('[data-role="player"]')) { togglePreviewCam(c.id); return; }
+        if (e.target.closest('[data-role="thumb"]')) { togglePreviewCam(c.id); return; }
+        if (e.target.closest('[data-role="chev"]')) {
+          if (confPreviewId === c.id) confPreviewId = null;
+          toggleExpandCam(c.id);
+          return;
+        }
         if (e.target.closest('.conf-details')) return;
         if (e.target.closest('.conf-fail-card')) return;
+        if (confPreviewId === c.id) { togglePreviewCam(c.id); return; }
         toggleExpandCam(c.id);
       });
       list.appendChild(row);
@@ -6771,6 +6787,17 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
       expanded: false },
   ];
   let ccEditCamId = null;
+  let ccPreviewId = null;
+  function togglePreviewCoreCam(id) {
+    if (ccPreviewId === id) {
+      ccPreviewId = null;
+    } else {
+      ccPreviewId = id;
+      const c = coreCams.find(x => x.id === id);
+      if (c) c.expanded = false;
+    }
+    renderCoreCamsList();
+  }
 
   function openCoreCameras() {
     document.getElementById('sCore').classList.remove('active');
@@ -6833,11 +6860,13 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     coreCams.forEach(c => {
       const row = document.createElement('div');
       row.className = 'conf-row';
-      if (c.expanded) row.classList.add('expanded');
+      if (c.expanded && ccPreviewId !== c.id) row.classList.add('expanded');
+      if (ccPreviewId === c.id) row.classList.add('previewing');
       row.id = `ccRow-${c.id}`;
       row.innerHTML = `
+        ${ccPreviewId === c.id ? `<div class="conf-row-preview" data-role="player"><img src="https://picsum.photos/seed/cam${c.id}/720/405" alt=""></div>` : ''}
         <div class="conf-row-inner" data-role="row" data-id="${c.id}">
-          <img class="conf-thumb" src="${c.thumb}" alt="">
+          <img class="conf-thumb" data-role="thumb" src="${c.thumb}" alt="">
           <div class="conf-body">
             <div class="conf-name-row"><span class="conf-name">${c.name}</span></div>
             <div class="cc-meta-line">Main ${c.main.res} · Sub ${c.sub.res}</div>
@@ -6849,7 +6878,18 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
         </div>
         ${ccExpandedBodyHTML(c)}
       `;
-      row.addEventListener('click', () => toggleExpandCoreCam(c.id));
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('[data-role="player"]')) { togglePreviewCoreCam(c.id); return; }
+        if (e.target.closest('[data-role="thumb"]')) { togglePreviewCoreCam(c.id); return; }
+        if (e.target.closest('[data-role="chev"]')) {
+          if (ccPreviewId === c.id) ccPreviewId = null;
+          toggleExpandCoreCam(c.id);
+          return;
+        }
+        if (e.target.closest('.conf-details')) return;
+        if (ccPreviewId === c.id) { togglePreviewCoreCam(c.id); return; }
+        toggleExpandCoreCam(c.id);
+      });
       list.appendChild(row);
     });
     updateCcExpandAllLabel();
@@ -7563,47 +7603,6 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     renderConfList();
     statusTimers.push(setTimeout(() => setConfStatus(id, 'connected'), 700));
     statusTimers.push(setTimeout(() => setConfStatus(id, 'online'), 1600));
-  }
-
-  // ===== Camera preview sheet =====
-  function openPreview(id) {
-    const c = confCams.find(x => x.id === id);
-    if (!c) return;
-    const media = document.getElementById('previewMedia');
-    if (c.state === 'authfail' || c.state === 'timeout') {
-      media.innerHTML = `<div class="pv-media-off"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M2 3l20 18M16 10v-.5A1.5 1.5 0 0014.5 8h-4.8M4 8v8a1.5 1.5 0 001.5 1.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
-    } else {
-      media.innerHTML = `<img class="pv-media" src="https://picsum.photos/seed/cam${c.id}/1280/720" alt="">`;
-    }
-    document.getElementById('previewName').textContent = c.name;
-    const stateLabel = c.state === 'online' ? 'Online' : c.state === 'connected' ? 'Connected' : c.state === 'connecting' ? 'Connecting…' : c.state === 'authfail' ? 'Auth failed' : 'Connection timeout';
-    const stateColor = (c.state === 'online' || c.state === 'connected') ? 'var(--color-text-success-default)' : (c.state === 'connecting') ? 'var(--color-text-subtle)' : 'var(--color-background-accent-red-default)';
-    document.getElementById('previewSub').innerHTML = `<span style="width:8px; height:8px; border-radius:50%; background:${stateColor}; display:inline-block;"></span>${stateLabel} <span style="color:var(--color-text-subtlest);">•</span> Substream <span style="color:var(--color-text-subtlest);">•</span> ${c.config.type}`;
-    const retention = c.config.retention;
-    const storage = c.config.storage;
-    document.getElementById('previewBody').innerHTML = `
-      <div class="opt-list">
-        <div class="opt-row">
-          <span class="opt-label"><span class="opt-ico warn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Mainstream is not optimized</span>
-          <button class="opt-show" onclick="openSheet('mainstreamSheet')">Show</button>
-        </div>
-        <div class="opt-row">
-          <span class="opt-label"><span class="opt-ico ok"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Substream is optimized</span>
-          <button class="opt-show" onclick="openSheet('substreamSheet')">Show</button>
-        </div>
-      </div>
-      <div class="meta-grid">
-        <div class="mg-item">${c.config.autoConfig ? 'Auto-config enabled' : 'Auto-config disabled'}</div>
-        <div class="mg-item">Audio stream disabled</div>
-        <div class="mg-item">Storage: ${storage}</div>
-        <div class="mg-item">Smart storage enabled</div>
-        <div class="mg-item">${retention} retention days</div>
-        <div class="mg-item">Model: ${c.model}</div>
-        <div class="mg-item">IP: ${c.ip}</div>
-        <div class="mg-item">Mac: ${c.mac}</div>
-      </div>
-    `;
-    openSheet('previewSheet');
   }
 
   // ===== Sheets (generic) =====
