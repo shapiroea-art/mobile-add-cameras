@@ -738,6 +738,9 @@
   .s5-top-bar { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; }
   .s5-top-bar .s5-tb-left { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
   .s5-top-bar .s5-title { font-size: 24px; font-weight: 500; color: var(--color-text-bold); line-height: 32px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .s5-top-bar .s5-tb-actions { display: flex; align-items: center; }
+  .s5-top-bar .fl-icon-wrap { position: relative; }
+  .s5-top-bar .fl-icon-wrap.has-filter::after { content: ''; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--color-background-button-primary-default); border: 2px solid var(--color-elevation-surface-default); border-radius: 50%; }
   .s5-filters { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
   .s5-filters .button-icon[aria-label="Search"].used { background: var(--color-elevation-surface-subtle); border-radius: 16px; color: var(--color-background-button-primary-default); }
   .s5-chip { display: inline-flex; align-items: center; gap: 2px; padding: 6px 12px; border: 1px solid transparent; border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--color-text-subtle); background: var(--color-elevation-surface-subtle); cursor: pointer; line-height: 24px; font-family: var(--sans); }
@@ -2517,12 +2520,15 @@
                 </button>
                 <div class="s5-title">Administrative Center 1</div>
               </div>
-              <div style="display:flex; align-items:center;">
+              <div class="s5-tb-actions">
                 <button class="button-icon" aria-label="Edit location" onclick="openEditLocation()" style="padding:10px; color: var(--color-text-subtle);">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
                 </button>
-                <button class="button-icon" aria-label="Add" onclick="openLocationMenu()" style="padding:10px; border-radius: 50%; background: var(--color-background-accent-gray200-default);">
+                <button class="button-icon" aria-label="Add" onclick="openLocationMenu()" style="padding:10px; color: var(--color-text-subtle);">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </button>
+                <button class="button-icon fl-icon-wrap" aria-label="Filter" onclick="enterFilterMode('s0')" style="padding:10px; color: var(--color-text-subtle);">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </button>
               </div>
             </div>
@@ -2647,12 +2653,15 @@
                 </button>
                 <div class="s5-title" id="subTitle">Sublocation</div>
               </div>
-              <div style="display:flex; align-items:center;">
+              <div class="s5-tb-actions">
                 <button class="button-icon" aria-label="Edit sublocation" onclick="editSublocationFromMenu()" style="padding:10px; color: var(--color-text-subtle);">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
                 </button>
-                <button class="button-icon" aria-label="Add" onclick="openSublocationMenu()" style="padding:10px; border-radius: 50%; background: var(--color-background-accent-gray200-default);">
+                <button class="button-icon" aria-label="Add" onclick="openSublocationMenu()" style="padding:10px; color: var(--color-text-subtle);">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </button>
+                <button class="button-icon fl-icon-wrap" aria-label="Filter" onclick="enterFilterMode('sSublocation')" style="padding:10px; color: var(--color-text-subtle);">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </button>
               </div>
             </div>
@@ -5989,6 +5998,8 @@
   }
 
   // ===== S0 location menu =====
+  // Filter-active mode (s0 / sSublocation). Stub — wired in Commit 2.
+  function enterFilterMode(panelId) { /* TODO commit 2 */ }
   function openLocationMenu() { document.getElementById('locationMenuSheet').classList.add('open'); }
   function closeLocationMenu() { document.getElementById('locationMenuSheet').classList.remove('open'); }
   function openSublocation(name) {
