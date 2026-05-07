@@ -741,6 +741,18 @@
   .s5-top-bar .s5-tb-actions { display: flex; align-items: center; }
   .s5-top-bar .fl-icon-wrap { position: relative; }
   .s5-top-bar .fl-icon-wrap.has-filter::after { content: ''; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--color-background-button-primary-default); border: 2px solid var(--color-elevation-surface-default); border-radius: 50%; }
+  /* Filter-active mode: alternate top bar + chips row */
+  .s5-fa-top-bar { display: none; background: var(--color-elevation-surface-default); align-items: center; padding: 6px 8px; flex: 0 0 auto; }
+  .s5-fa-search-pill { flex: 1; min-width: 0; height: 40px; background: var(--color-background-accent-gray200-default); border-radius: 16px; display: flex; align-items: center; padding: 0 8px; }
+  .s5-fa-search-pill .s5-fa-search-icon { padding: 8px; display: inline-flex; color: var(--color-text-subtle); flex: 0 0 auto; }
+  .s5-fa-search-pill input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font: 400 14px/24px var(--sans); color: var(--color-text-defsult); padding: 8px 12px 8px 0; }
+  .s5-fa-search-pill input::placeholder { color: var(--color-text-subtle); }
+  .s5-fa-chips { display: none; background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); align-items: center; gap: 4px; padding: 6px 8px; flex: 0 0 auto; }
+  .panel.filter-active .s5-top-bar { display: none; }
+  .panel.filter-active .s5-fa-top-bar { display: flex; }
+  .panel.filter-active .s5-fa-chips { display: flex; }
+  .panel.filter-active .s5-search-row,
+  .panel.filter-active .s5-filters { display: none !important; }
   .s5-filters { background: var(--color-elevation-surface-default); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; flex: 0 0 auto; }
   .s5-filters .button-icon[aria-label="Search"].used { background: var(--color-elevation-surface-subtle); border-radius: 16px; color: var(--color-background-button-primary-default); }
   .s5-chip { display: inline-flex; align-items: center; gap: 2px; padding: 6px 12px; border: 1px solid transparent; border-radius: 40px; font-size: 14px; font-weight: 500; color: var(--color-text-subtle); background: var(--color-elevation-surface-subtle); cursor: pointer; line-height: 24px; font-family: var(--sans); }
@@ -2533,6 +2545,22 @@
               </div>
             </div>
 
+            <div class="s5-fa-top-bar">
+              <button class="button-icon" aria-label="Back" onclick="exitFilterMode('s0')" style="padding:10px; color: var(--color-text-defsult);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="s5-fa-search-pill">
+                <span class="s5-fa-search-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                <input type="text" placeholder="Search locations and cameras" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="s5-fa-chips">
+              <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openFilterPopover(this, 'tagsFilterSheet')"><span>Tags</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+            </div>
+
             <div class="s5-search-row">
               <div class="s5-search-pill">
                 <span class="s5-search-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
@@ -2664,6 +2692,22 @@
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M5 10h10M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </button>
               </div>
+            </div>
+
+            <div class="s5-fa-top-bar">
+              <button class="button-icon" aria-label="Back" onclick="exitFilterMode('sSublocation')" style="padding:10px; color: var(--color-text-defsult);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="s5-fa-search-pill">
+                <span class="s5-fa-search-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                <input type="text" placeholder="Search devices" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="s5-fa-chips">
+              <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <button class="s5-chip" data-chip="tags" onclick="openFilterPopover(this, 'tagsFilterSheet')"><span>Tags</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             </div>
 
             <div class="s5-search-row">
@@ -5998,8 +6042,17 @@
   }
 
   // ===== S0 location menu =====
-  // Filter-active mode (s0 / sSublocation). Stub — wired in Commit 2.
-  function enterFilterMode(panelId) { /* TODO commit 2 */ }
+  // Filter-active mode (s0 / sSublocation). State persistence added in Commit 6.
+  function enterFilterMode(panelId) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.classList.add('filter-active');
+  }
+  function exitFilterMode(panelId) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.classList.remove('filter-active');
+  }
   function openLocationMenu() { document.getElementById('locationMenuSheet').classList.add('open'); }
   function closeLocationMenu() { document.getElementById('locationMenuSheet').classList.remove('open'); }
   function openSublocation(name) {
