@@ -7627,6 +7627,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const wasState = c.state;
     if (wasState !== 'authfail' && wasState !== 'timeout') return;
     if (wasState === 'authfail') c.retried = true;
+    c.userOverride = false;
     c.state = 'connecting';
     renderConfList();
     statusTimers.push(setTimeout(() => {
@@ -7688,6 +7689,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const c = confCams.find(x => x.id === id);
     if (!c) return;
     c.retried = false;
+    c.userOverride = false;
     c.state = 'connecting';
     renderConfList();
     statusTimers.push(setTimeout(() => setConfStatus(id, 'connected'), 700));
