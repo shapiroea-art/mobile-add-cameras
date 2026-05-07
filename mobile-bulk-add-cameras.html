@@ -605,6 +605,7 @@
   .conf-check-wrap { width: 40px; height: 40px; display: grid; place-items: center; flex: 0 0 auto; cursor: pointer; border-radius: var(--r); }
   .conf-check-wrap:hover .cb:not(.dis) { border-color: var(--color-background-button-primary-default); }
   .conf-check-wrap .cb.dis { opacity: .45; cursor: not-allowed; }
+  .conf-master-wrap { margin-left: 8px; margin-right: 8px; }
   .conf-row.unchecked .conf-thumb,
   .conf-row.unchecked .conf-thumb-off { opacity: .6; }
   .conf-row.unchecked .conf-name { color: var(--color-text-subtle); font-weight: 400; }
@@ -4297,7 +4298,10 @@
             <div class="info-msg cap-banner" id="s4CapBanner"></div>
 
             <div class="table-header">
-              <div class="th-cols" style="padding-left: 16px;">
+              <div class="conf-check-wrap conf-master-wrap" id="confMasterCheck" onclick="toggleConfMasterCheck()" aria-label="Select all cameras" role="button" aria-pressed="false">
+                <div class="cb"></div>
+              </div>
+              <div class="th-cols">
                 <div class="th-col">Cameras</div>
               </div>
               <button class="expand-all-button" id="confExpandAllBtn" onclick="toggleExpandAllConf()">
@@ -5736,9 +5740,7 @@
     const list = document.getElementById('confList');
     if (!list) return;
     list.innerHTML = '';
-    const rows = s4FailFilterOn
-      ? confCams.filter(c => c.state === 'authfail' || c.state === 'timeout')
-      : confCams;
+    const rows = visibleConfCams();
     rows.forEach(c => {
       const row = document.createElement('div');
       row.className = 'conf-row';
@@ -5786,6 +5788,7 @@
     updateS4SelBlock();
     updateConfExpandAllLabel();
     updateS4CapBanner();
+    updateConfMaster();
   }
 
   function toggleExpandCam(id) {
@@ -5800,6 +5803,44 @@
     c.checked = !c.checked;
     c.userOverride = true;
     renderConfList();
+  }
+  function visibleConfCams() {
+    return s4FailFilterOn
+      ? confCams.filter(c => c.state === 'authfail' || c.state === 'timeout')
+      : confCams;
+  }
+  function toggleConfMasterCheck() {
+    const visible = visibleConfCams().filter(c => c.state !== 'connecting');
+    if (visible.length === 0) return;
+    const allChecked = visible.every(c => c.checked);
+    const target = !allChecked;
+    visible.forEach(c => { c.checked = target; c.userOverride = true; });
+    renderConfList();
+  }
+  function updateConfMaster() {
+    const wrap = document.getElementById('confMasterCheck');
+    if (!wrap) return;
+    const cb = wrap.querySelector('.cb');
+    const visible = visibleConfCams().filter(c => c.state !== 'connecting');
+    const total = visible.length;
+    const checkedCount = visible.filter(c => c.checked).length;
+    cb.classList.remove('ck', 'tri');
+    cb.innerHTML = '';
+    if (total === 0) {
+      wrap.setAttribute('aria-pressed', 'false');
+      return;
+    }
+    if (checkedCount === total) {
+      cb.classList.add('ck');
+      cb.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      wrap.setAttribute('aria-pressed', 'true');
+    } else if (checkedCount > 0) {
+      cb.classList.add('tri');
+      cb.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><rect x="2" y="5" width="8" height="2" rx="1"/></svg>';
+      wrap.setAttribute('aria-pressed', 'mixed');
+    } else {
+      wrap.setAttribute('aria-pressed', 'false');
+    }
   }
   function requestDeleteCam(id) {
     const idx = confCams.findIndex(c => c.id === id);
