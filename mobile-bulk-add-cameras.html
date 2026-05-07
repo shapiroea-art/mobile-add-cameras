@@ -516,6 +516,12 @@
   .sel-block.show { display: flex; }
   .sel-block .sb-icon { color: var(--color-background-button-primary-default); flex: 0 0 auto; display: grid; place-items: center; }
   .sel-block .sb-text { font-size: 16px; font-weight: 500; color: var(--color-background-button-primary-default); line-height: 24px; }
+  .sb-progress { width: 20px; height: 20px; position: relative; flex: 0 0 auto; display: grid; place-items: center; }
+  .sb-progress svg { width: 100%; height: 100%; }
+  .sb-progress .bg { fill: none; stroke: rgba(67,103,246,.22); stroke-width: 2; }
+  .sb-progress .fg { fill: none; stroke: var(--color-background-button-primary-default); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 43.98 43.98; stroke-dashoffset: 43.98; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset .3s linear; }
+  .sb-progress .check { fill: none; stroke: var(--color-background-button-primary-default); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .15s ease .12s; }
+  .sb-progress.done .check { opacity: 1; }
   .sel-block .sb-load { margin-left: auto; font-size: 16px; font-weight: 400; color: var(--color-background-button-primary-default); line-height: 24px; }
   .sb-filter { margin-left: auto; display: none; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 14px; border: 1px solid var(--color-background-accent-red-default); background: var(--color-elevation-surface-default); color: var(--color-background-accent-red-default); font-size: 14px; font-weight: 500; line-height: 20px; cursor: pointer; flex: 0 0 auto; }
   .sb-filter.show { display: inline-flex; }
@@ -4320,8 +4326,12 @@
             <div class="conf-list" id="confList"></div>
 
             <div class="sel-block" id="s4SelBlock">
-              <span class="sb-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 7l4-2v6l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+              <span class="sb-progress" id="s4Progress" aria-label="Authentication progress">
+                <svg viewBox="0 0 20 20">
+                  <circle class="bg" cx="10" cy="10" r="7"/>
+                  <circle class="fg" cx="10" cy="10" r="7"/>
+                  <path class="check" d="M6 10.2l2.8 2.8L14 7.5"/>
+                </svg>
               </span>
               <span class="sb-text"><strong id="s4SelCount">0</strong> cameras to add</span>
               <button class="sb-filter" id="s4FailFilterBtn" onclick="toggleS4FailFilter()" aria-pressed="false">
@@ -5797,6 +5807,19 @@
     updateS4CapBanner();
     updateS4AuthFailBanner();
     updateConfMaster();
+    updateS4Progress();
+  }
+  function updateS4Progress() {
+    const el = document.getElementById('s4Progress');
+    if (!el) return;
+    const total = confCams.length;
+    if (total === 0) return;
+    const done = confCams.filter(c => c.state !== 'connecting').length;
+    const C = 2 * Math.PI * 7; // circumference for r=7
+    const fg = el.querySelector('.fg');
+    const progress = done / total;
+    if (fg) fg.setAttribute('stroke-dashoffset', String(C * (1 - progress)));
+    el.classList.toggle('done', done === total);
   }
 
   function toggleExpandCam(id) {
