@@ -5808,7 +5808,7 @@
   }
   function visibleConfCams() {
     return s4FailFilterOn
-      ? confCams.filter(c => c.state === 'authfail' || c.state === 'timeout')
+      ? confCams.filter(c => c.checked && (c.state === 'authfail' || c.state === 'timeout'))
       : confCams;
   }
   function toggleConfMasterCheck() {
@@ -5869,7 +5869,7 @@
     });
   }
   function coreLoadTotal() {
-    return confCams.reduce((s, c) => s + (c.load || 0), 0);
+    return confCams.filter(c => c.checked).reduce((s, c) => s + (c.load || 0), 0);
   }
   function updateS4CapBanner() {
     const el = document.getElementById('s4CapBanner');
@@ -7590,14 +7590,22 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   function updateS4SelBlock() {
     const blk = document.getElementById('s4SelBlock');
     if (!blk) return;
-    const count = confCams.length;
-    document.getElementById('s4SelCount').textContent = count;
-    blk.classList.toggle('show', count > 0);
+    const count = confCams.filter(c => c.checked).length;
+    const lblEl = blk.querySelector('.sb-text');
+    if (lblEl) lblEl.innerHTML = `<strong id="s4SelCount">${count}</strong> camera${count === 1 ? '' : 's'} to add`;
+    blk.classList.toggle('show', confCams.length > 0);
     const nextBtn = document.getElementById('s4NextBtn');
     if (nextBtn && !nextBtn.classList.contains('disabled-override')) {
-      nextBtn.textContent = `Add ${count} camera${count === 1 ? '' : 's'}`;
+      if (count === 0) {
+        nextBtn.textContent = 'Add cameras';
+        nextBtn.classList.add('disabled');
+      } else {
+        nextBtn.textContent = `Add ${count} camera${count === 1 ? '' : 's'}`;
+        // capacity logic re-applies disabled state via updateS4CapBanner
+        nextBtn.classList.remove('disabled');
+      }
     }
-    const failCount = confCams.filter(c => c.state === 'authfail' || c.state === 'timeout').length;
+    const failCount = confCams.filter(c => c.checked && (c.state === 'authfail' || c.state === 'timeout')).length;
     const chip = document.getElementById('s4FailFilterBtn');
     const lbl = document.getElementById('s4FailFilterLbl');
     if (chip && lbl) {
