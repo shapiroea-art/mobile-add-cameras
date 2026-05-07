@@ -602,6 +602,12 @@
   .conf-cb-wrap { padding: 14px; flex: 0 0 auto; }
   .conf-del-wrap { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--r); color: var(--color-text-subtle); flex: 0 0 auto; cursor: pointer; }
   .conf-del-wrap:hover { color: var(--color-background-accent-red-default); background: var(--color-background-accent-red-subtle); }
+  .conf-check-wrap { width: 40px; height: 40px; display: grid; place-items: center; flex: 0 0 auto; cursor: pointer; border-radius: var(--r); }
+  .conf-check-wrap:hover .cb:not(.dis) { border-color: var(--color-background-button-primary-default); }
+  .conf-check-wrap .cb.dis { opacity: .45; cursor: not-allowed; }
+  .conf-row.unchecked .conf-thumb,
+  .conf-row.unchecked .conf-thumb-off { opacity: .6; }
+  .conf-row.unchecked .conf-name { color: var(--color-text-subtle); font-weight: 400; }
   .conf-thumb { width: 80px; height: 60px; border-radius: 2px; object-fit: cover; flex: 0 0 auto; background: var(--color-background-accent-gray200-default); display: block; }
   .conf-thumb-off { width: 80px; height: 60px; border-radius: 2px; flex: 0 0 auto; background: var(--color-elevation-surface-subtle); border: 1px solid var(--color-border-input-default); display: grid; place-items: center; color: var(--color-text-subtlest); }
   .conf-thumb-off .thumb-spinner { width: 20px; height: 20px; border: 2px solid var(--color-border-input-default); border-top-color: var(--color-background-button-primary-default); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -5737,14 +5743,17 @@
       const row = document.createElement('div');
       row.className = 'conf-row';
       if (c.checked) row.classList.add('selected');
+      if (!c.checked && c.state !== 'connecting') row.classList.add('unchecked');
       if (c.expanded && confPreviewId !== c.id) row.classList.add('expanded');
       if (confPreviewId === c.id) row.classList.add('previewing');
       row.id = `confRow-${c.id}`;
       row.innerHTML = `
         ${confPreviewId === c.id ? rowPreviewHTML(c) : ''}
         <div class="conf-row-inner" data-role="row" data-id="${c.id}">
-          <div class="conf-del-wrap" data-role="delete" aria-label="Remove camera" role="button">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M8 6V4.5a1 1 0 011-1h2a1 1 0 011 1V6m1 0v9.5a1 1 0 01-1 1H7a1 1 0 01-1-1V6h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="conf-check-wrap" data-role="check" aria-label="Select camera" role="button" aria-pressed="${c.checked ? 'true' : 'false'}">
+            <div class="cb${c.checked ? ' ck' : ''}${c.state === 'connecting' ? ' dis' : ''}">
+              ${c.checked ? '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+            </div>
           </div>
           ${thumbHTML(c)}
           <div class="conf-body">
@@ -5759,7 +5768,7 @@
         ${expandedBodyHTML(c)}
       `;
       row.addEventListener('click', (e) => {
-        if (e.target.closest('[data-role="delete"]')) { requestDeleteCam(c.id); return; }
+        if (e.target.closest('[data-role="check"]')) { toggleConfCamCheck(c.id); return; }
         if (e.target.closest('[data-role="player"]')) { togglePreviewCam(c.id); return; }
         if (e.target.closest('[data-role="thumb"]')) { togglePreviewCam(c.id); return; }
         if (e.target.closest('[data-role="chev"]')) {
@@ -5783,6 +5792,13 @@
     const c = confCams.find(x => x.id === id);
     if (!c) return;
     c.expanded = !c.expanded;
+    renderConfList();
+  }
+  function toggleConfCamCheck(id) {
+    const c = confCams.find(x => x.id === id);
+    if (!c || c.state === 'connecting') return;
+    c.checked = !c.checked;
+    c.userOverride = true;
     renderConfList();
   }
   function requestDeleteCam(id) {
