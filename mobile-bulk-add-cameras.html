@@ -447,7 +447,12 @@
   .cam-row-primary { display: flex; gap: 16px; align-items: center; }
   .cam-row-primary .cam-ip { width: 100px; font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 0 0 auto; }
   .cam-row-primary .cam-mac { font-size: 14px; font-weight: 500; color: var(--color-text-defsult); line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .cam-row-secondary { font-size: 12px; font-weight: 500; color: var(--color-text-subtle); line-height: 20px; display: flex; align-items: center; gap: 6px; }
+  .cam-row-secondary { font-size: 12px; font-weight: 500; color: var(--color-text-subtle); line-height: 20px; display: flex; align-items: center; gap: 4px; min-width: 0; }
+  .cam-row-secondary .cam-conn-label { flex: 0 0 auto; }
+  .cam-row-secondary .cam-sep { flex: 0 0 auto; color: var(--color-text-subtlest); padding: 0 2px; }
+  .cam-row-secondary .cam-reg { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; }
+  .cam-row-secondary .cam-reg svg { flex: 0 0 auto; color: var(--color-text-subtle); }
+  .cam-row-secondary .cam-brand { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* Connection dot */
   .cam-conn-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; display: inline-block; }
@@ -5087,7 +5092,11 @@
   }
 
   function connectionLabel(c) { return c === 'good' ? 'Good' : c === 'reasonable' ? 'Reasonable' : 'Limited'; }
-  function statusTitle(s) { return s === 'registered' ? 'Registered camera' : s === 'unknown' ? 'Unknown device' : 'Unregistered camera'; }
+  function statusTitle(s) { return s === 'registered' ? 'Registered' : s === 'unknown' ? 'Unknown' : 'Unregistered'; }
+  function statusIconHTML(s) {
+    if (s === 'unknown') return '';
+    return '<svg width="14" height="14" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="6" width="11" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 8.5l4-2v7l-4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>';
+  }
 
   function clearScanTimers() { scanTimers.forEach(clearTimeout); scanTimers = []; }
 
@@ -5218,7 +5227,11 @@
             </div>
             <div class="cam-row-secondary">
               <span class="cam-conn-dot ${c.connection}"></span>
-              ${c.brand}
+              <span class="cam-conn-label">${connectionLabel(c.connection)}</span>
+              <span class="cam-sep">·</span>
+              <span class="cam-reg">${statusIconHTML(c.status)}<span>${statusTitle(c.status)}</span></span>
+              <span class="cam-sep">·</span>
+              <span class="cam-brand">${c.brand}</span>
             </div>
           </div>
           <button class="chev-button" data-role="chev" aria-label="Details">
