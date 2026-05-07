@@ -518,8 +518,11 @@
   .sb-progress { width: 20px; height: 20px; position: relative; flex: 0 0 auto; display: grid; place-items: center; }
   .sb-progress svg { width: 100%; height: 100%; }
   .sb-progress .bg { fill: none; stroke: rgba(67,103,246,.22); stroke-width: 2; }
-  .sb-progress .fg { fill: none; stroke: var(--color-background-button-primary-default); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 43.98 43.98; stroke-dashoffset: 43.98; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset .3s linear; }
-  .sb-progress .check { fill: none; stroke: var(--color-background-button-primary-default); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .15s ease .12s; }
+  .sb-progress .fg { fill: none; stroke: var(--color-background-button-primary-default); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 0 43.98; transition: stroke-dasharray .25s ease; }
+  .sb-progress .check { fill: none; stroke: var(--color-background-button-primary-default); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .15s ease .1s; }
+  .sb-progress.loading svg { animation: spin 0.85s linear infinite; }
+  .sb-progress.loading .fg { stroke-dasharray: 12 32; transition: none; }
+  .sb-progress.done .fg { stroke-dasharray: 43.98 0; }
   .sb-progress.done .check { opacity: 1; }
   .sel-block .sb-load { margin-left: auto; font-size: 16px; font-weight: 400; color: var(--color-background-button-primary-default); line-height: 24px; }
   .sb-filter { margin-left: auto; display: none; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 14px; border: 1px solid var(--color-background-accent-red-default); background: var(--color-elevation-surface-default); color: var(--color-background-accent-red-default); font-size: 14px; font-weight: 500; line-height: 20px; cursor: pointer; flex: 0 0 auto; }
@@ -5814,10 +5817,7 @@
     const total = confCams.length;
     if (total === 0) return;
     const done = confCams.filter(c => c.state !== 'connecting').length;
-    const C = 2 * Math.PI * 7; // circumference for r=7
-    const fg = el.querySelector('.fg');
-    const progress = done / total;
-    if (fg) fg.setAttribute('stroke-dashoffset', String(C * (1 - progress)));
+    el.classList.toggle('loading', done < total);
     el.classList.toggle('done', done === total);
   }
 
