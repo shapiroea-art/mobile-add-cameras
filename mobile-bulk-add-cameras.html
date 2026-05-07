@@ -5240,12 +5240,15 @@
         </div>
         <div class="cam-details">
           <div class="cam-details-inner">
-            <div class="cam-details-title">${statusTitle(c.status)}</div>
-            <div class="cam-detail-kv"><span class="k">Connection</span><span class="v"><span class="cam-conn-dot ${c.connection}"></span>${connectionLabel(c.connection)}</span></div>
-            <div class="cam-detail-kv"><span class="k">Min (ms)</span><span class="v">${c.ping.min}</span></div>
-            <div class="cam-detail-kv"><span class="k">Max (ms)</span><span class="v">${c.ping.max}</span></div>
-            <div class="cam-detail-kv"><span class="k">Avg (ms)</span><span class="v">${c.ping.avg}</span></div>
-            <div class="cam-detail-kv"><span class="k">Std (ms)</span><span class="v">${c.ping.std}</span></div>
+            <div class="cc-stream-block">
+              <div class="cc-stream-title">Ping (ms)</div>
+              <div class="cc-chip-row">
+                <span class="cc-stat-chip"><span class="cc-chip-label">Min</span><span class="cc-chip-value">${c.ping.min}</span></span>
+                <span class="cc-stat-chip"><span class="cc-chip-label">Max</span><span class="cc-chip-value">${c.ping.max}</span></span>
+                <span class="cc-stat-chip"><span class="cc-chip-label">Avg</span><span class="cc-chip-value">${c.ping.avg}</span></span>
+                <span class="cc-stat-chip"><span class="cc-chip-label">Std</span><span class="cc-chip-value">${c.ping.std}</span></span>
+              </div>
+            </div>
           </div>
         </div>
       `;
