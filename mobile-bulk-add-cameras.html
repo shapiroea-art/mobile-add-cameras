@@ -481,6 +481,10 @@
   .info-msg.warn { background: var(--color-background-accent-amber-subtle); border-color: var(--color-background-accent-amber-default); box-shadow: inset 3px 0 0 var(--color-background-accent-amber-default); }
   .info-msg.warn .im-icon { color: var(--color-background-accent-amber-default); }
   .info-msg.cap-banner { padding: 16px; }
+  .info-msg.compact { padding: 8px 12px; align-items: center; gap: 6px; }
+  .info-msg.compact .im-icon { padding: 0; }
+  .info-msg.compact .im-body { flex-direction: row; align-items: center; gap: 4px; }
+  .info-msg.compact .im-desc { font-size: 13px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .info-msg .im-link { padding: 0; font-size: 14px; font-weight: 500; color: var(--color-border-button-primary-default); background: none; border: none; cursor: pointer; text-align: left; flex: 0 0 auto; white-space: nowrap; }
   .info-msg .im-link:hover { color: var(--color-background-button-primary-default); text-decoration: underline; }
   .info-msg .im-desc-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -4295,7 +4299,7 @@
             </div>
 
             <div class="info-msg cap-banner" id="s4CapBanner"></div>
-            <div class="info-msg cap-banner" id="s4AuthFailBanner"></div>
+            <div class="info-msg compact" id="s4AuthFailBanner"></div>
 
             <div class="table-header">
               <div class="conf-check-wrap conf-master-wrap" id="confMasterCheck" onclick="toggleConfMasterCheck()" aria-label="Select all cameras" role="button" aria-pressed="false">
@@ -5904,7 +5908,7 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 5v3.5M8 11v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </span>
       <div class="im-body">
-        <div class="im-desc">${n} camera${n === 1 ? '' : 's'} couldn't authenticate and ${n === 1 ? "wasn't" : "weren't"} selected.</div>
+        <div class="im-desc">${n} camera${n === 1 ? '' : 's'} failed to authenticate</div>
       </div>`;
   }
   // ===== Undo toast =====
