@@ -7578,13 +7578,14 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     const c = confCams.find(x => x.id === id);
     if (!c) return;
     c.state = state;
+    if (state === 'online' && !c.userOverride) c.checked = true;
     renderConfList();
   }
 
   function startConfigAnimation() {
     clearStatusTimers();
     reseedConfNames();
-    confCams.forEach(c => { c.state = 'connecting'; c.expanded = false; c.checked = false; c.retried = false; });
+    confCams.forEach(c => { c.state = 'connecting'; c.expanded = false; c.checked = false; c.retried = false; c.userOverride = false; });
     s4FailFilterOn = false;
     renderConfList();
     // Stretch across ~10s. OK cams: Connected staggered 2.5-8s, Online +1-2s landing 6-10s.
