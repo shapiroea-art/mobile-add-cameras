@@ -485,6 +485,9 @@
   .info-msg.compact .im-icon { padding: 0; }
   .info-msg.compact .im-body { flex-direction: row; align-items: center; gap: 4px; }
   .info-msg.compact .im-desc { font-size: 13px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .info-msg.compact .im-action { font-size: 13px; font-weight: 500; color: var(--color-border-button-primary-default); flex: 0 0 auto; }
+  .info-msg.compact.tappable { cursor: pointer; }
+  .info-msg.compact.tappable:hover { filter: brightness(0.97); }
   .info-msg .im-link { padding: 0; font-size: 14px; font-weight: 500; color: var(--color-border-button-primary-default); background: none; border: none; cursor: pointer; text-align: left; flex: 0 0 auto; white-space: nowrap; }
   .info-msg .im-link:hover { color: var(--color-background-button-primary-default); text-decoration: underline; }
   .info-msg .im-desc-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -4299,7 +4302,7 @@
             </div>
 
             <div class="info-msg cap-banner" id="s4CapBanner"></div>
-            <div class="info-msg compact" id="s4AuthFailBanner"></div>
+            <div class="info-msg compact tappable" id="s4AuthFailBanner" onclick="selectAllFailedConf()"></div>
 
             <div class="table-header">
               <div class="conf-check-wrap conf-master-wrap" id="confMasterCheck" onclick="toggleConfMasterCheck()" aria-label="Select all cameras" role="button" aria-pressed="false">
@@ -5909,7 +5912,17 @@
       </span>
       <div class="im-body">
         <div class="im-desc">${n} camera${n === 1 ? '' : 's'} failed to authenticate</div>
+        <span class="im-action">· Tap to add ${n === 1 ? 'it' : 'them'}</span>
       </div>`;
+  }
+  function selectAllFailedConf() {
+    confCams.forEach(c => {
+      if ((c.state === 'authfail' || c.state === 'timeout') && !c.checked) {
+        c.checked = true;
+        c.userOverride = true;
+      }
+    });
+    renderConfList();
   }
   // ===== Undo toast =====
   let undoToastTimer = null;
