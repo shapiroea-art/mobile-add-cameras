@@ -2653,6 +2653,14 @@
               </div>
             </div>
 
+            <div class="success-card" id="addCamsSuccessBanner">
+              <div class="sc-top">
+                <span class="ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="ok-text" id="addCamsSuccessText">cameras added</div>
+              </div>
+              <button class="ok-action" onclick="continueAddingCameras()">Continue adding cameras</button>
+            </div>
+
             <div class="home-indicator"></div>
           </div>
 
@@ -4358,7 +4366,7 @@
 
             <div class="bottom-action-bar">
               <button class="button button-default button-full" onclick="go(2)">Back</button>
-              <button class="button button-primary button-full" id="s4NextBtn" onclick="go(4)">Add 12 cameras</button>
+              <button class="button button-primary button-full" id="s4NextBtn" onclick="commitAddCameras()">Add 12 cameras</button>
             </div>
 
             <div class="home-indicator"></div>
@@ -4604,118 +4612,6 @@
             <div class="home-indicator"></div>
           </div>
 
-          <!-- ========== S5: Added (location landing) ========== -->
-          <div class="panel" id="s5">
-            <div class="s5-top-bar">
-              <div class="s5-tb-left">
-                <button class="button-icon" onclick="resetFlow()" aria-label="Back">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <div class="s5-title">Administrative Center 1</div>
-              </div>
-              <div class="s5-tb-actions">
-                <button class="button-icon" aria-label="Edit location" onclick="openEditLocation()" style="padding:10px; color: var(--color-text-subtle);">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3-9 9H4.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
-                </button>
-                <button class="button-icon" aria-label="Add" onclick="openLocationMenu()" style="padding:10px; color: var(--color-text-subtle);">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-                </button>
-                <button class="button-icon fl-icon-wrap" aria-label="Filter" onclick="enterFilterMode('s5')" style="padding:10px; color: var(--color-text-subtle);">
-                  <svg width="20" height="20" viewBox="0 0 14 15" fill="none"><path d="M13.4615 0C13.7589 0 14 0.2457 14 0.548786V2.01221C14 2.14514 13.9527 2.27374 13.8668 2.37378L8.97436 8.07172V12.9879C8.97436 13.1958 8.8588 13.3859 8.67638 13.4788L5.80459 14.9423C5.63773 15.0272 5.43951 15.0179 5.28085 14.918C5.12223 14.8179 5.02564 14.6415 5.02564 14.4514V8.07172L0.133213 2.37378C0.0473258 2.27374 0 2.14514 0 2.01221V0.548786C0 0.2457 0.241077 0 0.538462 0H13.4615ZM1.07692 1.8057L5.96935 7.50436C6.05524 7.6044 6.10256 7.733 6.10256 7.86593V13.5632L7.89744 12.6485V7.86593C7.89744 7.733 7.94476 7.6044 8.03065 7.50436L12.9231 1.8057V1.09757H1.07692V1.8057Z" fill="currentColor"/></svg>
-                </button>
-              </div>
-            </div>
-
-            <div class="s5-fa-top-bar">
-              <button class="button-icon" aria-label="Back" onclick="exitFilterMode('s5')" style="padding:10px; color: var(--color-text-defsult);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="s5-fa-search-pill">
-                <span class="s5-fa-search-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-                <input type="text" placeholder="Search for name of device or sublocation" autocomplete="off" oninput="refreshFilterBadge('s5')">
-              </div>
-            </div>
-
-            <div class="s5-fa-chips">
-              <button class="s5-chip" data-chip="status" onclick="openFilterPopover(this, 'statusFilterSheet')"><span>Status</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="type" onclick="openFilterPopover(this, 'typeFilterSheet')"><span>Type</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-              <button class="s5-chip" data-chip="tags" onclick="openFilterPopover(this, 'tagsFilterSheet')"><span>Tags</span><span class="s5-chip-count">1</span><span class="s5-chip-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-            </div>
-
-            <div class="s5-body">
-              <div class="s5-sec-label" data-target="s5Sub" onclick="toggleAcSection(this)">
-                <span>Sublocations</span>
-                <span class="s5-sec-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 10l4.5-4.5L12.5 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </div>
-              <div class="s5-sec-content" data-section="s5Sub">
-                <div class="s5-loc-row">
-                  <div class="loc-main">
-                    <span class="loc-ico">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </span>
-                    <span class="loc-name">Lobby</span>
-                  </div>
-                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                </div>
-                <div class="s5-loc-row">
-                  <div class="loc-main">
-                    <span class="loc-ico">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </span>
-                    <span class="loc-name">2nd floor</span>
-                  </div>
-                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                </div>
-                <div class="s5-loc-row">
-                  <div class="loc-main">
-                    <span class="loc-ico">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </span>
-                    <span class="loc-name">3rd floor</span>
-                  </div>
-                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                </div>
-                <div class="s5-loc-row">
-                  <div class="loc-main">
-                    <span class="loc-ico warn">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8.5 16h-17L10 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 8v4M10 15v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-                    </span>
-                    <span class="loc-name">Parking lot</span>
-                  </div>
-                  <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                </div>
-              </div>
-
-              <div class="s5-sec-label" data-target="s5Dev" onclick="toggleAcSection(this)">
-                <span>Devices</span>
-                <span class="s5-sec-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 10l4.5-4.5L12.5 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </div>
-              <div class="s5-sec-content" data-section="s5Dev">
-                <div id="s5Devices"></div>
-                <div class="s5-dev-row">
-                  <div class="dev-thumb-core">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="4" height="2" rx=".5" fill="currentColor"/><rect x="5" y="13" width="4" height="2" rx=".5" fill="currentColor"/></svg>
-                  </div>
-                  <span class="dev-ico">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </span>
-                  <span class="dev-name" id="s5CoreName">Core 3</span>
-                </div>
-              </div>
-              <div style="height: 96px;"></div>
-            </div>
-
-            <div class="success-card show" id="s5SuccessBanner">
-              <div class="sc-top">
-                <span class="ok-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                <div class="ok-text" id="s5SuccessText">cameras added</div>
-              </div>
-              <button class="ok-action" onclick="continueAddingCameras()">Continue adding cameras</button>
-            </div>
-
-            <div class="home-indicator"></div>
-          </div>
-
           <div class="undo-toast" id="undoToast">
             <span class="ut-label" id="undoToastLabel">Removed</span>
             <button class="ut-button" onclick="clickUndo()">Undo</button>
@@ -4737,7 +4633,7 @@
 </main>
 
 <script>
-  const screens = ['s1','s2','s3','s4','s5'];
+  const screens = ['s1','s2','s3','s4'];
   let current = 0;
   let selectedCore = null;
   let scanTimers = [];
@@ -4872,7 +4768,6 @@
     if (numberedIdx !== -1) current = numberedIdx;
     if (panelId === 's2') enterDetectionPicker();
     if (panelId === 's4') startConfigAnimation();
-    if (panelId === 's5') renderS5();
     if (panelId === 'sBarcodeScan') {
       if (coreDrafts.length === 0) {
         coreDrafts = [];
@@ -4899,7 +4794,6 @@
     updateChrome();
     if (i === 1) enterDetectionPicker();
     if (i === 3) startConfigAnimation();
-    if (i === 4) renderS5();
   }
 
   function enterDetectionPicker() {
@@ -6045,7 +5939,7 @@
     wrap.classList.toggle('has-filter', hasFiltersApplied(panelId));
   }
   function refreshAllFilterBadges() {
-    ['sDevices', 's0', 'sSublocation', 's5'].forEach(refreshFilterBadge);
+    ['sDevices', 's0', 'sSublocation'].forEach(refreshFilterBadge);
   }
   function openLocationMenu() { document.getElementById('locationMenuSheet').classList.add('open'); }
   function closeLocationMenu() { document.getElementById('locationMenuSheet').classList.remove('open'); }
@@ -8361,20 +8255,28 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   }
 
   // ===== S5 Added =====
-  function renderS5() {
-    const core = coreLabel();
-    document.getElementById('s5CoreName').textContent = core;
+  // Post-commit: lands the user on s0 with a success card. Replaces the old
+  // separate s5 panel.
+  let addCamsBannerTimer = null;
+  function commitAddCameras() {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active', 'exit-left'));
+    document.getElementById('s0').classList.add('active');
+    current = 0;
+    selectedCore = null;
+    showAddCamsSuccess();
+    updateChrome();
+  }
+  function showAddCamsSuccess() {
+    const banner = document.getElementById('addCamsSuccessBanner');
+    const text = document.getElementById('addCamsSuccessText');
+    if (!banner || !text) return;
     const success = confCams.filter(c => c.state === 'online' || c.state === 'connected');
-    const list = document.getElementById('s5Devices');
-    list.innerHTML = success.map(c => `
-      <div class="s5-dev-row">
-        <img class="dev-thumb" src="${thumbFor(c)}" alt="">
-        <span class="dev-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span class="dev-name">${c.name}</span>
-      </div>
-    `).join('');
     const plural = success.length === 1 ? 'camera' : 'cameras';
-    document.getElementById('s5SuccessText').textContent = `${success.length} ${plural} added to ${core}`;
+    const core = coreLabel();
+    text.textContent = `${success.length} ${plural} added to ${core}`;
+    banner.classList.add('show');
+    if (addCamsBannerTimer) clearTimeout(addCamsBannerTimer);
+    addCamsBannerTimer = setTimeout(() => banner.classList.remove('show'), 8000);
   }
 
   // Status filter chips (S2 — in Filter sheet, Devices group)
