@@ -2573,10 +2573,10 @@
                 <span class="s5-sec-chev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 10l4.5-4.5L12.5 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
               <div class="s5-sec-content" data-section="s0Sub">
-                <div class="s5-loc-row" onclick="openSublocation('Lobby')">
+                <div class="s5-loc-row" onclick="openSublocation('1st floor')">
                   <div class="loc-main">
                     <span class="loc-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    <span class="loc-name">Lobby</span>
+                    <span class="loc-name">1st floor</span>
                   </div>
                   <span class="loc-chev"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
@@ -4660,7 +4660,7 @@
 
   function fmJumpSublocation() {
     const t = document.getElementById('subTitle');
-    if (t && !t.textContent.trim()) t.textContent = 'Lobby';
+    if (t && !t.textContent.trim()) t.textContent = '1st floor';
     jumpToPanel('sSublocation');
   }
   function fmJumpCreateLocStep3() {
@@ -4673,7 +4673,7 @@
   }
   function fmJumpEditSublocation() {
     const t = document.getElementById('subTitle');
-    if (t && !t.textContent.trim()) t.textContent = 'Lobby';
+    if (t && !t.textContent.trim()) t.textContent = '1st floor';
     jumpToPanel('sSublocation');
     setTimeout(() => editSublocationFromMenu(), 80);
   }
