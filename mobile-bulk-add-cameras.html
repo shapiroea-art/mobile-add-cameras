@@ -7195,7 +7195,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     document.getElementById('sAddCore').dataset.context = 'standalone';
     jumpToPanel('sDevices');
     const locName = (document.getElementById('clName')?.value || '').trim();
-    showCopyToast(locName ? `${locName} created` : 'Location created', 'success', 4000);
+    showCopyToast(locName ? `Location ${locName} has been created` : 'Location has been created', 'success', 4000);
   }
   function cancelCoreFlow() {
     clearCoreConnectTimers();
