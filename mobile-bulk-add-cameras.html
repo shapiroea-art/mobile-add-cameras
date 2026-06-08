@@ -860,6 +860,7 @@
   /* Color picker row */
   .tag-color-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .tag-color-dot { width: 28px; height: 28px; border-radius: 50%; padding: 0; border: none; cursor: pointer; position: relative; box-shadow: 0 0 0 0 transparent; transition: box-shadow .12s ease; }
+  #newTagColorRow .tag-color-dot { width: 32px; height: 32px; }
   .tag-color-dot.on { box-shadow: 0 0 0 2px var(--color-elevation-surface-default), 0 0 0 4px var(--color-background-button-primary-default); }
   /* Manage tags list */
   .manage-tags-sheet { padding: 0; }
@@ -1725,11 +1726,11 @@
           <div class="sheet-backdrop" id="newTagSheet" onclick="if(event.target.id==='newTagSheet') cancelNewTagSheet()">
             <div class="sheet addsub-sheet">
               <div class="ts-handle"></div>
-              <div class="ts-title">New tag</div>
+              <div class="ts-title">Create new tag</div>
               <div class="ts-body">
                 <div class="input-wrap">
                   <label class="input-label" for="newTagName">Name</label>
-                  <div class="input-field"><input type="text" id="newTagName" placeholder="e.g. Outdoor cameras" oninput="onNewTagNameInput()"></div>
+                  <div class="input-field"><input type="text" id="newTagName" placeholder="" oninput="onNewTagNameInput()"></div>
                 </div>
                 <div class="input-wrap">
                   <label class="input-label">Color</label>
@@ -7746,7 +7747,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     { id: 'tag-entrance-2',   name: 'Entrance',     color: '#A855F7' },
   ];
   let tagIdSeq = 100;
-  const TAG_PALETTE = ['#A855F7','#4367F6','#12B76A','#F79009','#F04438','#667085'];
+  const TAG_PALETTE = ['#667085','#3456E0','#EF4444','#F97316','#10B981','#14B8A6'];
   let filterTagSelection = new Set();
   let sublocationDraftTags = new Set();
   let cdDetailsDraftTags = new Set();
@@ -7967,7 +7968,7 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
   // ===== New tag sheet (level 3) — replaces the picker while open =====
   function openNewTagSheet() {
     closeSheet('tagPickerSheet');
-    newTagColor = TAG_PALETTE[TAG_PALETTE.length - 1]; // gray default
+    newTagColor = TAG_PALETTE[0]; // gray default
     const nameEl = document.getElementById('newTagName');
     if (nameEl) nameEl.value = '';
     renderNewTagColors();
