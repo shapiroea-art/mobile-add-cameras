@@ -1715,7 +1715,7 @@
               <div class="ts-title">Tags</div>
               <div class="ts-chips" id="tagPickerChips"></div>
               <div class="ts-foot">
-                <button class="button button-default" onclick="openManageTagsSheet()">Manage tags</button>
+                <button class="button button-default" id="tagPickerManageBtn" onclick="openManageTagsSheet()">Manage tags</button>
                 <button class="button button-primary" onclick="commitTagPicker()">Done</button>
               </div>
             </div>
@@ -7904,6 +7904,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     } else {
       pickerSnapshot = new Set(sublocationDraftTags);
     }
+    const manageBtn = document.getElementById('tagPickerManageBtn');
+    if (manageBtn) manageBtn.style.display = tagPickerOwner === 'createLocation' ? 'none' : '';
     renderTagPickerChips();
     openSheet('tagPickerSheet');
     if (tagPickerOwner === 'sublocation') setActiveSubStep('pickTags');
