@@ -1713,7 +1713,7 @@
           <div class="sheet-backdrop" id="tagPickerSheet" onclick="if(event.target.id==='tagPickerSheet') dismissTagPicker()">
             <div class="sheet tags-sheet">
               <div class="ts-handle"></div>
-              <div class="ts-title">Tags</div>
+              <div class="ts-title" id="tagPickerTitle">Tags</div>
               <div class="ts-chips" id="tagPickerChips"></div>
               <div class="ts-foot">
                 <button class="button button-default" id="tagPickerManageBtn" onclick="openManageTagsSheet()">Manage tags</button>
@@ -7907,6 +7907,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     }
     const manageBtn = document.getElementById('tagPickerManageBtn');
     if (manageBtn) manageBtn.style.display = tagPickerOwner === 'createLocation' ? 'none' : '';
+    const pickerTitle = document.getElementById('tagPickerTitle');
+    if (pickerTitle) pickerTitle.textContent = tagPickerOwner === 'createLocation' ? 'Add tags' : 'Tags';
     renderTagPickerChips();
     openSheet('tagPickerSheet');
     if (tagPickerOwner === 'sublocation') setActiveSubStep('pickTags');
