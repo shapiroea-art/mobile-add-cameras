@@ -1368,6 +1368,9 @@
   .copy-toast .ct-label { flex: 1; min-width: 0; }
   .copy-toast .ct-close { background: none; border: none; color: var(--color-text-subtlest); padding: 0; cursor: pointer; display: inline-flex; flex: 0 0 auto; border-radius: 4px; }
   .copy-toast .ct-close:hover { color: var(--color-text-inverse); }
+  .copy-toast.success { background: var(--color-background-success-subtle); color: var(--color-text-bold); border: 1px solid var(--color-text-success-default); box-shadow: inset 3px 0 0 0 var(--color-text-success-default), var(--shadow-2xl); }
+  .copy-toast.success .ct-close { color: var(--color-text-subtle); }
+  .copy-toast.success .ct-close:hover { color: var(--color-text-bold); }
 
   /* Bottom tabs (sDevices) */
   .bottom-tabs { background: var(--color-elevation-surface-default); border-top: 1px solid var(--color-border-default); display: flex; align-items: stretch; flex: 0 0 auto; }
@@ -5894,12 +5897,13 @@
 
   // ===== Copy toast =====
   let copyToastTimer = null;
-  function showCopyToast(label) {
+  function showCopyToast(label, variant, duration) {
     const toast = document.getElementById('copyToast');
     document.getElementById('copyToastLabel').textContent = label;
+    toast.classList.toggle('success', variant === 'success');
     toast.classList.add('show');
     if (copyToastTimer) clearTimeout(copyToastTimer);
-    copyToastTimer = setTimeout(dismissCopyToast, 2000);
+    copyToastTimer = setTimeout(dismissCopyToast, duration || 2000);
   }
   function dismissCopyToast() {
     document.getElementById('copyToast').classList.remove('show');
@@ -7190,6 +7194,8 @@ failed connection: Media server TCP, port: 7881, verification address: 34.165.22
     sessionCoresAdded = 0;
     document.getElementById('sAddCore').dataset.context = 'standalone';
     jumpToPanel('sDevices');
+    const locName = (document.getElementById('clName')?.value || '').trim();
+    showCopyToast(locName ? `${locName} created` : 'Location created', 'success', 4000);
   }
   function cancelCoreFlow() {
     clearCoreConnectTimers();
